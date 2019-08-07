@@ -7,14 +7,114 @@
 //
 
 import Foundation
+import MongoSwift
+import StitchCore
+import StitchRemoteMongoDBService
 import UIKit
+import FirebaseStorage
 
 class MainViewController: UIViewController {
+    //Mark: Properties
+    
+    @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        //testDataBase();
+        
+        let url = URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!
+        downloadImage(from: url)
     }
     
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    func downloadImage(from url: URL) {
+        print("Download Started")
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() {
+                let storageRef = Storage.storage().reference()
+                let riversRef = storageRef.child("rivers.jpg")
+                
+                // Upload the file to the path "images/rivers.jpg"
+                let uploadTask = riversRef.putData(data, metadata: nil) { (metadata, error) in
+                    guard let metadata = metadata else {
+                        // Uh-oh, an error occurred!
+                        print(error!)
+                        return
+                    }
+                    // Metadata contains file metadata such as size, content-type.
+                    let size = metadata.size
+                    // You can also access to download URL after upload.
+                    riversRef.downloadURL { (url, error) in
+                        guard let downloadURL = url else {
+                            // Uh-oh, an error occurred!
+                            print(error!)
+                            return
+                        }
+                    }
+                }
+                
+                self.imageView.image = UIImage(data: data)
+            }
+        }
+    }
+    
+    /*test if mongoDB work test for upload string : success*/
+    func testDataBase() {
+        do {
+            let client =  try Stitch.initializeDefaultAppClient(withClientAppID: "itproject_l-vevre")
+            
+            let mongoClient = try client.serviceClient(
+                fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas"
+            )
+            
+            let coll = mongoClient.db("test_db").collection("test_collection")
+            
+            client.auth.login(withCredential: AnonymousCredential()) { result in
+                switch result {
+                case .success(let user):
+                    
+                    coll.updateOne(
+                        filter: ["owner_id": user.id],
+                        update: ["number": 47, "owner_id": user.id],
+                        options: RemoteUpdateOptions(upsert: true)
+                    ) { result in
+                        switch result {
+                        case .success:
+                            coll.find().toArray({ result in
+                                switch result {
+                                case .success(let result):
+                                    print("Found documents:")
+                                    
+                                    result.forEach({ document in
+                                        print(document.canonicalExtendedJSON)
+                                    })
+                                case .failure(let error):
+                                    print("Error in finding documents: \(error)")
+                                }
+                            })
+                            
+                        case .failure(let error):
+                            print("Error updating or inserting a document: \(error)")
+                        }
+                    }
+                    
+                case .failure(let error):
+                    print("Error in login: \(error)")
+                    
+                }
+            }
+            
+        }catch {
+            print(error)
+        }
+        
+    }
     
 }

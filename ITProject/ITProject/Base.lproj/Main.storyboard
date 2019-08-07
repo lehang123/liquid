@@ -106,19 +106,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello World" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKO-rJ-ubO">
-                                <rect key="frame" x="163" y="437.5" width="88.5" height="21"/>
+                                <rect key="frame" x="162.5" y="437.5" width="89" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9O4-Gh-c5m" userLabel="ImageView">
+                                <rect key="frame" x="87" y="217" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="CKO-rJ-ubO" firstAttribute="top" secondItem="9O4-Gh-c5m" secondAttribute="bottom" constant="92.5" id="24x-cf-pV9"/>
+                            <constraint firstItem="9O4-Gh-c5m" firstAttribute="leading" secondItem="xqN-cG-8CS" secondAttribute="leading" constant="87" id="IKI-o8-cHG"/>
+                            <constraint firstItem="9O4-Gh-c5m" firstAttribute="top" secondItem="xqN-cG-8CS" secondAttribute="top" constant="129" id="N42-SD-uAD"/>
                             <constraint firstItem="CKO-rJ-ubO" firstAttribute="centerX" secondItem="fBB-wj-z6g" secondAttribute="centerX" id="PNj-me-RT4"/>
                             <constraint firstItem="CKO-rJ-ubO" firstAttribute="centerY" secondItem="fBB-wj-z6g" secondAttribute="centerY" id="bE4-aL-dK8"/>
+                            <constraint firstItem="9O4-Gh-c5m" firstAttribute="centerX" secondItem="fBB-wj-z6g" secondAttribute="centerX" id="wu2-zj-47m"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xqN-cG-8CS"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="9O4-Gh-c5m" id="EVg-lA-oIk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c0p-IM-jxq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
