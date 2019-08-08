@@ -5,11 +5,22 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - FBSDKCoreKit (5.3.0):
+    - FBSDKCoreKit/Basics (= 5.3.0)
+    - FBSDKCoreKit/Core (= 5.3.0)
+  - FBSDKCoreKit/Basics (5.3.0)
+  - FBSDKCoreKit/Core (5.3.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (5.3.0):
+    - FBSDKCoreKit (~> 5.0)
   - Firebase/Auth (6.5.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.2.1)
   - Firebase/CoreOnly (6.5.0):
     - FirebaseCore (= 6.1.0)
+  - Firebase/Database (6.5.0):
+    - Firebase/CoreOnly
+    - FirebaseDatabase (~> 6.0.0)
   - Firebase/Firestore (6.5.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 1.4.2)
@@ -26,6 +37,10 @@ PODS:
   - FirebaseCore (6.1.0):
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/Logger (~> 6.0)
+  - FirebaseDatabase (6.0.0):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - leveldb-library (~> 1.18)
   - FirebaseFirestore (1.4.2):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
@@ -45,6 +60,53 @@ PODS:
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseUI (8.0.4):
+    - FirebaseUI/Anonymous (= 8.0.4)
+    - FirebaseUI/Auth (= 8.0.4)
+    - FirebaseUI/Database (= 8.0.4)
+    - FirebaseUI/Email (= 8.0.4)
+    - FirebaseUI/Facebook (= 8.0.4)
+    - FirebaseUI/Firestore (= 8.0.4)
+    - FirebaseUI/Google (= 8.0.4)
+    - FirebaseUI/OAuth (= 8.0.4)
+    - FirebaseUI/Phone (= 8.0.4)
+    - FirebaseUI/Storage (= 8.0.4)
+  - FirebaseUI/Anonymous (8.0.4):
+    - FirebaseUI/Auth
+  - FirebaseUI/Auth (8.0.4):
+    - Firebase/Auth (~> 6.0)
+    - GoogleUtilities/UserDefaults
+  - FirebaseUI/Database (8.0.4):
+    - Firebase/Database (~> 6.0)
+  - FirebaseUI/Email (8.0.4):
+    - FirebaseUI/Auth
+  - FirebaseUI/Facebook (8.0.4):
+    - FBSDKLoginKit (~> 5.0)
+    - FirebaseUI/Auth
+  - FirebaseUI/Firestore (8.0.4):
+    - Firebase/Firestore
+  - FirebaseUI/Google (8.0.4):
+    - FirebaseUI/Auth
+    - GoogleSignIn (~> 4.0)
+  - FirebaseUI/OAuth (8.0.4):
+    - FirebaseUI/Auth
+  - FirebaseUI/Phone (8.0.4):
+    - FirebaseUI/Auth
+  - FirebaseUI/Storage (8.0.4):
+    - Firebase/Storage (~> 6.0)
+    - SDWebImage (~> 5.0)
+  - GoogleSignIn (4.4.0):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleToolboxForMac/DebugUtils (2.2.1):
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+  - GoogleToolboxForMac/Defines (2.2.1)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.2.1)":
+    - GoogleToolboxForMac/DebugUtils (= 2.2.1)
+    - GoogleToolboxForMac/Defines (= 2.2.1)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.2.1)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.2.1)"
   - GoogleUtilities/AppDelegateSwizzler (6.2.3):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -58,6 +120,8 @@ PODS:
     - GoogleUtilities/Reachability
   - "GoogleUtilities/NSData+zlib (6.2.3)"
   - GoogleUtilities/Reachability (6.2.3):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (6.2.3):
     - GoogleUtilities/Logger
   - "gRPC-C++ (0.0.9)":
     - "gRPC-C++/Implementation (= 0.0.9)"
@@ -94,6 +158,9 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.9.0)
+  - SDWebImage (5.1.0):
+    - SDWebImage/Core (= 5.1.0)
+  - SDWebImage/Core (5.1.0)
   - StitchCore (6.0.1):
     - StitchCoreSDK (= 6.0.1)
   - StitchCoreLocalMongoDBService (6.0.1):
@@ -118,17 +185,25 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Firestore
   - Firebase/Storage
+  - FirebaseUI
+  - FirebaseUI/Auth
   - StitchSDK (~> 6.0.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
+    - FBSDKCoreKit
+    - FBSDKLoginKit
     - Firebase
     - FirebaseAuth
     - FirebaseAuthInterop
     - FirebaseCore
+    - FirebaseDatabase
     - FirebaseFirestore
     - FirebaseStorage
+    - FirebaseUI
+    - GoogleSignIn
+    - GoogleToolboxForMac
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -141,6 +216,7 @@ SPEC REPOS:
     - MongoSwift
     - nanopb
     - Protobuf
+    - SDWebImage
     - StitchCore
     - StitchCoreLocalMongoDBService
     - StitchCoreRemoteMongoDBService
@@ -150,12 +226,18 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  FBSDKCoreKit: 39748deefe37a005f983722e433be2ddcdd83ae7
+  FBSDKLoginKit: bc0329e10045789e8d40b12d4f15ddbd07a898e2
   Firebase: dedc9e48ea3f3649ad5f6b982f8a0c73508a14b5
   FirebaseAuth: a06ad63e9bf4c86165b54cceb1c14d4f4c38d419
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
   FirebaseCore: aecf02fb2274ec361b9bebeac112f5daa18273bd
+  FirebaseDatabase: f48e067716864be2b855cf716b927ef375d6cfa0
   FirebaseFirestore: 41a035642eb017fc7206318985501626993840bd
   FirebaseStorage: 618dd8fd886b30adf6e5d1915b1f5c18cb5c3944
+  FirebaseUI: d92c980c1c7e553df3c5e7b0725baeb13f80f6d2
+  GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
+  GoogleToolboxForMac: b3553629623a3b1bff17f555e736cd5a6d95ad55
   GoogleUtilities: d2b0e277a95962e09bb27f5cd42f5f0b6a506c7d
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
@@ -168,6 +250,7 @@ SPEC CHECKSUMS:
   MongoSwift: e20f86eae1beb06bbba49c2d73bb570961cc4c85
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
+  SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
   StitchCore: 9e5c62bb7069254af142e0ef18aae8a484e1b6d8
   StitchCoreLocalMongoDBService: e085bee742eecaf9d30a8999fdf9f5e814856c8b
   StitchCoreRemoteMongoDBService: 54db4d87f05146784294ed3f5c953bdf7eef4a40
@@ -175,6 +258,6 @@ SPEC CHECKSUMS:
   StitchRemoteMongoDBService: e31d88bb2e8ad451f0929bd64062601852dfdc24
   StitchSDK: 871fd2d6e1b6a0652e40ad7aa5007c925e47cecc
 
-PODFILE CHECKSUM: 34d0a1ad49a8174a5d8c5516af7c97666a28425b
+PODFILE CHECKSUM: 3db320c1326e319349189bb3843a7d5303f47ca9
 
 COCOAPODS: 1.7.5
