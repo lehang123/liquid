@@ -11,4 +11,6 @@ target 'ITProject' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
+  pod 'FirebaseUI'
+  pod 'FirebaseUI/Auth'
 end
