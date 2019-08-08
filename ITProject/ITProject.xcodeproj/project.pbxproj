@@ -16,6 +16,7 @@
 		84E9BA4B22F941F4003EA693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4922F941F4003EA693 /* Main.storyboard */; };
 		84E9BA4D22F941F6003EA693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4C22F941F6003EA693 /* Assets.xcassets */; };
 		84E9BA5022F941F6003EA693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4E22F941F6003EA693 /* LaunchScreen.storyboard */; };
+		FE9F1D209D5FC266E42904D1 /* Pods_ITProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D84D3A85F98228F8B46FE8A /* Pods_ITProject.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,7 +38,6 @@
 		497938CC40F9CD4BAE53ED21 /* Pods-ITProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.debug.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.debug.xcconfig"; sourceTree = "<group>"; };
 		520667F222FAEEAE002C61B6 /* EmailLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
 		5206680922FBB5EC002C61B6 /* ITProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5206680C22FBEB5C002C61B6 /* Spinner.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; name = Spinner.appex; path = "/Users/zhuchenghong/Desktop/liquid/ITProject/build/Debug-iphoneos/Spinner.appex"; sourceTree = "<absolute>"; };
 		8423A6E822F9CA390049B656 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		8423A6EA22F9CC610049B656 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		8423A6EC22FA700E0049B656 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -50,17 +50,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		520667F522FBAA93002C61B6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		84E9BA3F22F941F4003EA693 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE9F1D209D5FC266E42904D1 /* Pods_ITProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,23 +108,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		520667F722FBAA93002C61B6 /* Spinner */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5206680722FBAA93002C61B6 /* Build configuration list for PBXNativeTarget "Spinner" */;
-			buildPhases = (
-				520667F422FBAA93002C61B6 /* Sources */,
-				520667F522FBAA93002C61B6 /* Frameworks */,
-				520667F622FBAA93002C61B6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Spinner;
-			productName = Spinner;
-			productReference = 5206680C22FBEB5C002C61B6 /* Spinner.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		84E9BA4122F941F4003EA693 /* ITProject */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84E9BA5422F941F6003EA693 /* Build configuration list for PBXNativeTarget "ITProject" */;
@@ -162,9 +139,6 @@
 				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = liquid;
 				TargetAttributes = {
-					520667F722FBAA93002C61B6 = {
-						CreatedOnToolsVersion = 10.3;
-					};
 					84E9BA4122F941F4003EA693 = {
 						CreatedOnToolsVersion = 10.3;
 					};
@@ -184,19 +158,11 @@
 			projectRoot = "";
 			targets = (
 				84E9BA4122F941F4003EA693 /* ITProject */,
-				520667F722FBAA93002C61B6 /* Spinner */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		520667F622FBAA93002C61B6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		84E9BA4022F941F4003EA693 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -270,13 +236,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		520667F422FBAA93002C61B6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		84E9BA3E22F941F4003EA693 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -311,42 +270,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		5206680522FBAA93002C61B6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Spinner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = liquid.ITProject.Spinner;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		5206680622FBAA93002C61B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Spinner/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = liquid.ITProject.Spinner;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 		84E9BA5222F941F6003EA693 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -508,15 +431,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5206680722FBAA93002C61B6 /* Build configuration list for PBXNativeTarget "Spinner" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5206680522FBAA93002C61B6 /* Debug */,
-				5206680622FBAA93002C61B6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		84E9BA3D22F941F4003EA693 /* Build configuration list for PBXProject "ITProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
