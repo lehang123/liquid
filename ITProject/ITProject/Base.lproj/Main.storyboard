@@ -57,7 +57,7 @@
                                 <rect key="frame" x="141" y="419.5" width="38" height="30"/>
                                 <state key="normal" title="Login"/>
                                 <connections>
-                                    <action selector="LoginButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="97B-GM-W1G"/>
+                                    <action selector="LoginButtonOnTouch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="97B-GM-W1G"/>
                                     <segue destination="eBw-8f-een" kind="show" id="zq6-TA-sml"/>
                                 </connections>
                             </button>
@@ -189,7 +189,7 @@
                                 <rect key="frame" x="137" y="367" width="46" height="30"/>
                                 <state key="normal" title="Create"/>
                                 <connections>
-                                    <action selector="OnTouch:" destination="RVD-0H-nJq" eventType="touchUpInside" id="A2N-Ea-c86"/>
+                                    <action selector="CreateButtonOnTouch:" destination="RVD-0H-nJq" eventType="touchUpInside" id="A2N-Ea-c86"/>
                                 </connections>
                             </button>
                         </subviews>

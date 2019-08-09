@@ -14,13 +14,12 @@ class EmailLoginViewController : UIViewController {
     
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
-//    @IBOutlet weak var SignInbutton: UIButton!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    @IBAction func OnTouch(_ sender: Any) {
+    @IBAction func CreateButtonOnTouch(_ sender: Any) {
                 let email: String = emailAddress.text!
                 let pw: String = password.text!
                 Auth.auth().createUser(withEmail: email, password: pw) {
@@ -28,13 +27,6 @@ class EmailLoginViewController : UIViewController {
                 }
     }
     
-//    @IBAction func Create(_ sender: Any) {
-//        let email: String = emailAddress.text!
-//        let pw: String = password.text!
-//        Auth.auth().createUser(withEmail: email, password: pw) { authResult, error in
-//            // ...
-//        }
-//    }
     
     
 
