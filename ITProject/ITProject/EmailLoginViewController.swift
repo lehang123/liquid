@@ -55,7 +55,7 @@ class EmailLoginViewController : UIViewController {
                     self.present(next!, animated:true, completion:nil)
                 }
 
-       AddUser();
+       self.AddUser();
                 
                 // Add all actions to alert controller
                 alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
