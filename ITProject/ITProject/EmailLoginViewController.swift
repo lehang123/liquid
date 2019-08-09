@@ -15,6 +15,7 @@ class EmailLoginViewController : UIViewController {
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
 
+    @IBOutlet weak var username: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
     }
