@@ -18,7 +18,8 @@ class EmailLoginViewController : UIViewController {
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var confirmPW: UITextField!
-    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var realusername: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
