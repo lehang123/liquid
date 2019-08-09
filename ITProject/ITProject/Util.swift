@@ -14,6 +14,10 @@ class Util {
     public static var ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
     public static var ACCOUNT_INCORRECT_MESSAGE = "Try Again"
     public static var BUTTON_DISMISS = "dismiss"
+    public static var CREATE_INCORRECT = "Invalid Email Address"
+    public static var CREATE_CORRECT = "Congratulation!"
+    public static var CREATE_CORRECT_MESSAGE = "Success!"
+    
     
     public static var EXTENSION_JPEG = ".jpg"
     public static var IMAGE_FOLDER = "image/"
@@ -66,6 +70,6 @@ class Util {
     }
     
     
-
     
+
 }
