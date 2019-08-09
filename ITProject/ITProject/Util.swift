@@ -64,6 +64,8 @@ class Util {
     public static func GetFullFilePath(fileName:String)->String{
         return GetFolderForFile(fileName: fileName as NSString)!+fileName
     }
+    
+    
 
     
 }
