@@ -9,7 +9,6 @@
 import Foundation
 import FirebaseStorage
 
-
 class Util {
     
     public static var ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
