@@ -9,15 +9,25 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseCore
+import FirebaseFirestore
 
 class EmailLoginViewController : UIViewController {
+    var db: Firestore!
     
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
 
-    @IBOutlet weak var username: UITextField!
+    @IBOutlet weak var realusername: UITextField!
+    @IBOutlet weak var newFamilyName: UITextField!
+    @IBOutlet  var username: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+         db = Firestore.firestore()
+        
+        
+
     }
     
     @IBAction func CreateButtonOnTouch(_ sender: Any) {
@@ -55,7 +65,37 @@ class EmailLoginViewController : UIViewController {
                         
                     }
                 }
+       AddUser();
     }
+    private func AddUser(){
+        var ref: DocumentReference? = nil
+        let userName: String = realusername.text!
+        ref = db.collection("users").addDocument(data: [
+            "username" : userName
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
+        }
+    }
+
+//    private func AddNewFamily(){
+//        var ref: DocumentReference? = nil
+//        ref = db.collection("families").addDocument(data: [
+//            "familyname" : newFamilyName
+//        ]) { err in
+//            if let err = err {
+//                print("Error adding document: \(err)")
+//            } else {
+//                print("Document added with ID: \(ref!.documentID)")
+//            }
+//        }
+//    }
+    
+
+    
     
     
     

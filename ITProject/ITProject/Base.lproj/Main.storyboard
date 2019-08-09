@@ -304,7 +304,9 @@
                     </view>
                     <connections>
                         <outlet property="emailAddress" destination="OGY-gN-cgP" id="zdl-FQ-x5J"/>
+                        <outlet property="newFamilyName" destination="dyu-ae-fRg" id="8la-Sn-cHn"/>
                         <outlet property="password" destination="Fe7-lT-mIF" id="CZ8-rA-3VM"/>
+                        <outlet property="realusername" destination="hKH-q1-wKp" id="WZM-RM-R3Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rx4-Zr-AgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
