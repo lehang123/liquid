@@ -22,7 +22,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         //testDataBase();
-        
+        print("UUID: " + Util.GenerateUDID())
         let url = URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!
         downloadImage(from: url)
     }
@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
             print("Download Finished")
             DispatchQueue.main.async() {
                 let storageRef = Storage.storage().reference()
-                let riversRef = storageRef.child("rivers.jpg")
+                let riversRef = storageRef.child("image/rivers.jpg")
                 
                 // Upload the file to the path "images/rivers.jpg"
                 let uploadTask = riversRef.putData(data, metadata: nil) { (metadata, error) in
