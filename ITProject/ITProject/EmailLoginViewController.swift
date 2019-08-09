@@ -14,8 +14,9 @@ class EmailLoginViewController : UIViewController {
     
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
-
+    @IBOutlet weak var confirmPW: UITextField!
     @IBOutlet weak var username: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -30,6 +31,8 @@ class EmailLoginViewController : UIViewController {
     func authentiate(email: String, pw: String) {
         Auth.auth().createUser(withEmail: email, password: pw) {
             authResult, error in
+            
+            self.checkPassword(first_pw: self.password.text!, second_pw: self.confirmPW.text!)
             
             if error != nil {
                 // Show error message to users to let them use correct email form
@@ -59,6 +62,17 @@ class EmailLoginViewController : UIViewController {
         let alertController = UIAlertController(title: first_p, message:second_p, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: third_p, style: .default))
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    //Check the confirmed password is it match the first one
+    func checkPassword(first_pw: String, second_pw: String) {
+        if (first_pw != second_pw) {
+            alert(first_p: Util.CONFIRMED_INCORRECT_WRONG, second_p: Util.ACCOUNT_INCORRECT_MESSAGE, third_p: Util.BUTTON_DISMISS)
+        }
+        
+        if (first_pw.count < 8) {
+            alert(first_p: Util.PASSWORD_LENGTH_NOT_ENOUTH, second_p: Util.ACCOUNT_INCORRECT_MESSAGE, third_p:      Util.BUTTON_DISMISS)
+        }
     }
     
     
