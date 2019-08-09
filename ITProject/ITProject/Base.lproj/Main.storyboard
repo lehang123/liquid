@@ -303,6 +303,7 @@
                         <viewLayoutGuide key="safeArea" id="39j-YF-zwn"/>
                     </view>
                     <connections>
+                        <outlet property="confirmPW" destination="KYc-NB-P3z" id="fyU-ne-ZGs"/>
                         <outlet property="emailAddress" destination="OGY-gN-cgP" id="zdl-FQ-x5J"/>
                         <outlet property="password" destination="Fe7-lT-mIF" id="CZ8-rA-3VM"/>
                     </connections>
