@@ -121,11 +121,7 @@
                                 <rect key="frame" x="87" y="216" width="146" height="136"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello World" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CKO-rJ-ubO">
-<<<<<<< HEAD
-                                <rect key="frame" x="115.5" y="338" width="89" height="21"/>
-=======
                                 <rect key="frame" x="116" y="382" width="88.5" height="21"/>
->>>>>>> ede3854e51ab543104f4acf27cdac62df4096ec1
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
