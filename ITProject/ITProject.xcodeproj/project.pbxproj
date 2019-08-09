@@ -17,7 +17,7 @@
 		84E9BA4B22F941F4003EA693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4922F941F4003EA693 /* Main.storyboard */; };
 		84E9BA4D22F941F6003EA693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4C22F941F6003EA693 /* Assets.xcassets */; };
 		84E9BA5022F941F6003EA693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4E22F941F6003EA693 /* LaunchScreen.storyboard */; };
-		FE9F1D209D5FC266E42904D1 /* Pods_ITProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D84D3A85F98228F8B46FE8A /* Pods_ITProject.framework */; };
+		95662508F7BC10C6516EEB2A /* Pods_ITProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE9DEDE305F1297A64C2B51 /* Pods_ITProject.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,9 +34,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+<<<<<<< HEAD
 		1EFD8D62DED1314E60DDD7C3 /* Pods-ITProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.release.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.release.xcconfig"; sourceTree = "<group>"; };
 		2D84D3A85F98228F8B46FE8A /* Pods_ITProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		497938CC40F9CD4BAE53ED21 /* Pods-ITProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.debug.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.debug.xcconfig"; sourceTree = "<group>"; };
+=======
+		369369FF4CBC1A188C396FB1 /* Pods-ITProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.debug.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.debug.xcconfig"; sourceTree = "<group>"; };
+>>>>>>> c4c9d0885cd36528d31850f781e113874fe6d8c1
 		520667F222FAEEAE002C61B6 /* EmailLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailLoginViewController.swift; sourceTree = "<group>"; };
 		5206680922FBB5EC002C61B6 /* ITProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8423A6E822F9CA390049B656 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,8 @@
 		84E9BA4C22F941F6003EA693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84E9BA4F22F941F6003EA693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84E9BA5122F941F6003EA693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		994289955C8D29A2785B6C81 /* Pods-ITProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.release.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.release.xcconfig"; sourceTree = "<group>"; };
+		BCE9DEDE305F1297A64C2B51 /* Pods_ITProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ITProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FE9F1D209D5FC266E42904D1 /* Pods_ITProject.framework in Frameworks */,
+				95662508F7BC10C6516EEB2A /* Pods_ITProject.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,8 +74,8 @@
 			children = (
 				84E9BA4422F941F4003EA693 /* ITProject */,
 				E9FABCC91C0AFFD2BEEC5363 /* Pods */,
-				DDDCEA010ED03BB37EF63BD6 /* Frameworks */,
 				5206680922FBB5EC002C61B6 /* ITProject.app */,
+				9FB4B798B7F8A8AF46D94C8D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -91,10 +97,10 @@
 			path = ITProject;
 			sourceTree = "<group>";
 		};
-		DDDCEA010ED03BB37EF63BD6 /* Frameworks */ = {
+		9FB4B798B7F8A8AF46D94C8D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2D84D3A85F98228F8B46FE8A /* Pods_ITProject.framework */,
+				BCE9DEDE305F1297A64C2B51 /* Pods_ITProject.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -102,8 +108,8 @@
 		E9FABCC91C0AFFD2BEEC5363 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				497938CC40F9CD4BAE53ED21 /* Pods-ITProject.debug.xcconfig */,
-				1EFD8D62DED1314E60DDD7C3 /* Pods-ITProject.release.xcconfig */,
+				369369FF4CBC1A188C396FB1 /* Pods-ITProject.debug.xcconfig */,
+				994289955C8D29A2785B6C81 /* Pods-ITProject.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -115,13 +121,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 84E9BA5422F941F6003EA693 /* Build configuration list for PBXNativeTarget "ITProject" */;
 			buildPhases = (
-				019F7A6F7907E3DDEB4D27EF /* [CP] Check Pods Manifest.lock */,
+				3C065BDA52756588759E016E /* [CP] Check Pods Manifest.lock */,
 				84E9BA3E22F941F4003EA693 /* Sources */,
 				84E9BA3F22F941F4003EA693 /* Frameworks */,
 				84E9BA4022F941F4003EA693 /* Resources */,
-				2B3171CEE504D0692AB0270D /* [CP] Embed Pods Frameworks */,
-				981BC4BBDD2F90A708C6AC93 /* [CP] Copy Pods Resources */,
 				5206680822FBAA93002C61B6 /* Embed App Extensions */,
+				825343CF31A44DCBD060C045 /* [CP] Embed Pods Frameworks */,
+				828BDE1D376AE5DAA9454889 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -180,7 +186,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		019F7A6F7907E3DDEB4D27EF /* [CP] Check Pods Manifest.lock */ = {
+		3C065BDA52756588759E016E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -202,7 +208,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2B3171CEE504D0692AB0270D /* [CP] Embed Pods Frameworks */ = {
+		825343CF31A44DCBD060C045 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -219,7 +225,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ITProject/Pods-ITProject-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		981BC4BBDD2F90A708C6AC93 /* [CP] Copy Pods Resources */ = {
+		828BDE1D376AE5DAA9454889 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -392,7 +398,7 @@
 		};
 		84E9BA5522F941F6003EA693 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 497938CC40F9CD4BAE53ED21 /* Pods-ITProject.debug.xcconfig */;
+			baseConfigurationReference = 369369FF4CBC1A188C396FB1 /* Pods-ITProject.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -413,7 +419,7 @@
 		};
 		84E9BA5622F941F6003EA693 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1EFD8D62DED1314E60DDD7C3 /* Pods-ITProject.release.xcconfig */;
+			baseConfigurationReference = 994289955C8D29A2785B6C81 /* Pods-ITProject.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
