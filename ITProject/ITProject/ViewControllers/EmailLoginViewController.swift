@@ -81,18 +81,18 @@ class EmailLoginViewController : UIViewController {
         }
     }
 
-//    private func AddNewFamily(){
-//        var ref: DocumentReference? = nil
-//        ref = db.collection("families").addDocument(data: [
-//            "familyname" : newFamilyName
-//        ]) { err in
-//            if let err = err {
-//                print("Error adding document: \(err)")
-//            } else {
-//                print("Document added with ID: \(ref!.documentID)")
-//            }
-//        }
-//    }
+    //    private func AddNewFamily(){
+    //        var ref: DocumentReference? = nil
+    //        ref = db.collection("families").addDocument(data: [
+    //            "familyname" : newFamilyName
+    //        ]) { err in
+    //            if let err = err {
+    //                print("Error adding document: \(err)")
+    //            } else {
+    //                print("Document added with ID: \(ref!.documentID)")
+    //            }
+    //        }
+    //    }
     
 
     
