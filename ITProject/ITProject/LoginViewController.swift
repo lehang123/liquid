@@ -27,12 +27,11 @@ class LoginViewController: UIViewController {
             if error != nil {
                 let alertController = UIAlertController(title: Util.ACCOUNT_INCORRECT_TITLE, message:
                     Util.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+                alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
                 self?.present(alertController, animated: true, completion: nil)
             } else {
                 let next = self?.storyboard?.instantiateViewController(withIdentifier: "MainViewController")
                 self!.present(next!, animated: true, completion: nil)
-                
             }
             
         }
