@@ -6,7 +6,7 @@ target 'ITProject' do
   use_frameworks!
 
   # Pods for ITProject
-  # MongoDB Swift Driver
+  # MongoDB Swift Driver (not using any more, delete later)
   pod 'StitchSDK', '~> 6.0.1'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
