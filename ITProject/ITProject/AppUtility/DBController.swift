@@ -75,16 +75,16 @@ class DBController {
     }
 
     public func getDataQuery(fieldName : String){
-        db.collection(collectionName).whereField(field, isEqualTo: true)
-            .getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in querySnapshot!.documents {
-                        print("\(document.documentID) => \(document.data())")
-                    }
-                }
-        }
+//        db.collection(collectionName).whereField(field, isEqualTo: true)
+//            .getDocuments() { (querySnapshot, err) in
+//                if let err = err {
+//                    print("Error getting documents: \(err)")
+//                } else {
+//                    for document in querySnapshot!.documents {
+//                        print("\(document.documentID) => \(document.data())")
+//                    }
+//                }
+//        }
 
     }
     
