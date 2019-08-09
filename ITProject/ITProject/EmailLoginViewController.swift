@@ -24,6 +24,10 @@ class EmailLoginViewController : UIViewController {
                 let pw: String = password.text!
                 Auth.auth().createUser(withEmail: email, password: pw) {
                     authResult, error in
+                    
+                    if error != nil {
+                        
+                    }
                 }
     }
     
