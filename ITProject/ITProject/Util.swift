@@ -69,7 +69,5 @@ class Util {
         return GetFolderForFile(fileName: fileName as NSString)!+fileName
     }
     
-    
-    
 
 }
