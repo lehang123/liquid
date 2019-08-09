@@ -21,10 +21,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //testDataBase();
-        print("UUID: " + Util.GenerateUDID())
-        let url = URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!
-        downloadImage(from: url)
+        Util.DownloadFileFromServer(fileName: "795C8939-982E-40C8-AE2D-610A6EBA5866.jpg")
     }
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -44,58 +41,6 @@ class MainViewController: UIViewController {
                 self.imageView.image = UIImage(data: data)
             }
         }
-    }
-    
-    /*test if mongoDB work test for upload string : success*/
-    func testDataBase() {
-        do {
-            let client =  try Stitch.initializeDefaultAppClient(withClientAppID: "itproject_l-vevre")
-            
-            let mongoClient = try client.serviceClient(
-                fromFactory: remoteMongoClientFactory, withName: "mongodb-atlas"
-            )
-            
-            let coll = mongoClient.db("test_db").collection("test_collection")
-            
-            client.auth.login(withCredential: AnonymousCredential()) { result in
-                switch result {
-                case .success(let user):
-                    
-                    coll.updateOne(
-                        filter: ["owner_id": user.id],
-                        update: ["number": 47, "owner_id": user.id],
-                        options: RemoteUpdateOptions(upsert: true)
-                    ) { result in
-                        switch result {
-                        case .success:
-                            coll.find().toArray({ result in
-                                switch result {
-                                case .success(let result):
-                                    print("Found documents:")
-                                    
-                                    result.forEach({ document in
-                                        print(document.canonicalExtendedJSON)
-                                    })
-                                case .failure(let error):
-                                    print("Error in finding documents: \(error)")
-                                }
-                            })
-                            
-                        case .failure(let error):
-                            print("Error updating or inserting a document: \(error)")
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print("Error in login: \(error)")
-                    
-                }
-            }
-            
-        }catch {
-            print(error)
-        }
-        
     }
     
 }
