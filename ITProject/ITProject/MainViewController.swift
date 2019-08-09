@@ -22,7 +22,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         //testDataBase();
-        
+        print("UUID: " + Util.GenerateUDID())
         let url = URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!
         downloadImage(from: url)
     }
@@ -38,27 +38,8 @@ class MainViewController: UIViewController {
             print(response?.suggestedFilename ?? url.lastPathComponent)
             print("Download Finished")
             DispatchQueue.main.async() {
-                let storageRef = Storage.storage().reference()
-                let riversRef = storageRef.child("rivers.jpg")
                 
-                // Upload the file to the path "images/rivers.jpg"
-                let uploadTask = riversRef.putData(data, metadata: nil) { (metadata, error) in
-                    guard let metadata = metadata else {
-                        // Uh-oh, an error occurred!
-                        print(error!)
-                        return
-                    }
-                    // Metadata contains file metadata such as size, content-type.
-                    let size = metadata.size
-                    // You can also access to download URL after upload.
-                    riversRef.downloadURL { (url, error) in
-                        guard let downloadURL = url else {
-                            // Uh-oh, an error occurred!
-                            print(error!)
-                            return
-                        }
-                    }
-                }
+                Util.UploadFileToServer(data: data, fextension: Util.EXTENSION_JPEG, fileName: Util.GenerateUDID())
                 
                 self.imageView.image = UIImage(data: data)
             }
