@@ -54,9 +54,8 @@ class EmailLoginViewController : UIViewController {
                     let next = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController")
                     self.present(next!, animated:true, completion:nil)
                 }
-<<<<<<< HEAD
+
        AddUser();
-=======
                 
                 // Add all actions to alert controller
                 alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
@@ -65,9 +64,8 @@ class EmailLoginViewController : UIViewController {
                 
             }
         }
->>>>>>> c4c9d0885cd36528d31850f781e113874fe6d8c1
     }
-    private func AddUser(){
+    public func AddUser(){
         var ref: DocumentReference? = nil
         let userName: String = realusername.text!
         ref = db.collection("users").addDocument(data: [
