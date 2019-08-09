@@ -20,17 +20,20 @@ class LoginViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    @IBAction func LoginButton(_ sender: Any) {
+    @IBAction func LoginButtonOnTouch(_ sender: Any) {
         let account: String = ID.text!
         let pw: String = password.text!
-        Auth.auth().signIn(withEmail: account, password: pw) { [weak self] user, error in
-            guard let strongSelf = self
-                else { return }
-            // ...
-            print ("asdasigjiosdjgiosdjgiodsiagasiohgiosdagiosdhioghsioghweiogjiowejgiowejgiowejgioewjiogjweiogjewiojgiowejgiowejgoiwejgiowejgioewjgiojweiogjweiogjewiojgeiowjgioewjg")
-            print (strongSelf)
-            print (user)
-            print (error)
+        Auth.auth().signIn(withEmail: account, password: pw) { [weak self] user, error in 
+            if error != nil {
+                let alertController = UIAlertController(title: Util.ACCOUNT_INCORRECT_TITLE, message:
+                    Util.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
+                self?.present(alertController, animated: true, completion: nil)
+            } else {
+                let next = self?.storyboard?.instantiateViewController(withIdentifier: "MainViewController")
+                self!.present(next!, animated: true, completion: nil)
+            }
+            
         }
         
         
