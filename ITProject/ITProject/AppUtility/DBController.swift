@@ -15,6 +15,7 @@ class DBController {
     public static let FAMILY_FIELD = ["familyname", "username"]
     public static let USER_FIELD = ["username" ]
     private var db: Firestore!
+    
     init(){
         //initiate db instance
         db = Firestore.firestore()

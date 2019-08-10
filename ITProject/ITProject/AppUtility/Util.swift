@@ -18,7 +18,7 @@ class Util {
     public static var BUTTON_DISMISS = "dismiss"
     public static var CREATE_INCORRECT = "Invalid Email Address"
     public static var CREATE_CORRECT = "Congratulation!"
-    public static var CREATE_CORRECT_MESSAGE = "Success!"
+    public static var CREATE_CORRECT_MESSAGE = "Account Success!"
     
     
     public static var EXTENSION_JPEG = ".jpg"
