@@ -8,27 +8,15 @@
 
 import Foundation
 import FirebaseStorage
+import SVProgressHUD
 
 class Util {
+    public static let BUTTON_DISMISS = "dismiss"
     
-    public static var ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
-    public static var ACCOUNT_INCORRECT_MESSAGE = "Try Again"
-    public static var CONFIRMED_INCORRECT_WRONG = "Wrong Password"
-    public static var PASSWORD_LENGTH_NOT_ENOUTH = "Minimum length is 8"
-    public static var BUTTON_DISMISS = "dismiss"
-    public static var CREATE_INCORRECT = "Invalid Email Address"
-    public static var CREATE_CORRECT = "Congratulation!"
-    public static var CREATE_CORRECT_MESSAGE = "Account Success!"
-    public static var CREATE_USERNAME = "Username cannot be empty"
-    public static var CREATE_FAMILY = "Family fields cannot be empty"
-    public static var ACCOUNT_ALREADY_EXIST = "The email address is already in use by another account."
-    public static var ACCOUNT_ALREADY_TITLE = "The address is already exist"
-    
-    
-    public static var EXTENSION_JPEG = ".jpg"
-    public static var IMAGE_FOLDER = "image/"
-    public static var TMP_FOLDER = "tmp/"
-    public static var FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
+    public static let EXTENSION_JPEG = ".jpg"
+    public static let IMAGE_FOLDER = "image/"
+    public static let TMP_FOLDER = "tmp/"
+    public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
     
     public static func GenerateUDID () -> String!{
         let uuid = UUID().uuidString
@@ -179,20 +167,49 @@ class Util {
         }
     }
     
-    public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-    }
-    
-    /*todo: add a finish handlder on it */
-    public static func downloadImage(from url: URL) {
-        print("Download Started")
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
-            print("Download Finished")
-            DispatchQueue.main.async() {
-                //UI thread do whatever you want after download
-            }
+    public static func ShowAlert (title: String,
+                                  message: String,
+                                  action_title: String,
+                                  on: UIViewController,
+                                  aaction: @escaping (() -> Void) = {}) {
+        /*present alert always on UI/main thread */
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: action_title, style: .default){action in
+                aaction()})
+            on.present(alertController, animated: true, completion: nil)
         }
     }
+    
+    public static func ShowActivityIndicator (){
+        SVProgressHUD.show()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+    }
+    
+    public static func ShowActivityIndicator (withStatus: String){
+        SVProgressHUD.show(withStatus: withStatus)
+        UIApplication.shared.beginIgnoringInteractionEvents()
+    }
+    
+    public static func DismissActivityIndicator (){
+        SVProgressHUD.dismiss()
+        UIApplication.shared.endIgnoringInteractionEvents()
+    }
+    
+//    public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+//        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+//    }
+    
+    /*todo: add a finish handlder on it */
+//    public static func downloadImage(from url: URL) {
+//        print("Download Started")
+//        getData(from: url) { data, response, error in
+//            guard let data = data, error == nil else { return }
+//            print(response?.suggestedFilename ?? url.lastPathComponent)
+//            print("Download Finished")
+//            DispatchQueue.main.async() {
+//                //UI thread do whatever you want after download
+//            }
+//        }
+//    }
 }

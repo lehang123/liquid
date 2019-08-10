@@ -11,6 +11,9 @@ import UIKit
 import Firebase
 
 class LoginViewController: UIViewController {
+    
+    private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
+    private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
 
     @IBOutlet weak var ID: UITextField!
     @IBOutlet weak var password: UITextField!
@@ -25,8 +28,8 @@ class LoginViewController: UIViewController {
         let pw: String = password.text!
         Auth.auth().signIn(withEmail: account, password: pw) { [weak self] user, error in 
             if error != nil {
-                let alertController = UIAlertController(title: Util.ACCOUNT_INCORRECT_TITLE, message:
-                    Util.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
+                let alertController = UIAlertController(title: LoginViewController.ACCOUNT_INCORRECT_TITLE, message:
+                    LoginViewController.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
                 self?.present(alertController, animated: true, completion: nil)
             } else {
