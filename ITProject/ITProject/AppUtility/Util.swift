@@ -167,6 +167,12 @@ class Util {
         }
     }
     
+    public static func UserInitThread (work: @escaping (() -> Void) = {}){
+        DispatchQueue(label: "working_queue", qos: .userInitiated).async {
+            work()
+        }
+    }
+    
     public static func ShowAlert (title: String,
                                   message: String,
                                   action_title: String,
