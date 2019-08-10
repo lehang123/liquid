@@ -43,7 +43,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -285,7 +285,7 @@
                                 <rect key="frame" x="148" y="170" width="83.5" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creating Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FNQ-ap-uEb">
                                 <rect key="frame" x="93.5" y="84" width="133" height="20.5"/>
@@ -367,7 +367,7 @@
                                 <rect key="frame" x="148" y="208" width="83.5" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -415,8 +415,10 @@
                     <connections>
                         <outlet property="confirmPW" destination="KYc-NB-P3z" id="fyU-ne-ZGs"/>
                         <outlet property="emailAddress" destination="OGY-gN-cgP" id="zdl-FQ-x5J"/>
+                        <outlet property="familyCreate" destination="dyu-ae-fRg" id="QZG-Fw-b84"/>
+                        <outlet property="familyExist" destination="sGS-gH-ZVU" id="yGX-Xt-FIF"/>
                         <outlet property="password" destination="Fe7-lT-mIF" id="CZ8-rA-3VM"/>
-                        <outlet property="realusername" destination="hKH-q1-wKp" id="WZM-RM-R3Y"/>
+                        <outlet property="realusername" destination="sGS-gH-ZVU" id="YQ7-mF-dXb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rx4-Zr-AgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -19,7 +19,8 @@ class EmailLoginViewController : UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var confirmPW: UITextField!
     @IBOutlet weak var realusername: UITextField!
-    
+    @IBOutlet weak var familyExist: UITextField!
+    @IBOutlet weak var familyCreate: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +29,20 @@ class EmailLoginViewController : UIViewController {
     }
     
     @IBAction func CreateButtonOnTouch(_ sender: Any) {
-                let email: String = emailAddress.text!
-                let pw: String = password.text!
-                authentiate(email: email, pw: pw)
+        let email: String = emailAddress.text!
+        let pw: String = password.text!
+        checkEmptyFields()
+        authentiate(email: email, pw: pw)
+    }
+    
+    // Check is there any empty field when sign in the info
+    func checkEmptyFields() {
+        if (realusername.text!.isEmpty) {
+            alert(first_p: Util.CREATE_USERNAME, second_p: Util.ACCOUNT_INCORRECT_MESSAGE, third_p: Util.BUTTON_DISMISS)
+        }
+        else if (familyExist.text!.isEmpty && familyCreate.text!.isEmpty) {
+            alert(first_p: Util.CREATE_FAMILY, second_p: Util.ACCOUNT_INCORRECT_MESSAGE, third_p: Util.BUTTON_DISMISS)
+        }
     }
     
     // Authentiate process is here
@@ -39,6 +51,9 @@ class EmailLoginViewController : UIViewController {
         Auth.auth().createUser(withEmail: email, password: pw) {
             authResult, error in
             
+            if error!.localizedDescription.contains(Util.ACCOUNT_ALREADY_EXIST) {
+                self.alert(first_p: Util.ACCOUNT_ALREADY_TITLE, second_p: Util.ACCOUNT_INCORRECT_MESSAGE, third_p: Util.BUTTON_DISMISS)
+            }
             self.checkPassword(first_pw: self.password.text!, second_pw: self.confirmPW.text!)
             
             if error != nil {
