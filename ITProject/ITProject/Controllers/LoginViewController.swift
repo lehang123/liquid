@@ -30,14 +30,12 @@ class LoginViewController: UIViewController {
                 alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
                 self?.present(alertController, animated: true, completion: nil)
             } else {
-                let next = self?.storyboard?.instantiateViewController(withIdentifier: "MainViewController")
-                self?.navigationController?.pushViewController(next!, animated: true)
+//                let next = self?.storyboard?.instantiateViewController(withIdentifier: "MainViewController")
+//                self?.navigationController?.pushViewController(next!, animated: true)
+//                self?.present(next!, animated: true, completion: nil)
+                self?.dismiss(animated: true, completion: nil)
             }
-            
         }
-        
-        
     }
-    
 }
 

@@ -24,7 +24,10 @@ class FamilyMainPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
+        // check if client login
+        login()
+        
         // loading profileImage as circle and with shadow
         let imageCornerRadious = profileImgContainer.frame.size.width/2
 
@@ -44,6 +47,14 @@ class FamilyMainPageViewController: UIViewController {
         carouselCollectionView.collectionViewLayout = flowLayout
 
       
+    }
+    
+    func login(){
+        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
+        let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
+        self.present(navController, animated:true, completion: nil)
+//        let loginViewController = (self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController"))!
+//        self.present(loginViewController, animated: true, completion: nil)
     }
     
     
@@ -100,11 +111,6 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
         cell.labelInf.text = arrData[indexPath.row].title
         return cell
     }
-    
-    
-    
-    
-    
 }
     
 

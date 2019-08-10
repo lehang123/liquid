@@ -25,9 +25,6 @@ class EmailLoginViewController : UIViewController {
         super.viewDidLoad()
         /* Lehan : don't init db here, init at the DBController */
 //         db = Firestore.firestore()
-        
-        
-
     }
     
     @IBAction func CreateButtonOnTouch(_ sender: Any) {
