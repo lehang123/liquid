@@ -37,6 +37,7 @@ class EmailLoginViewController : UIViewController {
     }
     
     // Authentiate process is here
+    // todo : put this out of UI thread
     func authentiate(email: String, pw: String) {
         Auth.auth().createUser(withEmail: email, password: pw) {
             authResult, error in
@@ -53,8 +54,7 @@ class EmailLoginViewController : UIViewController {
                 
                 // Back to the previous view controller for user to log in
                 let changeView = UIAlertAction(title: "BACK", style: .default){action in
-                    let next = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController")
-                    self.present(next!, animated:true, completion:nil)
+                    self.navigationController?.popViewController(animated: true)
                 }
 
        self.AddUser();
