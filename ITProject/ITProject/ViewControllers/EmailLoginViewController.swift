@@ -13,7 +13,7 @@ import FirebaseCore
 import FirebaseFirestore
 
 class EmailLoginViewController : UIViewController {
-    var db: Firestore!
+//    var db: Firestore!
     
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
@@ -23,8 +23,8 @@ class EmailLoginViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-         db = Firestore.firestore()
+        /* Lehan : don't init db here, init at the DBController */
+//         db = Firestore.firestore()
         
         
 
@@ -53,14 +53,14 @@ class EmailLoginViewController : UIViewController {
                     Util.CREATE_CORRECT_MESSAGE, preferredStyle: .alert)
                 
                 // Back to the previous view controller for user to log in
-                let changeView = UIAlertAction(title: "BACK", style: .default){action in
+                let changeView = UIAlertAction(title: "Back to login", style: .default){action in
                     self.navigationController?.popViewController(animated: true)
                 }
 
-       self.AddUser();
+                self.AddUser();
                 
                 // Add all actions to alert controller
-                alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
+//                alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
                 alertController.addAction(changeView)
                 self.present(alertController, animated: true, completion: nil)
                 
@@ -68,17 +68,17 @@ class EmailLoginViewController : UIViewController {
         }
     }
     public func AddUser(){
-        var ref: DocumentReference? = nil
-        let userName: String = realusername.text!
-        ref = db.collection("users").addDocument(data: [
-            "username" : userName
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
+//        var ref: DocumentReference? = nil
+//        let userName: String = realusername.text!
+//        ref = db.collection("users").addDocument(data: [
+//            "username" : userName
+//        ]) { err in
+//            if let err = err {
+//                print("Error adding document: \(err)")
+//            } else {
+//                print("Document added with ID: \(ref!.documentID)")
+//            }
+//        }
     }
 
     //    private func AddNewFamily(){
@@ -114,12 +114,5 @@ class EmailLoginViewController : UIViewController {
             alert(first_p: Util.PASSWORD_LENGTH_NOT_ENOUTH, second_p: Util.ACCOUNT_INCORRECT_MESSAGE, third_p:      Util.BUTTON_DISMISS)
         }
     }
-    
-    
-    
-    
-    
-
-
 
 }
