@@ -267,10 +267,10 @@
             </objects>
             <point key="canvasLocation" x="137" y="812"/>
         </scene>
-        <!--Email Login View Controller-->
+        <!--Email Sign Up View Controller-->
         <scene sceneID="yAI-Qu-eYQ">
             <objects>
-                <viewController id="RVD-0H-nJq" customClass="EmailLoginViewController" customModule="ITProject" sceneMemberID="viewController">
+                <viewController id="RVD-0H-nJq" customClass="EmailSignUpViewController" customModule="ITProject" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ks0-bm-pC8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -418,7 +418,7 @@
                         <outlet property="familyCreate" destination="dyu-ae-fRg" id="QZG-Fw-b84"/>
                         <outlet property="familyExist" destination="sGS-gH-ZVU" id="yGX-Xt-FIF"/>
                         <outlet property="password" destination="Fe7-lT-mIF" id="CZ8-rA-3VM"/>
-                        <outlet property="realusername" destination="sGS-gH-ZVU" id="YQ7-mF-dXb"/>
+                        <outlet property="realusername" destination="hKH-q1-wKp" id="UNq-Iy-hfP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rx4-Zr-AgQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

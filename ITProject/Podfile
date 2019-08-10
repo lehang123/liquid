@@ -7,12 +7,14 @@ target 'ITProject' do
 
   # Pods for ITProject
   # MongoDB Swift Driver (not using any more, delete later)
-  pod 'StitchSDK', '~> 6.0.1'
+  # pod 'StitchSDK', '~> 6.0.1'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Storage'
   pod 'FirebaseUI'
   pod 'FirebaseUI/Auth'
   pod 'Firebase/Core'
+
+  pod 'SVProgressHUD'
 
 end
