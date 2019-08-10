@@ -18,6 +18,7 @@
 		8423A6EB22F9CC610049B656 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6EA22F9CC610049B656 /* MainNavigationController.swift */; };
 		8423A6ED22FA700E0049B656 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8423A6EC22FA700E0049B656 /* GoogleService-Info.plist */; };
 		8423A6F622FD03370049B656 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6F522FD03370049B656 /* Util.swift */; };
+		8423A6FB22FE94720049B656 /* LoginNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6FA22FE94720049B656 /* LoginNavigationController.swift */; };
 		84E9BA4622F941F4003EA693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E9BA4522F941F4003EA693 /* AppDelegate.swift */; };
 		84E9BA4822F941F4003EA693 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E9BA4722F941F4003EA693 /* LoginViewController.swift */; };
 		84E9BA4B22F941F4003EA693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4922F941F4003EA693 /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		8423A6EA22F9CC610049B656 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		8423A6EC22FA700E0049B656 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8423A6F522FD03370049B656 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		8423A6FA22FE94720049B656 /* LoginNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationController.swift; sourceTree = "<group>"; };
 		84E9BA4522F941F4003EA693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84E9BA4722F941F4003EA693 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		84E9BA4A22F941F4003EA693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -84,7 +86,7 @@
 			path = CarouselEffect;
 			sourceTree = "<group>";
 		};
-		8423A6F722FD753E0049B656 /* ViewControllers */ = {
+		8423A6F722FD753E0049B656 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				8423A6EA22F9CC610049B656 /* MainNavigationController.swift */,
@@ -92,8 +94,9 @@
 				6C3ECB9D22FC61FF003C89DB /* FamilyMainPageViewController.swift */,
 				520667F222FAEEAE002C61B6 /* EmailLoginViewController.swift */,
 				8423A6E822F9CA390049B656 /* MainViewController.swift */,
+				8423A6FA22FE94720049B656 /* LoginNavigationController.swift */,
 			);
-			path = ViewControllers;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		8423A6F822FD791C0049B656 /* CarousellUI */ = {
@@ -129,7 +132,7 @@
 			children = (
 				8423A6F922FD79760049B656 /* AppUtility */,
 				8423A6F822FD791C0049B656 /* CarousellUI */,
-				8423A6F722FD753E0049B656 /* ViewControllers */,
+				8423A6F722FD753E0049B656 /* Controllers */,
 				6C3ECBA722FCF752003C89DB /* CarouselEffect */,
 				8423A6EC22FA700E0049B656 /* GoogleService-Info.plist */,
 				84E9BA4522F941F4003EA693 /* AppDelegate.swift */,
@@ -301,6 +304,7 @@
 				8423A6E922F9CA390049B656 /* MainViewController.swift in Sources */,
 				6C3ECBA522FCF741003C89DB /* CarouselEffectCollectionViewCell.swift in Sources */,
 				8423A6EB22F9CC610049B656 /* MainNavigationController.swift in Sources */,
+				8423A6FB22FE94720049B656 /* LoginNavigationController.swift in Sources */,
 				84E9BA4822F941F4003EA693 /* LoginViewController.swift in Sources */,
 				6C3ECB9E22FC61FF003C89DB /* FamilyMainPageViewController.swift in Sources */,
 				84E9BA4622F941F4003EA693 /* AppDelegate.swift in Sources */,
