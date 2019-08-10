@@ -31,7 +31,7 @@ class LoginViewController: UIViewController {
                 self?.present(alertController, animated: true, completion: nil)
             } else {
                 let next = self?.storyboard?.instantiateViewController(withIdentifier: "MainViewController")
-                self!.present(next!, animated: true, completion: nil)
+                self?.navigationController?.pushViewController(next!, animated: true)
             }
             
         }
