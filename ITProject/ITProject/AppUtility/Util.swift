@@ -19,6 +19,10 @@ class Util {
     public static var CREATE_INCORRECT = "Invalid Email Address"
     public static var CREATE_CORRECT = "Congratulation!"
     public static var CREATE_CORRECT_MESSAGE = "Account Success!"
+    public static var CREATE_USERNAME = "Username cannot be empty"
+    public static var CREATE_FAMILY = "Family fields cannot be empty"
+    public static var ACCOUNT_ALREADY_EXIST = "The email address is already in use by another account."
+    public static var ACCOUNT_ALREADY_TITLE = "The address is already exist"
     
     
     public static var EXTENSION_JPEG = ".jpg"
