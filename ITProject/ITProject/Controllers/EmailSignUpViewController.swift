@@ -95,31 +95,24 @@ class EmailSignUpViewController : UIViewController {
         Auth.auth().createUser(withEmail: email, password: pw) {
             authResult, error in
             Util.DismissActivityIndicator()
-            if error != nil && error!.localizedDescription
-                .contains(EmailSignUpViewController.ACCOUNT_ALREADY_EXIST) {
-                Util.ShowAlert(title: EmailSignUpViewController.ACCOUNT_ALREADY_TITLE,
-                           message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                           action_title: Util.BUTTON_DISMISS,
-                           on: self)
-            }
             
             if error != nil {
-                // Show error message to users to let them use correct email form
-                Util.ShowAlert(title: EmailSignUpViewController.CREATE_INCORRECT,
-                           message:EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                           action_title: Util.BUTTON_DISMISS,
-                           on: self)
-            } else {
+                // fail
+                Util.ShowAlert(title: error!.localizedDescription,
+                               message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                               action_title: Util.BUTTON_DISMISS,
+                               on: self)
+            }else{
+                // success
                 // Show the users that the account has been sucessfully created
                 
                 Util.ShowAlert(title: EmailSignUpViewController.CREATE_CORRECT,
-                           message:EmailSignUpViewController.CREATE_CORRECT_MESSAGE,
-                           action_title: EmailSignUpViewController.BACK_TO_LOGIN,
-                           on: self){self.navigationController?.popViewController(animated: true)}
+                               message:EmailSignUpViewController.CREATE_CORRECT_MESSAGE,
+                               action_title: EmailSignUpViewController.BACK_TO_LOGIN,
+                               on: self){self.navigationController?.popViewController(animated: true)}
                 
                 //TODO: add user information to database
                 self.AddUser();
-                
             }
         }
     }
@@ -149,17 +142,5 @@ class EmailSignUpViewController : UIViewController {
     //            }
     //        }
     //    }
-    
-    // Show alert message to users : move to Util as other class might uses it as well
-//    func alert(title: String, message: String, action_title: String, aaction: (() -> Void)? = nil) {
-//        /*present alert always on UI/main thread */
-//        DispatchQueue.main.async {
-//            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//            alertController.addAction(UIAlertAction(title: action_title, style: .default){action in
-//                aaction!()})
-//
-//            self.present(alertController, animated: true, completion: nil)
-//        }
-//    }
 
 }
