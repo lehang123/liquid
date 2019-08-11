@@ -203,9 +203,12 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJk-vd-eJN">
-                                <rect key="frame" x="49" y="90" width="75" height="30"/>
+                                <rect key="frame" x="44" y="94" width="75" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="TestButton"/>
+                                <connections>
+                                    <action selector="onTestButtonTouch:" destination="UyN-Uc-xy8" eventType="touchUpInside" id="9at-WW-k5q"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
