@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import FirebaseStorage
 
 struct ModelCollectionFlowLayout {
     var title: String = ""
@@ -48,7 +48,12 @@ class FamilyMainPageViewController: UIViewController {
 
       
     }
+
     
+    @IBAction func onTestButtonTouch(_ sender: Any) {
+        
+
+    }
     func login(){
         let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
