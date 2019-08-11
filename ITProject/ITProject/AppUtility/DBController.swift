@@ -38,7 +38,6 @@ class DBController {
                 }
             }
         }
-        
     }
     public func deleteWholeDocumentfromCollection(documentName : String, collectionName : String){
         db.collection(collectionName).document(documentName).delete() { err in
