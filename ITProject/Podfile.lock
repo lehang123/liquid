@@ -186,7 +186,10 @@ PODS:
   - SDWebImage (5.1.0):
     - SDWebImage/Core (= 5.1.0)
   - SDWebImage/Core (5.1.0)
+  - SideMenu (6.1.4)
+  - SideMenuSwift (2.0.1)
   - SVProgressHUD (2.2.5)
+  - UPCarouselFlowLayout (1.1.2)
 
 DEPENDENCIES:
   - Firebase/Auth
@@ -195,7 +198,10 @@ DEPENDENCIES:
   - Firebase/Storage
   - FirebaseUI
   - FirebaseUI/Auth
+  - SideMenu
+  - SideMenuSwift
   - SVProgressHUD
+  - UPCarouselFlowLayout
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -227,7 +233,10 @@ SPEC REPOS:
     - nanopb
     - Protobuf
     - SDWebImage
+    - SideMenu
+    - SideMenuSwift
     - SVProgressHUD
+    - UPCarouselFlowLayout
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
@@ -258,8 +267,11 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
   SDWebImage: fb387001955223213dde14bc08c8b73f371f8d8f
+  SideMenu: 7e7f16f229c8d160830e5449308f6562821d762d
+  SideMenuSwift: 588374781f2508f551a41796482290aeff1afd78
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  UPCarouselFlowLayout: 4c7d2c43a10ebb1597bde502a53699d378341dad
 
-PODFILE CHECKSUM: 982afd304169136f75c2f23b0213ce6985eb622e
+PODFILE CHECKSUM: cb9de92b5ca26c1a24311c601ac9efc45ee05436
 
 COCOAPODS: 1.7.5

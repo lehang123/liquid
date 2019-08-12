@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import SideMenu
+import UPCarouselFlowLayout
 
 struct ModelCollectionFlowLayout {
     var title: String = ""
@@ -19,8 +20,23 @@ class FamilyMainPageViewController: UIViewController {
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
+ 
+    // Side menu effect
+    @IBAction func sideMenuClick(_ sender: Any) {
+        let menu = UISideMenuNavigationController(rootViewController: SideMenuTableViewController())
+        
+        // reset side menu length
+        var settings = SideMenuSettings()
+        settings.menuWidth = CGFloat(270)
+        SideMenuManager.default.leftMenuNavigationController?.settings = settings
+        
+        present(menu, animated: true, completion: nil)
+      
+    }
+
+
     
-    var arrData = [ModelCollectionFlowLayout]()
+    var items = [ModelCollectionFlowLayout]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +49,7 @@ class FamilyMainPageViewController: UIViewController {
 
         profileImg.applyshadowWithCorner(containerView: profileImgContainer, cornerRadious: imageCornerRadious, color: UIColor.selfcGrey, opacity: 0.7, offSet: CGSize(width: 10, height: 10))
         
-        
+        // carousel effect
         collectData()
         self.carouselCollectionView.showsHorizontalScrollIndicator = false
         carouselCollectionView.register(UINib.init(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
@@ -68,7 +84,7 @@ class FamilyMainPageViewController: UIViewController {
     }
     
     func collectData(){
-        arrData = [
+        items = [
             ModelCollectionFlowLayout(title: "homeIcon", image: UIImage(named: "homeIcon")),
             ModelCollectionFlowLayout(title: "settingIcon", image: UIImage(named: "settingIcon")),
             ModelCollectionFlowLayout(title: "imageIcon", image: UIImage(named: "imageIcon")),
@@ -81,6 +97,7 @@ class FamilyMainPageViewController: UIViewController {
         let offset = (layout.scrollDirection == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y
         currentPage = Int(floor((offset - pageSide / 2) / pageSide) + 1)
     }
+    
     fileprivate var currentPage: Int = 0 {
         didSet {
             print("page at centre = \(currentPage)")
@@ -98,23 +115,43 @@ class FamilyMainPageViewController: UIViewController {
         return pageSize
     }
 }
-
+    
 extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrData.count
+        return items.count
     }
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let funct = items[(indexPath as NSIndexPath).row]
+        
+            if funct.title == "homeIcon" {
+                // through code
+//                let vc = SettingViewController()
+//                self.navigationController?.pushViewController(vc, animated: true)
+                
+                // through storyboard
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "SettingViewController")
+                self.navigationController!.pushViewController(vc, animated: true) // this line shows error
+    
+            }
+        
+    }
+
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CarouselEffectCollectionViewCell
-        cell.iconImage.image = arrData[indexPath.row].image
-        cell.labelInf.text = arrData[indexPath.row].title
+        cell.iconImage.image = items[indexPath.row].image
+        cell.labelInf.text = items[indexPath.row].title
         return cell
     }
 }
-    
-
-
 
 extension UIView {
     // apply shadow to round corner image

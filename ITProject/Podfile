@@ -17,4 +17,7 @@ target 'ITProject' do
 
   pod 'SVProgressHUD'
 
+  pod "UPCarouselFlowLayout"
+  pod 'SideMenu'
+
 end
