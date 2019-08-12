@@ -726,7 +726,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ml4-Mk-LDg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6015" y="-244.01408450704227"/>
+            <point key="canvasLocation" x="4764" y="137"/>
         </scene>
         <!--Side Menu Navigation Controller-->
         <scene sceneID="FTc-lq-p26">
@@ -776,7 +776,7 @@
         <image name="logoutIcon" width="100" height="100"/>
         <image name="menuIcon" width="200" height="200"/>
         <image name="messageIcon" width="100" height="100"/>
-        <image name="settingIcon" width="100" height="100"/>
+        <image name="settingIcon" width="108" height="110"/>
         <image name="tempFamilyImage" width="603" height="603"/>
     </resources>
 </document>
