@@ -24,18 +24,23 @@ class FamilyMainPageViewController: UIViewController {
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
  
+//    @IBAction func sideMenuClic(_ sender: Any) {
+//        print("hahahahhaha")
+//    }
     // Side menu effect
-    @IBAction func sideMenuClick(_ sender: Any) {
-        let menu = UISideMenuNavigationController(rootViewController: SideMenuTableViewController())
-        
-        // reset side menu length
-        var settings = SideMenuSettings()
-        settings.menuWidth = CGFloat(270)
-        SideMenuManager.default.leftMenuNavigationController?.settings = settings
-        
-        present(menu, animated: true, completion: nil)
-      
-    }
+//    @IBAction func sideMenuClick(_ sender: Any) {
+////        let menu = UISideMenuNavigationController(rootViewController: SideMenuTableViewController())
+////
+////        // reset side menu length
+////        var settings = SideMenuSettings()
+////        settings.menuWidth = CGFloat(270)
+////        SideMenuManager.default.leftMenuNavigationController?.settings = settings
+////
+////        print("hahahahha")
+////
+////        present(menu, animated: true, completion: nil)
+////
+//    }
 
 
     
@@ -45,7 +50,7 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        login()
+        //login()
         
         // loading profileImage as circle and with shadow
         let imageCornerRadious = profileImgContainer.frame.size.width/2
