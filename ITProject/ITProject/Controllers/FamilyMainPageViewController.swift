@@ -50,7 +50,7 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        //login()
+        login()
         
         // loading profileImage as circle and with shadow
         let imageCornerRadious = profileImgContainer.frame.size.width/2
