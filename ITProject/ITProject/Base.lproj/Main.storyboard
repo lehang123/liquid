@@ -242,9 +242,18 @@
                             </label>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="HaD-tf-z39">
                                 <rect key="frame" x="25" y="216" width="160" height="160"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tempFamilyImage" translatesAutoresizingMaskIntoConstraints="NO" id="jkZ-yY-BT1">
+                                        <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                                    </imageView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="jkZ-yY-BT1" firstAttribute="height" secondItem="HaD-tf-z39" secondAttribute="height" id="3ns-Gp-qCr"/>
                                     <constraint firstAttribute="width" secondItem="HaD-tf-z39" secondAttribute="height" multiplier="1:1" id="5Jb-BQ-SYy"/>
+                                    <constraint firstItem="jkZ-yY-BT1" firstAttribute="width" secondItem="HaD-tf-z39" secondAttribute="width" id="Egy-N3-hvj"/>
+                                    <constraint firstItem="jkZ-yY-BT1" firstAttribute="centerY" secondItem="HaD-tf-z39" secondAttribute="centerY" id="VGh-az-fNE"/>
+                                    <constraint firstItem="jkZ-yY-BT1" firstAttribute="centerX" secondItem="HaD-tf-z39" secondAttribute="centerX" id="wRW-Eo-6Zg"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -771,6 +780,7 @@
         <image name="menuIcon" width="22" height="22"/>
         <image name="messageIcon" width="100" height="100"/>
         <image name="settingIcon" width="108" height="110"/>
+        <image name="tempFamilyImage" width="603" height="603"/>
     </resources>
     <color key="tintColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
