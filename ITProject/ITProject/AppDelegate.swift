@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-import SideMenuSwift
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
