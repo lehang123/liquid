@@ -178,6 +178,7 @@
         <!--Family Main Page View Controller-->
         <scene sceneID="vTc-qs-BGc">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lKB-f7-mqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="UyN-Uc-xy8" customClass="FamilyMainPageViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VlL-iV-m8m">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -251,15 +252,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L4O-la-hD1">
-                                <rect key="frame" x="0.0" y="61" width="59" height="59"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" backgroundImage="menuIcon"/>
-                                <connections>
-                                    <action selector="sideMenuClick:" destination="UyN-Uc-xy8" eventType="touchUpInside" id="IWq-2j-fxo"/>
-                                    <segue destination="f61-Ch-3WS" kind="presentation" identifier="SideMenuShow" id="g4V-IC-lky"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -275,14 +267,20 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fow-f5-ATY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="jaq-WP-f8y"/>
+                    <navigationItem key="navigationItem" id="jaq-WP-f8y">
+                        <barButtonItem key="leftBarButtonItem" image="menuIcon" style="plain" id="NqA-YW-SD4">
+                            <connections>
+                                <action selector="sideMenuClic:" destination="UyN-Uc-xy8" id="Moo-ZD-iUi"/>
+                                <segue destination="f61-Ch-3WS" kind="presentation" identifier="SideMenuClick" id="phY-sI-UZP"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="carouselCollectionView" destination="Zdo-AO-OHu" id="oeq-U6-Czq"/>
                         <outlet property="profileImg" destination="654-eH-dYU" id="BtO-Eg-EtJ"/>
                         <outlet property="profileImgContainer" destination="HaD-tf-z39" id="lS8-6s-sKS"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lKB-f7-mqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1993.125" y="136.26760563380282"/>
         </scene>
@@ -740,6 +738,9 @@
                     <nil name="viewControllers"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="leftSide" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="menuWidth">
+                            <real key="value" value="270"/>
+                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="rnG-Ir-l1s" kind="relationship" relationship="rootViewController" id="9eI-tQ-aZY"/>
@@ -774,9 +775,10 @@
         <image name="homeIcon" width="108" height="108"/>
         <image name="imageIcon" width="108.5" height="108.5"/>
         <image name="logoutIcon" width="100" height="100"/>
-        <image name="menuIcon" width="200" height="200"/>
+        <image name="menuIcon" width="22" height="22"/>
         <image name="messageIcon" width="100" height="100"/>
         <image name="settingIcon" width="108" height="110"/>
         <image name="tempFamilyImage" width="603" height="603"/>
     </resources>
+    <color key="tintColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>
