@@ -112,35 +112,54 @@ class EmailSignUpViewController : UIViewController {
                                on: self){self.navigationController?.popViewController(animated: true)}
                 
                 //TODO: add user information to database
-                self.AddUser();
+//                self.AddUser(userUID: authResult!.user.uid);
+                //AddNewFamily(userUID : userUID);
+              //  self.AddUserToExistingFamily();
+                self.UpdateUser();
+                
+                
             }
         }
     }
-    public func AddUser(){
-//        var ref: DocumentReference? = nil
-//        let userName: String = realusername.text!
-//        ref = db.collection("users").addDocument(data: [
-//            "username" : userName
-//        ]) { err in
-//            if let err = err {
-//                print("Error adding document: \(err)")
-//            } else {
-//                print("Document added with ID: \(ref!.documentID)")
-//            }
-//        }
+    public func AddUser(userUID: String){
+        let userUID = DBController.getInstance().addDocumentToCollection(inputData: ["username" : self.realusername.text!, "userUID": userUID], collectionName: "users");
+        
+        
+        
     }
+    
+    
+    public func AddNewFamily(userUID:  DocumentReference){
+        // creates  new family
+        let familyUID = DBController.getInstance().addDocumentToCollection(inputData: ["name" : self.familyCreate.text!], collectionName: "families");
+        // adds to new family_member
+        // TODO: parametrise "position" field
+        DBController.getInstance().addDocumentToCollection(inputData: ["family" : familyUID, "user" : userUID, "position" : "child" ], collectionName: "family_members" );
+        
+        
+    }
+    
+    public func UpdateUser(){
+        DBController.getInstance().updateSpecificField(newValue: "hi", fieldName: "name", documentName: "chenghongloveme", collectionName: "users");
+        
+    }
+    public func DeleteUser(){
+        DBController.getInstance().deleteWholeDocumentfromCollection(documentName: realusername.text!, collectionName: "users");
+        
+    }
+    
+    
+    public func AddUserToExistingFamily(){
+        //get familyUID's
+        //let querySnapshot : QuerySnapshot =
+         DBController.getInstance().getDatafromDocument(fieldName: "name", documentName: self.familyExist.text!, collectionName: "families");
+        
+        //querySnapshot.documents[0].documentID
+//         DBController.getInstance().addDocumentToCollection(inputData: ["name" : self.familyCreate.text!], collectionName: "families");
+        // adds to existing family
+        
 
-    //    private func AddNewFamily(){
-    //        var ref: DocumentReference? = nil
-    //        ref = db.collection("families").addDocument(data: [
-    //            "familyname" : newFamilyName
-    //        ]) { err in
-    //            if let err = err {
-    //                print("Error adding document: \(err)")
-    //            } else {
-    //                print("Document added with ID: \(ref!.documentID)")
-    //            }
-    //        }
-    //    }
-
+    }
+        
 }
+
