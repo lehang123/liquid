@@ -14,12 +14,18 @@ import FirebaseFirestore
 class DBController {
     public static let FAMILY_FIELD = ["familyname", "username"]
     public static let USER_FIELD = ["username" ]
+    public static let USER_COLLECTION_PATH = NSString ("users/")
+    public static let FAMILY_COLLECTION_PATH = NSString ("families/")
     private var db: Firestore!
     private static var single: DBController!
     private var reference : QueryDocumentSnapshot?
     init (){
         db = Firestore.firestore()
         reference = nil
+    }
+    
+    public func getDB() -> Firestore{
+    return self.db;
     }
     
     public static func getInstance() -> DBController{
@@ -37,6 +43,17 @@ class DBController {
     public func validate(inputData: Dictionary<String, Any>) -> Bool{
         return true ;
     }
+    
+    public func addDocumentToCollectionWithSpecifiedID( documentUID : String, inputData: Dictionary<String, Any>, collectionName : String){
+        self.db.collection(collectionName).document(documentUID).setData(inputData) { err in
+            if let err = err {
+                print("test Error writing document: \(err)")
+            } else {
+                print(" test Document successfully written!")
+            }
+        }
+    }
+    
     
     /// <#Description#>
     /// add 1 document to 1 collection. prints out "Error" if error found,
@@ -83,8 +100,8 @@ class DBController {
     ///   - collectionName: the collection you want to update into.
     ///   - newValue : the new value to be added into the field.
     ///   - fieldName : the name of the field you want to update.
-    public func updateSpecificField(newValue: Any,fieldName: String, documentName : String, collectionName : String){
-        db.collection(collectionName).document(documentName).updateData([
+    public func updateSpecificField(newValue: Any,fieldName: String, documentPath : String, collectionName : String){
+        db.collection(collectionName).document(documentPath).updateData([
             fieldName: newValue,
         ]) { err in
             if let err = err {
@@ -105,41 +122,27 @@ class DBController {
     ///   - documentName: The document's name to be retrieved from  DB.
     ///   - collectionName: the collection you want to retrieve from.
     /// need to handle async! 
-    public func getDatafromDocument(fieldName : String, documentName : String, collectionName : String){
-//        var querySnapshotResult:QueryDocumentSnapshot?;
-//
-//         db.collection(collectionName).whereField(fieldName, isEqualTo: documentName).getDocuments(completion: {
+    public func getDocumentFromCollection(documentName : String, collectionName : String, completion: @escaping (DocumentSnapshot) -> ()){
+//        let docRef = db.collection(collectionName).document(documentName)
 //
 //
-//            }}){
-//                completion();
+//        docRef.getDocument { (document, error) in
+//            if let document = document, document.exists {
+////                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
 //
+//                completion(document)
+//                print("Document data: \(dataDescription)")
+//            } else {
+//                print("Document does not exist")
+//            }
 //        }
-//        querySnapshotResult = self.reference;
-        // either return querySnapshotResult OR somethingelse
-//        return querySnapshotResult;
-    
-        //        let docRef = db.collection(collectionName).document(documentName)
-        //
-        //        docRef.getDocument { (document, error) in
-        //            if let document = document, document.exists {
-        //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-        //                print("Document data: \(dataDescription)")
-        //            } else {
-        //                print("Document does not exist")
-        //            }
-        //        }
-        
-        
-        
-        //var querySnapshotResult:QuerySnapshot?  = nil;
-        
         
     }
     
     
     
     public func getDataQuery(fieldName : String){
+    
         //        db.collection(collectionName).whereField(field, isEqualTo: true)
         //            .getDocuments() { (querySnapshot, err) in
         //                if let err = err {
