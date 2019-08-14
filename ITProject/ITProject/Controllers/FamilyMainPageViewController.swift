@@ -32,9 +32,12 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        //login()
+        login()
         
-        // loading profileImage as circle and with shadow
+
+        // set Profile Image
+        profileImg.image = UIImage(named: "tempProfileImage")
+        // loading profileImage with shadow
         profileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
         profileImg.layer.shadowOpacity = 0.7
         profileImg.layer.shadowOffset = CGSize(width: 10, height: 10)
