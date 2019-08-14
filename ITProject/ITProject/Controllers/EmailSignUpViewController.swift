@@ -34,7 +34,8 @@ class EmailSignUpViewController : UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var confirmPW: UITextField!
     @IBOutlet weak var realusername: UITextField!
-    @IBOutlet weak var familyExist: UITextField!
+    @IBOutlet weak var joinFamilyIDField: UITextField!    // joinFamilyIDField is UID of the document
+
     @IBOutlet weak var familyCreate: UITextField!
     
     override func viewDidLoad() {
@@ -47,6 +48,7 @@ class EmailSignUpViewController : UIViewController {
         let email: String = emailAddress.text!
         let pw: String = password.text!
         
+         
         // only field filled up, then try authentiate
         if doesFieldFilledUp(){
             authentiate(email: email, pw: pw)
@@ -63,7 +65,7 @@ class EmailSignUpViewController : UIViewController {
                   on: self)
             return false
         }
-        else if (familyExist.text!.isEmpty && familyCreate.text!.isEmpty) {
+        else if (joinFamilyIDField.text!.isEmpty && familyCreate.text!.isEmpty) {
             Util.ShowAlert(title: EmailSignUpViewController.CREATE_FAMILY,
                   message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
                   action_title: Util.BUTTON_DISMISS,
@@ -115,50 +117,67 @@ class EmailSignUpViewController : UIViewController {
 //                self.AddUser(userUID: authResult!.user.uid);
                 //AddNewFamily(userUID : userUID);
               //  self.AddUserToExistingFamily();
-                self.UpdateUser();
+//                self.UpdateUser();
+                var familyUID:DocumentReference;
+                if (!self.familyCreate.text!.isEmpty) {
+                    
+                    familyUID = self.AddNewFamily(familyName: self.familyCreate.text!, userUID : DBController.getInstance().getDB().document(DBController.USER_COLLECTION_PATH.appendingPathComponent(authResult!.user.uid)) , username : self.realusername.text!);
+                    
+                     self.AddUser( familyUID : familyUID,userUID: authResult!.user.uid, username: self.realusername.text!, familyName: self.familyCreate.text!);
+                    
+                }else if(!self.joinFamilyIDField.text!.isEmpty) {
+                    print("joining family" );
+                    familyUID = DBController.getInstance().getDB().document(DBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!) );
+                    
+                     self.AddUserToExistingFamily(familyID: familyUID, userUID : DBController.getInstance().getDB().document(DBController.USER_COLLECTION_PATH.appendingPathComponent(authResult!.user.uid))  , username : self.realusername.text!);
+                    self.AddUser( familyUID : familyUID,userUID: authResult!.user.uid, username: self.realusername.text!, familyName: self.joinFamilyIDField.text!);
+                }
                 
+
                 
             }
         }
     }
-    public func AddUser(userUID: String){
-        let userUID = DBController.getInstance().addDocumentToCollection(inputData: ["username" : self.realusername.text!, "userUID": userUID], collectionName: "users");
+    
+ 
+    public func AddUser(familyUID : DocumentReference, userUID: String, username: String, familyName : String){
         
         
-        
+
+        DBController.getInstance().addDocumentToCollectionWithSpecifiedID( documentUID : userUID, inputData:[
+            "name" :username,
+            "family" :familyUID
+            ], collectionName :
+            "users");
+       
     }
     
     
-    public func AddNewFamily(userUID:  DocumentReference){
+    public func AddNewFamily(  familyName:String, userUID: DocumentReference, username: String) -> DocumentReference{
         // creates  new family
-        let familyUID = DBController.getInstance().addDocumentToCollection(inputData: ["name" : self.familyCreate.text!], collectionName: "families");
+        let familyUID = DBController.getInstance().addDocumentToCollection(inputData: ["name" : familyName], collectionName: "families");
         // adds to new family_member
         // TODO: parametrise "position" field
-        DBController.getInstance().addDocumentToCollection(inputData: ["family" : familyUID, "user" : userUID, "position" : "child" ], collectionName: "family_members" );
+        
+        DBController.getInstance().updateSpecificField(newValue: [userUID], fieldName: "family_members", documentPath: familyUID.documentID, collectionName: "families")
+        return familyUID;
         
         
     }
     
-    public func UpdateUser(){
-        DBController.getInstance().updateSpecificField(newValue: "hi", fieldName: "name", documentName: "chenghongloveme", collectionName: "users");
-        
-    }
+//    public func UpdateUser(){
+//        DBController.getInstance().updateSpecificField(newValue: "hi", fieldName: "name", documentName: "chenghongloveme", collectionName: "users");
+//
+//    }
     public func DeleteUser(){
         DBController.getInstance().deleteWholeDocumentfromCollection(documentName: realusername.text!, collectionName: "users");
         
     }
     
     
-    public func AddUserToExistingFamily(){
-        //get familyUID's
-        //let querySnapshot : QuerySnapshot =
-         DBController.getInstance().getDatafromDocument(fieldName: "name", documentName: self.familyExist.text!, collectionName: "families");
-        
-        //querySnapshot.documents[0].documentID
-//         DBController.getInstance().addDocumentToCollection(inputData: ["name" : self.familyCreate.text!], collectionName: "families");
-        // adds to existing family
-        
-
+    public func AddUserToExistingFamily( familyID:DocumentReference, userUID: DocumentReference, username: String) {
+        print(familyID);
+        familyID.updateData(["family_members" :  FieldValue.arrayUnion([userUID]) ]);
     }
         
 }
