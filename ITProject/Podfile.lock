@@ -5,6 +5,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - EnhancedCircleImageView (0.1)
   - FBSDKCoreKit (5.3.0):
     - FBSDKCoreKit/Basics (= 5.3.0)
     - FBSDKCoreKit/Core (= 5.3.0)
@@ -191,6 +192,7 @@ PODS:
   - UPCarouselFlowLayout (1.1.2)
 
 DEPENDENCIES:
+  - EnhancedCircleImageView
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Firestore
@@ -204,6 +206,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
+    - EnhancedCircleImageView
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -237,6 +240,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  EnhancedCircleImageView: 1069bbc14526d89502cc0e48b45f5da6a3317a47
   FBSDKCoreKit: 39748deefe37a005f983722e433be2ddcdd83ae7
   FBSDKLoginKit: bc0329e10045789e8d40b12d4f15ddbd07a898e2
   Firebase: a2b5951f30ff38fd3b3bdae9c7d340f940fd3c51
@@ -268,6 +272,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UPCarouselFlowLayout: 4c7d2c43a10ebb1597bde502a53699d378341dad
 
-PODFILE CHECKSUM: 72fa714619eeb1b8923e254f5678150ba87e5e75
+PODFILE CHECKSUM: b42eff08d574a7ce17e349405083613e866120b2
 
 COCOAPODS: 1.7.3
