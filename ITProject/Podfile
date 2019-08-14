@@ -19,5 +19,6 @@ target 'ITProject' do
 
   pod "UPCarouselFlowLayout"
   pod 'SideMenu'
+  pod 'EnhancedCircleImageView'
 
 end

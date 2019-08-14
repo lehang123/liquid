@@ -11,6 +11,7 @@ import UIKit
 import SideMenu
 import UPCarouselFlowLayout
 import FirebaseStorage
+import EnhancedCircleImageView
 
 
 struct ModelCollectionFlowLayout {
@@ -20,29 +21,10 @@ struct ModelCollectionFlowLayout {
 
 class FamilyMainPageViewController: UIViewController {
     
-    @IBOutlet weak var profileImg: UIImageView!
+    @IBOutlet weak var profileImg: EnhancedCircleImageView!
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
  
-//    @IBAction func sideMenuClic(_ sender: Any) {
-//        print("hahahahhaha")
-//    }
-    // Side menu effect
-//    @IBAction func sideMenuClick(_ sender: Any) {
-////        let menu = UISideMenuNavigationController(rootViewController: SideMenuTableViewController())
-////
-////        // reset side menu length
-////        var settings = SideMenuSettings()
-////        settings.menuWidth = CGFloat(270)
-////        SideMenuManager.default.leftMenuNavigationController?.settings = settings
-////
-////        print("hahahahha")
-////
-////        present(menu, animated: true, completion: nil)
-////
-//    }
-
-
     
     var items = [ModelCollectionFlowLayout]()
     
@@ -50,12 +32,15 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        login()
+        //login()
         
         // loading profileImage as circle and with shadow
-        let imageCornerRadious = profileImgContainer.frame.size.width/2
-
-        profileImg.applyshadowWithCorner(containerView: profileImgContainer, cornerRadious: imageCornerRadious, color: UIColor.selfcGrey, opacity: 0.7, offSet: CGSize(width: 10, height: 10))
+        profileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
+        profileImg.layer.shadowOpacity = 0.7
+        profileImg.layer.shadowOffset = CGSize(width: 10, height: 10)
+        profileImg.layer.shadowRadius = 1
+        profileImg.clipsToBounds = false
+        
         
         // carousel effect
         collectData()
@@ -161,18 +146,3 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
     }
 }
 
-extension UIView {
-    // apply shadow to round corner image
-    func applyshadowWithCorner(containerView : UIView, cornerRadious : CGFloat, color: UIColor,opacity: Float = 0.5, offSet: CGSize, radius: CGFloat = 1){
-        containerView.clipsToBounds = false
-        containerView.layer.shadowColor = color.cgColor
-        containerView.layer.shadowOpacity = opacity
-        containerView.layer.shadowOffset = offSet
-        containerView.layer.shadowRadius = radius
-        containerView.layer.cornerRadius = cornerRadious
-        containerView.layer.shadowPath = UIBezierPath(roundedRect: containerView.bounds, cornerRadius: cornerRadious).cgPath
-        self.clipsToBounds = true
-        self.layer.cornerRadius = cornerRadious
-    }
-    
-}
