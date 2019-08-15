@@ -52,8 +52,28 @@ class SideMenuTableViewController: UITableViewController {
         if let menu = navigationController as? UISideMenuNavigationController {
             cell.blurEffectStyle = menu.blurEffectStyle
         }
+        
 
         return cell
     }
+    
+    // The sign out table view function
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if(indexPath.row == 4)
+        {
+            Util.ShowAlert(title: "Log out", message: "Are you sure to log out?", action_title: Util.BUTTON_DISMISS, on: self)
+            let alertController = UIAlertController(title: "Log out", message:"Are you sure to log out?", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "NO", style: .default))
+            alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action: UIAlertAction!) in
+
+                let back = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
+                self.present(back, animated: true, completion: nil)
+            }))
+            self.present(alertController, animated: true, completion: nil)
+            
+        }
+    }
+    
 
 }
