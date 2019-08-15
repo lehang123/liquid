@@ -43,6 +43,15 @@ class DBController {
         return self.db.collection(collectionName).document(documentUID);
     }
     
+    public func getDocumentFromCollection(collectionName : String, documentUID: String, completion: @escaping (DocumentSnapshot?, Error?) -> ()){
+        
+        let docRef = db.collection(collectionName).document(documentUID)
+        
+        docRef.getDocument { (document, error) in
+            completion(document, error)
+        }
+    }
+    
     public func addDocumentToCollectionWithUID( documentUID : String, inputData: Dictionary<String, Any>, collectionName : String){
 //        self.db.collection(collectionName).document(documentUID).setData(inputData) { err in
 //            if let err = err {

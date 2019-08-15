@@ -26,6 +26,7 @@ class EmailSignUpViewController : UIViewController {
     private static let CREATE_FAMILY = "Family fields cannot be empty (fill in either one)"
     private static let FAMILY_FIELD = "Family fields cannot be both filled"
     private static let ACCOUNT_ALREADY_EXIST = "The email address is already in use by another account."
+    private static let JOIN_FAMILY_NOT_EXIST = "Family doesn't exist"
     private static let ACCOUNT_ALREADY_TITLE = "The address is already exist"
     private static let BACK_TO_LOGIN = "Back to login"
     private static let WAITING_AUTHENTIATE = "Creating.."
@@ -52,7 +53,22 @@ class EmailSignUpViewController : UIViewController {
          
         // only field filled up, then try authentiate
         if doesFieldFilledUp(){
-            authentiate(email: email, pw: pw)
+             Util.ShowActivityIndicator(withStatus: EmailSignUpViewController.WAITING_AUTHENTIATE)
+            //check if family exists
+            DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.joinFamilyIDField.text!){
+                (document, error) in
+                if let document = document, document.exists {
+                    //let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                    self.authentiate(email: email, pw: pw)
+                } else {
+                    Util.DismissActivityIndicator()
+                    Util.ShowAlert(title: EmailSignUpViewController.JOIN_FAMILY_NOT_EXIST,
+                                   message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                                   action_title: Util.BUTTON_DISMISS,
+                                   on: self)
+                }
+            }
+            
         }
         
     }
@@ -101,7 +117,7 @@ class EmailSignUpViewController : UIViewController {
     // Authentiate process is here
     // note : Firebase authentiate is default set on other thread already
     func authentiate(email: String, pw: String) {
-        Util.ShowActivityIndicator(withStatus: EmailSignUpViewController.WAITING_AUTHENTIATE)
+        // check if join family exists
         Auth.auth().createUser(withEmail: email, password: pw) {
             authResult, error in
             Util.DismissActivityIndicator()
@@ -141,14 +157,9 @@ class EmailSignUpViewController : UIViewController {
                     
                     //join a family:
                     RegisterDBController.getInstance().AddUserToExistingFamily(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid)
-                }
-                
-
-                
+                }              
             }
         }
     }
-    
- 
 }
 
