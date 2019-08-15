@@ -122,23 +122,25 @@ class EmailSignUpViewController : UIViewController {
                                on: self){self.navigationController?.popViewController(animated: true)}
                 
                 //TODO: add user information to database
-//                self.AddUser(userUID: authResult!.user.uid);
-                //AddNewFamily(userUID : userUID);
-              //  self.AddUserToExistingFamily();
-//                self.UpdateUser();
+
                 var familyUID:DocumentReference;
                 if (!self.familyCreate.text!.isEmpty) {
                     
-                    familyUID = self.AddNewFamily(familyName: self.familyCreate.text!, userUID : DBController.getInstance().getDB().document(DBController.USER_COLLECTION_PATH.appendingPathComponent(authResult!.user.uid)) , username : self.realusername.text!);
-                    
-                     self.AddUser( familyUID : familyUID,userUID: authResult!.user.uid, username: self.realusername.text!, familyName: self.familyCreate.text!);
+                    //create a family:
+                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.familyCreate.text!, userUID: authResult!.user.uid, username: self.realusername.text!);
+
+                    //add a user: 
+                    RegisterDBController.getInstance().AddUser(familyUID: familyUID.documentID, userUID: authResult!.user.uid, username: self.realusername.text!);
+
                     
                 }else if(!self.joinFamilyIDField.text!.isEmpty) {
                     
-                    familyUID = DBController.getInstance().getDB().document(DBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!));
+                    familyUID = DBController.getInstance().getDB().document(RegisterDBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!));
+                    //create a user:
+                    RegisterDBController.getInstance().AddUser( familyUID : self.joinFamilyIDField.text! ,userUID: authResult!.user.uid, username: self.realusername.text!);
                     
-                     self.AddUserToExistingFamily(familyID: familyUID, userUID : DBController.getInstance().getDB().document(DBController.USER_COLLECTION_PATH.appendingPathComponent(authResult!.user.uid))  , username : self.realusername.text!);
-                    self.AddUser( familyUID : familyUID,userUID: authResult!.user.uid, username: self.realusername.text!, familyName: self.joinFamilyIDField.text!);
+                    //join a family:
+                    RegisterDBController.getInstance().AddUserToExistingFamily(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid)
                 }
                 
 
@@ -148,45 +150,5 @@ class EmailSignUpViewController : UIViewController {
     }
     
  
-    public func AddUser(familyUID : DocumentReference, userUID: String, username: String, familyName : String){
-        
-        
-
-        DBController.getInstance().addDocumentToCollectionWithSpecifiedID( documentUID : userUID, inputData:[
-            "name" :username,
-            "family" :familyUID
-            ], collectionName :
-            "users");
-       
-    }
-    
-    
-    public func AddNewFamily(  familyName:String, userUID: DocumentReference, username: String) -> DocumentReference{
-        // creates  new family
-        let familyUID = DBController.getInstance().addDocumentToCollection(inputData: ["name" : familyName], collectionName: "families");
-        // adds to new family_member
-        // TODO: parametrise "position" field
-        
-        DBController.getInstance().updateSpecificField(newValue: [userUID], fieldName: "family_members", documentPath: familyUID.documentID, collectionName: "families")
-        return familyUID;
-        
-        
-    }
-    
-//    public func UpdateUser(){
-//        DBController.getInstance().updateSpecificField(newValue: "hi", fieldName: "name", documentName: "chenghongloveme", collectionName: "users");
-//
-//    }
-    public func DeleteUser(){
-        DBController.getInstance().deleteWholeDocumentfromCollection(documentName: realusername.text!, collectionName: "users");
-        
-    }
-    
-    
-    public func AddUserToExistingFamily( familyID:DocumentReference, userUID: DocumentReference, username: String) {
-        print(familyID);
-        familyID.updateData(["family_members" :  FieldValue.arrayUnion([userUID]) ]);
-    }
-        
 }
 

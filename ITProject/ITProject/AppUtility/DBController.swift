@@ -12,16 +12,11 @@ import FirebaseCore
 import FirebaseFirestore
 
 class DBController {
-    public static let FAMILY_FIELD = ["familyname", "username"]
-    public static let USER_FIELD = ["username" ]
-    public static let USER_COLLECTION_PATH = NSString ("users/")
-    public static let FAMILY_COLLECTION_PATH = NSString ("families/")
+   
     private var db: Firestore!
     private static var single: DBController!
-    private var reference : QueryDocumentSnapshot?
     init (){
         db = Firestore.firestore()
-        reference = nil
     }
     
     public func getDB() -> Firestore{
@@ -44,14 +39,26 @@ class DBController {
         return true ;
     }
     
-    public func addDocumentToCollectionWithSpecifiedID( documentUID : String, inputData: Dictionary<String, Any>, collectionName : String){
-        self.db.collection(collectionName).document(documentUID).setData(inputData) { err in
-            if let err = err {
-                print("test Error writing document: \(err)")
-            } else {
-                print(" test Document successfully written!")
-            }
-        }
+    public func getDocumentReference(collectionName : String, documentUID: String) -> DocumentReference{
+        return self.db.collection(collectionName).document(documentUID);
+    }
+    
+    public func addDocumentToCollectionWithUID( documentUID : String, inputData: Dictionary<String, Any>, collectionName : String){
+//        self.db.collection(collectionName).document(documentUID).setData(inputData) { err in
+//            if let err = err {
+//                print("test Error writing document: \(err)")
+//            } else {
+//                print(" test Document successfully written!")
+//            }
+//        }
+        self.getDocumentReference(collectionName: collectionName, documentUID: documentUID).setData(inputData) { err in
+                        if let err = err {
+                            print("\(collectionName) ::: Error writing document: \(err)")
+                        } else {
+                            print("\(collectionName) ::: Document with UID:  \(documentUID) successfully written!")
+                        }
+                    }
+        
     }
     
     
@@ -67,9 +74,9 @@ class DBController {
             ref = db.collection(collectionName).addDocument(data: inputData)
             { err in
                 if let err = err {
-                    print("Error adding document: \(err)")
+                    print("\(collectionName) ::: Error writing document: \(err)")
                 } else {
-                    print(  " added into \(collectionName ) ::: Document added with ID: \(ref!.documentID)")
+                    print(  "\(collectionName ) ::: Document with UID:  \(ref!.documentID) successfully written! ")
                 }
             }
         }
