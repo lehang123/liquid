@@ -20,7 +20,7 @@ class DBController {
     }
     
     public func getDB() -> Firestore{
-    return self.db;
+        return self.db;
     }
     
     public static func getInstance() -> DBController{
