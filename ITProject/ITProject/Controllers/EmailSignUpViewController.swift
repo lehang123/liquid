@@ -23,7 +23,8 @@ class EmailSignUpViewController : UIViewController {
     private static let CREATE_CORRECT = "Congratulation!"
     private static let CREATE_CORRECT_MESSAGE = "Account Success!"
     private static let CREATE_USERNAME = "Username cannot be empty"
-    private static let CREATE_FAMILY = "Family fields cannot be empty"
+    private static let CREATE_FAMILY = "Family fields cannot be empty (fill in either one)"
+    private static let FAMILY_FIELD = "Family fields cannot be both filled"
     private static let ACCOUNT_ALREADY_EXIST = "The email address is already in use by another account."
     private static let ACCOUNT_ALREADY_TITLE = "The address is already exist"
     private static let BACK_TO_LOGIN = "Back to login"
@@ -70,6 +71,13 @@ class EmailSignUpViewController : UIViewController {
                   message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
                   action_title: Util.BUTTON_DISMISS,
                   on: self)
+            return false
+        }
+        else if ((!joinFamilyIDField.text!.isEmpty) && (!familyCreate.text!.isEmpty)){
+            Util.ShowAlert(title: EmailSignUpViewController.FAMILY_FIELD,
+                           message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
             return false
         }
         else if (password.text! != confirmPW.text!) {
@@ -126,8 +134,8 @@ class EmailSignUpViewController : UIViewController {
                      self.AddUser( familyUID : familyUID,userUID: authResult!.user.uid, username: self.realusername.text!, familyName: self.familyCreate.text!);
                     
                 }else if(!self.joinFamilyIDField.text!.isEmpty) {
-                    print("joining family" );
-                    familyUID = DBController.getInstance().getDB().document(DBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!) );
+                    
+                    familyUID = DBController.getInstance().getDB().document(DBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!));
                     
                      self.AddUserToExistingFamily(familyID: familyUID, userUID : DBController.getInstance().getDB().document(DBController.USER_COLLECTION_PATH.appendingPathComponent(authResult!.user.uid))  , username : self.realusername.text!);
                     self.AddUser( familyUID : familyUID,userUID: authResult!.user.uid, username: self.realusername.text!, familyName: self.joinFamilyIDField.text!);
