@@ -238,6 +238,7 @@ class Util {
         }
     }
     
+    
     public static func ShowActivityIndicator (){
         SVProgressHUD.show()
         UIApplication.shared.beginIgnoringInteractionEvents()
