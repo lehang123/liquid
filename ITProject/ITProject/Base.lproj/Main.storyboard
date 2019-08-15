@@ -190,6 +190,21 @@
             </objects>
             <point key="canvasLocation" x="2912" y="-651"/>
         </scene>
+        <!--Individual Setting View Controller-->
+        <scene sceneID="jK3-XQ-kh8">
+            <objects>
+                <viewController storyboardIdentifier="IndividualSettingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cuL-ad-Cdt" customClass="IndividualSettingViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XmG-y5-jfU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="RaC-yJ-Amv"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hdg-15-WPH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4764" y="-652"/>
+        </scene>
         <!--Family Main Page View Controller-->
         <scene sceneID="vTc-qs-BGc">
             <objects>
@@ -653,6 +668,9 @@
                                                 <constraint firstItem="gQ5-ow-cFM" firstAttribute="leading" secondItem="6zd-Gt-LjJ" secondAttribute="leading" constant="16" id="uLo-X3-TVl"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="cuL-ad-Cdt" kind="show" id="zi1-xY-lpo"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="mIP-j3-TYY" customClass="UITableViewVibrantCell" customModule="SideMenu">
 
