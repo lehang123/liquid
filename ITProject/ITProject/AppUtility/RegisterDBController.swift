@@ -14,8 +14,17 @@ import FirebaseFirestore
 class RegisterDBController {
     public static let FAMILY_FIELD = ["familyname", "username"]
     public static let USER_FIELD = ["username" ]
+    
+    /* constant for USERS collections */
     public static let USER_COLLECTION_NAME = "users"
+    public static let USER_COLLECTION_FIELD_NAME = "name"
+    public static let USER_COLLECTION_FIELD_FAMILY = "family"
+
+    /* constant for FAMILIES collections */
     public static let FAMILY_COLLECTION_NAME = "families"
+    public static let FAMILY_DOCUMENT_FIELD_NAME = "name"
+    public static let FAMILY_DOCUMENT_FIELD_MEMBERS = "family_members"
+    
     public static let USER_COLLECTION_PATH = NSString ("users/")
     public static let FAMILY_COLLECTION_PATH = NSString ("families/")
     
@@ -34,8 +43,8 @@ class RegisterDBController {
     public func AddUser(familyUID : String, userUID: String, username: String){
         let familyDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID);
         DBController.getInstance().addDocumentToCollectionWithUID( documentUID : userUID, inputData:[
-            "name" :username,
-            "family" :familyDocumentReference
+            RegisterDBController.USER_COLLECTION_FIELD_NAME :username,
+            RegisterDBController.USER_COLLECTION_FIELD_FAMILY :familyDocumentReference
             ], collectionName :
             RegisterDBController.USER_COLLECTION_NAME);
         
@@ -45,18 +54,24 @@ class RegisterDBController {
     public func AddNewFamily(  familyName:String, userUID: String, username: String) -> DocumentReference{
         let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: userUID)
         // creates  new family
-        let familyUID = DBController.getInstance().addDocumentToCollection(inputData: ["name" : familyName, "family_members" : [userDocumentReference]], collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
+        let familyUID = DBController.getInstance().addDocumentToCollection(inputData: [RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME : familyName, RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS : [userDocumentReference]], collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
         return familyUID;
         
         
     }
     
     public func AddUserToExistingFamily( familyUID: String, userUID: String) {
-          let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: userUID)
+        let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: userUID)
         let familyDocumentReference =
             DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID)
         
-        familyDocumentReference.updateData(["family_members" :  FieldValue.arrayUnion([userDocumentReference]) ]);
+        familyDocumentReference.updateData([RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS :  FieldValue.arrayUnion([userDocumentReference]) ]){ err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        };
     }
     
 }
