@@ -12,18 +12,22 @@ import FirebaseCore
 import FirebaseFirestore
 
 class RegisterDBController {
-    public static let FAMILY_FIELD = ["familyname", "username"]
-    public static let USER_FIELD = ["username" ]
     
     /* constant for USERS collections */
     public static let USER_COLLECTION_NAME = "users"
-    public static let USER_COLLECTION_FIELD_NAME = "name"
-    public static let USER_COLLECTION_FIELD_FAMILY = "family"
+    public static let USER_DOCUMENT_FIELD_NAME = "name" // user's name
+    public static let USER_DOCUMENT_FIELD_FAMILY = "family" // user's family reference
+    public static let USER_DOCUMENT_FIELD_POSITION = "position" // user's position in family
+
 
     /* constant for FAMILIES collections */
     public static let FAMILY_COLLECTION_NAME = "families"
-    public static let FAMILY_DOCUMENT_FIELD_NAME = "name"
-    public static let FAMILY_DOCUMENT_FIELD_MEMBERS = "family_members"
+    
+    public static let FAMILY_DOCUMENT_FIELD_NAME = "name" // family name
+    public static let FAMILY_DOCUMENT_FIELD_MEMBERS = "family_members" // the members
+    public static let FAMILY_DOCUMENT_FIELD_ALBUM_PATHS = "album_paths" // paths to album
+    public static let FAMILY_DOCUMENT_FIELD_MOTTO = "motto" // family's motto
+
     
     public static let USER_COLLECTION_PATH = NSString ("users/")
     public static let FAMILY_COLLECTION_PATH = NSString ("families/")
@@ -43,8 +47,8 @@ class RegisterDBController {
     public func AddUser(familyUID : String, userUID: String, username: String){
         let familyDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID);
         DBController.getInstance().addDocumentToCollectionWithUID( documentUID : userUID, inputData:[
-            RegisterDBController.USER_COLLECTION_FIELD_NAME :username,
-            RegisterDBController.USER_COLLECTION_FIELD_FAMILY :familyDocumentReference
+            RegisterDBController.USER_DOCUMENT_FIELD_NAME :username,
+            RegisterDBController.USER_DOCUMENT_FIELD_FAMILY :familyDocumentReference
             ], collectionName :
             RegisterDBController.USER_COLLECTION_NAME);
         
@@ -73,5 +77,7 @@ class RegisterDBController {
             }
         };
     }
+    
+    
     
 }
