@@ -74,4 +74,8 @@ class RegisterDBController {
         };
     }
     
+    public func Updater(fieldName : String, collectionName : String){
+        
+    }
+    
 }
