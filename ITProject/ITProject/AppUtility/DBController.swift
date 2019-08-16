@@ -35,6 +35,8 @@ class DBController {
         return single;
     }
     
+    /// sanitise input into DB. basically checks if the fieldName is correct or not.
+    /// implementation will be added soon.
     
     /// <#Description#>
     /// gives a DocumentReference instance of the document.
@@ -79,7 +81,9 @@ class DBController {
         
     }
     
-    
+
+    /// add 1 document to 1 collection. prints out "Error" if error found,
+    /// otherwise prints out document's ID.
     /// <#Description#>
     /// add 1 document to 1 collection with an automatically generated UID,
     /// - Parameters:
