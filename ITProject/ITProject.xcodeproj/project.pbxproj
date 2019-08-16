@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D067F522304EFB100F232E8 /* RegisterDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D067F512304EFB100F232E8 /* RegisterDBController.swift */; };
 		0D7DBDB422FD3D72005D4C0F /* DBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7DBDB322FD3D72005D4C0F /* DBController.swift */; };
 		520667F322FAEEAE002C61B6 /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */; };
 		5206680E23042F85002C61B6 /* IndividualSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5206680D23042F85002C61B6 /* IndividualSettingViewController.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D067F512304EFB100F232E8 /* RegisterDBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDBController.swift; sourceTree = "<group>"; };
 		0D7DBDB322FD3D72005D4C0F /* DBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBController.swift; sourceTree = "<group>"; };
 		369369FF4CBC1A188C396FB1 /* Pods-ITProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.debug.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.debug.xcconfig"; sourceTree = "<group>"; };
 		520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignUpViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				8423A6F522FD03370049B656 /* Util.swift */,
 				0D7DBDB322FD3D72005D4C0F /* DBController.swift */,
+				0D067F512304EFB100F232E8 /* RegisterDBController.swift */,
 			);
 			path = AppUtility;
 			sourceTree = "<group>";
@@ -361,6 +364,7 @@
 				6C234F9A23051CC7001561CA /* AlbumDetail.swift in Sources */,
 				84E9BA4622F941F4003EA693 /* AppDelegate.swift in Sources */,
 				0D7DBDB422FD3D72005D4C0F /* DBController.swift in Sources */,
+				0D067F522304EFB100F232E8 /* RegisterDBController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
