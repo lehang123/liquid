@@ -37,25 +37,35 @@ class LoginViewController: UIViewController {
 //                self?.navigationController?.pushViewController(next!, animated: true)
 //                self?.present(next!, animated: true, completion: nil)
 //                user?.user.uid
-//                self?.testFunction();
+
                 self?.dismiss(animated: true, completion: nil)
+                
+                self?.tFunction()
+//                self?.testFunction()
             }
         }
     }
+    // todo : tested Upload successfully, next stop : download and unzip
+    public func tFunction(){
+        Util.downloadImage(from:URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
+            (data, url, error) in
+            Util.UploadFileToServer(data: data!, metadata: nil, fileFullName: (Util.GenerateUDID() + Util.EXTENSION_JPEG), completion:{(url) in
+                print ("tFunction : upload file successful, here is the url : ")
+                print(url!)
+            })
+        }
+    }
     
-//    public func testFunction(){
-//        // Add a new document in collection "cities"
-//        DBController.getInstance().getDB().collection("users").document("STH").setData([
-//            "name": "Los Angeles",
-//            "state": "CA",
-//            "country": "USA"
-//        ]) { err in
-//            if let err = err {
-//                print("test Error writing document: \(err)")
-//            } else {
-//                print(" test Document successfully written!")
-//            }
-//        }
-//    }
+    public func testFunction(){
+        let fileManager = FileManager.default
+        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        do {
+            let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL.appendingPathComponent(Util.IMAGE_FOLDER), includingPropertiesForKeys: nil)
+            // process files
+            print(fileURLs)
+        } catch {
+            print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
+        }
+    }
 }
 
