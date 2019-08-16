@@ -30,16 +30,26 @@ class ProfileViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    
+    // Get the name of the user.
+    // It is a bit slow !!!!!!!!!!!!!!!!!!!!!!!!!!!!
     func getName() {
         let user = Auth.auth().currentUser
         if let user = user {
-            // The user's ID, unique to the Firebase project.
-            // Do NOT use this value to authenticate with your backend server,
-            // if you have one. Use getTokenWithCompletion:completion: instead.
             let uid = user.uid
             
-            
-            name.text = "test"
+            DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: uid){
+                (document, error) in
+                if let document = document, document.exists {
+                    //_ = document.data().map(String.init(describing:)) ?? "nil"
+                    DispatchQueue.main.async {
+                        let n = (document.data()!["name"])
+                        self.name.text = (n as! String)
+                    }
+                }
+            }
+
+
             
         }
     }
