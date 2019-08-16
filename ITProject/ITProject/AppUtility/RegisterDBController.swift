@@ -11,6 +11,8 @@ import Firebase
 import FirebaseCore
 import FirebaseFirestore
 
+/// <#Description#>
+///a class to handle adding new user and joining family in DB with singleton pattern.
 class RegisterDBController {
     
     /* constant for USERS collections */
@@ -38,6 +40,9 @@ class RegisterDBController {
     init (){
         
     }
+    /// <#Description#>
+    /// singleton pattern:
+    /// - Returns: return an instance of this RegisterDBController.
     public static func getInstance() -> RegisterDBController{
         if (single == nil){
             single = RegisterDBController()
@@ -45,6 +50,12 @@ class RegisterDBController {
         return single;
     }
     
+    /// <#Description#>
+    /// adds a new user document into "users" collection.
+    /// - Parameters:
+    ///   - familyUID: the familyUID the user is joining into.
+    ///   - userUID: the user's UID (taken from firebase authorisation).
+    ///   - username: the username of user.
     public func AddUser(familyUID : String, userUID: String, username: String){
         let familyDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID);
         DBController.getInstance().addDocumentToCollectionWithUID( documentUID : userUID, inputData:[
@@ -54,9 +65,13 @@ class RegisterDBController {
             RegisterDBController.USER_COLLECTION_NAME);
         
     }
-    
-    
-    public func AddNewFamily(  familyName:String, userUID: String, username: String) -> DocumentReference{
+    /// <#Description#>
+    /// adds a new family document into "families" collection.
+    /// - Parameters:
+    ///   - familyName: the name of the family to be created.
+    ///   - userUID: the user joining into the family.
+    /// - Returns: the DocumentReference instance of the new family.
+    public func AddNewFamily(  familyName:String, userUID: String) -> DocumentReference{
         let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: userUID)
         // creates  new family
         let familyUID = DBController.getInstance().addDocumentToCollection(inputData:
@@ -70,6 +85,11 @@ class RegisterDBController {
         
     }
     
+    /// <#Description#>
+    /// adds a user into an existing family document.
+    /// - Parameters:
+    ///   - familyUID: the family UID that's gonna be updated.
+    ///   - userUID: the user to be added into the family.
     public func AddUserToExistingFamily( familyUID: String, userUID: String) {
         let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: userUID)
         let familyDocumentReference =

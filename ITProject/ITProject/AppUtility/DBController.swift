@@ -12,7 +12,7 @@ import FirebaseCore
 import FirebaseFirestore
 
 /// <#Description#>
-/// DBController to read,add,update,delete data in Firestore DB with singleton pattern.
+///DBController to read,add,update,delete data in Firestore DB with singleton pattern.
 class DBController {
    
     private var db: Firestore!
@@ -140,7 +140,7 @@ class DBController {
     }
     
     /// <#Description#>
-    /// appends a value into a field with array data type. 
+    /// appends a value into a field with array data type.
     /// - Parameters:
     ///   - fieldName : the name of the (array) field you want to update.
     ///   - appendValue: the new value to be appemnded into the array field.
