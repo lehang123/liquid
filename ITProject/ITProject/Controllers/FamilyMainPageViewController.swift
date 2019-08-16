@@ -32,7 +32,7 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        login()
+        //login()
         
 
         // set Profile Image
@@ -51,7 +51,7 @@ class FamilyMainPageViewController: UIViewController {
         carouselCollectionView.register(UINib.init(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         
         let flowLayout = UPCarouselFlowLayout()
-        flowLayout.itemSize = CGSize(width: (carouselCollectionView.frame.size.width - 60)/2, height: carouselCollectionView.frame.size.height)
+        flowLayout.itemSize = CGSize(width: (carouselCollectionView.frame.size.width)/2.5, height: carouselCollectionView.frame.size.height)
         flowLayout.scrollDirection = .horizontal
         flowLayout.sideItemScale = 0.8
         flowLayout.sideItemAlpha = 1.0

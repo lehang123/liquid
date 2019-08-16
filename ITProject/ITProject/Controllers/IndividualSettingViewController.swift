@@ -9,12 +9,21 @@
 import Foundation
 import UIKit
 
-class IndividualSettingViewController: UIViewController {
+class IndividualSettingViewController: UITableViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
+    
+//    
+//    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 55
+//    }
+//
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // refresh cell blur effect in case it changed
+        tableView.reloadData()
     }
+    
     
     
 }
