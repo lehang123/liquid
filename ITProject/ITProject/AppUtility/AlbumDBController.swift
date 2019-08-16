@@ -76,7 +76,7 @@ class AlbumDBController {
                 
                 
             } else {
-                print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: \(error)")
+                print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
             }
         
         }
