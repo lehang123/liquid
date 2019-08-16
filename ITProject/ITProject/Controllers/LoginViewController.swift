@@ -37,6 +37,7 @@ class LoginViewController: UIViewController {
 //                self?.navigationController?.pushViewController(next!, animated: true)
 //                self?.present(next!, animated: true, completion: nil)
 //                user?.user.uid
+
                 self?.dismiss(animated: true, completion: nil)
                 
                 self?.tFunction()
@@ -44,7 +45,6 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    
     // todo : tested Upload successfully, next stop : download and unzip
     public func tFunction(){
         Util.downloadImage(from:URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
