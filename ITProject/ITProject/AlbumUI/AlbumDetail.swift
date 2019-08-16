@@ -16,6 +16,7 @@ class AlbumDetail
     var title = ""
     var featuredImage: UIImage
     
+    
     init(title: String, featuredImage: UIImage)
     {
         self.title = title
@@ -23,15 +24,5 @@ class AlbumDetail
     }
     
     // MARK: - Private
-    // dummy data
-    static func fetchAlbumArray() -> [AlbumDetail]
-    {
-        return [
-            AlbumDetail(title: "Sydney", featuredImage: UIImage(named: "item0")!),
-            AlbumDetail(title: "Cafe with Friends", featuredImage: UIImage(named: "item1")!),
-            AlbumDetail(title: "Study Development", featuredImage: UIImage(named: "item2")!),
-            AlbumDetail(title: "ChengHong", featuredImage: UIImage(named: "item3")!),
-            
-        ]
-    }
+
 }
