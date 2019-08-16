@@ -71,7 +71,7 @@ class DBController {
 
         self.getDocumentReference(collectionName: collectionName, documentUID: documentUID).setData(inputData) { err in
                         if let err = err {
-                            print("\(collectionName) ::: Error writing document: \(err)")
+                            print("\(collectionName) ::: Error adding document: \(err)")
                         } else {
                             print("\(collectionName) ::: Document with UID:  \(documentUID) successfully written!")
                         }
@@ -95,7 +95,7 @@ class DBController {
             if let err = err {
                 print("\(collectionName) ::: Error writing document: \(err)")
             } else {
-                print("\(collectionName ) ::: Document with UID: \(ref!.documentID) successfully written! ")
+                print("\(collectionName ) ::: Document with (prespecified) UID: \(ref!.documentID) successfully written! ")
             }
         }
     
@@ -133,7 +133,7 @@ class DBController {
             if let err = err {
                 print("\(collectionName) ::: Error updating document: \(err)")
             } else {
-                print("\(collectionName) ::: Document \(documentUID) successfully updated")
+                print("\(collectionName) ::: Document \(documentUID) successfully updated its  \(fieldName) field")
             }
         }
         
@@ -149,9 +149,9 @@ class DBController {
     public func updateArrayField(collectionName: String, documentUID:String, fieldName : String, appendValue : Any ){
         self.getDocumentReference(collectionName: collectionName, documentUID: documentUID).updateData([fieldName :  FieldValue.arrayUnion([ appendValue ]) ]){ err in
             if let err = err {
-                print("\(collectionName) ::: Error updating document: \(err)")
+                print("\(collectionName) ::: Error updating document with array field: \(err)")
             } else {
-                print("\(collectionName) ::: Document \(documentUID) successfully updated")
+                print("\(collectionName) ::: Document  \(documentUID) with array field \(fieldName) successfully updated")
             }
         };
     }

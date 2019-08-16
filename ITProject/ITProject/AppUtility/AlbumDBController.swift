@@ -11,6 +11,8 @@ import Foundation
 import Firebase
 
 
+/// <#Description#>
+/// functions for  creating albums and adding photos into album.
 class AlbumDBController {
     
     private static var single: AlbumDBController!;
@@ -40,6 +42,9 @@ class AlbumDBController {
 //
 
     }
+    /// <#Description#>
+    /// singleton pattern:
+    /// - Returns: return an instance of this AlbumDBController.
     public static func getInstance() -> AlbumDBController{
         if (single == nil){
             single = AlbumDBController()
@@ -47,6 +52,11 @@ class AlbumDBController {
         return single;
     }
     
+    /// <#Description#>
+    /// creates a new album and attaches it to the family.
+    /// - Parameters:
+    ///   - albumName: the name of album to be created.
+    ///   - description: the album's (short) description.
     public func addNewAlbum(albumName : String, description: String){
         //get currentUser's family
         let user = Auth.auth().currentUser!.uid
@@ -56,7 +66,6 @@ class AlbumDBController {
                 let familyDocRef:DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
                 
 //                let familyDocumentReference:DocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
-                print("got::: \(user) with fam : \(familyDocRef)" )
                 
                         /*init new album */
                 let albumDocumentReference =  DBController.getInstance().addDocumentToCollection(inputData: [AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME : albumName, AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA : [], AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description ], collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
@@ -67,14 +76,22 @@ class AlbumDBController {
                 
                 
             } else {
-                print("ERROR::: ERROR RETRIEVING DOCUMENT")
+                print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: \(error)")
             }
         
         }
 
         
     }
-    // mediaPath is assumed to be unique
+    
+    /// <#Description#>
+    /// adds a media file's path into a "media" collection,
+    /// and attaches it into an album.
+    /// - Parameters:
+    ///   - desc: the (short) media file's description
+    ///   - ext: the file extension (e.g. .zip)
+    ///   - albumUID: the UID of the album to be updated.
+    ///   - mediaPath:  the media file's path to be inserted ( unique).
     public func addPhotoToAlbum(desc : String, ext : String, albumUID : String, mediaPath:String){
         /*init new media */
         DBController.getInstance().addDocumentToCollectionWithUID(documentUID: mediaPath, inputData: [ AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH : 0, AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES :0, AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: "", AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION : ext, AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION : desc], collectionName: AlbumDBController.MEDIA_COLLECTION_NAME)
