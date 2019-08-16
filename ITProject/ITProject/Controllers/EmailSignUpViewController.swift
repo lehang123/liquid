@@ -153,20 +153,16 @@ class EmailSignUpViewController : UIViewController {
 
                 var familyUID:DocumentReference;
                 if (!self.familyCreate.text!.isEmpty) {
-                    print("familyuid::: runnnn")
 
                     //create a family:
-                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.familyCreate.text!, userUID: authResult!.user.uid, username: self.realusername.text!);
-                    print("familyuid::: \(familyUID)")
+                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.familyCreate.text!, userUID: authResult!.user.uid);
 
                     //add a user: 
                     RegisterDBController.getInstance().AddUser(familyUID: familyUID.documentID, userUID: authResult!.user.uid, username: self.realusername.text!);
 
                     
                 }else if(!self.joinFamilyIDField.text!.isEmpty) {
-                    print("familyuid::: else runnnn")
 
-                    familyUID = DBController.getInstance().getDB().document(RegisterDBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!));
                     //create a user:
                     RegisterDBController.getInstance().AddUser( familyUID : self.joinFamilyIDField.text! ,userUID: authResult!.user.uid, username: self.realusername.text!);
                     
