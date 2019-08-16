@@ -9,12 +9,14 @@
 import Foundation
 import FirebaseStorage
 import SVProgressHUD
+import Zip
 
 class Util {
     public static let BUTTON_DISMISS = "dismiss"
     
     public static let EXTENSION_JPEG = ".jpg"
-    public static let IMAGE_FOLDER = "image"
+    public static let EXTENSION_ZIP = ".zip"
+    public static let IMAGE_FOLDER = "images"
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
     
@@ -33,40 +35,71 @@ class Util {
     public static func UploadFileToServer (data: Data,
                                            metadata: StorageMetadata?,
                                            fileName: String,
-                                           fextension: String) {
+                                           fextension: String,
+                                           completion: @escaping (URL?) -> () = { _ in },
+                                           errorHandler: @escaping (Error?) -> () = { _ in }) {
         UploadFileToServer(data: data,
                            metadata: metadata,
-                           fileFullName: fileName+fextension)
+                           fileFullName: fileName+fextension,
+                           completion: completion,
+                           errorHandler: errorHandler)
     }
     
+    /*
+     todo : get the file to the server as .zip, store the
+            original extension (and other information) in database
+     */
     public static func UploadFileToServer(data: Data,
                                           metadata: StorageMetadata?,
-                                          fileFullName: String){
+                                          fileFullName: String,
+                                          completion: @escaping (URL?) -> () = { _ in },
+                                          errorHandler: @escaping (Error?) -> () = { _ in }){
         
         let storageRef = Storage.storage().reference()
-        let fullFilePath = GetFullFilePath(fileName: fileFullName)
-        
-        print("file upload to server : " + fullFilePath)
-        
-        let sRef = storageRef.child(fullFilePath)
-        
-        // Upload the file to the path "images/rivers.jpg"
-        _ = sRef.putData(data, metadata: metadata) { (metadata, error) in
-            guard let metadata = metadata else {
-                // Uh-oh, an error occurred!
-                print("UploadFileToServer : metadata error : "
-                    + error!.localizedDescription)
-                return
-            }
-            // Metadata contains file metadata such as size, content-type.
-            _ = metadata.size
-            // You can also access to download URL after upload.
-            sRef.downloadURL { (url, error) in
-                guard url != nil else {
-                    // Uh-oh, an error occurred!
-                    print("UploadFileToServer : url error : "
-                        + error!.localizedDescription)
-                    return
+        let fileFullPath = GetFullFilePath(fileName: fileFullName)
+        WriteFileToDocumentDirectory(data: data, fileFullName: fileFullPath){
+            (fileUrl) in
+            let fileNameWithExtension = fileUrl.lastPathComponent as NSString
+            let folderPath = fileUrl.deletingLastPathComponent()
+            let fileName = fileNameWithExtension.deletingPathExtension
+            let fExtension = "." + fileNameWithExtension.pathExtension
+            
+            ZipFile(from: folderPath.absoluteString as NSString,
+                    to: folderPath.absoluteString as NSString,
+                    fileName: fileName, fextension: fExtension, deleteAfterFinish: true){(zipFileUrl) in
+                let zipFile = zipFileUrl?.lastPathComponent
+                let fileFolder = zipFileUrl?.deletingLastPathComponent().lastPathComponent
+                let filePath = fileFolder! + "/" + zipFile!
+                        
+                print("UploadFileToServer : file upload to server : " + filePath)
+                        
+                ReadFileFromDocumentDirectory(fileName: filePath){fileData in
+                    
+                    let sRef = storageRef.child(filePath)
+                    
+                    // Upload the file to the path "images/rivers.jpg"
+                    _ = sRef.putData(fileData, metadata: metadata) { (metadata, error) in
+                        guard let metadata = metadata else {
+                            // Uh-oh, an error occurred!
+                            print("UploadFileToServer : metadata error : "
+                                + error!.localizedDescription)
+                            errorHandler(error)
+                            return
+                        }
+                        // Metadata contains file metadata such as size, content-type.
+                        _ = metadata.size
+                        // You can also access to download URL after upload.
+                        sRef.downloadURL { (url, error) in
+                            guard url != nil else {
+                                // Uh-oh, an error occurred!
+                                errorHandler(error)
+                                print("UploadFileToServer : url error : "
+                                    + error!.localizedDescription)
+                                return
+                            }
+                            completion(url)
+                        }
+                    }
                 }
             }
         }
@@ -75,13 +108,16 @@ class Util {
     /* test image link   "795C8939-982E-40C8-AE2D-610A6EBA5866.jpg"
      error solver error 518:
      https://stackoverflow.com/questions/37470266/error-when-downloading-from-firebase-storage
+     todo: get extension from database, here should be doing unzip
     */
-    public static func DownloadFileFromServer (fileName:String){
+    public static func DownloadFileFromServer (fileName:String,
+                                               completion: @escaping (URL?) -> () = { _ in },
+                                               errorHandler: @escaping (Error?) -> () = { _ in }){
         let fileFullPath = GetFullFilePath(fileName: fileName)
         print("DownloadFileFromServer :file path " + fileFullPath)
         let gsReference = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
         
-        let localURL = URL(fileURLWithPath: GetImageDirectory().appendingPathComponent(fileName).absoluteString)
+        let localURL = URL(fileURLWithPath: GetDocumentsDirectory().appendingPathComponent(fileFullPath).absoluteString)
         print("DownloadFileFromServer to : " + localURL.absoluteString)
         // Download to the local filesystem
         _ = gsReference.write(toFile: localURL) { url, error in
@@ -89,10 +125,26 @@ class Util {
                 // Uh-oh, an error occurred!
                 print("DownloadFileFromServer fail")
                 print(error)
+                errorHandler(error)
             } else {
                 // Local file URL for "images/island.jpg" is returned
                 print("DownloadFileFromServer success with url :")
                 print(url!)
+                
+//                print(Thread.current) // this is a UI thread
+
+                let fileAt = url!.deletingLastPathComponent().absoluteString
+                print("DownloadFileFromServer fileAt :" + fileAt)
+                let fileName = ((url!.lastPathComponent) as NSString)
+                print("DownloadFileFromServer fileName :" + (fileName as String))
+                
+                UnzipFile(from: fileAt as NSString,
+                          to: fileAt as NSString,
+                          fileName: fileName as String,
+                          deleteAfterFinish: true){
+                            (unzippedFileURL) in
+                            completion(unzippedFileURL)
+                }
             }
         }
     }
@@ -116,22 +168,97 @@ class Util {
         }
     }
     
-    /*note : read write file opearation, use worker thread to do it*/
-    public static func ReadFileFromDocumentDirectory(fileName: String)->Data?{
+    // todo : password for encrytion
+    public static func ZipFile(from: NSString, to: NSString,
+                               fileName: String, fextension: String,
+                               deleteAfterFinish: Bool,
+                               completion: @escaping (URL?) -> () = { _ in }){
         
-        let fileFullPath = GetDocumentFullFilePath(fileName: fileName)
-        print("ReadFileFromDocumentDirectory : full file path : " + fileFullPath)
-        do {
-            return try Data(contentsOf: URL(fileURLWithPath: fileFullPath))
-        }catch let error as NSError{
-            print("ReadFileFromDocumentDirectory : " + error.localizedDescription)
+        DispatchQueue(label: "working_queue", qos: .userInitiated).async {
+            let fullFilePath = from.appendingPathComponent(fileName + fextension)
+            let fullDestinationPath = to.appendingPathComponent(fileName + Util.EXTENSION_ZIP)
+            print("ZipFile : fullFilePath : " + fullFilePath)
+            print("ZipFile : fullDestinationPath : " + fullDestinationPath)
+            do {
+                try  Zip.zipFiles(paths: [URL(string: fullFilePath)!], zipFilePath: URL(string: fullDestinationPath)!, password: nil, progress: { (progress) -> () in
+                    print("ZipFile : progress" + String(progress))
+                })
+                
+                if deleteAfterFinish{
+                    try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
+                }
+                completion(URL (string: fullDestinationPath))
+            }catch let error as NSError{
+                print ("ZipFile : error occurs during zip ," + error.localizedDescription)
+            }
         }
-        return nil
     }
     
+    public static func UnzipFile(from: NSString, to: NSString,
+                                 fileName: String, deleteAfterFinish: Bool, completion: @escaping ((URL) -> Void) = {_ in }){
+        DispatchQueue(label: "working_queue", qos: .userInitiated).async {
+            let fullFilePath = from.appendingPathComponent(fileName)
+            
+            do {
+                try  Zip.unzipFile(URL(string: fullFilePath)!, destination: URL(string: to as String)!, overwrite: true, password: nil, progress: { (progress) -> () in
+                    print("UnzipFile : progress" + String(progress))
+                }){ unzippedFile in
+                    completion(unzippedFile)
+                }
+                
+                if deleteAfterFinish{
+                    try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
+                }
+            }catch{
+                print ("UnzipFile : error occurs during unzip")
+            }
+        }
+    }
+    
+    /*note : read write file opearation, use worker thread to do it*/
+    public static func ReadFileFromDocumentDirectory(fileName: String,
+                                                     completion:@escaping (Data)->() = {_ in })
+    {
+        DispatchQueue(label: "working_queue", qos: .userInitiated).async {
+            let fileFullPath = GetDocumentsDirectory().appendingPathComponent(fileName).absoluteString
+            print("ReadFileFromDocumentDirectory : full file path : " + fileFullPath)
+            do {
+                let data = try Data(contentsOf: URL(fileURLWithPath: fileFullPath))
+                completion(data)
+                print("ReadFileFromDocumentDirectory : success")
+            }catch let error as NSError{
+                print("ReadFileFromDocumentDirectory : " + error.localizedDescription)
+            }
+        }
+    }
+    
+    /*note : read write file opearation, use worker thread to do it*/
+    public static func WriteFileToDocumentDirectory(data: Data,
+                                                    fileFullName: String,
+                                                    completion:@escaping (URL)->() = {_ in }){
+        DispatchQueue(label: "working_queue", qos: .userInitiated).async {
+            let fileWriteTo = URL(fileURLWithPath: GetDocumentsDirectory().appendingPathComponent(fileFullName).absoluteString)
+            print("WriteFileToDocumentDirectory : full file path : " + fileWriteTo.absoluteString)
+            do{
+                try data.write(to: fileWriteTo)
+                completion(fileWriteTo)
+                print("WriteFileToDocumentDirectory : success")
+            }catch let error as NSError{
+                print("WriteFileToDocumentDirectory : " + error.localizedDescription)
+            }
+        }
+    }
+    
+    
+    
     public static func GetFolderForFile(fileName:NSString)->String?{
+        return GetFolderForFile(fileName: fileName, withPathSlash: true)
+    }
+    
+    public static func GetFolderForFile(fileName:NSString, withPathSlash: Bool)->String?{
         if ("." + fileName.pathExtension) == (EXTENSION_JPEG) {
-            return IMAGE_FOLDER + "/"
+            
+            return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
         }
         return nil
     }
@@ -238,7 +365,6 @@ class Util {
         }
     }
     
-    
     public static func ShowActivityIndicator (){
         SVProgressHUD.show()
         UIApplication.shared.beginIgnoringInteractionEvents()
@@ -258,9 +384,9 @@ class Util {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
- //   todo: add a finish handlder on it
+    /*   test image : https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg */
     public static func downloadImage(from url: URL,
-                                     completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+                                     completion: @escaping (Data?, URLResponse?, Error?) -> () = {_,_,_ in }) {
         print("Download Started")
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
