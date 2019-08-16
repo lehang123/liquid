@@ -30,7 +30,6 @@ class DBController {
         return single;
     }
     
-    /// <#Description#>
     /// sanitise input into DB. basically checks if the fieldName is correct or not.
     /// implementation will be added soon.
     /// - Parameters:
@@ -70,8 +69,6 @@ class DBController {
         
     }
     
-    
-    /// <#Description#>
     /// add 1 document to 1 collection. prints out "Error" if error found,
     /// otherwise prints out document's ID.
     /// - Parameters:
