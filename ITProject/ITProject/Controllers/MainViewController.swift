@@ -19,8 +19,6 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     
-        /* test for downloading from sever */
-        Util.DownloadFileFromServer(fileName: "795C8939-982E-40C8-AE2D-610A6EBA5866.jpg")
     }
     
     
