@@ -37,25 +37,25 @@ class LoginViewController: UIViewController {
 //                self?.navigationController?.pushViewController(next!, animated: true)
 //                self?.present(next!, animated: true, completion: nil)
 //                user?.user.uid
-                self?.testFunction();
+//                self?.testFunction();
                 self?.dismiss(animated: true, completion: nil)
             }
         }
     }
     
-    public func testFunction(){
-        // Add a new document in collection "cities"
-        DBController.getInstance().getDB().collection("users").document("STH").setData([
-            "name": "Los Angeles",
-            "state": "CA",
-            "country": "USA"
-        ]) { err in
-            if let err = err {
-                print("test Error writing document: \(err)")
-            } else {
-                print(" test Document successfully written!")
-            }
-        }
-    }
+//    public func testFunction(){
+//        // Add a new document in collection "cities"
+//        DBController.getInstance().getDB().collection("users").document("STH").setData([
+//            "name": "Los Angeles",
+//            "state": "CA",
+//            "country": "USA"
+//        ]) { err in
+//            if let err = err {
+//                print("test Error writing document: \(err)")
+//            } else {
+//                print(" test Document successfully written!")
+//            }
+//        }
+//    }
 }
 

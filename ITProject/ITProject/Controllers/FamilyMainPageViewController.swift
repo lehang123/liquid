@@ -34,7 +34,15 @@ class FamilyMainPageViewController: UIViewController {
         // check if client login
         login()
         
-
+        //testing functions. dont forget to delete!::
+        
+//        AlbumDBController.getInstance().addNewAlbum(albumName: "any12i3o12", description: "halo test");
+    
+        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo test", ext: ".zip", albumUID: "h846WxUpIJXu7z2hOk8y", mediaPath: "somewhere_in_my_heart.zip");
+        ///
+        
+        
+        
         // set Profile Image
         profileImg.image = UIImage(named: "tempProfileImage")
         // loading profileImage with shadow
