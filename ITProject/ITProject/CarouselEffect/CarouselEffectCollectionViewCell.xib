@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="messageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="las-eb-YnH">
-                        <rect key="frame" x="6" y="16" width="48" height="48"/>
+                        <rect key="frame" x="6" y="11" width="48" height="48"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="las-eb-YnH" secondAttribute="height" multiplier="1:1" id="Eiy-ZU-rKs"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="500" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4J-RM-Fru">
-                        <rect key="frame" x="10" y="111.5" width="29" height="23.5"/>
+                        <rect key="frame" x="10" y="106.5" width="29" height="23.5"/>
                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -35,11 +35,11 @@
             </view>
             <color key="backgroundColor" red="0.85098039219999999" green="0.65098039220000004" blue="0.4549019608" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="W4J-RM-Fru" secondAttribute="bottom" constant="15" id="1Ug-gd-BMV"/>
+                <constraint firstAttribute="bottom" secondItem="W4J-RM-Fru" secondAttribute="bottom" constant="20" id="1Ug-gd-BMV"/>
                 <constraint firstItem="las-eb-YnH" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" constant="-30" id="D0A-qo-MYr"/>
                 <constraint firstItem="las-eb-YnH" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" multiplier="0.4" id="Zoz-FV-0aF"/>
                 <constraint firstItem="W4J-RM-Fru" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="c33-5y-tsx"/>
-                <constraint firstItem="las-eb-YnH" firstAttribute="centerY" secondItem="ZTg-uK-7eu" secondAttribute="centerY" constant="-40" id="gQy-dJ-gt9"/>
+                <constraint firstItem="las-eb-YnH" firstAttribute="centerY" secondItem="ZTg-uK-7eu" secondAttribute="centerY" constant="-45" id="gQy-dJ-gt9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
