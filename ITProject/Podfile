@@ -20,5 +20,7 @@ target 'ITProject' do
   pod "UPCarouselFlowLayout"
   pod 'SideMenu'
   pod 'EnhancedCircleImageView'
+  source 'https://github.com/CocoaPods/Specs.git'
+  pod 'Zip', '~> 1.1'
 
 end
