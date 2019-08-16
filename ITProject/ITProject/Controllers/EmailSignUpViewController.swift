@@ -52,24 +52,36 @@ class EmailSignUpViewController : UIViewController {
         
          
         // only field filled up, then try authentiate
-        if doesFieldFilledUp(){
-             Util.ShowActivityIndicator(withStatus: EmailSignUpViewController.WAITING_AUTHENTIATE)
-            //check if family exists
-            DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.joinFamilyIDField.text!){
-                (document, error) in
-                if let document = document, document.exists {
-                    //let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                    self.authentiate(email: email, pw: pw)
-                } else {
-                    Util.DismissActivityIndicator()
-                    Util.ShowAlert(title: EmailSignUpViewController.JOIN_FAMILY_NOT_EXIST,
-                                   message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                                   action_title: Util.BUTTON_DISMISS,
-                                   on: self)
+        if (doesFieldFilledUp()){
+            print("if run:::")
+            if (!self.joinFamilyIDField.text!.isEmpty){
+                print("if2 run:::")
+                Util.ShowActivityIndicator(withStatus: EmailSignUpViewController.WAITING_AUTHENTIATE)
+                //check if family exists
+                DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.joinFamilyIDField.text!){
+                    (document, error) in
+                    if let document = document, document.exists {
+                        //let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        self.authentiate(email: email, pw: pw)
+                    } else {
+                        Util.DismissActivityIndicator()
+                        Util.ShowAlert(title: EmailSignUpViewController.JOIN_FAMILY_NOT_EXIST,
+                                       message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                                       action_title: Util.BUTTON_DISMISS,
+                                       on: self)
+                    }
                 }
             }
+            else{
+                self.authentiate(email: email, pw: pw)
+            }
+            
             
         }
+        
+        
+
+
         
     }
     
@@ -141,22 +153,21 @@ class EmailSignUpViewController : UIViewController {
 
                 var familyUID:DocumentReference;
                 if (!self.familyCreate.text!.isEmpty) {
-                    
+
                     //create a family:
-                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.familyCreate.text!, userUID: authResult!.user.uid, username: self.realusername.text!);
+                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.familyCreate.text!, userUID: authResult!.user.uid);
 
                     //add a user: 
                     RegisterDBController.getInstance().AddUser(familyUID: familyUID.documentID, userUID: authResult!.user.uid, username: self.realusername.text!);
 
                     
                 }else if(!self.joinFamilyIDField.text!.isEmpty) {
-                    
-                    familyUID = DBController.getInstance().getDB().document(RegisterDBController.FAMILY_COLLECTION_PATH.appendingPathComponent(self.joinFamilyIDField.text!));
+
                     //create a user:
                     RegisterDBController.getInstance().AddUser( familyUID : self.joinFamilyIDField.text! ,userUID: authResult!.user.uid, username: self.realusername.text!);
                     
                     //join a family:
-                    RegisterDBController.getInstance().AddUserToExistingFamily(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid)
+                    RegisterDBController.getInstance().AddUserToExistingFamily(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid);
                 }              
             }
         }

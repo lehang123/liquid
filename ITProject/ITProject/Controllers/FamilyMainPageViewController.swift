@@ -32,9 +32,17 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        login()
+        //login()
         
-
+        //testing functions. dont forget to delete!::
+        
+//        AlbumDBController.getInstance().addNewAlbum(albumName: "any12i3o12", description: "halo test");
+    
+        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo test", ext: ".zip", albumUID: "h846WxUpIJXu7z2hOk8y", mediaPath: "somewhere_in_my_heart.zip");
+        ///
+        
+        
+        
         // set Profile Image
         profileImg.image = UIImage(named: "tempProfileImage")
         // loading profileImage with shadow
@@ -51,7 +59,7 @@ class FamilyMainPageViewController: UIViewController {
         carouselCollectionView.register(UINib.init(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         
         let flowLayout = UPCarouselFlowLayout()
-        flowLayout.itemSize = CGSize(width: 120.0, height: carouselCollectionView.frame.size.height)
+        flowLayout.itemSize = CGSize(width: (carouselCollectionView.frame.size.width)/2.5, height: carouselCollectionView.frame.size.height)
         flowLayout.scrollDirection = .horizontal
         flowLayout.sideItemScale = 0.8
         flowLayout.sideItemAlpha = 1.0
@@ -87,29 +95,7 @@ class FamilyMainPageViewController: UIViewController {
         ]
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let layout = self.carouselCollectionView.collectionViewLayout as! UPCarouselFlowLayout
-        let pageSide = (layout.scrollDirection == .horizontal) ? self.pageSize.width : self.pageSize.height
-        let offset = (layout.scrollDirection == .horizontal) ? scrollView.contentOffset.x : scrollView.contentOffset.y
-        currentPage = Int(floor((offset - pageSide / 2) / pageSide) + 1)
-    }
-    
-    fileprivate var currentPage: Int = 0 {
-        didSet {
-            print("page at centre = \(currentPage)")
-        }
-    }
-    
-    fileprivate var pageSize: CGSize {
-        let layout = self.carouselCollectionView.collectionViewLayout as! UPCarouselFlowLayout
-        var pageSize = layout.itemSize
-        if layout.scrollDirection == .horizontal {
-            pageSize.width += layout.minimumLineSpacing
-        } else {
-            pageSize.height += layout.minimumLineSpacing
-        }
-        return pageSize
-    }
+
 }
     
 extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
