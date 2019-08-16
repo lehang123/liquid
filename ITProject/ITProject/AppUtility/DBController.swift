@@ -20,7 +20,7 @@ class DBController {
     }
     
     public func getDB() -> Firestore{
-    return self.db;
+        return self.db;
     }
     
     public static func getInstance() -> DBController{
@@ -116,8 +116,8 @@ class DBController {
     ///   - collectionName: the collection you want to update into.
     ///   - newValue : the new value to be added into the field.
     ///   - fieldName : the name of the field you want to update.
-    public func updateSpecificField(newValue: Any,fieldName: String, documentPath : String, collectionName : String){
-        db.collection(collectionName).document(documentPath).updateData([
+    public func updateSpecificField(newValue: Any,fieldName: String, documentUID : String, collectionName : String){
+        db.collection(collectionName).document(documentUID).updateData([
             fieldName: newValue,
         ]) { err in
             if let err = err {
@@ -130,31 +130,7 @@ class DBController {
     }
     
    
-    
-    /// Description
-    /// get 1 document's from 1 collection. prints out "Does not exist" if not found,
-    /// otherwise prints out the data.
-    /// - Parameters:
-    ///   - documentName: The document's name to be retrieved from  DB.
-    ///   - collectionName: the collection you want to retrieve from.
-    /// need to handle async! 
-    public func getDocumentFromCollection(documentName : String, collectionName : String, completion: @escaping (DocumentSnapshot) -> ()){
-//        let docRef = db.collection(collectionName).document(documentName)
-//
-//
-//        docRef.getDocument { (document, error) in
-//            if let document = document, document.exists {
-////                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-//
-//                completion(document)
-//                print("Document data: \(dataDescription)")
-//            } else {
-//                print("Document does not exist")
-//            }
-//        }
-        
-    }
-    
+ 
     
     
     public func getDataQuery(fieldName : String){
