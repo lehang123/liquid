@@ -38,7 +38,7 @@ class FamilyMainPageViewController: UIViewController {
         
 //        AlbumDBController.getInstance().addNewAlbum(albumName: "any12i3o12", description: "halo test");
     
-        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo test", ext: ".zip", albumUID: "h846WxUpIJXu7z2hOk8y", mediaPath: "somewhere_in_my_heart.zip");
+        //AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo test", ext: ".zip", albumUID: "h846WxUpIJXu7z2hOk8y", mediaPath: "somewhere_in_my_heart.zip");
         ///
         
         

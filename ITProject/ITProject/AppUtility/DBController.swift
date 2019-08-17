@@ -93,9 +93,7 @@ class DBController {
     public func addDocumentToCollection (inputData: Dictionary<String, Any>, collectionName : String) -> DocumentReference {
         var ref: DocumentReference? = nil
         
-        ref = db.collection(collectionName).addDocument(data: inputData)
-        
-        { err in
+        ref = db.collection(collectionName).addDocument(data: inputData){ err in
             if let err = err {
                 print("\(collectionName) ::: Error writing document: \(err)")
             } else {
