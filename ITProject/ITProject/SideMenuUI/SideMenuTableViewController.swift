@@ -67,8 +67,10 @@ class SideMenuTableViewController: UITableViewController {
             alertController.addAction(UIAlertAction(title: "NO", style: .default))
             alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action: UIAlertAction!) in
 
-                let back = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
-                self.present(back, animated: true, completion: nil)
+                let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
+                let navController = UINavigationController(rootViewController: VC1)
+                self.present(navController, animated:true, completion: nil)
+                
             }))
             self.present(alertController, animated: true, completion: nil)
             
