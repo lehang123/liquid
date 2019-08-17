@@ -110,10 +110,9 @@ class Util {
      https://stackoverflow.com/questions/37470266/error-when-downloading-from-firebase-storage
      todo: get extension from database, here should be doing unzip
     */
-    public static func DownloadFileFromServer (fileName:String,
+    public static func DownloadFileFromServer (fileFullPath:String,
                                                completion: @escaping (URL?) -> () = { _ in },
                                                errorHandler: @escaping (Error?) -> () = { _ in }){
-        let fileFullPath = GetFullFilePath(fileName: fileName)
         print("DownloadFileFromServer :file path " + fileFullPath)
         let gsReference = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
         
