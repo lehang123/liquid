@@ -40,13 +40,14 @@ class LoginViewController: UIViewController {
 
                 self?.dismiss(animated: true, completion: nil)
                 
-                self?.tFunction()
+//                self?.tFunction()
 //                self?.testFunction()
             }
         }
     }
-    // todo : tested Upload successfully, next stop : download and unzip
+
     public func tFunction(){
+        // test for upload file
         Util.downloadImage(from:URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
             (data, url, error) in
             Util.UploadFileToServer(data: data!, metadata: nil, fileFullName: (Util.GenerateUDID() + Util.EXTENSION_JPEG), completion:{(url) in
@@ -54,6 +55,10 @@ class LoginViewController: UIViewController {
                 print(url!)
             })
         }
+        // test for download file
+        Util.DownloadFileFromServer(fileFullPath: "images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip", completion: {(fileUrl) in
+            print("file download and unzip success :" + fileUrl!.absoluteString)
+        })
     }
     
     public func testFunction(){

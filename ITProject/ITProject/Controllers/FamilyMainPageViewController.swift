@@ -32,7 +32,7 @@ class FamilyMainPageViewController: UIViewController {
         super.viewDidLoad()
         
         // check if client login
-        //login()
+        login()
         
         //testing functions. dont forget to delete!::
         
