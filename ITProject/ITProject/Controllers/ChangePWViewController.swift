@@ -17,7 +17,7 @@ class ChangePasswordViewController : UIViewController {
     private static let CONFIRMED_INCORRECT_WRONG = "New Password and Confirm are different"
     private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
     private static let CREATE_CORRECT = "Congratulation!"
-    private static let CREATE_CORRECT_MESSAGE = "Password changed Success!"
+    private static let PASSWORD_CHANGE_SUCCESS = "Password changed Success!"
 
     @IBOutlet weak var originalPW: UITextField!
     @IBOutlet weak var newPW: UITextField!
@@ -54,8 +54,6 @@ class ChangePasswordViewController : UIViewController {
                 }
             })
             
-            
-            
         } else {
             Util.ShowAlert(title: ChangePasswordViewController.CONFIRMED_INCORRECT_WRONG,
                            message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
@@ -71,7 +69,7 @@ class ChangePasswordViewController : UIViewController {
 
             if (error == nil) {
                 
-                Util.ShowAlert(title: ChangePasswordViewController.CREATE_CORRECT, message: ChangePasswordViewController.CREATE_CORRECT_MESSAGE, action_title: ChangePasswordViewController.CREATE_CORRECT, on: self ){
+                Util.ShowAlert(title: ChangePasswordViewController.CREATE_CORRECT, message: ChangePasswordViewController.PASSWORD_CHANGE_SUCCESS, action_title: ChangePasswordViewController.CREATE_CORRECT, on: self ){
                     
                     // pop back to the family view
 //                    self.navigationController?.popViewController(animated: true)
@@ -87,9 +85,4 @@ class ChangePasswordViewController : UIViewController {
         }
     }
 
-
-    
-    
-    
-    
 }
