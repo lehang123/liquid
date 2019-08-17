@@ -12,12 +12,12 @@ import Firebase
 
 class ChangePasswordViewController : UIViewController {
     
-    private static let PASSWORD_INVALID = "The password is invalid"
+    private static let PASSWORD_INVALID = "The Oringinal password is invalid"
     private static let PASSWORD_LENGTH_NOT_ENOUTH = "Minimum length is 8"
-    private static let CONFIRMED_INCORRECT_WRONG = "Wrong Password"
+    private static let CONFIRMED_INCORRECT_WRONG = "New Password and Confirm are different"
     private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
     private static let CREATE_CORRECT = "Congratulation!"
-    private static let CREATE_CORRECT_MESSAGE = "Account Success!"
+    private static let CREATE_CORRECT_MESSAGE = "Password changed Success!"
 
     @IBOutlet weak var originalPW: UITextField!
     @IBOutlet weak var newPW: UITextField!
@@ -47,7 +47,7 @@ class ChangePasswordViewController : UIViewController {
             user?.reauthenticate(with: credential, completion: {(authResult, error) in
                 if error != nil {
                     // An error happened.
-                    Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_INVALID, message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
+                    Util.ShowAlert(title: error!.localizedDescription, message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
                 }else{
                     // User re-authenticated.
                     self.updatePassword(newPW : self.newPW.text!)
@@ -71,12 +71,17 @@ class ChangePasswordViewController : UIViewController {
 
             if (error == nil) {
                 
-                let next = self.storyboard?.instantiateViewController(withIdentifier: "FamilyMainPageViewController")
-                self.navigationController?.pushViewController(next!, animated: true)
-                self.present(next!, animated: true, completion: nil)
+                Util.ShowAlert(title: ChangePasswordViewController.CREATE_CORRECT, message: ChangePasswordViewController.CREATE_CORRECT_MESSAGE, action_title: ChangePasswordViewController.CREATE_CORRECT, on: self ){
+                    
+                    // pop back to the family view
+//                    self.navigationController?.popViewController(animated: true)
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
                 
-                            Util.ShowAlert(title: ChangePasswordViewController.CREATE_CORRECT, message: ChangePasswordViewController.CREATE_CORRECT_MESSAGE, action_title: ChangePasswordViewController.CREATE_CORRECT, on: next! )
-                
+            }else {
+                Util.ShowAlert(title: error!.localizedDescription,
+                               message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title:  Util.BUTTON_DISMISS,
+                                   on: self )
             }
             
         }
