@@ -13,7 +13,7 @@ class AlbumViewController: UIViewController {
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
     let cellScaling: CGFloat = 0.6
-    var albumData = AlbumDetail.fetchAlbumArray()
+    var albumData = AlbumList.fetchAlbumArray()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +28,20 @@ class AlbumViewController: UIViewController {
         let layout = albumCollectionView!.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: (albumCollectionView.frame.size.width), height: (albumCollectionView.bounds.size.height)/2.2)
                 albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-
+ 
         
+    }
+    
+    // Add new Album
+    @IBAction func addNew(_ sender: Any) {
+            let a = AlbumList()
+       
+            a.addNewAlbum(title: "orz", imageName: "item0")
+        a.addNewAlbum(title: "orz", imageName: "item1")
+        albumData = AlbumList.fetchAlbumArray()
+        
+            self.albumCollectionView.reloadData()
+            
     }
     
     
