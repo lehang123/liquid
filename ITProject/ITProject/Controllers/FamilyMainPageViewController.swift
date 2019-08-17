@@ -89,7 +89,7 @@ class FamilyMainPageViewController: UIViewController {
     
     func collectData(){
         items = [
-            ModelCollectionFlowLayout(title: "homeIcon", image: UIImage(named: "homeIcon")),
+            ModelCollectionFlowLayout(title: "Album", image: UIImage(named: "imageIcon")),
             ModelCollectionFlowLayout(title: "settingIcon", image: UIImage(named: "settingIcon")),
             ModelCollectionFlowLayout(title: "imageIcon", image: UIImage(named: "imageIcon")),
         ]
@@ -112,14 +112,14 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let funct = items[(indexPath as NSIndexPath).row]
         
-            if funct.title == "homeIcon" {
+            if funct.title == "Album" {
                 // through code
 //                let vc = SettingViewController()
 //                self.navigationController?.pushViewController(vc, animated: true)
                 
                 // through storyboard
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "SettingViewController")
+                let vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
                 self.navigationController!.pushViewController(vc, animated: true) // this line shows error
     
             }
