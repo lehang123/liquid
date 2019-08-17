@@ -309,7 +309,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="familyBackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="hQG-Td-jmp">
-                                <rect key="frame" x="0.0" y="64" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FFFFFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOD-pg-66C">
                                 <rect key="frame" x="183" y="99" width="57" height="21"/>
@@ -319,7 +319,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="HaD-tf-z39">
-                                <rect key="frame" x="25" y="248" width="160" height="160"/>
+                                <rect key="frame" x="25" y="184" width="160" height="160"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jkZ-yY-BT1" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
@@ -336,7 +336,7 @@
                                 </constraints>
                             </view>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="8" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zdo-AO-OHu">
-                                <rect key="frame" x="0.0" y="424" width="320" height="187.5"/>
+                                <rect key="frame" x="0.0" y="357" width="320" height="187.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="j0l-eb-qQx" customClass="UPCarouselFlowLayout" customModule="UPCarouselFlowLayout">
                                     <size key="itemSize" width="120" height="150"/>
@@ -393,7 +393,7 @@
                             <constraint firstItem="hQG-Td-jmp" firstAttribute="width" secondItem="VlL-iV-m8m" secondAttribute="width" id="S1K-Yp-RjJ"/>
                             <constraint firstItem="HaD-tf-z39" firstAttribute="centerY" secondItem="hQG-Td-jmp" secondAttribute="centerY" constant="-20" id="eOn-bY-qvA"/>
                             <constraint firstItem="rRE-pQ-YPd" firstAttribute="trailing" secondItem="Zdo-AO-OHu" secondAttribute="trailing" id="fjh-jL-MbD"/>
-                            <constraint firstItem="hQG-Td-jmp" firstAttribute="top" secondItem="rRE-pQ-YPd" secondAttribute="top" id="umN-MP-9eK"/>
+                            <constraint firstItem="hQG-Td-jmp" firstAttribute="top" secondItem="VlL-iV-m8m" secondAttribute="top" id="umN-MP-9eK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rRE-pQ-YPd"/>
                     </view>
@@ -916,11 +916,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kfA-TP-qNn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-<<<<<<< HEAD
-            <point key="canvasLocation" x="5758.125" y="-652.81690140845069"/>
-=======
             <point key="canvasLocation" x="4760.625" y="-652.81690140845069"/>
->>>>>>> cff997aa3ba9ef1fbd3232f6b245e082cd67735b
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="stf-yr-PMm">
@@ -1004,15 +1000,11 @@
         <!--Album Cover View Controller-->
         <scene sceneID="ltI-Uc-nAg">
             <objects>
-<<<<<<< HEAD
                 <viewController storyboardIdentifier="AlbumCoverViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="52z-VG-Mfg" customClass="AlbumCoverViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yco-Jd-fsv"/>
                         <viewControllerLayoutGuide type="bottom" id="CFR-gn-Nms"/>
                     </layoutGuides>
-=======
-                <viewController id="52z-VG-Mfg" customClass="AlbumViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
->>>>>>> cff997aa3ba9ef1fbd3232f6b245e082cd67735b
                     <view key="view" contentMode="scaleToFill" id="tqo-AZ-o71">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1063,26 +1055,16 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94509803920000002" green="0.94509803920000002" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-<<<<<<< HEAD
                             <constraint firstItem="0hV-k8-Tp2" firstAttribute="bottom" secondItem="CFR-gn-Nms" secondAttribute="top" id="4hh-rE-sz2"/>
                             <constraint firstItem="0hV-k8-Tp2" firstAttribute="leading" secondItem="tqo-AZ-o71" secondAttribute="leading" id="9Pz-id-AaU"/>
                             <constraint firstItem="0hV-k8-Tp2" firstAttribute="top" secondItem="tYC-sL-3bH" secondAttribute="bottom" id="DS6-yo-gtL"/>
                             <constraint firstAttribute="trailing" secondItem="0hV-k8-Tp2" secondAttribute="trailing" id="G3k-Yd-p2B"/>
                             <constraint firstItem="bUI-VY-hdm" firstAttribute="height" secondItem="tYC-sL-3bH" secondAttribute="height" id="JbZ-v7-bbx"/>
-                            <constraint firstItem="3bG-Qh-K76" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tYC-sL-3bH" secondAttribute="trailing" symbolic="YES" id="LfL-7N-Itg"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tYC-sL-3bH" secondAttribute="trailing" symbolic="YES" id="LfL-7N-Itg"/>
                             <constraint firstItem="bUI-VY-hdm" firstAttribute="trailing" secondItem="tqo-AZ-o71" secondAttribute="trailingMargin" id="VRq-ul-dz7"/>
                             <constraint firstItem="tYC-sL-3bH" firstAttribute="top" secondItem="yco-Jd-fsv" secondAttribute="bottom" constant="32" id="gMU-Gt-zAx"/>
                             <constraint firstItem="bUI-VY-hdm" firstAttribute="top" secondItem="tYC-sL-3bH" secondAttribute="top" id="kCq-W7-31n"/>
                             <constraint firstItem="tYC-sL-3bH" firstAttribute="leading" secondItem="tqo-AZ-o71" secondAttribute="leading" constant="16" id="rHA-dB-Pk9"/>
-=======
-                            <constraint firstItem="0hV-k8-Tp2" firstAttribute="bottom" secondItem="Dmj-ic-rjY" secondAttribute="bottom" id="4hh-rE-sz2"/>
-                            <constraint firstItem="0hV-k8-Tp2" firstAttribute="leading" secondItem="Dmj-ic-rjY" secondAttribute="leading" id="9Pz-id-AaU"/>
-                            <constraint firstItem="0hV-k8-Tp2" firstAttribute="top" secondItem="tYC-sL-3bH" secondAttribute="bottom" constant="18" id="DS6-yo-gtL"/>
-                            <constraint firstItem="Dmj-ic-rjY" firstAttribute="trailing" secondItem="0hV-k8-Tp2" secondAttribute="trailing" id="G3k-Yd-p2B"/>
-                            <constraint firstItem="Dmj-ic-rjY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tYC-sL-3bH" secondAttribute="trailing" symbolic="YES" id="LfL-7N-Itg"/>
-                            <constraint firstItem="tYC-sL-3bH" firstAttribute="top" secondItem="Dmj-ic-rjY" secondAttribute="top" constant="32" id="gMU-Gt-zAx"/>
-                            <constraint firstItem="tYC-sL-3bH" firstAttribute="leading" secondItem="Dmj-ic-rjY" secondAttribute="leading" constant="16" id="rHA-dB-Pk9"/>
->>>>>>> cff997aa3ba9ef1fbd3232f6b245e082cd67735b
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Dmj-ic-rjY"/>
                     </view>
@@ -1104,12 +1086,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="uf1-AN-yLR">
+                        <view key="tableHeaderView" contentMode="scaleToFill" misplaced="YES" id="uf1-AN-yLR">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="420"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="-158" width="375" height="736"/>
+                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1181,7 +1163,7 @@
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item2" translatesAutoresizingMaskIntoConstraints="NO" id="RZ5-c5-gxW">
-                                                                <rect key="frame" x="0.0" y="84.5" width="185" height="16"/>
+                                                                <rect key="frame" x="0.0" y="-275.5" width="185" height="736"/>
                                                             </imageView>
                                                         </subviews>
                                                     </view>
