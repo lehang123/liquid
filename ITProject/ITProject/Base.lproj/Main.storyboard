@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <<<<<<< HEAD
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="L4W-gn-8fX">
-=======
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="52z-VG-Mfg">
->>>>>>> 5837a6183e067bc823c5943e2cdb0cda6aefe5e2
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QG7-7k-0eG">
+>>>>>>> 244a440c4b1930714df0d5f85b030777ef5cda39
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
