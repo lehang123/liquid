@@ -11,6 +11,7 @@ import UIKit
 import SideMenu
 import UPCarouselFlowLayout
 import FirebaseStorage
+import Firebase
 import EnhancedCircleImageView
 
 
@@ -30,9 +31,7 @@ class FamilyMainPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // check if client login
-        login()
+
         
         //testing functions. dont forget to delete!::
         
@@ -68,16 +67,6 @@ class FamilyMainPageViewController: UIViewController {
 
       
     }
-    
-    func login(){
-        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
-        let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
-        self.present(navController, animated:true, completion: nil)
-//        let loginViewController = (self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController"))!
-//        self.present(loginViewController, animated: true, completion: nil)
-    }
-    
-    
     
     // MARK: - Navigation
     
