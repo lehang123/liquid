@@ -26,18 +26,19 @@ class LoginViewController: UIViewController {
     @IBAction func LoginButtonOnTouch(_ sender: Any) {
         let account: String = ID.text!
         let pw: String = password.text!
+        Util.ShowActivityIndicator(withStatus: "login...")
         Auth.auth().signIn(withEmail: account, password: pw) { [weak self] user, error in 
             if error != nil {
+                Util.DismissActivityIndicator()
                 let alertController = UIAlertController(title: LoginViewController.ACCOUNT_INCORRECT_TITLE, message:
                     LoginViewController.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
                 self?.present(alertController, animated: true, completion: nil)
             } else {
-//                let next = self?.storyboard?.instantiateViewController(withIdentifier: "MainViewController")
-//                self?.navigationController?.pushViewController(next!, animated: true)
-//                self?.present(next!, animated: true, completion: nil)
-//                user?.user.uid
-
+                Util.DismissActivityIndicator()
+                
+//                self?.getUserInfo(usrResult :user!)
+                
                 self?.dismiss(animated: true, completion: nil)
                 
 //                self?.tFunction()
@@ -45,6 +46,12 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+//    private func getUserInfo(usrResult : AuthDataResult){
+//        let profilePhotoUrl = usrResult.user.photoURL
+//        let username = usrResult.user.displayName
+//
+//    }
 
     public func tFunction(){
         // test for upload file

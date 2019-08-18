@@ -8,7 +8,13 @@
 
 import UIKit
 import SideMenu
+import Firebase
+
 class SideMenuTableViewController: UITableViewController {
+    
+    struct userInfo {
+        var username: String
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -66,11 +72,14 @@ class SideMenuTableViewController: UITableViewController {
             let alertController = UIAlertController(title: "Log out", message:"Are you sure to log out?", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "NO", style: .default))
             alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action: UIAlertAction!) in
+                do {
+                    // dismiss the side bar(have to)
+                    self.dismiss(animated: true, completion: nil)
+                    try Auth.auth().signOut()
+                }catch let e as NSError {
+                    Util.ShowAlert(title: "Sign Out Fail", message: e.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                }
 
-                let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController")
-                let navController = UINavigationController(rootViewController: VC1)
-                self.present(navController, animated:true, completion: nil)
-                
             }))
             self.present(alertController, animated: true, completion: nil)
             
