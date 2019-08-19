@@ -35,10 +35,11 @@ class FamilyMainPageViewController: UIViewController {
         
         //testing functions. dont forget to delete!::
         
-//        AlbumDBController.getInstance().addNewAlbum(albumName: "any12i3o12", description: "halo test");
+//        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
     
-        //AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo test", ext: ".zip", albumUID: "h846WxUpIJXu7z2hOk8y", mediaPath: "somewhere_in_my_heart.zip");
+//        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
         ///
+//        AlbumDBController.getInstance().addAlbumSnapshotListener();
         
         
         

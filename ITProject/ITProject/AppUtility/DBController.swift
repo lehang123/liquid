@@ -48,6 +48,18 @@ class DBController {
         return self.db.collection(collectionName).document(documentUID);
     }
     
+    public func addSnapshotListener(collectionName: String, documentUID: String,  completion: @escaping (DocumentSnapshot?, Error?) -> ()){
+        
+        self.getDocumentReference(collectionName: collectionName, documentUID: documentUID)
+            .addSnapshotListener {(document, error) in
+                
+                completion(document, error);
+             
+        }
+        
+        
+    }
+    
     /// <#Description#>
     /// gives a DocumentSnapshot instance of the document at completion.
     /// - Parameters:
