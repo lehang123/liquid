@@ -23,6 +23,8 @@ class AlbumDBController {
     public static let ALBUM_DOCUMENT_FIELD_DESCRIPTION = "description" // album's description
 
     public static let ALBUM_DOCUMENT_FIELD_MEDIA = "media_file_paths" // the media files associated
+    public static let ALBUM_DOCUMENT_FIELD_FAMILY = "family_path" // the families associated in album
+    public static let ALBUM_DOCUMENT_FIELD_OWNER = "owner_path" // the owner associated in album
 
     
     /* constant for MEDIA collections */
@@ -33,13 +35,9 @@ class AlbumDBController {
     public static let MEDIA_DOCUMENT_FIELD_DESCRIPTION = "description" // description field
     public static let MEDIA_DOCUMENT_FIELD_EXTENSION = "extension" // file extension field
 
-//    private var storage:Storage;
-//    private var storageRef:StorageReference;
-//
+
     init (){
-//         storage = Storage.storage()
-//        storageRef = storage.reference()
-//
+
 
     }
     /// <#Description#>
@@ -60,6 +58,7 @@ class AlbumDBController {
     public func addNewAlbum(albumName : String, description: String){
         //get currentUser's family
         let user = Auth.auth().currentUser!.uid
+        let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user);
         DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID:  user)
         {  (document, error) in
             if let document = document, document.exists {
@@ -68,11 +67,21 @@ class AlbumDBController {
 //                let familyDocumentReference:DocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
                 
                         /*init new album */
-                let albumDocumentReference =  DBController.getInstance().addDocumentToCollection(inputData: [AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME : albumName, AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA : [], AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description ], collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+                //update: album has reference to family + owner/creator.
+                let albumDocumentReference =  DBController.getInstance().addDocumentToCollection(inputData: [AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME : albumName, AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA : [], AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description , AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY : familyDocRef!, AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : userDocumentReference], collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+                
                 
                 
                         /*add album to family*/
                         DBController.getInstance().updateArrayField(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyDocRef!.documentID, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS, appendValue:albumDocumentReference );
+                
+                self.addAlbumSnapshotListener(familyDocumentReference: familyDocRef!);
+                
+                /*check pending writes*/
+//                 CacheHandler.getInstance().checkPendingWrites(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumDocumentReference.documentID);
+                
+           
+                
                 
                 
             } else {
@@ -100,5 +109,40 @@ class AlbumDBController {
          DBController.getInstance().updateArrayField(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID, fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA, appendValue:mediaPath );
     }
     
+    
+    public func addAlbumSnapshotListener(familyDocumentReference: DocumentReference){
+        
+        DBController
+            .getInstance()
+            .getDB()
+            .collection(AlbumDBController.ALBUM_COLLECTION_NAME)
+            .whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocumentReference as Any)
+            .addSnapshotListener { querySnapshot, error in
+                guard let snapshot = querySnapshot else {
+                    print("addAlbumSnapshotListener::: Error fetching snapshots: \(error!)")
+                    return
+                }
+                snapshot.documentChanges.forEach { diff in
+                    if (diff.type == .added) {
+                        print("addAlbumSnapshotListener::: New photos added: \(diff.document.data())")
+                    }
+                    if (diff.type == .modified) {
+                        print(" addAlbumSnapshotListener ::: Modified photos: \(diff.document.data())")
+                    }
+                    if (diff.type == .removed) {
+                        print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
+                    }
+                }
+            }
+        
+        }
+            
+        
+        
+        
+        
+        
+    
+   
 }
 
