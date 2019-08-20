@@ -17,8 +17,6 @@ import FirebaseFirestore
 class CacheHandler {
     private static var single : CacheHandler!;
     init (){
-        
-        
     }
     public static func getInstance() -> CacheHandler{
         if (single == nil){
@@ -37,13 +35,6 @@ class CacheHandler {
         };
     
     }
-    
-    
-    
-        
-        
-      
-        
     
 }
     

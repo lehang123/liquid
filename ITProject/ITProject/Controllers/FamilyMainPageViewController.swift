@@ -31,7 +31,11 @@ class FamilyMainPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.navigationController?.navigationBar.items?.forEach{
+            (item) in
+            item.leftBarButtonItem?.tintColor = UIColor.black
+        }
         
         //testing functions. dont forget to delete!::
         
