@@ -11,6 +11,8 @@ import UIKit
 import EnhancedCircleImageView
 
 class ProfileViewController: UIViewController {
+    
+    
 
     @IBOutlet weak var profilePicture: EnhancedCircleImageView!
     @IBOutlet weak var name: UILabel!
@@ -23,7 +25,7 @@ class ProfileViewController: UIViewController {
         getName()
         profilePicture.image=#imageLiteral(resourceName: "tempProfileImage")
         
-        
+        //self.tableView.delgate = self
     }
     
     @IBAction private func close() {
@@ -56,3 +58,4 @@ class ProfileViewController: UIViewController {
     
 
 }
+
