@@ -10,12 +10,16 @@ import Foundation
 
 import UIKit
 
-class AlbumCoverDetail
+class AlbumCoverDetail: Equatable
 {
-    // MARK: - Public API
-    var title = ""
-    var featuredImage: UIImage
+    static func == (lhs: AlbumCoverDetail, rhs: AlbumCoverDetail) -> Bool {
+        return lhs.UID == rhs.UID
+    }
     
+    // MARK: - Public API
+    private var title = ""
+    private var featuredImage: UIImage
+    private var UID = "Util.GenerateUDID()"
     
     init(title: String, featuredImage: UIImage)
     {
@@ -23,6 +27,24 @@ class AlbumCoverDetail
         self.featuredImage = featuredImage
     }
     
-    // MARK: - Private
-
+    public func getUID()->String{
+        return self.UID
+    }
+    
+    public func getFeatureImage()->UIImage{
+        return self.featuredImage
+    }
+    
+    public func getTitle()->String{
+        return self.title
+    }
+    
+    public func setFeatureImage(image: UIImage){
+        self.featuredImage = image
+    }
+    
+    public func setTitle(title: String){
+        self.title = title
+    }
+    
 }

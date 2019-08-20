@@ -37,6 +37,12 @@ class ChangePasswordViewController : UIViewController {
                            action_title: Util.BUTTON_DISMISS,
                            on: self)
         }
+        if (originalPW.text!.count<8){
+            Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_INVALID,
+                           message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
+        }
 
         if (newPW.text == confirmedPassword.text) {
     

@@ -31,17 +31,14 @@ class FamilyMainPageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.navigationController?.navigationBar.items?.forEach{
+            (item) in
+            item.leftBarButtonItem?.tintColor = UIColor.black
+        }
         
         //testing functions. dont forget to delete!::
-        
-//        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
-    
-//        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
-        ///
-//        AlbumDBController.getInstance().addAlbumSnapshotListener();
-        
-        
+       test()
         
         // set Profile Image
         profileImg.image = UIImage(named: "tempProfileImage")
@@ -122,6 +119,27 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
         cell.iconImage.image = items[indexPath.row].image
         cell.labelInf.text = items[indexPath.row].title
         return cell
+    }
+    
+    func test (){
+        
+        
+        
+        //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
+        
+        //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
+        ///
+        //        AlbumDBController.getInstance().addAlbumSnapshotListener();
+        var x:CacheHandler  = CacheHandler();
+        var y :CacheHandler = CacheHandler();
+        x.setCache(obj: "halo" as AnyObject, forKey: 0 as AnyObject);
+        y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
+        print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
+        print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
+        
+
+
+        
     }
 }
 
