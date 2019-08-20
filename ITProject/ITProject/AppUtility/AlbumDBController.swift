@@ -110,6 +110,9 @@ class AlbumDBController {
     }
     
     
+    
+    
+    
     public func addAlbumSnapshotListener(familyDocumentReference: DocumentReference){
         
         DBController
@@ -133,16 +136,7 @@ class AlbumDBController {
                         print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
                     }
                 }
-            }
-        
+            }  
         }
-            
-        
-        
-        
-        
-        
-    
-   
 }
 
