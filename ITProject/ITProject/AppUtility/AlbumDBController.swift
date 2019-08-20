@@ -110,6 +110,9 @@ class AlbumDBController {
     }
     
     
+    
+    
+    
     public func addAlbumSnapshotListener(familyDocumentReference: DocumentReference){
         
         DBController
