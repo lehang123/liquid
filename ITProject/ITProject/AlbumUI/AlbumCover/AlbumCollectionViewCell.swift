@@ -14,7 +14,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var albumTitleLabel: UILabel!
     @IBOutlet weak var backgroundMask: UIView!
     
-    var album: AlbumCoverDetail? {
+    var album: AlbumDetail? {
         didSet {
             self.updateUI()
         }
@@ -23,7 +23,7 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     private func updateUI()
     {
         if let album = album {
-            backgroundImageView.image = album.getFeatureImage()
+            backgroundImageView.image = album.getCoverImage()
             albumTitleLabel.text = album.getTitle()
             
             backgroundMask.layer.cornerRadius = 15.0

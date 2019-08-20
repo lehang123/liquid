@@ -9,7 +9,7 @@
 import UIKit
 
 class AlbumDetailTableViewController: UITableViewController {
-    var albumd: TempAlbumDetail!
+    var albumd: AlbumDetail!
     
     @IBOutlet weak var albumCoverImageView: UIImageView!
     var headerView : UIView!
@@ -31,7 +31,7 @@ class AlbumDetailTableViewController: UITableViewController {
         self.clearsSelectionOnViewWillAppear = false
 
 //        title = albumd.name
-        albumCoverImageView.image = albumd.images?.first
+        albumCoverImageView.image = albumd.getCoverImage()
 
         
         
@@ -139,7 +139,7 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
-    // MARK: - UICollectionViewDataSource
+// TODO: finish collection view controller
 
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
@@ -150,8 +150,8 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
-//            let pho = AlbumCoverList.fetchAlbumArray()
-//            cell.image = pho[indexPath.item].getFeatureImage()
+            let photo = albumd.getImageList()
+           cell.image = photo[indexPath.item]
 
             return cell
         }
