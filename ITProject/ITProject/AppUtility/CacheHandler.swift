@@ -14,7 +14,7 @@ import FirebaseFirestore
 import UIKit
 
 /// <#Description#>
-///Handles caching data for various Firebase services.
+///Handles caching data.
 class CacheHandler {
     
     private var dataCache :NSCache<AnyObject, AnyObject>;
@@ -41,11 +41,47 @@ class CacheHandler {
         self.dataCache.setObject( obj, forKey: forKey);
         CacheHandler.addCacheCounter();
     }
+    
+    
     public func getCache (forKey: AnyObject) -> AnyObject{
+        self.dataCache.object(forKey: forKey)
         
         return self.dataCache.object(forKey: forKey)!;
         
     }
+    
+    /*using NSDiscardableContent's protocol for data that has short lifecycles:*/
+    
+    public func setDiscardableCache(obj: NSDiscardableContent, forKey: AnyObject){
+        
+        
+        self.dataCache.setObject( obj, forKey:forKey );
+    }
+    public func getDiscardableCache( forKey: AnyObject) ->NSDiscardableContent{
+        var x:Bool  = self.dataCache.object(forKey: forKey)!.beginContentAccess();
+        return self.dataCache.object(forKey: forKey)! as! NSDiscardableContent;
+        
+    }
+    
+    public func finishDiscardableAccess( forKey: AnyObject){
+         self.dataCache.object(forKey: forKey)!.endContentAccess();
+        
+    }
+    
+    public func enhanceMemory( forKey: AnyObject){
+        let willDiscard:NSDiscardableContent = self.dataCache.object(forKey: forKey) as! NSDiscardableContent;
+        
+        willDiscard.discardContentIfPossible();
+        
+        
+    }
+    
+    
+    
+    
+ 
+    
+    
 
 //    public func checkPendingWrites(collectionName: String, documentUID: String){
 //        DBController.getInstance().addSnapshotListener(collectionName: collectionName, documentUID: documentUID) { (documentSnapshot, error) in
