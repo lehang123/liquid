@@ -23,9 +23,8 @@ class AlbumCollectionViewCell: UICollectionViewCell {
     private func updateUI()
     {
         if let album = album {
-            backgroundImageView.image = album.featuredImage
-            albumTitleLabel.text = album.title
-            
+            backgroundImageView.image = album.getFeatureImage()
+            albumTitleLabel.text = album.getTitle()
             
             backgroundMask.layer.cornerRadius = 15.0
             backgroundMask.layer.masksToBounds = true

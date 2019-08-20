@@ -21,6 +21,7 @@ class CacheHandler {
     private static var cachedCounter : Int = 0;  // keeps track of cachedData load. useful to check for limit later on.
     private static var dataObjects : Int = 0; // keeps track of # of objects ofCacheHandler.
     init (){
+
          dataCache = NSCache<AnyObject, AnyObject>()
         CacheHandler.addObjects();
 
@@ -94,13 +95,6 @@ class CacheHandler {
 //        };
 //
 //    }
-    
-    
-    
-        
-        
-      
-        
     
 }
     

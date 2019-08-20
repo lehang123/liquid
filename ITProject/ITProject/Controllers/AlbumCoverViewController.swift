@@ -10,10 +10,13 @@ import UIKit
 import UPCarouselFlowLayout
 
 class AlbumCoverViewController: UIViewController {
+    
+    private static let NIB_NAME = "AlbumCollectionViewCell"
+    private static let CELL_IDENTIFIER = "AlbumCell"
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
     let cellScaling: CGFloat = 0.6
-    var albumData = AlbumCoverList.fetchAlbumArray()
+    let albumCoverList = AlbumCoverList()
     
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
@@ -22,19 +25,33 @@ class AlbumCoverViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.loadAlbumCollectionView()
+        Util.ShowActivityIndicator(withStatus: "loading")
+        // todo : load necessary here
+        Util.downloadImage(from: URL (string:"https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
+            data, urlResponse, error in
+            Util.DismissActivityIndicator()
+            if error == nil{
+                // success do stuffs
+                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+                print("AlbumCoverViewController : init ")
+                print( Thread.current)
+                self.albumCollectionView.reloadData()
+            }
+        }
+//        loadAlbumCollectionView()
+    }
     
+    private func loadAlbumCollectionView(){
         self.albumCollectionView.showsVerticalScrollIndicator = false
-        
-        albumCollectionView.register(UINib.init(nibName: "AlbumCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "AlbumCell")
-
-   
-        
-
+        albumCollectionView.register(UINib.init(nibName: AlbumCoverViewController.NIB_NAME, bundle: nil), forCellWithReuseIdentifier: AlbumCoverViewController.CELL_IDENTIFIER)
         let layout = albumCollectionView!.collectionViewLayout as! UICollectionViewFlowLayout
         layout.itemSize = CGSize(width: (albumCollectionView.frame.size.width), height: (albumCollectionView.bounds.size.height)/2.2)
-                albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
- 
-        
+        albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -42,9 +59,9 @@ class AlbumCoverViewController: UIViewController {
         // NEED FIXED: Combine AlbumCoverList and TempAlb as one
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
-                let selectedAlbum = self.albumData[(sender as! IndexPath).row]
+                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
                 for i in TempAlbumDetail.fetchPhoto() {
-                    if i.name == selectedAlbum.title {
+                    if i.name == selectedAlbum.getTitle() {
                         albumDetailTVC.albumd = i
                     }
                 }
@@ -55,20 +72,13 @@ class AlbumCoverViewController: UIViewController {
     // Add new Album
     // Fixed : connect AlbumCover and AlbumDetail
     @IBAction func addNew(_ sender: Any) {
-        let a = AlbumCoverList()
-       
-        a.addNewAlbum(title: "orz", imageName: "item4")
-       
-        albumData = AlbumCoverList.fetchAlbumArray()
+    
+       albumCoverList.addNewAlbum(title: "orz", imageName: "item4")
+//        albumData = AlbumCoverList.fetchAlbumArray()
         
         self.albumCollectionView.reloadData()
             
     }
-    
-    
-
-    
-
 }
 
 extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
@@ -78,25 +88,25 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return albumData.count
+//        return albumData.count
+        return albumCoverList.count()
     }
-    
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        _ = albumData[(indexPath as NSIndexPath).row]
+//        _ = albumData[(indexPath as NSIndexPath).row]
 
-                self.performSegue(withIdentifier: Storyboard.showAlbumDetail, sender: indexPath)
+        self.performSegue(withIdentifier: Storyboard.showAlbumDetail, sender: indexPath)
 
     }
     
 
-    
+    /*called in viewDidLoad*/
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
         
-        cell.album = albumData[indexPath.item]
+//        cell.album = albumData[indexPath.item]
+        cell.album = albumCoverList.getAlbum(index: indexPath.item)
         
         return cell
     }
