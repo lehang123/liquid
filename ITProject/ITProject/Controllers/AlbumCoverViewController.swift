@@ -16,7 +16,7 @@ class AlbumCoverViewController: UIViewController {
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
     let cellScaling: CGFloat = 0.6
-    let albumCoverList = AlbumCoverList()
+    let albumCoverList = AlbumList()
     
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
@@ -26,24 +26,29 @@ class AlbumCoverViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
-        Util.ShowActivityIndicator(withStatus: "loading")
-        // todo : load necessary here
-        Util.downloadImage(from: URL (string:"https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
-            data, urlResponse, error in
-            Util.DismissActivityIndicator()
-            if error == nil{
-                // success do stuffs
-                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-                print("AlbumCoverViewController : init ")
-                print( Thread.current)
-                self.albumCollectionView.reloadData()
-            }
-        }
+//        Util.ShowActivityIndicator(withStatus: "loading")
+//        // todo : load necessary here
+//        Util.downloadImage(from: URL (string:"https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
+//            data, urlResponse, error in
+//            Util.DismissActivityIndicator()
+//            if error == nil{
+//                // success do stuffs
+//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
+//                print("AlbumCoverViewController : init ")
+//                print( Thread.current)
+//                self.albumCollectionView.reloadData()
+//            }
+//        }
 //        loadAlbumCollectionView()
+        
+        //TEMPTESTING
+        self.albumCoverList.addNewAlbum(title: "A", description: "hello1")
+        self.albumCoverList.addNewAlbum(title: "SB", description: "hello2",images : [UIImage(named:"item0")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item1")!])
+        
     }
     
     private func loadAlbumCollectionView(){
@@ -54,27 +59,34 @@ class AlbumCoverViewController: UIViewController {
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//        // NEED FIXED: Combine AlbumCoverList and TempAlb as one
+//        if segue.identifier == Storyboard.showAlbumDetail {
+//            if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
+//                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
+//                for i in TempAlbumDetail.fetchPhoto() {
+//                    if i.name == selectedAlbum.getTitle() {
+//                        albumDetailTVC.albumd = i
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        // NEED FIXED: Combine AlbumCoverList and TempAlb as one
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
-                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
-                for i in TempAlbumDetail.fetchPhoto() {
-                    if i.name == selectedAlbum.getTitle() {
-                        albumDetailTVC.albumd = i
-                    }
-                }
+                let selectedShoe = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
+                albumDetailTVC.albumd = selectedShoe
             }
         }
     }
     
     // Add new Album
-    // Fixed : connect AlbumCover and AlbumDetail
     @IBAction func addNew(_ sender: Any) {
     
-       albumCoverList.addNewAlbum(title: "orz", imageName: "item4")
-//        albumData = AlbumCoverList.fetchAlbumArray()
+        albumCoverList.addNewAlbum(title: "orz", description: "hello233", images : [UIImage(named:"item1")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item0")!])
         
         self.albumCollectionView.reloadData()
             

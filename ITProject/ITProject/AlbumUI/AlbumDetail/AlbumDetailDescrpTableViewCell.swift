@@ -13,7 +13,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
    
     @IBOutlet weak var descpDetail: UILabel!
     @IBOutlet weak var descpTitle: UILabel!
-    var descrp: TempAlbumDetail! {
+    var descrp: AlbumDetail! {
         didSet {
             self.updateUI()
         }
@@ -22,7 +22,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     func updateUI()
     {
         descpTitle.text = "Description"
-        descpDetail.text = descrp.description
+        descpDetail.text = descrp.getDescription()
     }
 
 }
