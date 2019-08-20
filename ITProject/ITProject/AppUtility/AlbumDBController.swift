@@ -136,16 +136,7 @@ class AlbumDBController {
                         print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
                     }
                 }
-            }
-        
+            }  
         }
-            
-        
-        
-        
-        
-        
-    
-   
 }
 

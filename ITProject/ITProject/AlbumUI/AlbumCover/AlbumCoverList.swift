@@ -10,22 +10,35 @@ import Foundation
 import UIKit
 
 class AlbumCoverList {
+
     
-    private static var currentAlbum = [
-        AlbumCoverDetail(title: "Sydney", featuredImage: UIImage(named: "item0")!),
-        AlbumCoverDetail(title: "Cafe with Friends", featuredImage: UIImage(named: "item1")!),
-        AlbumCoverDetail(title: "Study Development", featuredImage: UIImage(named: "item2")!),
-        AlbumCoverDetail(title: "ChengHong", featuredImage: UIImage(named: "item3")!),
-        
-        ]
+    private var currentAlbums:[AlbumCoverDetail] = []
+
     // dummy data
-    public static func fetchAlbumArray() -> [AlbumCoverDetail]
+    public func fetchAlbumArray() -> [AlbumCoverDetail]
     {
-        return currentAlbum
+        return currentAlbums
     }
     
     public func addNewAlbum(title newAlbumTitle: String, imageName newAlbumImage : String) {
-        AlbumCoverList.currentAlbum.append(AlbumCoverDetail(title: newAlbumTitle, featuredImage: UIImage(named: newAlbumImage)!))
+        currentAlbums.append(AlbumCoverDetail(title: newAlbumTitle, featuredImage: UIImage(named: newAlbumImage)!))
     }
     
+    public func addNewAlbum(title newAlbumTitle: String, data imageData : Data){
+        if !currentAlbums.contains(AlbumCoverDetail(title: newAlbumTitle, featuredImage: UIImage(data: imageData)!)){
+            currentAlbums.append(AlbumCoverDetail(title: newAlbumTitle, featuredImage: UIImage(data: imageData)!))
+        }
+    }
+    
+    public  func removeAlbum(albumToDelete: AlbumCoverDetail) {
+        currentAlbums.remove(at: currentAlbums.firstIndex(of: albumToDelete)!)
+    }
+    
+    public func getAlbum(index : Int)->AlbumCoverDetail{
+        return currentAlbums[index]
+    }
+    
+    public func count()->Int{
+        return currentAlbums.count
+    }
 }
