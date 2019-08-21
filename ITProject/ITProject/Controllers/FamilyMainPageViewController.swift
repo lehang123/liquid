@@ -20,7 +20,7 @@ struct ModelCollectionFlowLayout {
     var image: UIImage!
 }
 
-class FamilyMainPageViewController: UIViewController {
+class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
     
     @IBOutlet weak var profileImg: EnhancedCircleImageView!
     @IBOutlet weak var profileImgContainer: UIView!
@@ -82,10 +82,6 @@ class FamilyMainPageViewController: UIViewController {
         ]
     }
     
-
-}
-    
-extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -94,25 +90,28 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
         return items.count
     }
     
-
+    var vc: UIViewController?
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let funct = items[(indexPath as NSIndexPath).row]
         
-            if funct.title == "Album" {
-                // through code
-//                let vc = SettingViewController()
-//                self.navigationController?.pushViewController(vc, animated: true)
-                
-                // through storyboard
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
-                self.navigationController!.pushViewController(vc, animated: true) // this line shows error
-    
+        if funct.title == "Album" {
+            // through code
+            //                let vc = SettingViewController()
+            //                self.navigationController?.pushViewController(vc, animated: true)
+            
+            // through storyboard
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if vc == nil{
+                vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
             }
-        
-    }
 
+            self.navigationController!.pushViewController(vc!, animated: true)
+            // this line shows error
+            
+        }
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CarouselEffectCollectionViewCell
@@ -122,8 +121,6 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func test (){
-        
-        
         
         //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
         
@@ -136,10 +133,56 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
         y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
         print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
         print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
-        
-
-
-        
     }
+
 }
+    
+//extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+//    func numberOfSections(in collectionView: UICollectionView) -> Int {
+//        return 1
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return items.count
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let funct = items[(indexPath as NSIndexPath).row]
+//
+//            if funct.title == "Album" {
+//                // through code
+////                let vc = SettingViewController()
+////                self.navigationController?.pushViewController(vc, animated: true)
+//
+//                // through storyboard
+//                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                let vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
+//                self.navigationController!.pushViewController(vc, animated: true) // this line shows error
+//
+//            }
+//    }
+//
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CarouselEffectCollectionViewCell
+//        cell.iconImage.image = items[indexPath.row].image
+//        cell.labelInf.text = items[indexPath.row].title
+//        return cell
+//    }
+//
+//    func test (){
+//
+//        //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
+//
+//        //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
+//        ///
+//        //        AlbumDBController.getInstance().addAlbumSnapshotListener();
+//        var x:CacheHandler  = CacheHandler();
+//        var y :CacheHandler = CacheHandler();
+//        x.setCache(obj: "halo" as AnyObject, forKey: 0 as AnyObject);
+//        y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
+//        print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
+//        print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
+//    }
+//}
 
