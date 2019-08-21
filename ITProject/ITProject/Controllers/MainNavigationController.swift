@@ -57,7 +57,7 @@ class MainNavigationController :UINavigationController {
     
     private func loadInfo() {
         
-        let cache = CacheHandler()
+        let cache = CacheHandler.getInstance()
         loadName(cache: cache)
         
     }
@@ -74,7 +74,7 @@ class MainNavigationController :UINavigationController {
                     DispatchQueue.main.async {
                         let n = (document.data()!["name"])
                         cache.setCache(obj: n as AnyObject, forKey: "name" as AnyObject )
-                        print (cache.getCache(forKey: "name" as AnyObject))
+
                     }
                 }
             }

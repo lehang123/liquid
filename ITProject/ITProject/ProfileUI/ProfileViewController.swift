@@ -38,7 +38,8 @@ class ProfileViewController: UIViewController {
     func getName() {
         let user = Auth.auth().currentUser
         print ("tryuuuuuuyyyyyyyyyyyyyyyyyyyyyyyyyy")
-        print (CacheHandler.init().getCache(forKey: "name" as AnyObject))
+        print (CacheHandler.getInstance().getCache(forKey: "name" as AnyObject))
+        self.name.text = (CacheHandler.getInstance().getCache(forKey: "name" as AnyObject) as! String)
 //        if let user = user {
 //            let uid = user.uid
 //
