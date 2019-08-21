@@ -20,11 +20,23 @@ class CacheHandler {
     private var dataCache :NSCache<AnyObject, AnyObject>;
     private static var cachedCounter : Int = 0;  // keeps track of cachedData load. useful to check for limit later on.
     private static var dataObjects : Int = 0; // keeps track of # of objects ofCacheHandler.
+    
+    private static var single:CacheHandler!;
     init (){
 
         dataCache = NSCache<AnyObject, AnyObject>()
         CacheHandler.addObjects();
 
+    }
+    
+    /// <#Description#>
+    /// singleton pattern:
+    /// - Returns: return an instance of this CacheHandler.
+    public static func getInstance() -> CacheHandler{
+        if (single == nil){
+            single = CacheHandler()
+        }
+        return single;
     }
     
     private static func addObjects(){
