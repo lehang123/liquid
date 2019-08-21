@@ -26,24 +26,7 @@ class AlbumCoverViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
-//        Util.ShowActivityIndicator(withStatus: "loading")
-//        // todo : load necessary here
-//        Util.downloadImage(from: URL (string:"https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
-//            data, urlResponse, error in
-//            Util.DismissActivityIndicator()
-//            if error == nil{
-//                // success do stuffs
-//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-//                self.albumCoverList.addNewAlbum(title: "a", data: data!)
-//                print("AlbumCoverViewController : init ")
-//                print( Thread.current)
-//                self.albumCollectionView.reloadData()
-//            }
-//        }
-//        loadAlbumCollectionView()
+
         
         //TEMPTESTING
         self.albumCoverList.addNewAlbum(title: "A", description: "hello1")

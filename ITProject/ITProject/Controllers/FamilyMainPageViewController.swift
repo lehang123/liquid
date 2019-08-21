@@ -91,7 +91,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     var vc : UIViewController?
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let funct = items[(indexPath as NSIndexPath).row]
         
@@ -102,13 +102,14 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             
             // through storyboard
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
             if vc == nil {
             vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
             }
             self.navigationController!.pushViewController(vc!, animated: true) // this line shows error
             
         }
-        
+
     }
     
     
@@ -121,23 +122,19 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     
     func test (){
         
-        
-        
         //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
         
         //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
         ///
         //        AlbumDBController.getInstance().addAlbumSnapshotListener();
+
         var x:CacheHandler  = CacheHandler();
         var y :CacheHandler = CacheHandler();
         x.setCache(obj: "halo" as AnyObject, forKey: 0 as AnyObject);
         y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
         print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
         print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
-        
-        
-        
-        
+
     }
 
 }
@@ -151,8 +148,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 //        return items.count
 //    }
 //
-//
-//
+
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        let funct = items[(indexPath as NSIndexPath).row]
 //
@@ -167,7 +163,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 //                self.navigationController!.pushViewController(vc, animated: true) // this line shows error
 //
 //            }
-//
+
 //    }
 //
 //
@@ -182,6 +178,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 //
 //
 //
+
 //        //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
 //
 //        //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
