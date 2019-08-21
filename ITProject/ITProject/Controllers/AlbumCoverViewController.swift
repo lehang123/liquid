@@ -86,7 +86,7 @@ class AlbumCoverViewController: UIViewController {
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
     
-        albumCoverList.addNewAlbum(title: "orz", description: "hello233", images : [UIImage(named:"item1")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item0")!])
+        albumCoverList.addNewAlbum(title: "orz", description: "hello233", images : [UIImage(named:"item1")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!])
         
         self.albumCollectionView.reloadData()
             
