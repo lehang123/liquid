@@ -124,7 +124,8 @@ class AlbumDetailTableViewController: UITableViewController {
                 cell.photoCollectionView.dataSource = self
                 cell.photoCollectionView.delegate = self
                 cell.photoCollectionView.reloadData()
-                cell.photoCollectionView.isScrollEnabled = false
+                cell.photoCollectionView.isScrollEnabled = true
+                
             }
         }
     }
@@ -132,7 +133,7 @@ class AlbumDetailTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->CGFloat {
         if indexPath.row == 1 {
-            return self.tableView.bounds.width + 68
+            return self.tableView.bounds.height
         } else {
             return UITableView.automaticDimension
         }
@@ -140,18 +141,18 @@ class AlbumDetailTableViewController: UITableViewController {
 }
 
 // TODO: finish collection view controller
+// MARK : UICollectionViewDataSource
 
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return 4
+            return albumd.getImageList().count
         }
 
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
-            let photo = albumd.getImageList()
-           cell.image = photo[indexPath.item]
+           cell.image = albumd.getImageList()[indexPath.item]
 
             return cell
         }
