@@ -130,13 +130,8 @@ extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionVi
         //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
         ///
         //        AlbumDBController.getInstance().addAlbumSnapshotListener();
-        var x:CacheHandler  = CacheHandler();
-        var y :CacheHandler = CacheHandler();
-        x.setCache(obj: "halo" as AnyObject, forKey: 0 as AnyObject);
-        y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
-        print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
-        print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
-        
+//        CacheHandler.getInstance().setCache(obj: "halohalo" as AnyObject, forKey: "hi" as AnyObject);
+//        print( CacheHandler.getInstance().getCache(forKey: "hi" as AnyObject) as! String );
 
 
         
