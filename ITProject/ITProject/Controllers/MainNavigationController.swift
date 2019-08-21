@@ -42,6 +42,7 @@ class MainNavigationController :UINavigationController {
             if auth.currentUser == nil {
                 self.askForLogin()
             }else{
+                self.loadInfo()
                 print("I'm here : " + (user?.email)!)
             }
             print("Listener get called ")
@@ -54,6 +55,36 @@ class MainNavigationController :UINavigationController {
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
         self.present(navController, animated:true, completion: nil)
     }
+    
+    private func loadInfo() {
+        
+        let cache = CacheHandler()
+        loadName(cache: cache)
+        
+    }
+    
+    func loadName( cache : CacheHandler) {
+        let user = Auth.auth().currentUser
+        if let user = user {
+            let uid = user.uid
+            
+            DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: uid){
+                (document, error) in
+                if let document = document, document.exists {
+                    //_ = document.data().map(String.init(describing:)) ?? "nil"
+                    DispatchQueue.main.async {
+                        let n = (document.data()!["name"])
+                        cache.setCache(obj: n as AnyObject, forKey: "name" as AnyObject )
+                        print (cache.getCache(forKey: "name" as AnyObject))
+                    }
+                }
+            }
+            
+            
+            
+        }
+    }
+    
 }
 
 extension UIApplication {

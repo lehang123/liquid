@@ -22,7 +22,7 @@ class CacheHandler {
     private static var dataObjects : Int = 0; // keeps track of # of objects ofCacheHandler.
     init (){
 
-         dataCache = NSCache<AnyObject, AnyObject>()
+        dataCache = NSCache<AnyObject, AnyObject>()
         CacheHandler.addObjects();
 
     }
@@ -58,6 +58,7 @@ class CacheHandler {
         
         self.dataCache.setObject( obj, forKey:forKey );
     }
+    
     public func getDiscardableCache( forKey: AnyObject) ->NSDiscardableContent{
         var x:Bool  = self.dataCache.object(forKey: forKey)!.beginContentAccess();
         return self.dataCache.object(forKey: forKey)! as! NSDiscardableContent;

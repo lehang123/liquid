@@ -38,7 +38,6 @@ class LoginViewController: UIViewController {
                 Util.DismissActivityIndicator()
                 
 //                self?.getUserInfo(usrResult :user!)
-                
                 self?.dismiss(animated: true, completion: nil)
                 
 //                self?.tFunction()
@@ -46,6 +45,8 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+
     
 //    private func getUserInfo(usrResult : AuthDataResult){
 //        let profilePhotoUrl = usrResult.user.photoURL
