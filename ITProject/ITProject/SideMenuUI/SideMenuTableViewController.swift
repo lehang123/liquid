@@ -75,6 +75,8 @@ class SideMenuTableViewController: UITableViewController {
                     // dismiss the side bar(have to)
                     self.dismiss(animated: true, completion: nil)
                     try Auth.auth().signOut()
+                    
+                    
                 }catch let e as NSError {
                     print("you get error")
                     Util.ShowAlert(title: "Sign Out Fail", message: e.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
