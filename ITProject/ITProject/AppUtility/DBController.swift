@@ -161,7 +161,10 @@ class DBController {
     ///   - documentUID: The document's UID to be updated.
     ///   - collectionName: the collection you want to update into.
     public func updateArrayField(collectionName: String, documentUID:String, fieldName : String, appendValue : Any ){
-        self.getDocumentReference(collectionName: collectionName, documentUID: documentUID).updateData([fieldName :  FieldValue.arrayUnion([ appendValue ]) ]){ err in
+        self.getDocumentReference(collectionName: collectionName, documentUID: documentUID)
+            .updateData(
+            [fieldName :  FieldValue.arrayUnion([ appendValue ])
+            ]){ err in
             if let err = err {
                 print("\(collectionName) ::: Error updating document with array field: \(err)")
             } else {
@@ -170,6 +173,26 @@ class DBController {
         };
     }
     
+    
+    /// <#Description#>
+    /// appends a value into a field with array data type.
+    /// - Parameters:
+    ///   - fieldName : the name of the (array) field you want to update.
+    ///   - removeValue: the existing value to be removed from the array field.
+    ///   - documentUID: The document's UID to be updated.
+    ///   - collectionName: the collection you want to update into.
+    public func removeArrayField(collectionName: String, documentUID:String, fieldName : String, removeValue : Any ){
+        self.getDocumentReference(collectionName: collectionName, documentUID: documentUID)
+            .updateData(
+            [fieldName :  FieldValue.arrayRemove([ removeValue ])
+            ]){ err in
+            if let err = err {
+                print("\(collectionName) ::: Error updating document with array field: \(err)")
+            } else {
+                print("\(collectionName) ::: Document  \(documentUID) with array field \(fieldName) successfully removed")
+            }
+        };
+    }
    
  
     
