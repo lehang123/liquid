@@ -13,30 +13,23 @@ import UIKit
 class AlbumDetail: Equatable
 {
     static func == (lhs: AlbumDetail, rhs: AlbumDetail) -> Bool {
-        return lhs.UID == rhs.UID
+        return lhs.UID == rhs.UID 
     }
     
     // MARK: - Public API
     private var title = ""
     private var coverImage: UIImage!
-    private var images: [UIImage]
     private var description = ""
-    //private var UID = "Util.GenerateUDID()"
-    //TEMPTESTING
-    private var UID = ""
+    private let UID = Util.GenerateUDID()!
 
     
-    init(title: String, description: String, images: [UIImage])
+    init(title: String, description: String)
     {
         let defaultImage : UIImage = #imageLiteral(resourceName: "item4")
         
         self.title = title
-        self.coverImage = images.first ?? defaultImage
+        self.coverImage = defaultImage
         self.description = description
-        self.images = images
-        
-        //TEMPTESTING
-        self.UID = title
         
     }
     
@@ -56,10 +49,6 @@ class AlbumDetail: Equatable
         return self.coverImage
     }
     
-    public func getImageList() -> [UIImage]{
-        return self.images
-    }
-    
     public func setTitle(title: String){
         self.title = title
     }
@@ -72,9 +61,7 @@ class AlbumDetail: Equatable
         self.coverImage = image
     }
     
-    public func setImageList(images: [UIImage]){
-        self.images = images
-    }
+
     
 
     
