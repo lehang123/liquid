@@ -146,13 +146,14 @@ class AlbumDetailTableViewController: UITableViewController {
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return albumd.getImageList().count
+//            return albumd.getImageList().count
+            return 0
         }
 
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
-           cell.image = albumd.getImageList()[indexPath.item]
+           //cell.image = albumd.getImageList()[indexPath.item]
 
             return cell
         }
