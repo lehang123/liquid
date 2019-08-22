@@ -128,12 +128,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         ///
         //        AlbumDBController.getInstance().addAlbumSnapshotListener();
 
-        var x:CacheHandler  = CacheHandler();
-        var y :CacheHandler = CacheHandler();
-        x.setCache(obj: "halo" as AnyObject, forKey: 0 as AnyObject);
-        y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
-        print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
-        print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
+//        CacheHandler.getInstance().setCache(obj:"a" as AnyObject, forKey: 1 as AnyObject);
+//        print("Before update : " + (CacheHandler.getInstance().getCache(forKey: 1 as AnyObject) as! String));
+//        CacheHandler.getInstance().setCache(obj:"bb"as AnyObject, forKey: 1 as AnyObject);
+//        print("After update : " + (CacheHandler.getInstance().getCache(forKey: 1 as AnyObject) as! String));
+//        CacheHandler.getInstance().cleanCache();
+//        print("After update2 : " + (CacheHandler.getInstance().getCache(forKey: 1 as AnyObject) as! String));
+
 
     }
 
