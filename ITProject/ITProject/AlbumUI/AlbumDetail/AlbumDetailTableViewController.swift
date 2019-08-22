@@ -33,11 +33,12 @@ class AlbumDetailTableViewController: UITableViewController {
 //        title = albumd.name
         albumCoverImageView.image = albumd.getCoverImage()
 
-        
-        
         self.tableView.estimatedRowHeight = self.tableView.rowHeight
         self.tableView.rowHeight = UITableView.automaticDimension
-        self.UpdateView()
+        
+        headerView = tableView.tableHeaderView
+        updateHeaderlayout = CAShapeLayer()
+        self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
         
         
     }
@@ -52,52 +53,12 @@ class AlbumDetailTableViewController: UITableViewController {
         
     }
     
-
- 
-    func UpdateView() {
-        tableView.backgroundColor = UIColor.white
-        headerView = tableView.tableHeaderView
-        tableView.tableHeaderView = nil
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.addSubview(headerView)
-        
-        updateHeaderlayout = CAShapeLayer()
-        updateHeaderlayout.fillColor = UIColor.black.cgColor
-        headerView.layer.mask = updateHeaderlayout
-        
-        let newheight = headerHeight - headerCut / 2
-        tableView.contentInset = UIEdgeInsets(top: newheight, left: 0, bottom: 0, right: 0)
-        tableView.contentOffset = CGPoint(x: 0, y: -newheight)
-        
-        self.Setupnewview()
-    }
-    
-    func Setupnewview() {
-        let newheight = headerHeight - headerCut / 2
-        var headerframe = CGRect(x: 0, y: -newheight, width: tableView.bounds.width, height: headerHeight)
-        if tableView.contentOffset.y < newheight
-        {
-            headerframe.origin.y = tableView.contentOffset.y
-            headerframe.size.height = -tableView.contentOffset.y + headerCut / 2
-        }
-        
-        headerView.frame = headerframe
-        let cutdirection = UIBezierPath()
-        cutdirection.move(to: CGPoint(x: 0, y: 0))
-        cutdirection.addLine(to: CGPoint(x: headerframe.width, y: 0))
-        cutdirection.addLine(to: CGPoint(x: headerframe.width, y: headerframe.height))
-        cutdirection.addLine(to: CGPoint(x: 0, y: headerframe.height - headerCut))
-        updateHeaderlayout.path = cutdirection.cgPath
-        
-        
-    }
-    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.tableView.decelerationRate = UIScrollView.DecelerationRate.fast
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.Setupnewview()
+        self.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
     }
 
     
