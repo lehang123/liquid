@@ -74,7 +74,6 @@ class MainNavigationController :UINavigationController {
                     DispatchQueue.main.async {
                         let n = (document.data()!["name"])
                         cache.setCache(obj: n as AnyObject, forKey: "name" as AnyObject )
-
                     }
                 }
             }
