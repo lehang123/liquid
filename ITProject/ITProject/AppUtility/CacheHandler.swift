@@ -57,11 +57,18 @@ class CacheHandler {
     
     
     public func getCache (forKey: AnyObject) -> AnyObject{
-        self.dataCache.object(forKey: forKey)
         
         return self.dataCache.object(forKey: forKey)!;
         
     }
+    public func cleanCache(){
+        self.dataCache.removeAllObjects();
+    }
+    
+    public func removeFromCache(forKey: AnyObject){
+        self.dataCache.removeObject(forKey: forKey);
+    }
+    
     
     /*using NSDiscardableContent's protocol for data that has short lifecycles:*/
     
