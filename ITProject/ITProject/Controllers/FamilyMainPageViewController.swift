@@ -121,20 +121,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     func test (){
-        
-        //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
-        
-        //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
-        ///
-        //        AlbumDBController.getInstance().addAlbumSnapshotListener();
-
-//        CacheHandler.getInstance().setCache(obj:"a" as AnyObject, forKey: 1 as AnyObject);
-//        print("Before update : " + (CacheHandler.getInstance().getCache(forKey: 1 as AnyObject) as! String));
-//        CacheHandler.getInstance().setCache(obj:"bb"as AnyObject, forKey: 1 as AnyObject);
-//        print("After update : " + (CacheHandler.getInstance().getCache(forKey: 1 as AnyObject) as! String));
-//        CacheHandler.getInstance().cleanCache();
-//        print("After update2 : " + (CacheHandler.getInstance().getCache(forKey: 1 as AnyObject) as! String));
-
+        Util.DeleteFileFromServer(fileName: "8E6A110F-7447-4CC3-B0C8-EB4F726C64EA",
+                                  fextension: Util.EXTENSION_JPEG)
 
     }
 
