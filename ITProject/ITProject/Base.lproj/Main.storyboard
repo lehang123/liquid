@@ -1070,7 +1070,7 @@
                             <constraint firstItem="0hV-k8-Tp2" firstAttribute="top" secondItem="tYC-sL-3bH" secondAttribute="bottom" id="DS6-yo-gtL"/>
                             <constraint firstAttribute="trailing" secondItem="0hV-k8-Tp2" secondAttribute="trailing" id="G3k-Yd-p2B"/>
                             <constraint firstItem="bUI-VY-hdm" firstAttribute="height" secondItem="tYC-sL-3bH" secondAttribute="height" id="JbZ-v7-bbx"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tYC-sL-3bH" secondAttribute="trailing" symbolic="YES" id="LfL-7N-Itg"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tYC-sL-3bH" secondAttribute="trailing" constant="20" symbolic="YES" id="LfL-7N-Itg"/>
                             <constraint firstItem="bUI-VY-hdm" firstAttribute="trailing" secondItem="tqo-AZ-o71" secondAttribute="trailingMargin" id="VRq-ul-dz7"/>
                             <constraint firstItem="tYC-sL-3bH" firstAttribute="top" secondItem="yco-Jd-fsv" secondAttribute="bottom" constant="32" id="gMU-Gt-zAx"/>
                             <constraint firstItem="bUI-VY-hdm" firstAttribute="top" secondItem="tYC-sL-3bH" secondAttribute="top" id="kCq-W7-31n"/>
@@ -1101,7 +1101,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="468" width="375" height="16"/>
+                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1173,7 +1173,7 @@
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item2" translatesAutoresizingMaskIntoConstraints="NO" id="RZ5-c5-gxW">
-                                                                <rect key="frame" x="0.0" y="84.5" width="185" height="16"/>
+                                                                <rect key="frame" x="0.0" y="-275.5" width="185" height="736"/>
                                                             </imageView>
                                                         </subviews>
                                                     </view>
@@ -1216,6 +1216,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0cF-G5-pkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3910.3125" y="-882.04225352112678"/>
+        </scene>
+        <!--Display Photos View Controller-->
+        <scene sceneID="wAC-XS-u1b">
+            <objects>
+                <viewController id="GQJ-6N-bEl" userLabel="Display Photos View Controller" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Wnc-VD-bod">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0mj-KX-8hl" userLabel="Display Photo Image View">
+                                <rect key="frame" x="0.0" y="119.5" width="320" height="329"/>
+                            </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dNJ-BU-cwq">
+                                <rect key="frame" x="0.0" y="448.5" width="320" height="119.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="0mj-KX-8hl" firstAttribute="centerX" secondItem="Wnc-VD-bod" secondAttribute="centerX" id="CqY-Yd-31D"/>
+                            <constraint firstItem="dNJ-BU-cwq" firstAttribute="centerX" secondItem="Wnc-VD-bod" secondAttribute="centerX" id="Crt-q0-wGa"/>
+                            <constraint firstItem="0mj-KX-8hl" firstAttribute="centerY" secondItem="Wnc-VD-bod" secondAttribute="centerY" id="EJH-FW-T7R"/>
+                            <constraint firstItem="dNJ-BU-cwq" firstAttribute="width" secondItem="G5H-jB-hAX" secondAttribute="width" id="F0j-z6-c7p"/>
+                            <constraint firstItem="0mj-KX-8hl" firstAttribute="height" secondItem="G5H-jB-hAX" secondAttribute="height" multiplier="0.6" id="Ftz-dN-ClJ"/>
+                            <constraint firstItem="0mj-KX-8hl" firstAttribute="width" secondItem="G5H-jB-hAX" secondAttribute="width" id="JNk-Kx-cVW"/>
+                            <constraint firstAttribute="bottom" secondItem="dNJ-BU-cwq" secondAttribute="bottom" id="Owb-8X-DHs"/>
+                            <constraint firstItem="dNJ-BU-cwq" firstAttribute="top" secondItem="0mj-KX-8hl" secondAttribute="bottom" id="U0w-NM-iUE"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="G5H-jB-hAX"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cx3-eg-caS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4984" y="-701"/>
         </scene>
     </scenes>
     <resources>

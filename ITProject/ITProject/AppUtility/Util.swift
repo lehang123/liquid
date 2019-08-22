@@ -148,6 +148,22 @@ class Util {
         }
     }
     
+    public static func DeleteFileFromServer(fileName : String, fextension : String){
+        let fileFullPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)! + fileName + Util.EXTENSION_ZIP
+        let desertRef = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
+        
+        // Delete the file
+        desertRef.delete { error in
+            if let error = error {
+                // Uh-oh, an error occurred!
+                print("DeleteFileFromServer : " + error.localizedDescription)
+            } else {
+                // File deleted successfully
+                print("DeleteFileFromServer : delete successful for file : " + fileFullPath)
+            }
+        }
+    }
+    
     public static func GetMetadataFromServer (fileName:String){
         let fileFullPath = GetFullFilePath(fileName: fileName)
         print("GetMetadataFromServer :file path " + fileFullPath)
@@ -250,13 +266,21 @@ class Util {
     
     
     
-    public static func GetFolderForFile(fileName:NSString)->String?{
+    public static func GetFolderForFile(fileName: NSString)->String?{
         return GetFolderForFile(fileName: fileName, withPathSlash: true)
     }
     
-    public static func GetFolderForFile(fileName:NSString, withPathSlash: Bool)->String?{
-        if ("." + fileName.pathExtension) == (EXTENSION_JPEG) {
-            
+    public static func GetFolderForFile(fileName: NSString, withPathSlash: Bool)->String?{
+//        if ("." + fileName.pathExtension) == (EXTENSION_JPEG) {
+//
+//            return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
+//        }
+        return GetFolderByExtension(fextension: "." + fileName.pathExtension,
+                                    withPathSlash: withPathSlash)
+    }
+    
+    public static func GetFolderByExtension(fextension: String, withPathSlash: Bool)->String?{
+        if (fextension) == (EXTENSION_JPEG) {
             return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
         }
         return nil

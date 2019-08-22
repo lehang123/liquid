@@ -21,7 +21,7 @@ class AlbumDetail: Equatable
     private var coverImage: UIImage!
     private var images: [UIImage]
     private var description = ""
-    //private var UID = "Util.GenerateUDID()"
+    //private var UID = Util.GenerateUDID()
     //TEMPTESTING
     private var UID = ""
 
