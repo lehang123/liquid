@@ -8,13 +8,15 @@
 
 import UIKit
 
+// todo : make the scorll back to the top while click on the header
 class DisplayPhotoViewController: UITableViewController {
     private static let displayPhotoTableViewCell = "displayPhotoTableViewCell"
-
+    private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
+    
     var headerView : UIView!
     var updateHeaderlayout : CAShapeLayer!
     
-    private let headerHeight : CGFloat = 400
+    private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut : CGFloat = 0
     
     @IBOutlet weak var displayPhotoImageView: UIImageView!
@@ -25,15 +27,27 @@ class DisplayPhotoViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-
-        displayPhotoImageView.image = #imageLiteral(resourceName: "tempProfileImage")
+        displayPhotoImageView.image = #imageLiteral(resourceName: "item4")
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
         self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.checkAction))
+        /* note: GestureRecognizer will be disable while tableview is scrolling */
+        headerView.addGestureRecognizer(headerViewGesture)
+        
+    }
+    
+    @objc func checkAction(sender : UITapGestureRecognizer) {
+        // make sure sender is not nil
+        guard sender.view != nil else { return }
+        if sender.state == .ended {// when touches end, scroll to top
+            let topIndex = IndexPath(row: 0, section: 0)
+            self.tableView.scrollToRow(at: topIndex, at: .top , animated: true)
+        }
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: 300)
+        self.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
     }
 
     // MARK: - Table view data source
