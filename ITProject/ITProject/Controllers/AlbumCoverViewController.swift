@@ -30,7 +30,7 @@ class AlbumCoverViewController: UIViewController {
         
         //TEMPTESTING
         self.albumCoverList.addNewAlbum(title: "A", description: "hello1")
-        self.albumCoverList.addNewAlbum(title: "SB", description: "hello2",images : [UIImage(named:"item0")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item1")!])
+        self.albumCoverList.addNewAlbum(title: "SB", description: "hello2")
         
     }
     
@@ -60,8 +60,8 @@ class AlbumCoverViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
-                let selectedShoe = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
-                albumDetailTVC.albumd = selectedShoe
+                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
+                albumDetailTVC.albumd = selectedAlbum
             }
         }
     }
@@ -69,7 +69,7 @@ class AlbumCoverViewController: UIViewController {
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
     
-        albumCoverList.addNewAlbum(title: "orz", description: "hello233", images : [UIImage(named:"item1")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!])
+        albumCoverList.addNewAlbum(title: "orz", description: "hello233")
         
         self.albumCollectionView.reloadData()
             

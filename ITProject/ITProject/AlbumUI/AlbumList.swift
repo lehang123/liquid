@@ -38,17 +38,11 @@ class AlbumList {
 //            if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
 //                currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
 //            }
-        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : tempImages)){
-            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : tempImages))
-        }
-        }
-    
-    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String, images newImagesList : [UIImage]){
-                    if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
-                        currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
-                    
+        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp)){
+            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp))
         }
     }
+    
     
 //    public func addNewAlbum(title newAlbumTitle: String, imageName newAlbumImage : String) {
 //        currentAlbums.append(AlbumDetail(title: newAlbumTitle, featuredImage: UIImage(named: newAlbumImage)!))
