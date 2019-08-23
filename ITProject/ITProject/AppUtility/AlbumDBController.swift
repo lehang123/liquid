@@ -138,7 +138,9 @@ class AlbumDBController {
             .collection(AlbumDBController.ALBUM_COLLECTION_NAME)
             .whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY,
                         isEqualTo: familyDocumentReference as Any).getDocuments {(querysnapshot , error)  in
-                            print("getAlbums::: " , querysnapshot, error);
+                            print("getAlbums::: " +
+                                querysnapshot.debugDescription
+                                +  error!.localizedDescription);
                             completion(querysnapshot,error);
         };
         
