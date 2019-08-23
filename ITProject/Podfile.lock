@@ -5,6 +5,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.3):
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
+  - CleanyModal (0.1.2)
   - EnhancedCircleImageView (0.1)
   - FBSDKCoreKit (5.3.0):
     - FBSDKCoreKit/Basics (= 5.3.0)
@@ -193,6 +194,7 @@ PODS:
   - Zip (1.1.0)
 
 DEPENDENCIES:
+  - CleanyModal (~> 0.1.2)
   - EnhancedCircleImageView
   - Firebase/Auth
   - Firebase/Core
@@ -208,6 +210,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
+    - CleanyModal
     - EnhancedCircleImageView
     - FBSDKCoreKit
     - FBSDKLoginKit
@@ -243,6 +246,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  CleanyModal: abd96bb77747ba0e6434955cdc290c099eed3fc5
   EnhancedCircleImageView: 1069bbc14526d89502cc0e48b45f5da6a3317a47
   FBSDKCoreKit: 39748deefe37a005f983722e433be2ddcdd83ae7
   FBSDKLoginKit: bc0329e10045789e8d40b12d4f15ddbd07a898e2
@@ -276,6 +280,6 @@ SPEC CHECKSUMS:
   UPCarouselFlowLayout: 4c7d2c43a10ebb1597bde502a53699d378341dad
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: b4901a01d2a085f6f484a6192707fcc028aab125
+PODFILE CHECKSUM: c30bbe310911165563a7c8f9ccf61656bd2c1148
 
 COCOAPODS: 1.7.5

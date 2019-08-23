@@ -8,6 +8,8 @@
 
 import UIKit
 import UPCarouselFlowLayout
+import Firebase
+import CleanyModal
 
 class AlbumCoverViewController: UIViewController {
     
@@ -20,6 +22,7 @@ class AlbumCoverViewController: UIViewController {
     //activeCell = AlbumCoverViewController.controlView
     let cellScaling: CGFloat = 0.6
     let albumCoverList = AlbumList()
+    var albumList = [String]()
     
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
@@ -32,9 +35,13 @@ class AlbumCoverViewController: UIViewController {
         self.loadAlbumCollectionView()
         
         //TEMPTESTING
-        self.albumCoverList.addNewAlbum(title: "A", description: "hello1")
-        self.albumCoverList.addNewAlbum(title: "SB", description: "hello2",images : [UIImage(named:"item0")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item1")!])
-    
+        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
+
+            querys?.documents.forEach({ (querydoc) in
+                self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
+            })
+        }
+
     }
     
     
@@ -64,16 +71,44 @@ class AlbumCoverViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
-                let selectedShoe = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
-                albumDetailTVC.albumd = selectedShoe
+                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
+                albumDetailTVC.albumd = selectedAlbum
             }
         }
     }
     
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
-    
-        albumCoverList.addNewAlbum(title: "orz", description: "hello233", images : [UIImage(named:"item1")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!,UIImage(named:"item0")!])
+//        let alertConfig = CleanyAlertConfig(
+//            title: "Add New Album",
+//            message: "",
+//            iconImgName: nil)
+//        let alert = MyAlertViewController(config: alertConfig)
+//        alert.addTextField { textField in
+//            textField.placeholder = "Album Name"
+//            textField.font = UIFont.systemFont(ofSize: 12)
+//            textField.autocorrectionType = .no
+//            textField.keyboardAppearance = .dark
+//        }
+//        alert.addTextField { textField in
+//            textField.placeholder = "Description"
+//            textField.font = UIFont.systemFont(ofSize: 12)
+//            textField.autocorrectionType = .no
+//            textField.keyboardAppearance = .dark
+//        }
+//
+//        alert.addAction(title: "Create new Album", style: .default, handler: { action in
+//            print("email in textfield is: \(alert.textFields?.first?.text ?? "empty")")
+//        })
+//        alert.addAction(title: "Cancel", style: .cancel)
+//
+//        present(alert, animated: true, completion: nil)
+
+        
+        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
+            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+        })
+//
         
         self.albumCollectionView.reloadData()
             
@@ -120,5 +155,18 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
 //    }
     
 }
+
+class MyAlertViewController: CleanyAlertViewController {
+    override init(config: CleanyAlertConfig) {
+        config.styleSettings[.tintColor] = UIColor(red: 8/255, green: 61/255, blue: 119/255, alpha: 1)
+        config.styleSettings[.destructiveColor] = UIColor(red: 218/255, green: 65/255, blue: 103/255, alpha: 1)
+        super.init(config: config)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 
 

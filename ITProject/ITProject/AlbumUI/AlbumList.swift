@@ -19,7 +19,7 @@ class AlbumList {
     func makeRandomList () -> [UIImage]{
         var item1Images = [UIImage]()
         for i in (1...4).map( {_ in Int.random(in: 0...4)} ) {
-            print("ASdfasdfas", i)
+            print("AlbumList.makeRandomList ::: ", i)
             item1Images.append(UIImage(named: "item\(i)")!)
         }
         
@@ -34,21 +34,15 @@ class AlbumList {
         return currentAlbums
     }
     
-    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String){
+    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String, UID: String){
 //            if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
 //                currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
 //            }
-        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : tempImages)){
-            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : tempImages))
-        }
-        }
-    
-    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String, images newImagesList : [UIImage]){
-                    if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
-                        currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
-                    
+        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID:"")){
+            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID))
         }
     }
+    
     
 //    public func addNewAlbum(title newAlbumTitle: String, imageName newAlbumImage : String) {
 //        currentAlbums.append(AlbumDetail(title: newAlbumTitle, featuredImage: UIImage(named: newAlbumImage)!))
