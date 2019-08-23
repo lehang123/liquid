@@ -17,6 +17,9 @@ class AlbumCoverViewController: UIViewController {
     private static let CELL_IDENTIFIER = "AlbumCell"
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
+    
+    //var activeCell = albumCollectionView
+    //activeCell = AlbumCoverViewController.controlView
     let cellScaling: CGFloat = 0.6
     let albumCoverList = AlbumList()
     var albumList = [String]()
@@ -24,12 +27,12 @@ class AlbumCoverViewController: UIViewController {
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
     }
+    
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
-
         
         //TEMPTESTING
         AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
@@ -38,8 +41,9 @@ class AlbumCoverViewController: UIViewController {
                 self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
             })
         }
-        
+
     }
+    
     
     private func loadAlbumCollectionView(){
         self.albumCollectionView.showsVerticalScrollIndicator = false
@@ -138,6 +142,16 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         
         return cell
     }
+    
+//    // For gesture
+//    private func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        // If clicked on another cell than the swiped cell
+//        let cell = collectionView.cellForItem(at: indexPath)
+//        if activeCell != nil && activeCell != cell {
+//            userDidSwipeRight()
+//        }
+//    }
+    
 }
 
 class MyAlertViewController: CleanyAlertViewController {
