@@ -1043,6 +1043,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </view>
                                         <color key="backgroundColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <gestureRecognizers/>
                                         <size key="customSize" width="286" height="205"/>
                                     </collectionViewCell>
                                 </cells>

@@ -8,17 +8,20 @@
 
 import UIKit
 
-class AlbumCollectionViewCell: UICollectionViewCell {
+class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var albumTitleLabel: UILabel!
     @IBOutlet weak var backgroundMask: UIView!
+    
+
     
     var album: AlbumDetail? {
         didSet {
             self.updateUI()
         }
     }
+    
     
     private func updateUI()
     {
@@ -30,6 +33,8 @@ class AlbumCollectionViewCell: UICollectionViewCell {
             backgroundMask.layer.masksToBounds = true
             backgroundImageView.layer.cornerRadius = 15.0
             backgroundImageView.layer.masksToBounds = true
+            
+            
         } else {
             backgroundImageView.image = nil
             albumTitleLabel.text = nil
