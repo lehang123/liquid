@@ -18,6 +18,7 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerHeight : CGFloat = 300
     private let headerCut : CGFloat = 80
     
+    /// Description
     struct Storyboard {
       
         static let albumDetailDescrpCell = "AlbumDetailDescrpCell"
@@ -45,6 +46,12 @@ class AlbumDetailTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+    /// Description
+    ///
+    /// - Parameters:
+    ///   - tableView: <#tableView description#>
+    ///   - section: section description
+    /// - Returns: return value description
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
             // 0 - Album Description
@@ -63,13 +70,19 @@ class AlbumDetailTableViewController: UITableViewController {
 
     
 
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - tableView: <#tableView description#>
+    ///   - indexPath: <#indexPath description#>
+    /// - Returns: <#return value description#>
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailDescrpCell, for: indexPath) as! AlbumDetailDescrpTableViewCell
             cell.descrp = albumd
             cell.selectionStyle = .none
-            print("cell", cell)
+            print("AlbumDetailTableViewController.tableView.cell :::", cell)
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoTableViewCell
@@ -78,6 +91,12 @@ class AlbumDetailTableViewController: UITableViewController {
         }
     }
 
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - tableView: <#tableView description#>
+    ///   - cell: <#cell description#>
+    ///   - indexPath: <#indexPath description#>
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
         if indexPath.row == 1 {
@@ -92,6 +111,12 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 
 
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - tableView: <#tableView description#>
+    ///   - indexPath: <#indexPath description#>
+    /// - Returns: <#return value description#>
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->CGFloat {
         if indexPath.row == 1 {
             return self.tableView.bounds.height
@@ -121,6 +146,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
 
     }
 
+// MARK: - <#UICollectionViewDelegate, UICollectionViewDelegateFlowLayout#>
 extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
     {
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
