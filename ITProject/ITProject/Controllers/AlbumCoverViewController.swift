@@ -103,10 +103,8 @@ class AlbumCoverViewController: UIViewController {
         
         AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
             self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+            self.albumCollectionView.reloadData()
         })
-//
-        
-        self.albumCollectionView.reloadData()
             
     }
 }

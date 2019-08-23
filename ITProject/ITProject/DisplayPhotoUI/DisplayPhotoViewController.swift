@@ -15,6 +15,7 @@ class DisplayPhotoViewController: UITableViewController {
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
     private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
     private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
+    private static let MAXIMUM_LIST_LENGTH = 5
     
     private struct commentCellStruct{
         var comment = String()
@@ -29,6 +30,8 @@ class DisplayPhotoViewController: UITableViewController {
     private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut : CGFloat = 0
     
+    private var tableView_length = 0
+    
     @IBOutlet weak var displayPhotoImageView: UIImageView!
     
     override func viewDidLoad() {
@@ -41,7 +44,9 @@ class DisplayPhotoViewController: UITableViewController {
         initCommentCellsList()
         setUpTableViewHeader()
         
-        
+        // first one for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
+        let comment_len = decideCommentShowedLength()
+        tableView_length = 1 + comment_len
     }
     
     @objc func checkAction(sender : UITapGestureRecognizer) {
@@ -58,7 +63,7 @@ class DisplayPhotoViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
+    // todo: only one for now, afterward, there is a way to expand a comment
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -66,7 +71,7 @@ class DisplayPhotoViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return commentCellsList.count + 1
+        return tableView_length
     }
 
     
@@ -114,6 +119,15 @@ class DisplayPhotoViewController: UITableViewController {
         commentCell.comment = comment
         commentCell.username = username
         commentCellsList.append(commentCell)
+    }
+    
+    private func decideCommentShowedLength()->Int{
+        if commentCellsList.count <= DisplayPhotoViewController.MAXIMUM_LIST_LENGTH{
+            return commentCellsList.count
+        }else {
+            // show expandsion view
+            return commentCellsList.count + 1
+        }
     }
 
     /*
