@@ -73,9 +73,9 @@ class AlbumDBController {
                 
 //                let familyDocumentReference:DocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
                 
-                        /*init new album */
-                //update: album has reference to family + owner/creator.
-                
+                        /*init new album
+                 update: album has reference to family + owner/creator.
+                 */
                 let albumDocumentReference:DocumentReference? = DBController.getInstance()
                         .addDocumentToCollection(
                         inputData: [
@@ -96,6 +96,8 @@ class AlbumDBController {
                 
                 /*listens to album updates*/
 //                self.addAlbumSnapshotListener(familyDocumentReference: familyDocRef!);
+                
+                //returns the album's DocumentReference
                 completion(albumDocumentReference);
                 
            
@@ -109,7 +111,58 @@ class AlbumDBController {
 
 
         
+        
     }
+    
+    
+    public func getAlbums(  familyDocumentReference:DocumentReference,  completion : @escaping ((QuerySnapshot?,Error?) -> ())){
+//        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID) { (document, error) in
+//            if let document = document, document.exists {
+//                let albumPaths:[DocumentReference] = document.get(RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS) as! [DocumentReference];
+//                albumPaths.forEach({ (document) in
+//                    document.
+//                });
+//
+//                completion(albumPaths);
+//
+//
+//
+//            }else {
+//                print("ERROR at getAlbums::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
+//            }
+//
+//        }
+        DBController
+            .getInstance()
+            .getDB()
+            .collection(AlbumDBController.ALBUM_COLLECTION_NAME)
+            .whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY,
+                        isEqualTo: familyDocumentReference as Any).getDocuments {(querysnapshot , error)  in
+                            print("getAlbums::: " , querysnapshot, error);
+                            completion(querysnapshot,error);
+        };
+        
+//            .addSnapshotListener { querySnapshot, error in
+//                guard let snapshot = querySnapshot else {
+//                    print("addAlbumSnapshotListener::: Error fetching snapshots: \(error!)")
+//                    return
+//                }
+//                snapshot.documentChanges
+//                    .forEach { diff in
+//                        if (diff.type == .added) {
+//                            print("addAlbumSnapshotListener::: New photos added: \(diff.document.data())")
+//                        }
+//                        if (diff.type == .modified) {
+//                            print(" addAlbumSnapshotListener ::: Modified photos: \(diff.document.data())")
+//                        }
+//                        if (diff.type == .removed) {
+//                            print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
+//                        }
+//                }
+        }
+    
+
+    
     
     /// <#Description#>
     /// adds a media file's path into a "media" collection,
@@ -212,6 +265,8 @@ class AlbumDBController {
                 }
             }  
         }
+    
+    
     /// <#Description#>
     /// remove a media from album in database (as well as storage).
     /// - Parameters:
@@ -227,6 +282,14 @@ class AlbumDBController {
                 documentUID: albumUID,
                 fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA,
                 removeValue: mediaPath);
+
+        //TODO: remove photo file from storage:
+        DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: mediaPath) { (document, error) in
+            let ext : String = document?.get(AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION) as! String;
+            Util.DeleteFileFromServer(fileName: mediaPath, fextension: ext);
+            
+        }
+        
         
         //delete media document from media collection:
         DBController.getInstance()
@@ -235,8 +298,6 @@ class AlbumDBController {
                 collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
         
         
-        //from storage::
-        //TODO: remove photo file from storage:
         
         
         
@@ -266,5 +327,5 @@ class AlbumDBController {
         
         
     }
-}
 
+}

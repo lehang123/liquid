@@ -20,7 +20,7 @@ class CacheHandler {
     private var dataCache :NSCache<AnyObject, AnyObject>;
     private static var cachedCounter : Int = 0;  // keeps track of cachedData load. useful to check for limit later on.
     private static var dataObjects : Int = 0; // keeps track of # of objects ofCacheHandler.
-    
+    public static let FAMILY_KEY:String = "familyUID";
     private static var single:CacheHandler!;
     init (){
 
