@@ -10,8 +10,18 @@ import UIKit
 
 // todo : make the scorll back to the top while click on the header
 class DisplayPhotoViewController: UITableViewController {
-    private static let displayPhotoTableViewCell = "displayPhotoTableViewCell"
+    private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
+    private static let commentTableViewCell = "CommentCell"
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
+    private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
+    private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
+    
+    private struct commentCellStruct{
+        var comment = String()
+        var username = String()
+    }
+    private var commentCellsList = [commentCellStruct]()
+    
     
     var headerView : UIView!
     var updateHeaderlayout : CAShapeLayer!
@@ -20,6 +30,7 @@ class DisplayPhotoViewController: UITableViewController {
     private let headerCut : CGFloat = 0
     
     @IBOutlet weak var displayPhotoImageView: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -27,13 +38,9 @@ class DisplayPhotoViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        displayPhotoImageView.image = #imageLiteral(resourceName: "item4")
-        headerView = tableView.tableHeaderView
-        updateHeaderlayout = CAShapeLayer()
-        self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
-        let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.checkAction))
-        /* note: GestureRecognizer will be disable while tableview is scrolling */
-        headerView.addGestureRecognizer(headerViewGesture)
+        initCommentCellsList()
+        setUpTableViewHeader()
+        
         
     }
     
@@ -59,29 +66,55 @@ class DisplayPhotoViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 20
+        return commentCellsList.count + 1
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
-            let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.displayPhotoTableViewCell, for: indexPath) as! DisplayPhotoTableViewCell
-            cell0.displayImage = #imageLiteral(resourceName: "tempFamilyImage")
+        if indexPath.row == 0 {// like, watched cell. always there
+            let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
             return cell0
-        } else {
-            let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.displayPhotoTableViewCell, for: indexPath) as! DisplayPhotoTableViewCell
-            cell0.displayImage = #imageLiteral(resourceName: "tempFamilyImage")
-            return cell0
+        } else {// create comment cell
+            let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
+            cell1.setUsernameLabel(username: commentCellsList[indexPath.row - 1].username)
+            cell1.setCommentLabel(comment: commentCellsList[indexPath.row - 1].comment)
+            return cell1
         }
-        
-        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(100)
+        
+        if indexPath.row == 0 {
+            return  DisplayPhotoViewController.LIKES_ROW_HEIGHT
+        }else {
+            return  DisplayPhotoViewController.COMMENT_ROW_HEIGHT
+        }
     }
     
+    private func setUpTableViewHeader(){
+        displayPhotoImageView.image = #imageLiteral(resourceName: "item4")
+        headerView = tableView.tableHeaderView
+        updateHeaderlayout = CAShapeLayer()
+        self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.checkAction))
+        /* note: GestureRecognizer will be disable while tableview is scrolling */
+        headerView.addGestureRecognizer(headerViewGesture)
+    }
+    
+    private func initCommentCellsList(){
+        // load at most 5 comments from caches
+        for i in 1...5 {
+            addCommentCellToList(username: "hello" + String(i), comment: "hello world")
+        }
+    }
+    
+    private func addCommentCellToList(username: String, comment: String){
+        var commentCell = commentCellStruct()
+        commentCell.comment = comment
+        commentCell.username = username
+        commentCellsList.append(commentCell)
+    }
 
     /*
     // Override to support conditional editing of the table view.
