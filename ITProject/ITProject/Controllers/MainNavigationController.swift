@@ -31,8 +31,8 @@ class MainNavigationController :UINavigationController {
          @remarks The block is invoked immediately after adding it according to it's standard invocation
          semantics, asynchronously on the main thread. Users should pay special attention to
          making sure the block does not inadvertently retain objects which should not be retained by
-         the long-lived block. The block itself will be retained by `FIRAuth` until it is
-         unregistered or until the `FIRAuth` instance is otherwise deallocated.
+         the long-lived block. The block itself will be retained by FIRAuth until it is
+         unregistered or until the FIRAuth instance is otherwise deallocated.
          
          @return A handle useful for manually unregistering the block as a listener.
          */
@@ -44,8 +44,31 @@ class MainNavigationController :UINavigationController {
             }else{
                 self.loadInfo()
                 print("I'm here : " + (user?.email)!)
+                self.startCache();
             }
             print("Listener get called ")
+        }
+    }
+    
+    private func startCache(){
+        
+        
+        //set familyUID's cache:
+        let user = Auth.auth().currentUser!.uid
+        
+        DBController.getInstance()
+            .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID:  user)
+            {  (document, error) in
+                if let document = document, document.exists {
+                    let familyDocRef:DocumentReference = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+                    CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+                    
+                }else{
+                    print("ERROR LOADING main login:: ");
+                }
+                
         }
     }
     
