@@ -19,7 +19,7 @@ class AlbumList {
     func makeRandomList () -> [UIImage]{
         var item1Images = [UIImage]()
         for i in (1...4).map( {_ in Int.random(in: 0...4)} ) {
-            print("ASdfasdfas", i)
+            print("AlbumList.makeRandomList ::: ", i)
             item1Images.append(UIImage(named: "item\(i)")!)
         }
         

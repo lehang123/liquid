@@ -12,12 +12,12 @@ import Firebase
 
 class ChangePasswordViewController : UIViewController {
     
-    private static let PASSWORD_INVALID = "The Oringinal password is invalid"
-    private static let PASSWORD_LENGTH_NOT_ENOUTH = "Minimum length is 8"
-    private static let CONFIRMED_INCORRECT_WRONG = "New Password and Confirm are different"
-    private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
+    private static let PASSWORD_INVALID = "The original password is invalid"
+    private static let PASSWORD_LENGTH_NOT_ENOUGH = "Minimum length is 8"
+    private static let CONFIRMED_INCORRECT_WRONG = "Mismatch password, please try again"
+    private static let ACCOUNT_INCORRECT_MESSAGE = "Please try again"
     private static let CREATE_CORRECT = "Congratulation!"
-    private static let PASSWORD_CHANGE_SUCCESS = "Password changed Success!"
+    private static let PASSWORD_CHANGE_SUCCESS = "Password has been changed."
 
     @IBOutlet weak var originalPW: UITextField!
     @IBOutlet weak var newPW: UITextField!
@@ -31,8 +31,9 @@ class ChangePasswordViewController : UIViewController {
         
         print (newPW!)
         print (confirmedPassword!)
+        //make sure both new and old passwords are at least 8 characters.
         if (newPW.text!.count < 8) {
-            Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_LENGTH_NOT_ENOUTH,
+            Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_LENGTH_NOT_ENOUGH,
                            message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
                            action_title: Util.BUTTON_DISMISS,
                            on: self)
