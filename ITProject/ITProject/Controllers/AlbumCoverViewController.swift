@@ -15,24 +15,28 @@ class AlbumCoverViewController: UIViewController {
     private static let CELL_IDENTIFIER = "AlbumCell"
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
+    
+    //var activeCell = albumCollectionView
+    //activeCell = AlbumCoverViewController.controlView
     let cellScaling: CGFloat = 0.6
     let albumCoverList = AlbumList()
     
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
     }
+    
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
-
         
         //TEMPTESTING
         self.albumCoverList.addNewAlbum(title: "A", description: "hello1")
         self.albumCoverList.addNewAlbum(title: "SB", description: "hello2",images : [UIImage(named:"item0")!,UIImage(named:"item4")!,UIImage(named:"item3")!,UIImage(named:"item1")!])
-        
+    
     }
+    
     
     private func loadAlbumCollectionView(){
         self.albumCollectionView.showsVerticalScrollIndicator = false
@@ -105,6 +109,16 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         
         return cell
     }
+    
+//    // For gesture
+//    private func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        // If clicked on another cell than the swiped cell
+//        let cell = collectionView.cellForItem(at: indexPath)
+//        if activeCell != nil && activeCell != cell {
+//            userDidSwipeRight()
+//        }
+//    }
+    
 }
 
 
