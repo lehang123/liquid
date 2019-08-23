@@ -75,7 +75,7 @@ class SideMenuTableViewController: UITableViewController {
                     // dismiss the side bar(have to)
                     self.dismiss(animated: true, completion: nil)
                     try Auth.auth().signOut()
-                    
+                    CacheHandler.getInstance().cleanCache()
                     
                 }catch let e as NSError {
                     print("you get error")
