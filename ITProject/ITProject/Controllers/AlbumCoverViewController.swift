@@ -29,8 +29,7 @@ class AlbumCoverViewController: UIViewController {
 
         
         //TEMPTESTING
-        self.albumCoverList.addNewAlbum(title: "A", description: "hello1")
-        self.albumCoverList.addNewAlbum(title: "SB", description: "hello2")
+        
         
     }
     
@@ -68,8 +67,11 @@ class AlbumCoverViewController: UIViewController {
     
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
-    
-        albumCoverList.addNewAlbum(title: "orz", description: "hello233")
+        
+        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
+            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+        })
+        
         
         self.albumCollectionView.reloadData()
             
