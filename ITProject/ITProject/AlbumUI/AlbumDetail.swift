@@ -21,17 +21,18 @@ class AlbumDetail: Equatable
     private var coverImage: UIImage!
     private var description = ""
 
-    private let UID = ""
+    private var UID = ""
 
 
     
-    init(title: String, description: String)
+    init(title: String, description: String, UID : String)
     {
         let defaultImage : UIImage = #imageLiteral(resourceName: "item4")
         
         self.title = title
         self.coverImage = defaultImage
         self.description = description
+        self.UID = UID
         
     }
     

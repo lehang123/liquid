@@ -34,12 +34,12 @@ class AlbumList {
         return currentAlbums
     }
     
-    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String){
+    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String, UID: String){
 //            if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
 //                currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
 //            }
-        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp)){
-            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp))
+        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID:"")){
+            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID))
         }
     }
     
