@@ -38,7 +38,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         }
         
         //testing functions. dont forget to delete!::
-       test()
+//       test()
         
         // set Profile Image
         profileImg.image = UIImage(named: "tempProfileImage")

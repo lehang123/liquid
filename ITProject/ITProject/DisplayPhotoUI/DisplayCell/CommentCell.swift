@@ -14,8 +14,8 @@ class CommentCell: UITableViewCell {
     private static let COMMENT_ERROR = "Error reading comment"
     private static let USERNAME_ERROR = "Error reading username"
     
-    @IBOutlet private weak var commentLabel: UILabel!
-    @IBOutlet private weak var usernameLabel: UILabel!
+    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
 
     public func setCommentLabel(comment: String){
         commentLabel.text = comment

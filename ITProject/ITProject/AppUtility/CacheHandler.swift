@@ -67,6 +67,7 @@ class CacheHandler {
         
         self.dataCache.setObject( obj, forKey: forKey);
         CacheHandler.addCacheCounter();
+        print("setCache success")
     }
     
     
@@ -74,10 +75,8 @@ class CacheHandler {
     /// gets an object from cache by its key.
     /// - Parameter forKey: key of the object
     /// - Returns: the object associated with the key given
-    public func getCache (forKey: AnyObject) -> AnyObject{
-        
-        return self.dataCache.object(forKey: forKey)!;
-        
+    public func getCache (forKey: AnyObject) -> AnyObject?{
+        return self.dataCache.object(forKey: forKey);
     }
     /// <#Description#>
     /// removes all objects in cache. be mindful of this when working with others,
