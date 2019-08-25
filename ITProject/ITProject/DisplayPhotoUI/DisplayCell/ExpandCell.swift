@@ -12,14 +12,24 @@ import UIKit
 class ExpandCell: UITableViewCell {
     
     private static let READING_ERROR = "Error reading expand logo"
-    
+    var cellState = Work.Expand
+    enum Work {
+        case Expand
+        case Collapse
+    }
     @IBOutlet private weak var expandLogo: UIImageView!
     
-    public func setLogoExpandDown(){
+    public func setLogoExpand(){
+        cellState = Work.Expand
         expandLogo.image = #imageLiteral(resourceName: "expand_down")
     }
     
-    public func setLogoExpandUp(){
+    public func setLogoCollapse(){
+        cellState = Work.Collapse
         expandLogo.image = #imageLiteral(resourceName: "expand_up")
     }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//
+//    }
 }

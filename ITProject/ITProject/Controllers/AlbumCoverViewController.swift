@@ -41,7 +41,6 @@ class AlbumCoverViewController: UIViewController {
                 self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
             })
         }
-
     }
     
     
