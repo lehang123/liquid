@@ -20,7 +20,8 @@ target 'ITProject' do
   pod "UPCarouselFlowLayout"
   pod 'SideMenu'
   pod 'EnhancedCircleImageView'
-  pod 'CleanyModal', '~> 0.1.2'
+  pod 'SwiftEntryKit'
+
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'
 
