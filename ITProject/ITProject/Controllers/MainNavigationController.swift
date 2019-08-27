@@ -52,7 +52,6 @@ class MainNavigationController :UINavigationController {
     
     private func startCache(){
         
-        
         //set familyUID's cache:
         let user = Auth.auth().currentUser!.uid
         
@@ -63,12 +62,12 @@ class MainNavigationController :UINavigationController {
             {  (document, error) in
                 if let document = document, document.exists {
                     let familyDocRef:DocumentReference = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+                    print("Caching in main login:: ");
                     CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
                     
                 }else{
                     print("ERROR LOADING main login:: ");
-                }
-                
+                }     
         }
     }
     
