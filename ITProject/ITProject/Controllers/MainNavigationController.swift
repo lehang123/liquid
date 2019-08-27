@@ -64,10 +64,10 @@ class MainNavigationController :UINavigationController {
                     let familyDocRef:DocumentReference = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
                     print("Caching in main login:: ");
                     CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
-                    
+                   
                 }else{
                     print("ERROR LOADING main login:: ");
-                }     
+                }
         }
     }
     
