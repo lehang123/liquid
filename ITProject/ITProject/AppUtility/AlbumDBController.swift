@@ -66,7 +66,7 @@ class AlbumDBController {
         DBController.getInstance()
             .getDocumentFromCollection(
                 collectionName: RegisterDBController.USER_COLLECTION_NAME,
-                documentUID:  user)
+                documentUID: user)
         {  (document, error) in
             if let document = document, document.exists {
                 let familyDocRef:DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
@@ -138,7 +138,9 @@ class AlbumDBController {
             .collection(AlbumDBController.ALBUM_COLLECTION_NAME)
             .whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY,
                         isEqualTo: familyDocumentReference as Any).getDocuments {(querysnapshot , error)  in
-                            print("getAlbums::: " , querysnapshot, error);
+//                            print("getAlbums::: " +
+//                                querysnapshot.debugDescription
+//                                +  error!.localizedDescription);
                             completion(querysnapshot,error);
         };
         

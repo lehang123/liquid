@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QG7-7k-0eG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="a5j-9A-YmN">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -1043,6 +1043,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </view>
                                         <color key="backgroundColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <gestureRecognizers/>
                                         <size key="customSize" width="286" height="205"/>
                                     </collectionViewCell>
                                 </cells>
@@ -1287,6 +1288,7 @@
                                         <constraint firstItem="Q1P-4i-7It" firstAttribute="leading" secondItem="MIU-Kn-hRM" secondAttribute="trailing" id="Zoh-Kd-Qn0"/>
                                         <constraint firstItem="I5n-AV-v0M" firstAttribute="height" secondItem="OcM-Lv-7mx" secondAttribute="height" multiplier="0.7" id="dEg-wV-dAg"/>
                                         <constraint firstAttribute="trailing" secondItem="I5n-AV-v0M" secondAttribute="trailing" multiplier="1.05" id="dRr-HX-TcI"/>
+                                        <constraint firstItem="I5n-AV-v0M" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Yok-j8-pTJ" secondAttribute="trailing" constant="8" symbolic="YES" id="eFT-ny-VOP"/>
                                         <constraint firstItem="MIU-Kn-hRM" firstAttribute="width" secondItem="Go8-Ij-s3Z" secondAttribute="width" multiplier="0.5" id="go1-C9-obn"/>
                                         <constraint firstItem="Yok-j8-pTJ" firstAttribute="height" secondItem="OcM-Lv-7mx" secondAttribute="height" id="l5x-YJ-uFF"/>
                                         <constraint firstItem="Q1P-4i-7It" firstAttribute="height" secondItem="OcM-Lv-7mx" secondAttribute="height" id="qDI-JA-lNa"/>
@@ -1312,32 +1314,57 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e21-HL-vCA">
-                                            <rect key="frame" x="0.0" y="0.0" width="96" height="43.5"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e21-HL-vCA">
+                                            <rect key="frame" x="0.0" y="0.0" width="96" height="39"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="let's talk about it" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a8v-ui-E03" userLabel="Comment">
-                                            <rect key="frame" x="106" y="0.0" width="126" height="43.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="let's talk about it" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a8v-ui-E03" userLabel="Comment">
+                                            <rect key="frame" x="96" y="0.0" width="133" height="43.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="a8v-ui-E03" secondAttribute="trailing" constant="20" symbolic="YES" id="A64-8T-2NR"/>
                                         <constraint firstItem="e21-HL-vCA" firstAttribute="leading" secondItem="xbb-3z-9gM" secondAttribute="leading" id="CbJ-my-Ut6"/>
-                                        <constraint firstItem="e21-HL-vCA" firstAttribute="centerY" secondItem="xbb-3z-9gM" secondAttribute="centerY" id="NFP-fE-giA"/>
                                         <constraint firstItem="a8v-ui-E03" firstAttribute="centerY" secondItem="xbb-3z-9gM" secondAttribute="centerY" id="cBE-gm-UEI"/>
                                         <constraint firstItem="a8v-ui-E03" firstAttribute="height" secondItem="xbb-3z-9gM" secondAttribute="height" id="gLw-W6-ua4"/>
-                                        <constraint firstItem="e21-HL-vCA" firstAttribute="height" secondItem="xbb-3z-9gM" secondAttribute="height" id="hl8-Qf-Byx"/>
+                                        <constraint firstItem="e21-HL-vCA" firstAttribute="height" secondItem="xbb-3z-9gM" secondAttribute="height" multiplier="0.9" id="hl8-Qf-Byx"/>
                                         <constraint firstItem="e21-HL-vCA" firstAttribute="width" secondItem="xbb-3z-9gM" secondAttribute="width" multiplier="0.3" id="u9u-IX-BOC"/>
-                                        <constraint firstItem="a8v-ui-E03" firstAttribute="leading" secondItem="e21-HL-vCA" secondAttribute="trailing" constant="10" id="y8N-1A-4ti"/>
+                                        <constraint firstItem="a8v-ui-E03" firstAttribute="leading" secondItem="e21-HL-vCA" secondAttribute="trailing" id="y8N-1A-4ti"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstItem="e21-HL-vCA" firstAttribute="top" secondItem="6Ee-Ao-Ajp" secondAttribute="top" id="ngC-5o-8Ix"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="commentLabel" destination="a8v-ui-E03" id="0bG-SH-4rv"/>
                                     <outlet property="usernameLabel" destination="e21-HL-vCA" id="PR2-bY-q2G"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExpandCell" id="jG6-Bb-pb8" userLabel="expandLogoCell" customClass="ExpandCell" customModule="ITProject" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="374" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jG6-Bb-pb8" id="fP2-Kh-yld">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="expand_down" translatesAutoresizingMaskIntoConstraints="NO" id="FPg-Rw-rS7" userLabel="expand logo">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="FPg-Rw-rS7" firstAttribute="width" secondItem="fP2-Kh-yld" secondAttribute="width" id="1HG-ey-FLJ"/>
+                                        <constraint firstItem="FPg-Rw-rS7" firstAttribute="height" secondItem="fP2-Kh-yld" secondAttribute="height" id="1g5-hp-YYN"/>
+                                        <constraint firstItem="FPg-Rw-rS7" firstAttribute="centerY" secondItem="fP2-Kh-yld" secondAttribute="centerY" id="Bts-XY-ZDS"/>
+                                        <constraint firstItem="FPg-Rw-rS7" firstAttribute="centerX" secondItem="fP2-Kh-yld" secondAttribute="centerX" id="wNe-NA-YY5"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="expandLogo" destination="FPg-Rw-rS7" id="oc5-CK-7kF"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1358,6 +1385,7 @@
     <resources>
         <image name="addIcon" width="101" height="101"/>
         <image name="bookmark" width="107" height="107"/>
+        <image name="expand_down" width="117" height="110.5"/>
         <image name="eye" width="108" height="108"/>
         <image name="familyBackgroundImage" width="750" height="1334"/>
         <image name="homeIcon" width="108" height="108"/>

@@ -34,27 +34,11 @@ class ProfileViewController: UIViewController {
     
     
     // Get the name of the user.
-    // It is a bit slow !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    func getName() {
+    private func getName() {
         let user = Auth.auth().currentUser
         print (CacheHandler.getInstance().getCache(forKey: "name" as AnyObject))
         self.name.text = (CacheHandler.getInstance().getCache(forKey: "name" as AnyObject) as! String)
-//        if let user = user {
-//            let uid = user.uid
-//
-//            DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: uid){
-//                (document, error) in
-//                if let document = document, document.exists {
-//                    DispatchQueue.main.async {
-//                        let n = (document.data()!["name"])
-//                        self.name.text = (n as! String)
-//                    }
-//                }
-//            }
-//
-//
-//
-//        }
+
     }
     
 

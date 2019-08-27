@@ -16,6 +16,7 @@ class LikeWatchedBookmarkCell: UITableViewCell {
     @IBOutlet weak var watchedLabel: UIImageView!
     @IBOutlet weak var watchedNumbers: UILabel!
     @IBOutlet weak var Bookmark: UIImageView!
+    
     //    @IBOutlet weak var displayPhotoImageView: UIImageView!
 //
 //    var displayImage: UIImage! {
