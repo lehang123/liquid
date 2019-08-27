@@ -9,7 +9,7 @@
 import UIKit
 import UPCarouselFlowLayout
 import Firebase
-import CleanyModal
+import SwiftEntryKit
 
 class AlbumCoverViewController: UIViewController {
     
@@ -32,12 +32,7 @@ class AlbumCoverViewController: UIViewController {
 
         
         //TEMPTESTING
-        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
-
-            querys?.documents.forEach({ (querydoc) in
-                self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
-            })
-        }
+        //loadData()
         
     }
     
@@ -49,20 +44,14 @@ class AlbumCoverViewController: UIViewController {
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//        // NEED FIXED: Combine AlbumCoverList and TempAlb as one
-//        if segue.identifier == Storyboard.showAlbumDetail {
-//            if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
-//                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
-//                for i in TempAlbumDetail.fetchPhoto() {
-//                    if i.name == selectedAlbum.getTitle() {
-//                        albumDetailTVC.albumd = i
-//                    }
-//                }
-//            }
-//        }
-//    }
+    private func loadData() {
+        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
+            
+            querys?.documents.forEach({ (querydoc) in
+                self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
+            })
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Storyboard.showAlbumDetail {
@@ -75,39 +64,97 @@ class AlbumCoverViewController: UIViewController {
     
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
-//        let alertConfig = CleanyAlertConfig(
-//            title: "Add New Album",
-//            message: "",
-//            iconImgName: nil)
-//        let alert = MyAlertViewController(config: alertConfig)
-//        alert.addTextField { textField in
-//            textField.placeholder = "Album Name"
-//            textField.font = UIFont.systemFont(ofSize: 12)
-//            textField.autocorrectionType = .no
-//            textField.keyboardAppearance = .dark
-//        }
-//        alert.addTextField { textField in
-//            textField.placeholder = "Description"
-//            textField.font = UIFont.systemFont(ofSize: 12)
-//            textField.autocorrectionType = .no
-//            textField.keyboardAppearance = .dark
-//        }
-//
-//        alert.addAction(title: "Create new Album", style: .default, handler: { action in
-//            print("email in textfield is: \(alert.textFields?.first?.text ?? "empty")")
+        print("albumList", albumList)
+        var attributes = PopUpFormWindow.setupFormPresets()
+        showSignupForm(attributes: &attributes, style: .light)
+        self.loadData()
+        print("123123",self.albumList)
+        
+//        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
+//            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+//       self.albumCollectionView.reloadData()
 //        })
-//        alert.addAction(title: "Cancel", style: .cancel)
-//
-//        present(alert, animated: true, completion: nil)
-
-        
-        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
-            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
-        })
 //
         
-        self.albumCollectionView.reloadData()
+        
             
+    }
+    // pop up alter
+    private func showPopupMessage(attributes: EKAttributes) {
+        let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
+        let title = "Error!"
+        let description = "Album name already exist. Try give a unique name"
+        PopUpAlter.showPopupMessage(attributes: attributes,
+                                    title: title,
+                                    titleColor: .white,
+                                    description: description,
+                                    descriptionColor: .white,
+                                    buttonTitleColor: Color.Gray.mid,
+                                    buttonBackgroundColor: .white,
+                                    image: image)
+    }
+    
+    // Sign up form
+    private func showSignupForm(attributes: inout EKAttributes, style: FormStyle) {
+        let titleStyle = EKProperty.LabelStyle(
+            font: MainFont.light.with(size: 14),
+            color: style.textColor,
+            displayMode: .light
+        )
+        let title = EKProperty.LabelContent(
+            text: "Add new album",
+            style: titleStyle
+        )
+        let textFields = AddAlbumUI.fields(
+            by: [.albumName,.albumDescription],
+            style: style
+        )
+        
+        let button = EKProperty.ButtonContent(
+            label: .init(text: "Continue", style: style.buttonTitle),
+            backgroundColor: style.buttonBackground,
+            highlightedBackgroundColor: style.buttonBackground.with(alpha: 0.8),
+            displayMode: .light) {
+                let albumName = textFields.first?.textContent
+                let albumDescription = textFields.last?.textContent
+                print("123",self.albumList)
+                if (albumName != "" && albumName != nil && !self.albumList.contains(albumName!)){
+                    //
+                    //
+                    //                } else {
+                    //                if (albumName == ""){
+                    //                    let popattributes = PopUpAlter.setupPopupPresets()
+                    //                    self.showPopupMessage(attributes: popattributes)
+                    //                } else {
+                    //        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
+                    //            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+                    // self.albumCollectionView.reloadData()
+                    //        })
+                    //
+                    
+                    //SwiftEntryKit.dismiss()
+                    self.albumCoverList.addNewAlbum(title: albumName!, description: albumDescription ?? "", UID: "")
+                    
+                    self.albumCollectionView.reloadData()
+                    
+                }
+                
+        }
+        
+        
+        
+        let contentView = EKFormMessageView(
+            with: title,
+            textFieldsContent: textFields,
+            buttonContent: button
+        )
+        
+        
+        
+        attributes.lifecycleEvents.didAppear = {
+            contentView.becomeFirstResponder(with: 0)
+        }
+        SwiftEntryKit.display(entry: contentView, using: attributes, presentInsideKeyWindow: true)
     }
 }
 
@@ -142,17 +189,6 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
     }
 }
 
-class MyAlertViewController: CleanyAlertViewController {
-    override init(config: CleanyAlertConfig) {
-        config.styleSettings[.tintColor] = UIColor(red: 8/255, green: 61/255, blue: 119/255, alpha: 1)
-        config.styleSettings[.destructiveColor] = UIColor(red: 218/255, green: 65/255, blue: 103/255, alpha: 1)
-        super.init(config: config)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 
 
 
