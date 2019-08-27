@@ -21,6 +21,9 @@ class CacheHandler {
     private static var cachedCounter : Int = 0;  // keeps track of cachedData load. useful to check for limit later on.
     private static var dataObjects : Int = 0; // keeps track of # of objects ofCacheHandler.
     public static let FAMILY_KEY:String = "familyUID";
+    public static let USER_DATA:String = "userData";
+    public static let FAMILY_DATA:String = "familyData";
+
     private static var single:CacheHandler!;
     init (){
 
@@ -67,7 +70,7 @@ class CacheHandler {
         
         self.dataCache.setObject( obj, forKey: forKey);
         CacheHandler.addCacheCounter();
-        print("setCache success")
+        print("setCache::: caching : \(obj) with key : \(forKey) succeeded.");
     }
     
     
@@ -112,7 +115,7 @@ class CacheHandler {
     /// - Parameter forKey: object's associated key
     /// - Returns:the stored object in NSDiscardableContent type
     public func getDiscardableCache( forKey: AnyObject) ->NSDiscardableContent{
-        var x:Bool  = self.dataCache.object(forKey: forKey)!.beginContentAccess();
+        self.dataCache.object(forKey: forKey)!.beginContentAccess();
         return self.dataCache.object(forKey: forKey)! as! NSDiscardableContent;
         
     }
