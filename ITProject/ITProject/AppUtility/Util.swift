@@ -32,6 +32,16 @@ class Util {
         }
     }
     
+    /*
+     data : the file date you want to store in the server
+     metadata : metadata to record your file, usually nil
+     fileName : the file name of your data with no extension
+        e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654
+     fextension : file extension
+        e.g. .jpg
+     completion Handlder : do whatever you want when completed, 1 args : download url to the file in the cloud
+     errorHandler : handle when error pop up, 1 args : error that occur
+     */
     public static func UploadFileToServer (data: Data,
                                            metadata: StorageMetadata?,
                                            fileName: String,
@@ -46,8 +56,12 @@ class Util {
     }
     
     /*
-     todo : get the file to the server as .zip, store the
-            original extension (and other information) in database
+      data : the file date you want to store in the server
+      metadata : metadata to record your file, usually nil
+      fileFullName : the file name of your data with extension
+         e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
+      completion Handlder : do whatever you want when completed, 1 args : download url to the file in the cloud
+      errorHandler : handle when error pop up, 1 args : error that occur
      */
     public static func UploadFileToServer(data: Data,
                                           metadata: StorageMetadata?,
@@ -140,7 +154,7 @@ class Util {
                 UnzipFile(from: fileAt as NSString,
                           to: fileAt as NSString,
                           fileName: fileName as String,
-                          deleteAfterFinish: true){
+                          deleteAfterFinish: false){
                             (unzippedFileURL) in
                             completion(unzippedFileURL)
                 }
@@ -184,6 +198,15 @@ class Util {
     }
     
     // todo : password for encrytion
+    /*
+     Zipfile function :
+     
+         from : zipfile location (folderPath)
+         to : destination (folderPath)
+         filename : the file need to be ziped, with no extension
+         fextension : the file extension
+         deleteAfterFinish : delete the original file after finished zipping
+         completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  /Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip */
     public static func ZipFile(from: NSString, to: NSString,
                                fileName: String, fextension: String,
                                deleteAfterFinish: Bool,
@@ -209,6 +232,14 @@ class Util {
         }
     }
     
+    /*
+     Unzipfile function :
+     
+         from : unzipfile location (folderPath)
+         to : destination (folderPath)
+         filename : the file need to be unzip, with extension .zip
+         deleteAfterFinish : delete the zip file after finished unzipping
+         completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  file:/Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.jpg */
     public static func UnzipFile(from: NSString, to: NSString,
                                  fileName: String, deleteAfterFinish: Bool, completion: @escaping ((URL) -> Void) = {_ in }){
         DispatchQueue(label: "working_queue", qos: .userInitiated).async {
@@ -224,13 +255,21 @@ class Util {
                 if deleteAfterFinish{
                     try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
                 }
-            }catch{
-                print ("UnzipFile : error occurs during unzip")
+            }catch let error as NSError{
+                print ("UnzipFile : error occurs during unzip : " + error.localizedDescription)
             }
         }
     }
     
     /*note : read write file opearation, use worker thread to do it*/
+    /*
+     Read file from document directory
+     
+         fileFullname : fileFullname with extension including extension folder path
+            e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
+         completion Handlder : do stuffs when completed,
+         1 args data that you have read from the file
+     */
     public static func ReadFileFromDocumentDirectory(fileName: String,
                                                      completion:@escaping (Data)->() = {_ in })
     {
@@ -248,6 +287,16 @@ class Util {
     }
     
     /*note : read write file opearation, use worker thread to do it*/
+    /*
+     Write file to document directory
+     
+        data : the data that write to the file
+        fileFullname : fileFullname including extension folder path
+            e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
+        completion Handlder : do stuffs when completed,
+            1 args full filePath to written file.
+            e.g. file:///Users/xxxx/Documents/images/544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
+     */
     public static func WriteFileToDocumentDirectory(data: Data,
                                                     fileFullName: String,
                                                     completion:@escaping (URL)->() = {_ in }){
@@ -264,6 +313,39 @@ class Util {
         }
     }
     
+    /* usually is a zip file, so we need to unzip
+        filename : fileName with no extension
+            e.g. "544D51AC-9608-46BD-AE6E-B325F2FC3654"
+        fextension : file extension e.g. ".jpg"
+        completion Handler : do what you want with the file data with it, 1 args data
+     */
+    public static func GetDataFromFile(filename: String, fextension: String, completion:@escaping (Data)->() = {_ in }){
+        let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)!
+        let fileDocumentFullPath = GetDocumentsDirectory().appendingPathComponent(folderPath, isDirectory: true).absoluteString as NSString
+        
+        print( "GetDataFromFile :looking in oringinal file : "  + fileDocumentFullPath.appendingPathComponent(filename + fextension))
+        
+        if DoesFileExist(fullPath: fileDocumentFullPath.appendingPathComponent(filename + fextension)){
+            print("GetDataFromFile : oringinal file exist, no need for unzip :" +
+            fileDocumentFullPath.appendingPathComponent(filename + fextension))
+            ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: filename + fextension)){
+                data in
+                print("GetDataFromFile : get file data success")
+                completion(data)
+            }
+        }else{
+            let zipFilename = filename + EXTENSION_ZIP
+            print("GetDataFromFile : going to unzip :" + fileDocumentFullPath.appendingPathComponent(zipFilename))
+            UnzipFile(from: fileDocumentFullPath, to: fileDocumentFullPath, fileName: zipFilename, deleteAfterFinish: false){fileUrl in
+                print("GetDataFromFile : unzip  with file url :" + fileUrl.absoluteString )
+                ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: fileUrl.lastPathComponent)){
+                    data in
+                    print("GetDataFromFile : get file data success")
+                    completion(data)
+                }
+            }
+        }
+    }
     
     
     public static func GetFolderForFile(fileName: NSString)->String?{
@@ -279,6 +361,11 @@ class Util {
                                     withPathSlash: withPathSlash)
     }
     
+    /*
+     find correspond folder for the extension
+        fextension: file extension e.g. ".jpg"
+        withPathSlash: add pathSlash "/" at the end of the folder
+     */
     public static func GetFolderByExtension(fextension: String, withPathSlash: Bool)->String?{
         if (fextension) == (EXTENSION_JPEG) {
             return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
@@ -290,6 +377,12 @@ class Util {
         return GetDocumentsDirectory().appendingPathComponent(GetFolderForFile(fileName: fileName as NSString)!+fileName).absoluteString
     }
     
+    /* get file full path according to the file extension
+         fileName : file name with extension
+            e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
+         return : fileFolder/filename
+            e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
+     */
     public static func GetFullFilePath(fileName:String)->String{
         return GetFolderForFile(fileName: fileName as NSString)!+fileName
     }

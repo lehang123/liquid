@@ -40,7 +40,7 @@ class LoginViewController: UIViewController {
 //                self?.getUserInfo(usrResult :user!)
                 self?.dismiss(animated: true, completion: nil)
                 
-//                self?.tFunction()
+                self?.tFunction()
 //                self?.testFunction()
             }
         }
@@ -55,18 +55,20 @@ class LoginViewController: UIViewController {
 //    }
 
     public func tFunction(){
-        // test for upload file
-        Util.downloadImage(from:URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
-            (data, url, error) in
-            Util.UploadFileToServer(data: data!, metadata: nil, fileFullName: (Util.GenerateUDID() + Util.EXTENSION_JPEG), completion:{(url) in
-                print ("tFunction : upload file successful, here is the url : ")
-                print(url!)
-            })
-        }
-        // test for download file
-        Util.DownloadFileFromServer(fileFullPath: "images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip", completion: {(fileUrl) in
-            print("file download and unzip success :" + fileUrl!.absoluteString)
-        })
+//        // test for upload file
+//        Util.downloadImage(from:URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
+//            (data, url, error) in
+//            Util.UploadFileToServer(data: data!, metadata: nil, fileFullName: (Util.GenerateUDID() + Util.EXTENSION_JPEG), completion:{(url) in
+//                print ("tFunction : upload file successful, here is the url : ")
+//                print(url!)
+//            })
+//        }
+//        // test for download file
+//        Util.DownloadFileFromServer(fileFullPath: "images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip", completion: {(fileUrl) in
+//            print("file download and unzip success :" + fileUrl!.absoluteString)
+//        })
+        
+        Util.GetDataFromFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg")
     }
     
     public func testFunction(){
