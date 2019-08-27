@@ -21,10 +21,13 @@ class AlbumDBController {
     
     public static let ALBUM_DOCUMENT_FIELD_NAME = "name" // album's name
     public static let ALBUM_DOCUMENT_FIELD_DESCRIPTION = "description" // album's description
-
+    
     public static let ALBUM_DOCUMENT_FIELD_MEDIA = "media_file_paths" // the media files associated
     public static let ALBUM_DOCUMENT_FIELD_FAMILY = "family_path" // the families associated in album
     public static let ALBUM_DOCUMENT_FIELD_OWNER = "owner_path" // the owner associated in album
+    public static let ALBUM_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the album's created date
+    public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL = "thumbnail" // album's photo thumbnail
+    public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION = "thumbnail_extension" // album's photo thumbnail's extension
 
     
     /* constant for MEDIA collections */
@@ -34,11 +37,13 @@ class AlbumDBController {
     public static let MEDIA_DOCUMENT_FIELD_COMMENTS = "comments" // comments field
     public static let MEDIA_DOCUMENT_FIELD_DESCRIPTION = "description" // description field
     public static let MEDIA_DOCUMENT_FIELD_EXTENSION = "extension" // file extension field
+    public static let MEDIA_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the media's created date
+    public static let MEDIA_DOCUMENT_FIELD_ALBUM = "album_path" // reference back to album field
 
-
+    
     init (){
-
-
+        
+        
     }
     /// <#Description#>
     /// singleton pattern:
@@ -67,103 +72,94 @@ class AlbumDBController {
             .getDocumentFromCollection(
                 collectionName: RegisterDBController.USER_COLLECTION_NAME,
                 documentUID: user)
-        {  (document, error) in
-            if let document = document, document.exists {
-                let familyDocRef:DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
-                
-//                let familyDocumentReference:DocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
-                
-                        /*init new album
-                 update: album has reference to family + owner/creator.
-                 */
-                let albumDocumentReference:DocumentReference? = DBController.getInstance()
+            {  (document, error) in
+                if let document = document, document.exists {
+                    let familyDocRef:DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
+                    
+                    //                let familyDocumentReference:DocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
+                    
+                    /*init new album
+                     update: album has reference to family + owner/creator.
+                     update: album has photo thumbnail + date created is stored.
+
+                     */
+                    let albumDocumentReference:DocumentReference? = DBController.getInstance()
                         .addDocumentToCollection(
-                        inputData: [
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME : albumName,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA : [],
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description ,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY : familyDocRef!,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : userDocumentReference],
-                        collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
-                
-                
-                
-                        /*add album to family*/
-                        DBController.getInstance()
-                            .updateArrayField(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME,
-                                              documentUID: familyDocRef!.documentID,
-                                              fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS, appendValue:albumDocumentReference! );
-                
-                /*listens to album updates*/
-//                self.addAlbumSnapshotListener(familyDocumentReference: familyDocRef!);
-                
-                //returns the album's DocumentReference
-                completion(albumDocumentReference);
-                
-           
-                
-                
-                
-            } else {
-                print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
-            }
+                            inputData: [
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME : albumName,
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA : [],
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description ,
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY : familyDocRef!,
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : userDocumentReference,
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL : "",
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : Timestamp(date: Date()),
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : ""],
+                            collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+                    
+                    
+                    
+                    /*add album to family*/
+                    DBController.getInstance()
+                        .updateArrayField(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME,
+                                          documentUID: familyDocRef!.documentID,
+                                          fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS, appendValue:albumDocumentReference! );
+                    
+                    /*listens to album updates*/
+                    //                self.addAlbumSnapshotListener(familyDocumentReference: familyDocRef!);
+                    
+                    //returns the album's DocumentReference
+                    completion(albumDocumentReference);
+                    
+                    
+                    
+                    
+                    
+                } else {
+                    print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
+                }
         }
-
-
+        
+        
         
         
     }
-    
+    //TODO: add/update album photo thumbnail::
+    public func addAlbumThumbnail(albumUID : String, photoThumbnail : String, photoThumbnailExtension: String){
+       
+        DBController
+            .getInstance()
+            .updateSpecificField(
+                newValue: photoThumbnail,
+                fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL,
+                documentUID: albumUID,
+                collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+        
+        
+        DBController
+            .getInstance()
+            .updateSpecificField(
+                newValue: photoThumbnailExtension,
+                fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION,
+                documentUID: albumUID,
+                collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+        
+        
+    }
+
     
     public func getAlbums(  familyDocumentReference:DocumentReference,  completion : @escaping ((QuerySnapshot?,Error?) -> ())){
-//        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID) { (document, error) in
-//            if let document = document, document.exists {
-//                let albumPaths:[DocumentReference] = document.get(RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS) as! [DocumentReference];
-//                albumPaths.forEach({ (document) in
-//                    document.
-//                });
-//
-//                completion(albumPaths);
-//
-//
-//
-//            }else {
-//                print("ERROR at getAlbums::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
-//            }
-//
-//        }
+       
         DBController
             .getInstance()
             .getDB()
             .collection(AlbumDBController.ALBUM_COLLECTION_NAME)
             .whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY,
                         isEqualTo: familyDocumentReference as Any).getDocuments {(querysnapshot , error)  in
-//                            print("getAlbums::: " +
-//                                querysnapshot.debugDescription
-//                                +  error!.localizedDescription);
-                            completion(querysnapshot,error);
-        };
-        
-//            .addSnapshotListener { querySnapshot, error in
-//                guard let snapshot = querySnapshot else {
-//                    print("addAlbumSnapshotListener::: Error fetching snapshots: \(error!)")
-//                    return
-//                }
-//                snapshot.documentChanges
-//                    .forEach { diff in
-//                        if (diff.type == .added) {
-//                            print("addAlbumSnapshotListener::: New photos added: \(diff.document.data())")
-//                        }
-//                        if (diff.type == .modified) {
-//                            print(" addAlbumSnapshotListener ::: Modified photos: \(diff.document.data())")
-//                        }
-//                        if (diff.type == .removed) {
-//                            print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
-//                        }
-//                }
-        }
+                            completion(querysnapshot, error);
+                        }
+    }
     
-
+    
     
     
     /// <#Description#>
@@ -174,8 +170,14 @@ class AlbumDBController {
     ///   - ext: the file extension (e.g. .zip)
     ///   - albumUID: the UID of the album to be updated.
     ///   - mediaPath:  the media file's path to be inserted ( unique), preferrably fullPaths.
-    public func addPhotoToAlbum(desc : String, ext : String, albumUID : String, mediaPath:String){
-        /*init new media */
+    public func addPhotoToAlbum(desc : String, ext : String, albumUID : String, mediaPath:String, dateCreated : Timestamp){
+        /*init new media
+         * update: now has Date Created + reference to its own album */
+        let albumDocRef :DocumentReference = DBController
+            .getInstance()
+            .getDocumentReference(
+            collectionName:AlbumDBController.ALBUM_COLLECTION_NAME,
+            documentUID: albumUID);
         DBController
             .getInstance()
             .addDocumentToCollectionWithUID(
@@ -185,11 +187,13 @@ class AlbumDBController {
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES :0,
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: "",
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION : ext,
-                    AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION : desc],
-                    collectionName: AlbumDBController.MEDIA_COLLECTION_NAME)
+                    AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION : desc,
+                    AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM : albumDocRef,
+                    AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE : dateCreated],
+                collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
         
         /*add path to album*/
-         DBController.getInstance()
+        DBController.getInstance()
             .updateArrayField(
                 collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
                 documentUID: albumUID,
@@ -206,29 +210,25 @@ class AlbumDBController {
         
         DBController.getInstance()
             .getDocumentFromCollection(
-            collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
-            documentUID: albumUID)
+                collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
+                documentUID: albumUID)
             { (document, error) in
-            if let document = document, document.exists {
-                //get all media file paths: 
-                let mediaFilePaths:[String] = document
-                    .get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA) as! [String]
-                print("MediaFilePaths at getPhotosFromAlbum::: \(mediaFilePaths)");
+                if let document = document, document.exists {
+                    //get all media file paths:
+                    let mediaFilePaths:[String] = document
+                        .get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA) as! [String]
+                    print("MediaFilePaths at getPhotosFromAlbum::: \(mediaFilePaths)");
+                    
+                    completion(mediaFilePaths);
+                    
+                   
+                    
+                } else {
+                    print("ERROR at getPhotosFromAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
+                }
                 
-                completion(mediaFilePaths);
                 
-                // download each specified media from storage:
-//                for path in mediaFilePaths {
-//                    Util.DownloadFileFromServer(fileFullPath: path);
-//                }
-
                 
-            } else {
-                print("ERROR at getPhotosFromAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
-            }
-            
-            
-            
         }
     }
     
@@ -255,18 +255,18 @@ class AlbumDBController {
                 }
                 snapshot.documentChanges
                     .forEach { diff in
-                    if (diff.type == .added) {
-                        print("addAlbumSnapshotListener::: New photos added: \(diff.document.data())")
-                    }
-                    if (diff.type == .modified) {
-                        print(" addAlbumSnapshotListener ::: Modified photos: \(diff.document.data())")
-                    }
-                    if (diff.type == .removed) {
-                        print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
-                    }
+                        if (diff.type == .added) {
+                            print("addAlbumSnapshotListener::: New photos added: \(diff.document.data())")
+                        }
+                        if (diff.type == .modified) {
+                            print(" addAlbumSnapshotListener ::: Modified photos: \(diff.document.data())")
+                        }
+                        if (diff.type == .removed) {
+                            print("addAlbumSnapshotListener::: Removed photos: \(diff.document.data())")
+                        }
                 }
-            }  
         }
+    }
     
     
     /// <#Description#>
@@ -275,7 +275,8 @@ class AlbumDBController {
     ///   - mediaPath: media's file path to be removed form album.
     ///   - albumUID: the albumUID that the media belongs to.
     public func deleteMediaFromAlbum(mediaPath : String, albumUID: String ){
-        //from firestore::
+        //get all photos attached to this album:
+        
         
         //remove reference from album:
         DBController.getInstance()
@@ -284,7 +285,7 @@ class AlbumDBController {
                 documentUID: albumUID,
                 fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA,
                 removeValue: mediaPath);
-
+        
         //TODO: remove photo file from storage:
         DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: mediaPath) { (document, error) in
             let ext : String = document?.get(AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION) as! String;
@@ -305,29 +306,99 @@ class AlbumDBController {
         
     }
     /// <#Description#>
-    ///
+    /// completely delete a whole album including its media files and thumbnail.
     /// - Parameters:
     ///   - albumUID: album's UID to be deleted.
+    
+    public func deleteAlbum(albumUID: String){
+        
+        let albumDocumentReference : DocumentReference =  DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID);
+        // get all media files:
+        DBController
+            .getInstance()
+            .getDB()
+            .collection(AlbumDBController.MEDIA_COLLECTION_NAME)
+            .whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM,
+                        isEqualTo: albumDocumentReference as Any)
+            .getDocuments { (querySnapshot, error) in
+            querySnapshot?
+            .documents
+                //then, for each file::
+            .forEach({ (doc) in
+                
+//                //delete from storage:
+//            Util.DeleteFileFromServer(
+//            fileName: doc.documentID,
+//            fextension: doc.data()[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as! String);
+                //delete from db:
+                DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: doc.documentID, collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
+                print("delted photo: \(doc.data())");
+            })
+                DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID, completion: { (document, error) in
+                    //delete album thumbnail from storage, if there's any:
 
-    public func deleteAlbum(albumUID: String){//, mediaPath:String ){
+                        if (document!.data()?[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] != nil){
+                            print("deleting thumbnail..");
+
+                         Util.DeleteFileFromServer(fileName: document!.data()![AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String,
+                        fextension: document!.data()![AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String);
+                        }
+                    
+                    
+
+                });
+                //delete album from db:
+                DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: albumUID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+                
+                
+                
+                            
+                           
+        }
         
-        //from storage: TODO: remove all photo files (related to the album) from storage:
+//        from storage: TODO: remove all photo files (related to the album) from storage:
+//
+//        //get all media file paths:
+//        DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID) { (document, error) in
+//
+//            if let document = document, document.exists {
+//                let mediaPaths:  NSArray = document.get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA) as! NSArray ;
+//
+//
+//                let x: DocumentReference;
+//
+//
+//                //delete in DB:
+//                mediaPaths.forEach({ (media) in
+//                    DBController
+//                        .getInstance()
+//                        .deleteWholeDocumentfromCollection(
+//                            documentUID: media as! String,
+//                            collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+//                });
+//
+//                //delete in storage:
+//
+////                DBController.getInstance()
+////                    .deleteWholeDocumentfromCollection(
+////                        documentUID: albumUID,
+////                        collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
+////
+//
+//
+//
         
-        
-        //(from firestore) remove all images document:
-//         DBController.getInstance()
-//            .deleteWholeDocumentfromCollection(
-//                documentUID: mediaPath,
-//                collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
-        
-        //(from firestore) remove album document:
-         DBController.getInstance()
-            .deleteWholeDocumentfromCollection(
-                documentUID: albumUID,
-                collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
-        
-        
+//
+//            } else {
+//                print("ERROR at deleteAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
+//            }
+//
+//        print("run:::: ")
+//        }
+//
+//
+//    }
         
     }
-
+    
 }

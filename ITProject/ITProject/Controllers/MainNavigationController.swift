@@ -59,11 +59,18 @@ class MainNavigationController :UINavigationController {
             .getDocumentFromCollection(
                 collectionName: RegisterDBController.USER_COLLECTION_NAME,
                 documentUID:  user)
-            {  (document, error) in
-                if let document = document, document.exists {
-                    let familyDocRef:DocumentReference = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+            {  (userDocument, error) in
+                if let userDocument = userDocument, userDocument.exists {
+                    let familyDocRef:DocumentReference = userDocument.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+                    familyDocRef.getDocument(completion: { (doc, err) in
+                        CacheHandler.getInstance().setCache(obj: doc?.data() as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
+                    })
+                    
                     print("Caching in main login:: ");
                     CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+                    CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+
+
                     
                 }else{
                     print("ERROR LOADING main login:: ");
