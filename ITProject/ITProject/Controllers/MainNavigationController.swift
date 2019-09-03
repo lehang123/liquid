@@ -42,19 +42,24 @@ class MainNavigationController :UINavigationController {
             if auth.currentUser == nil {
                 self.askForLogin()
             }else{
-                self.loadInfo()
-                print("I'm here : " + (user?.email)!)
+                self.loadName()
+
+                print("ELSE I'm here : " + (user?.email)!)
                 self.startCache();
+                print("Listener get called ")
+                
+
+                
             }
-            print("Listener get called ")
+            
         }
     }
     
     private func startCache(){
-        
         //set familyUID's cache:
         let user = Auth.auth().currentUser!.uid
-        
+        Util.ShowActivityIndicator(withStatus: "please wait...");
+
         DBController.getInstance()
             .getDocumentFromCollection(
                 collectionName: RegisterDBController.USER_COLLECTION_NAME,
@@ -71,10 +76,14 @@ class MainNavigationController :UINavigationController {
                     
                     CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
 
+
                 }else{
                     print("ERROR LOADING main login:: ");
                 }
+                Util.DismissActivityIndicator();
+
         }
+
     }
     
     private func askForLogin(){
@@ -83,14 +92,9 @@ class MainNavigationController :UINavigationController {
         self.present(navController, animated:true, completion: nil)
     }
     
-    private func loadInfo() {
-        
-        let cache = CacheHandler.getInstance()
-        loadName(cache: cache)
-        
-    }
+  
     
-    func loadName( cache : CacheHandler) {
+    func loadName() {
         let user = Auth.auth().currentUser
         if let user = user {
             let uid = user.uid
@@ -101,7 +105,7 @@ class MainNavigationController :UINavigationController {
                     //_ = document.data().map(String.init(describing:)) ?? "nil"
                     DispatchQueue.main.async {
                         let n = (document.data()!["name"])
-                        cache.setCache(obj: n as AnyObject, forKey: "name" as AnyObject )
+                        CacheHandler.getInstance().setCache(obj: n as AnyObject, forKey: "name" as AnyObject )
                     }
                 }
             }
