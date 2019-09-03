@@ -31,10 +31,7 @@ class RegisterDBController {
     public static let FAMILY_DOCUMENT_FIELD_MOTTO = "motto" // family's motto
     public static let FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE = "profile_picture" // paths to family profile pict
 
-    
-    public static let USER_COLLECTION_PATH = NSString ("users/")
-    public static let FAMILY_COLLECTION_PATH = NSString ("families/")
-    
+
     private static var single: RegisterDBController!;
     
     init (){

@@ -64,7 +64,11 @@ class AlbumDBController {
     ///   - completion: gives the album's DocumentReference.
     public func addNewAlbum(albumName : String, description: String,
                             completion: @escaping (DocumentReference?) -> () ) {
-        
+        //        let familyUID = CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject);
+        //
+        //        let familyDocRef  = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
+        //        print("fam doc ref at addNewAlbum:::  \(familyDocRef)" );
+
         //get currentUser's family
         let user = Auth.auth().currentUser!.uid
         let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user);
@@ -75,9 +79,9 @@ class AlbumDBController {
             {  (document, error) in
                 if let document = document, document.exists {
                     let familyDocRef:DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
-                    
+
                     //                let familyDocumentReference:DocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID as! String);
-                    
+
                     /*init new album
                      update: album has reference to family + owner/creator.
                      update: album has photo thumbnail + date created is stored.
@@ -95,25 +99,25 @@ class AlbumDBController {
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : Timestamp(date: Date()),
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : ""],
                             collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
-                    
-                    
-                    
+
+
+
                     /*add album to family*/
                     DBController.getInstance()
                         .updateArrayField(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME,
                                           documentUID: familyDocRef!.documentID,
                                           fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS, appendValue:albumDocumentReference! );
-                    
+
                     /*listens to album updates*/
                     //                self.addAlbumSnapshotListener(familyDocumentReference: familyDocRef!);
-                    
+
                     //returns the album's DocumentReference
                     completion(albumDocumentReference);
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
                 } else {
                     print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
                 }

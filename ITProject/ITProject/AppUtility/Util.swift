@@ -482,18 +482,26 @@ class Util {
     }
     
     public static func ShowActivityIndicator (){
-        SVProgressHUD.show()
-        UIApplication.shared.beginIgnoringInteractionEvents()
+        DispatchQueue.main.async() {
+            //UI thread do whatever you want after download
+            SVProgressHUD.show()
+            UIApplication.shared.beginIgnoringInteractionEvents()
+        }
+
     }
     
     public static func ShowActivityIndicator (withStatus: String){
-        SVProgressHUD.show(withStatus: withStatus)
-        UIApplication.shared.beginIgnoringInteractionEvents()
+        DispatchQueue.main.async {
+            SVProgressHUD.show(withStatus: withStatus)
+            UIApplication.shared.beginIgnoringInteractionEvents()
+        }
     }
     
     public static func DismissActivityIndicator (){
-        SVProgressHUD.dismiss()
-        UIApplication.shared.endIgnoringInteractionEvents()
+        DispatchQueue.main.async {
+            SVProgressHUD.dismiss()
+            UIApplication.shared.endIgnoringInteractionEvents()
+        }
     }
     
     public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
