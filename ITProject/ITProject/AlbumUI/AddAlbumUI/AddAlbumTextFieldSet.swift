@@ -50,7 +50,7 @@ enum FormStyle {
 final class AddAlbumUI {
     
     private static var displayMode: EKAttributes.DisplayMode {
-        return PopUpFormWindow.displayMode
+        return PopUpFromWindow.displayMode
     }
     
     class func albumName(placeholderStyle: EKProperty.LabelStyle,

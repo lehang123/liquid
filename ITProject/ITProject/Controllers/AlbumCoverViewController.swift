@@ -28,8 +28,6 @@ class AlbumCoverViewController: UIViewController {
         static let showAlbumDetail = "ShowAlbumDetail"
     }
     
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
@@ -57,8 +55,13 @@ class AlbumCoverViewController: UIViewController {
                 self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
             })
         }
+        
+        
     }
     
+    /* prepare next view,
+     passing album details to the display album content view
+     To-do: changed list data structure so it fits for database */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
@@ -71,9 +74,9 @@ class AlbumCoverViewController: UIViewController {
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
         print("albumList", albumList)
-        var attributes = PopUpFormWindow.setupFormPresets()
+        var attributes = PopUpFromWindow.setupFormPresets()
         showSignupForm(attributes: &attributes, style: .light)
-        self.loadData()
+//        self.loadData()
         print("123123",self.albumList)
         
 //        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
@@ -138,7 +141,7 @@ class AlbumCoverViewController: UIViewController {
                     //        })
                     //
                     
-                    //SwiftEntryKit.dismiss()
+                    SwiftEntryKit.dismiss()
                     self.albumCoverList.addNewAlbum(title: albumName!, description: albumDescription ?? "", UID: "")
                     
                     self.albumCollectionView.reloadData()
@@ -175,6 +178,9 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         return albumCoverList.count()
     }
 
+    /*when album on clicked :
+     open albumDetail controller
+     */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        _ = albumData[(indexPath as NSIndexPath).row]
 

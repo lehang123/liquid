@@ -1130,7 +1130,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
+                                    <rect key="frame" x="0.0" y="468" width="375" height="16"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1202,7 +1202,7 @@
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item2" translatesAutoresizingMaskIntoConstraints="NO" id="RZ5-c5-gxW">
-                                                                <rect key="frame" x="0.0" y="-275.5" width="185" height="736"/>
+                                                                <rect key="frame" x="0.0" y="84.5" width="185" height="16"/>
                                                             </imageView>
                                                         </subviews>
                                                     </view>

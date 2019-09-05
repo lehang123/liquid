@@ -314,35 +314,47 @@ class Util {
     }
     
     /* usually is a zip file, so we need to unzip
+     , NOTE : completion is in main thread, as it's usually a UI task.
+            switch to background thread outside if you need it.
         filename : fileName with no extension
             e.g. "544D51AC-9608-46BD-AE6E-B325F2FC3654"
         fextension : file extension e.g. ".jpg"
         completion Handler : do what you want with the file data with it, 1 args data
      */
-    public static func GetDataFromFile(filename: String, fextension: String, completion:@escaping (Data)->() = {_ in }){
+    public static func GetDataFromLocalFile(filename: String, fextension: String, completion:@escaping (Data)->() = {_ in }){
         let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)!
         let fileDocumentFullPath = GetDocumentsDirectory().appendingPathComponent(folderPath, isDirectory: true).absoluteString as NSString
         
         print( "GetDataFromFile :looking in oringinal file : "  + fileDocumentFullPath.appendingPathComponent(filename + fextension))
         
+        // if file simply exists, just read and open it.
         if DoesFileExist(fullPath: fileDocumentFullPath.appendingPathComponent(filename + fextension)){
             print("GetDataFromFile : oringinal file exist, no need for unzip :" +
             fileDocumentFullPath.appendingPathComponent(filename + fextension))
             ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: filename + fextension)){
                 data in
                 print("GetDataFromFile : get file data success")
-                completion(data)
+                DispatchQueue.main.async {
+                      completion(data)
+                }
             }
-        }else{
+        }else{// if not, find a zip file, unzip and then get data
             let zipFilename = filename + EXTENSION_ZIP
             print("GetDataFromFile : going to unzip :" + fileDocumentFullPath.appendingPathComponent(zipFilename))
-            UnzipFile(from: fileDocumentFullPath, to: fileDocumentFullPath, fileName: zipFilename, deleteAfterFinish: false){fileUrl in
-                print("GetDataFromFile : unzip  with file url :" + fileUrl.absoluteString )
-                ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: fileUrl.lastPathComponent)){
-                    data in
-                    print("GetDataFromFile : get file data success")
-                    completion(data)
+            
+            if DoesFileExist(fullPath: fileDocumentFullPath.appendingPathComponent(zipFilename)){
+                UnzipFile(from: fileDocumentFullPath, to: fileDocumentFullPath, fileName: zipFilename, deleteAfterFinish: false){fileUrl in
+                    print("GetDataFromFile : unzip  with file url :" + fileUrl.absoluteString )
+                    ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: fileUrl.lastPathComponent)){
+                        data in
+                        print("GetDataFromFile : get file data success")
+                        DispatchQueue.main.async {
+                            completion(data)
+                        }
+                    }
                 }
+            }else {
+                print("zip file doesn't exist, retrive file fail")
             }
         }
     }

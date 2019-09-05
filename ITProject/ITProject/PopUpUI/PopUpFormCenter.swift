@@ -11,11 +11,11 @@ import SwiftEntryKit
 
 
     // MARK: Setup
-class PopUpFormWindow {
+class PopUpFromWindow {
     
     static var displayMode = EKAttributes.DisplayMode.inferred
     private var displayMode: EKAttributes.DisplayMode {
-        return PopUpFormWindow.displayMode
+        return PopUpFromWindow.displayMode
     }
     
     
