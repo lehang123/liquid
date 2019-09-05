@@ -18,6 +18,9 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerHeight : CGFloat = 300
     private let headerCut : CGFloat = 80
     
+    // imagePicker that to open photos library
+    private var imagePicker = UIImagePickerController()
+    
     /// Description
     struct Storyboard {
       
@@ -30,6 +33,9 @@ class AlbumDetailTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.clearsSelectionOnViewWillAppear = false
+        
+        let addPhotos = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhotosTapped))
+        self.navigationItem.rightBarButtonItem = addPhotos
 
 //        title = albumd.name
         albumCoverImageView.image = albumd.getCoverImage()
@@ -41,9 +47,18 @@ class AlbumDetailTableViewController: UITableViewController {
         updateHeaderlayout = CAShapeLayer()
         self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
         
-        
     }
-
+    
+    @objc private  func addPhotosTapped(){
+        print("addPhotosTapped : Tapped")
+        // pop gallery here
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        
+        present(imagePicker, animated: true, completion:  nil)
+    }
+    
     // MARK: - Table view data source
 
     /// Description
@@ -126,6 +141,29 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
+
+extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    /* delegate function from the UIImagePickerControllerDelegate
+     called when choose button pressed
+     */
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+       
+        self.dismiss(animated: true, completion: { () -> Void in
+             print ("imagePickerController: Did picked pressed !!")
+        })
+        
+    }
+    
+    /* delegate function from the UIImagePickerControllerDelegate
+     called when canceled button pressed, get out of photo library
+     */
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        self.dismiss(animated: true, completion: { () -> Void in
+            print ("imagePickerController: Did canceled pressed !!")
+        })
+    }
+}
 // TODO: finish collection view controller
 // MARK : UICollectionViewDataSource
 

@@ -68,7 +68,7 @@ class LoginViewController: UIViewController {
 //            print("file download and unzip success :" + fileUrl!.absoluteString)
 //        })
         
-        Util.GetDataFromFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg")
+        Util.GetDataFromLocalFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg")
     }
     
     public func testFunction(){

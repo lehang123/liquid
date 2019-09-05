@@ -197,15 +197,19 @@ class DisplayPhotoViewController: UITableViewController {
         
         for i in 1...num {
             var commentCell = CommentCellStruct()
-            commentCell.comment = "mkkf" + String(i)
+            commentCell.comment = "mkk" + String(i)
             commentCell.username = "username" + String(i)
             commentsSource.append(commentCell)
         }
     }
     
-    
+    /* the header that shows to image */
     private func setUpTableViewHeader(){
-        displayPhotoImageView.image = #imageLiteral(resourceName: "item4")
+        /*test on read file for local file*/
+        Util.GetDataFromLocalFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg"){
+            data in
+            self.displayPhotoImageView.image = UIImage(data: data)
+        }
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
         self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)

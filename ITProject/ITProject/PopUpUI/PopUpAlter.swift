@@ -15,7 +15,7 @@ class PopUpAlter {
     
     static var displayMode = EKAttributes.DisplayMode.inferred
     private var displayMode: EKAttributes.DisplayMode {
-        return PopUpFormWindow.displayMode
+        return PopUpFromWindow.displayMode
     }
     public static func setupPopupPresets() -> EKAttributes {
          var attributes: EKAttributes

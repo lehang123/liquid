@@ -47,11 +47,7 @@ class MainNavigationController :UINavigationController {
                 print("ELSE I'm here : " + (user?.email)!)
                 self.startCache();
                 print("Listener get called ")
-                
-
-                
             }
-            
         }
     }
     
