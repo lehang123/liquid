@@ -40,7 +40,7 @@ class LoginViewController: UIViewController {
 //                self?.getUserInfo(usrResult :user!)
                 self?.dismiss(animated: true, completion: nil)
                 
-                self?.tFunction()
+//                self?.tFunction()
 //                self?.testFunction()
             }
         }
@@ -68,7 +68,7 @@ class LoginViewController: UIViewController {
 //            print("file download and unzip success :" + fileUrl!.absoluteString)
 //        })
         
-        Util.GetDataFromLocalFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg")
+//        Util.GetDataFromLocalFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg")
     }
     
     public func testFunction(){
