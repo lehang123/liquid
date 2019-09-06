@@ -170,18 +170,29 @@ extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINav
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//            return albumd.getImageList().count
-            return 0
+            return albumd.getPhotos().count
         }
 
+        /* photos cell that display photos' thumbnail */
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
-           //cell.image = albumd.getImageList()[indexPath.item]
+//           cell.image = albumd.getImageList()[indexPath.item]
+            
+            let photo = albumd.getPhotos()[indexPath.item]
+
+            print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
+            
+            
+            Util.GetImageFromServer(imageUID: photo.getUID(), completion: {
+                data in
+                if data != nil{
+                    cell.image = UIImage(data: data!)
+                }
+            })
 
             return cell
         }
-
     }
 
 // MARK: - <#UICollectionViewDelegate, UICollectionViewDelegateFlowLayout#>
