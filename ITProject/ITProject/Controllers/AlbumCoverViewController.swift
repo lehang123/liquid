@@ -21,8 +21,8 @@ class AlbumCoverViewController: UIViewController {
     //var activeCell = albumCollectionView
     //activeCell = AlbumCoverViewController.controlView
     let cellScaling: CGFloat = 0.6
-    let albumCoverList = AlbumList()
-    var albumList = [String]()
+    let albumsList = AlbumsList()
+    var albumDataList = [String]()
     
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
@@ -36,7 +36,6 @@ class AlbumCoverViewController: UIViewController {
 
         loadData()
         
-
     }
     
     
@@ -52,7 +51,7 @@ class AlbumCoverViewController: UIViewController {
         AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
             
             querys?.documents.forEach({ (querydoc) in
-                self.albumList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
+                self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
             })
         }
         
@@ -65,7 +64,7 @@ class AlbumCoverViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
-                let selectedAlbum = albumCoverList.getAlbum(index: (sender as! IndexPath).row)
+                let selectedAlbum = albumsList.getAlbum(index: (sender as! IndexPath).row)
                 albumDetailTVC.albumd = selectedAlbum
             }
         }
@@ -73,11 +72,11 @@ class AlbumCoverViewController: UIViewController {
     
     // Add new Album
     @IBAction func addNew(_ sender: Any) {
-        print("albumList", albumList)
+        print("albumList", albumDataList)
         var attributes = PopUpFromWindow.setupFormPresets()
         showSignupForm(attributes: &attributes, style: .light)
 //        self.loadData()
-        print("123123",self.albumList)
+        print("123123",self.albumDataList)
         
 //        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
 //            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
@@ -124,10 +123,12 @@ class AlbumCoverViewController: UIViewController {
             backgroundColor: style.buttonBackground,
             highlightedBackgroundColor: style.buttonBackground.with(alpha: 0.8),
             displayMode: .light) {
+                
+                /* closure after album confirm created : Main Thread here */
                 let albumName = textFields.first?.textContent
                 let albumDescription = textFields.last?.textContent
-                print("123",self.albumList)
-                if (albumName != "" && albumName != nil && !self.albumList.contains(albumName!)){
+                print("123",self.albumDataList)
+                if (albumName != "" && albumName != nil && !self.albumDataList.contains(albumName!)){
                     //
                     //
                     //                } else {
@@ -139,15 +140,17 @@ class AlbumCoverViewController: UIViewController {
                     //            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
                     // self.albumCollectionView.reloadData()
                     //        })
-                    //
+                    
+                    /* make Album photos here
+                     TO-DO : this is a dummy only */
+                    let albumPhotos = self.createAlbumPhotos()
                     
                     SwiftEntryKit.dismiss()
-                    self.albumCoverList.addNewAlbum(title: albumName!, description: albumDescription ?? "", UID: "")
+                    self.albumsList.addNewAlbum(title: albumName!, description: albumDescription ?? "", UID: Util.GenerateUDID(), photos: albumPhotos)
                     
                     self.albumCollectionView.reloadData()
                     
                 }
-                
         }
         
         
@@ -165,6 +168,16 @@ class AlbumCoverViewController: UIViewController {
         }
         SwiftEntryKit.display(entry: contentView, using: attributes, presentInsideKeyWindow: true)
     }
+    
+    private func createAlbumPhotos()->[PhotoDetail]{
+        let testPhoto = PhotoDetail(title: "dummy", description: "is it?",
+                                    UID : Util.GenerateUDID(), likes: 0,
+                                    comments: [PhotoDetail.comment]())
+        
+        var photos = [PhotoDetail]()
+        photos.append(testPhoto)
+        return photos
+    }
 }
 
 extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
@@ -175,7 +188,7 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
 //        return albumData.count
-        return albumCoverList.count()
+        return albumsList.count()
     }
 
     /*when album on clicked :
@@ -195,7 +208,7 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
         
 //        cell.album = albumData[indexPath.item]
-        cell.album = albumCoverList.getAlbum(index: indexPath.item)
+        cell.album = albumsList.getAlbum(index: indexPath.item)
         
         return cell
     }

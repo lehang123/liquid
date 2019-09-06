@@ -17,55 +17,73 @@ class AlbumDetail: Equatable
     }
     
     // MARK: - Public API
+    
+    /* title of ablum */
     private var title = ""
-    private var coverImage: UIImage!
-    private var description = ""
-
-    private var UID = ""
-
-
-    
-    init(title: String, description: String, UID : String)
-    {
-        let defaultImage : UIImage = #imageLiteral(resourceName: "item4")
-        
-        self.title = title
-        self.coverImage = defaultImage
-        self.description = description
-        self.UID = UID
-        
-    }
-    
-    public func getUID() -> String{
-        return self.UID
-    }
     
     public func getTitle() -> String{
         return self.title
-    }
-    
-    public func getDescription() -> String{
-        return self.description
-    }
-    
-    public func getCoverImage() -> UIImage{
-        return self.coverImage
     }
     
     public func setTitle(title: String){
         self.title = title
     }
     
-    public func setDescription(description: String){
-        self.description = description
+    /* coverImage of ablum */
+    private var coverImage: UIImage!
+    
+    public func getCoverImage() -> UIImage{
+        return self.coverImage
     }
     
     public func setCoverImage(image: UIImage){
         self.coverImage = image
     }
     
-
+    /* description of ablum */
+    private var description = ""
     
+    public func getDescription() -> String{
+        return self.description
+    }
+    
+    public func setDescription(description: String){
+        self.description = description
+    }
+    
+    
+    /* UID of ablum */
+    
+    private var UID = ""
+    
+    public func getUID() -> String{
+        return self.UID
+    }
+    
+    /* photos that contained in the album */
+    private var photos = [PhotoDetail]()
+    
+    public func getPhotos()->[PhotoDetail]{
+        return photos
+    }
 
+    public func addPhoto(photo : PhotoDetail){
+        photos.append(photo)
+    }
+
+    public func removePhoto(photo : PhotoDetail){
+        photos = photos.filter{$0 != photo}
+    }
+    
+    init(title: String, description: String, UID : String, photos : [PhotoDetail], coverImage : UIImage?)
+    {
+        let defaultImage : UIImage = #imageLiteral(resourceName: "item4")
+        
+        self.title = title
+        self.coverImage = coverImage ?? defaultImage
+        self.description = description
+        self.UID = UID
+        self.photos = photos
+    }
     
 }
