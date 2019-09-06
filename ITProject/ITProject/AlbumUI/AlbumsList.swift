@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AlbumList {
+class AlbumsList {
 
     
     private var currentAlbums:[AlbumDetail] = []
@@ -34,12 +34,23 @@ class AlbumList {
         return currentAlbums
     }
     
-    public func addNewAlbum(title newAlbumTitle: String, description newAlbumDescrp: String, UID: String){
+    public func addNewAlbum(title newAlbumTitle: String,
+                            description newAlbumDescrp: String,
+                            UID: String,
+                            photos: [PhotoDetail],
+                            coverImage: UIImage? = nil){
 //            if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
 //                currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
 //            }
-        if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID:"")){
-            currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID))
+        
+        let album = AlbumDetail(title: newAlbumTitle,
+                                description: newAlbumDescrp,
+                                UID:UID,
+                                photos: photos,
+                                coverImage: coverImage)
+        
+        if !currentAlbums.contains(album){
+            currentAlbums.append(album)
         }
     }
     
