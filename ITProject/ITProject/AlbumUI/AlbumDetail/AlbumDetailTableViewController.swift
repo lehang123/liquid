@@ -184,7 +184,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
             
-            Util.GetImageFromServer(imageUID: photo.getUID(), completion: {
+            Util.GetImageData(imageUID: photo.getUID(), completion: {
                 data in
                 if data != nil{
                     cell.image = UIImage(data: data!)
