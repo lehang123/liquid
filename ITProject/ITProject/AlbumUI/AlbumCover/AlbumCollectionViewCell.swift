@@ -13,16 +13,13 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var albumTitleLabel: UILabel!
     @IBOutlet weak var backgroundMask: UIView!
-    
 
-    
     var album: AlbumDetail? {
         didSet {
             self.updateUI()
         }
     }
-    
-    
+
     private func updateUI()
     {
         if let album = album {
@@ -35,11 +32,34 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
             backgroundImageView.layer.masksToBounds = true
             
             
+            // Define the delete Button for swiping
+            let deleteButton = UIButton(frame: CGRect(x: self.bounds.height - 55, y: 0, width: 100, height: self.bounds.height))
+            deleteButton.backgroundColor = UIColor.init(red: 255/255.0, green: 58/255.0, blue: 58/255.0, alpha: 1)
+            deleteButton.setTitle("delete", for: .normal)
+            deleteButton.setTitleColor(UIColor.white, for: .normal)
+            deleteButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+            
+            deleteButton.layer.cornerRadius = 15.0
+            deleteButton.layer.masksToBounds = true
+            
+            deleteButton.addTarget(self, action: #selector(deleteSelf), for: .touchUpInside)
+            self.revealView = deleteButton
+            
         } else {
             backgroundImageView.image = nil
             albumTitleLabel.text = nil
             backgroundMask.backgroundColor = nil
         }
+    }
+    
+    @objc func deleteSelf() {
+        self.hideRevealView(withAnimated: true)
+        print("custom revealView delete")
+        
+        if removeAlbumDelegate != nil {
+            removeAlbumDelegate.removeAlbum(albumToDelete: self.albumDetail)
+        }
+        
     }
     
     override func layoutSubviews() {
