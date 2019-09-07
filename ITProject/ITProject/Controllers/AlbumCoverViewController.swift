@@ -23,8 +23,12 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     
     func removeAlbum(albumToDelete : AlbumDetail) {
         /*take album out of list and refresh*/
-        albumsList.removeAlbum(albumToDelete: albumToDelete)
-        self.albumCollectionView.reloadData()
+        let index = albumsList.getIndexForItem(album: albumToDelete)
+        albumCollectionView.performBatchUpdates({
+            let indexPath = IndexPath(item: index, section: 0)
+            albumCollectionView.deleteItems(at: [indexPath])
+            albumsList.removeAlbum(albumToDelete: albumToDelete)
+        }, completion: nil)
     }
     
     
