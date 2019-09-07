@@ -65,6 +65,10 @@ class AlbumsList {
 //        }
 //    }
     
+    public func getIndexForItem(album: AlbumDetail)-> Int{
+        return currentAlbums.firstIndex(of: album)!
+    }
+    
     
     public func removeAlbum(albumToDelete: AlbumDetail) {
         currentAlbums.remove(at: currentAlbums.firstIndex(of: albumToDelete)!)
