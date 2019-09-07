@@ -6,6 +6,9 @@
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
+
+// TO DO!!!!!!!!  The delete bottom color
+
 import Foundation
 import UIKit
 
@@ -39,8 +42,23 @@ fileprivate extension UICollectionView {
 
 // MARK: -
 class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelegate {
+
     
     typealias delete = (_ sender: UIButton) -> ()
+    
+
+    var removeAlbumDelegate: RemoveAlbumDelegate!
+    
+    var albumDetail: AlbumDetail!
+    
+    public func addRemoveAlbumDelegate(rmd: RemoveAlbumDelegate){
+        self.removeAlbumDelegate = rmd
+    }
+    
+    public func cacheAlbumDetail(albumDetail: AlbumDetail){
+        self.albumDetail = albumDetail
+    }
+    
     
     // MARK: - public
     var revealView: UIView?
@@ -102,7 +120,7 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
         if gestureRecognizer.isMember(of: UIPanGestureRecognizer.self) {
             let gesture:UIPanGestureRecognizer = gestureRecognizer as! UIPanGestureRecognizer
             let velocity = gesture.velocity(in: self)
-            if fabs(velocity.x) > fabs(velocity.y) {
+            if abs(velocity.x) > abs(velocity.y) {
                 return true
             }
         }
@@ -155,14 +173,14 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
         guard let revealView = self.revealView else {
             return false
         }
-        return fabs(velocity.x) > revealView.frame.width / 2 && velocity.x > 0
+        return abs(velocity.x) > revealView.frame.width / 2 && velocity.x > 0
     }
     
     private func _shouldShowRevealView(forVelocity velocity: CGPoint) -> Bool {
         guard let revealView = self.revealView else {
             return false
         }
-        return fabs(velocity.x) > revealView.frame.width / 2 && velocity.x < 0;
+        return abs(velocity.x) > revealView.frame.width / 2 && velocity.x < 0;
     }
     
     private func _bigThenRevealViewHalfWidth() -> Bool {
@@ -170,7 +188,7 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
             let snapShotView = self.snapShotView else {
                 return false
         }
-        return fabs(snapShotView.frame.width) >= revealView.frame.width / 2
+        return abs(snapShotView.frame.width) >= revealView.frame.width / 2
     }
     
     private func _lessThenRevealViewHalfWidth() -> Bool {
@@ -178,7 +196,7 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
             let snapShotView = self.snapShotView else {
                 return false
         }
-        return fabs(snapShotView.frame.width) < revealView.frame.width / 2
+        return abs(snapShotView.frame.width) < revealView.frame.width / 2
     }
     
     private func _closeOtherOpeningCell() {
@@ -194,18 +212,26 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
     }
     
     private func _createDefaultRevealView() {
-        let deleteButton = UIButton(frame: CGRect(x: self.bounds.height - 55, y: 0, width: 55, height: self.bounds.height))
+        let deleteButton = UIButton(frame: CGRect(x: self.bounds.height - 55, y: 0, width: 100, height: self.bounds.height))
         deleteButton.backgroundColor = UIColor.init(red: 255/255.0, green: 58/255.0, blue: 58/255.0, alpha: 1)
         deleteButton.setTitle("delete", for: .normal)
         deleteButton.setTitleColor(UIColor.white, for: .normal)
         deleteButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        
+        deleteButton.layer.cornerRadius = 15.0
+        deleteButton.layer.masksToBounds = true
+
         deleteButton.addTarget(self, action: #selector(_deleteButtonTapped(sender:)), for: .touchUpInside)
         self.revealView = deleteButton
     }
     
+    
     @objc private func _deleteButtonTapped(sender: UIButton) {
+        
+        
         self.hideRevealView(withAnimated: true)
         self.delete?(sender)
+        
     }
     
     func showRevealView(withAnimated isAnimated:Bool) {

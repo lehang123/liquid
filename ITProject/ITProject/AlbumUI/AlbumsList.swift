@@ -66,8 +66,7 @@ class AlbumsList {
 //    }
     
     
-    
-    public  func removeAlbum(albumToDelete: AlbumDetail) {
+    public func removeAlbum(albumToDelete: AlbumDetail) {
         currentAlbums.remove(at: currentAlbums.firstIndex(of: albumToDelete)!)
     }
     

@@ -11,18 +11,29 @@ import UPCarouselFlowLayout
 import Firebase
 import SwiftEntryKit
 
-class AlbumCoverViewController: UIViewController {
+class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
+{
     
+
     private static let NIB_NAME = "AlbumCollectionViewCell"
     private static let CELL_IDENTIFIER = "AlbumCell"
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
+    
+    
+    func removeAlbum(albumToDelete : AlbumDetail) {
+        /*take album out of list and refresh*/
+        albumsList.removeAlbum(albumToDelete: albumToDelete)
+        self.albumCollectionView.reloadData()
+    }
+    
     
     //var activeCell = albumCollectionView
     //activeCell = AlbumCoverViewController.controlView
     let cellScaling: CGFloat = 0.6
     let albumsList = AlbumsList()
     var albumDataList = [String]()
+    
     
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
@@ -54,8 +65,6 @@ class AlbumCoverViewController: UIViewController {
                 self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
             })
         }
-        
-        
     }
     
     /* prepare next view,
@@ -180,6 +189,18 @@ class AlbumCoverViewController: UIViewController {
     }
 }
 
+protocol RemoveAlbumDelegate {
+    
+    func removeAlbum(albumToDelete : AlbumDetail)
+    
+}
+
+protocol ReloadDelegate {
+    
+    func loadDataDelegate()
+    
+}
+
 extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -206,12 +227,18 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
-        
 //        cell.album = albumData[indexPath.item]
         cell.album = albumsList.getAlbum(index: indexPath.item)
+        cell.addRemoveAlbumDelegate(rmd: self)
+        cell.cacheAlbumDetail(albumDetail: albumsList.getAlbum(index: indexPath.item))
         
         return cell
     }
+    
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        <#code#>
+//
+//    }
     
     
 //    // For gesture
