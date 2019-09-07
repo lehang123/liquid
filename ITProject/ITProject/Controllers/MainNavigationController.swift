@@ -87,9 +87,7 @@ class MainNavigationController :UINavigationController {
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
         self.present(navController, animated:true, completion: nil)
     }
-    
-  
-    
+
     func loadName() {
         let user = Auth.auth().currentUser
         if let user = user {
@@ -105,12 +103,8 @@ class MainNavigationController :UINavigationController {
                     }
                 }
             }
-            
-            
-            
         }
     }
-    
 }
 
 extension UIApplication {

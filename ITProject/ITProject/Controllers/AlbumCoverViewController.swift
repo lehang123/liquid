@@ -162,15 +162,11 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
                 }
         }
         
-        
-        
         let contentView = EKFormMessageView(
             with: title,
             textFieldsContent: textFields,
             buttonContent: button
         )
-        
-        
         
         attributes.lifecycleEvents.didAppear = {
             contentView.becomeFirstResponder(with: 0)
@@ -180,8 +176,8 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     
     private func createAlbumPhotos()->[PhotoDetail]{
         let testPhoto = PhotoDetail(title: "dummy", description: "is it?",
-                                    UID : Util.GenerateUDID(), likes: 0,
-                                    comments: [PhotoDetail.comment]())
+                                    UID : "test-small-size-image",
+                                    likes: 0, comments: [PhotoDetail.comment]())
         
         var photos = [PhotoDetail]()
         photos.append(testPhoto)

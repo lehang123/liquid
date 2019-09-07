@@ -1201,14 +1201,15 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="185" height="185"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item2" translatesAutoresizingMaskIntoConstraints="NO" id="RZ5-c5-gxW">
-                                                                <rect key="frame" x="0.0" y="-275.5" width="185" height="736"/>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RZ5-c5-gxW">
+                                                                <rect key="frame" x="0.0" y="20" width="185" height="145"/>
                                                             </imageView>
                                                         </subviews>
                                                     </view>
                                                     <constraints>
                                                         <constraint firstItem="RZ5-c5-gxW" firstAttribute="centerX" secondItem="akF-u2-eFi" secondAttribute="centerX" id="EH5-YN-MzM"/>
                                                         <constraint firstItem="RZ5-c5-gxW" firstAttribute="width" secondItem="akF-u2-eFi" secondAttribute="height" multiplier="1:1" id="T8Q-LV-I56"/>
+                                                        <constraint firstItem="RZ5-c5-gxW" firstAttribute="top" secondItem="akF-u2-eFi" secondAttribute="topMargin" id="eHk-za-VeT"/>
                                                         <constraint firstItem="RZ5-c5-gxW" firstAttribute="centerY" secondItem="akF-u2-eFi" secondAttribute="centerY" id="pUg-np-6ow"/>
                                                     </constraints>
                                                     <connections>
@@ -1409,6 +1410,34 @@
             </objects>
             <point key="canvasLocation" x="5715" y="-701.4084507042254"/>
         </scene>
+        <!--Family Table Controller-->
+        <scene sceneID="tlQ-ZY-Ess">
+            <objects>
+                <tableViewController id="fa7-QP-3pz" customClass="FamilyTableController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="FamilyTableController" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ChO-dH-WH9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="FamilyTableControllerCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="custom" id="eOD-aJ-Vah" userLabel="Family Table Controller Cell" customClass="FamilyCustomCell" customModule="ITProject" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eOD-aJ-Vah" id="jtZ-nW-oix">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="fa7-QP-3pz" id="HyF-3j-WQq"/>
+                            <outlet property="delegate" destination="fa7-QP-3pz" id="4NO-Cl-Ild"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m7E-MW-MQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="722" y="-306"/>
+        </scene>
     </scenes>
     <resources>
         <image name="addIcon" width="101" height="101"/>
@@ -1419,7 +1448,6 @@
         <image name="homeIcon" width="108" height="108"/>
         <image name="imageIcon" width="108.5" height="108.5"/>
         <image name="item0" width="414" height="736"/>
-        <image name="item2" width="414" height="736"/>
         <image name="logoutIcon" width="100" height="100"/>
         <image name="menuIcon" width="22" height="22"/>
         <image name="settingIcon" width="108" height="110"/>
