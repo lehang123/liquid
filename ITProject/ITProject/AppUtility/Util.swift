@@ -11,11 +11,12 @@ import FirebaseStorage
 import SVProgressHUD
 import Zip
 
+
 class Util {
     public static let BUTTON_DISMISS = "dismiss"
     
-    public static let EXTENSION_JPEG = ".jpg"
-    public static let EXTENSION_ZIP = ".zip"
+    public static let EXTENSION_JPEG = "jpg"
+    public static let EXTENSION_ZIP = "zip"
     public static let IMAGE_FOLDER = "images"
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
@@ -119,15 +120,64 @@ class Util {
         }
     }
     
-    /* test image link   "795C8939-982E-40C8-AE2D-610A6EBA5866.jpg"
+    public static func GetImageData(imageUID: String,
+                                    completion: @escaping (Data?) -> () = { _ in },
+                                    errorHandler: @escaping (Error?) -> () = { _ in }){
+        
+        
+        if GetDataFromLocalFile(filename: imageUID, fextension: Util.EXTENSION_JPEG, completion: completion){
+            print("GetImageData : getting image from local documentPath...")
+        }else{
+            print("GetImageData : Local folder doesn't have file, searching from sever..")
+            GetImageFromServer(imageUID: imageUID, completion: completion, errorHandler: errorHandler)
+        }
+        
+    }
+    
+    /*short cut to get Image from server by UID
+        imageUID : UID of the image
+        completion : do whatever you want to do when completion data : the image data
+        errorHandler : do whatever you want to do when error occur
+     */
+    public static func GetImageFromServer (imageUID: String,
+                                           completion: @escaping (Data?) -> () = { _ in },
+                                           errorHandler: @escaping (Error?) -> () = { _ in }){
+        let fullFliePath = Util.GetImagePathByUID(imageUID: imageUID)
+        print("GetImageFromServer : did you get called twice ?")
+        DownloadFileFromServer(fileFullPath: fullFliePath, completion: { url in
+            
+            let fileLastPathUrl = (url?.lastPathComponent)! as NSString
+            let filenameWithNoExtension = fileLastPathUrl.deletingPathExtension
+            let fileExtension = "." + fileLastPathUrl.pathExtension
+            
+            print("Get Image from serever, Full url file : " + (fileLastPathUrl as String))
+            print("Get Image from serever , filenameWithNoExtension :" + filenameWithNoExtension)
+            print("Get Image from serever , fileExtension :" + fileExtension)
+            
+            _ = Util.GetDataFromLocalFile(filename: filenameWithNoExtension, fextension: fileExtension, completion:
+                { data in
+                    completion(data)
+            })
+            
+        }, errorHandler: errorHandler)
+    }
+    
+    public static func GetImagePathByUID(imageUID:String) ->String{
+        return Util.IMAGE_FOLDER + "/" + imageUID + "." + Util.EXTENSION_ZIP
+    }
+    
+    
+    /* test image link   "images/795C8939-982E-40C8-AE2D-610A6EBA5866.zip"
      error solver error 518:
      https://stackoverflow.com/questions/37470266/error-when-downloading-from-firebase-storage
      todo: get extension from database, here should be doing unzip
     */
     public static func DownloadFileFromServer (fileFullPath:String,
-                                               completion: @escaping (URL?) -> () = { _ in },
+                                               completion: @escaping (URL?) -> () = { _  in },
                                                errorHandler: @escaping (Error?) -> () = { _ in }){
         print("DownloadFileFromServer :file path " + fileFullPath)
+        
+        
         let gsReference = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
         
         let localURL = URL(fileURLWithPath: GetDocumentsDirectory().appendingPathComponent(fileFullPath).absoluteString)
@@ -147,23 +197,23 @@ class Util {
 //                print(Thread.current) // this is a UI thread
 
                 let fileAt = url!.deletingLastPathComponent().absoluteString
-                print("DownloadFileFromServer fileAt :" + fileAt)
+                print("DownloadFileFromServer local fileAt :" + fileAt)
                 let fileName = ((url!.lastPathComponent) as NSString)
-                print("DownloadFileFromServer fileName :" + (fileName as String))
+                print("DownloadFileFromServer  fileName :" + (fileName as String))
                 
                 UnzipFile(from: fileAt as NSString,
                           to: fileAt as NSString,
                           fileName: fileName as String,
-                          deleteAfterFinish: false){
-                            (unzippedFileURL) in
-                            completion(unzippedFileURL)
+                          deleteAfterFinish: true){
+                            filepath in
+                            completion(filepath)
                 }
             }
         }
     }
     
     public static func DeleteFileFromServer(fileName : String, fextension : String){
-        let fileFullPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)! + fileName + Util.EXTENSION_ZIP
+        let fileFullPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)! + fileName + "." + Util.EXTENSION_ZIP
         let desertRef = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
         
         // Delete the file
@@ -214,7 +264,7 @@ class Util {
         
         DispatchQueue(label: "working_queue", qos: .userInitiated).async {
             let fullFilePath = from.appendingPathComponent(fileName + fextension)
-            let fullDestinationPath = to.appendingPathComponent(fileName + Util.EXTENSION_ZIP)
+            let fullDestinationPath = to.appendingPathComponent(fileName + "." + Util.EXTENSION_ZIP)
             print("ZipFile : fullFilePath : " + fullFilePath)
             print("ZipFile : fullDestinationPath : " + fullDestinationPath)
             do {
@@ -232,34 +282,52 @@ class Util {
         }
     }
     
+    
+    public static func GetExtensionByFolderPath( fileFullPath: String)->String?{
+        if (fileFullPath.contains(Util.IMAGE_FOLDER + "/")){
+            return Util.EXTENSION_JPEG
+        }
+        return nil
+    }
+    
     /*
      Unzipfile function :
-     
          from : unzipfile location (folderPath)
          to : destination (folderPath)
          filename : the file need to be unzip, with extension .zip
          deleteAfterFinish : delete the zip file after finished unzipping
          completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  file:/Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.jpg */
     public static func UnzipFile(from: NSString, to: NSString,
-                                 fileName: String, deleteAfterFinish: Bool, completion: @escaping ((URL) -> Void) = {_ in }){
+                                 fileName: String, deleteAfterFinish: Bool,
+                                completion: @escaping ((URL) -> Void) = {_ in }){
+
+        let fullFilePath = from.appendingPathComponent(fileName)
+        var unzippedFile = (fileName as NSString).deletingPathExtension
+        unzippedFile = (unzippedFile as NSString).appendingPathExtension(GetExtensionByFolderPath(fileFullPath: to as String)!)!
+        
+        
         DispatchQueue(label: "working_queue", qos: .userInitiated).async {
-            let fullFilePath = from.appendingPathComponent(fileName)
-            
             do {
                 try  Zip.unzipFile(URL(string: fullFilePath)!, destination: URL(string: to as String)!, overwrite: true, password: nil, progress: { (progress) -> () in
-                    print("UnzipFile : progress" + String(progress))
-                }){ unzippedFile in
-                    completion(unzippedFile)
-                }
-                
-                if deleteAfterFinish{
-                    try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
-                }
+                    print("UnzipFile : progress " + String(progress))
+                    if (progress >= 1.0){
+                        let unzipped = URL(string: (to.appendingPathComponent(unzippedFile)))
+                        completion(unzipped!)
+                        if deleteAfterFinish{
+                            do {
+                                try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
+                            }catch let error as NSError{
+                                print ("UnzipFile : error occurs during remove unzip : " + error.localizedDescription)
+                            }
+                        }
+                    }
+                })
             }catch let error as NSError{
                 print ("UnzipFile : error occurs during unzip : " + error.localizedDescription)
             }
         }
     }
+
     
     /*note : read write file opearation, use worker thread to do it*/
     /*
@@ -321,31 +389,41 @@ class Util {
         fextension : file extension e.g. ".jpg"
         completion Handler : do what you want with the file data with it, 1 args data
      */
-    public static func GetDataFromLocalFile(filename: String, fextension: String, completion:@escaping (Data)->() = {_ in }){
+    public static func GetDataFromLocalFile(filename: String, fextension: String, completion:@escaping (Data)->() = {_ in })->Bool{
+        
+        print ("GetDataFromLocalFile : filename : " + filename)
+        print ("GetDataFromLocalFile : fileExtension : " + fextension)
+        
         let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)!
         let fileDocumentFullPath = GetDocumentsDirectory().appendingPathComponent(folderPath, isDirectory: true).absoluteString as NSString
+        let filenameWithExtension = URL(string: filename)?.appendingPathExtension(fextension).absoluteString
         
-        print( "GetDataFromFile :looking in oringinal file : "  + fileDocumentFullPath.appendingPathComponent(filename + fextension))
+        let fileFullPath = fileDocumentFullPath.appendingPathComponent(filenameWithExtension!)
+        print( "GetDataFromFile :looking in oringinal file : "  + fileFullPath)
+    
         
         // if file simply exists, just read and open it.
-        if DoesFileExist(fullPath: fileDocumentFullPath.appendingPathComponent(filename + fextension)){
+        if DoesFileExist(fullPath: fileFullPath){
             print("GetDataFromFile : oringinal file exist, no need for unzip :" +
-            fileDocumentFullPath.appendingPathComponent(filename + fextension))
-            ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: filename + fextension)){
+            fileFullPath)
+            ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: filenameWithExtension!)){
                 data in
                 print("GetDataFromFile : get file data success")
                 DispatchQueue.main.async {
                       completion(data)
                 }
             }
+            return true
         }else{// if not, find a zip file, unzip and then get data
-            let zipFilename = filename + EXTENSION_ZIP
-            print("GetDataFromFile : going to unzip :" + fileDocumentFullPath.appendingPathComponent(zipFilename))
+            let zipFilename = URL(string: filename)?.appendingPathExtension(EXTENSION_ZIP).absoluteString
+            let zipFileFullPath = fileDocumentFullPath.appendingPathComponent(zipFilename!)
+            print("GetDataFromFile : going to unzip :" + zipFileFullPath)
             
-            if DoesFileExist(fullPath: fileDocumentFullPath.appendingPathComponent(zipFilename)){
-                UnzipFile(from: fileDocumentFullPath, to: fileDocumentFullPath, fileName: zipFilename, deleteAfterFinish: false){fileUrl in
-                    print("GetDataFromFile : unzip  with file url :" + fileUrl.absoluteString )
-                    ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: fileUrl.lastPathComponent)){
+            if DoesFileExist(fullPath: zipFileFullPath){
+                UnzipFile(from: fileDocumentFullPath, to: fileDocumentFullPath, fileName: zipFilename!, deleteAfterFinish: false){url  in
+                    
+                    print("GetDataFromFile : unzip  with file url :" + url.absoluteString )
+                    ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: url.lastPathComponent)){
                         data in
                         print("GetDataFromFile : get file data success")
                         DispatchQueue.main.async {
@@ -353,8 +431,10 @@ class Util {
                         }
                     }
                 }
+                return true
             }else {
                 print("zip file doesn't exist, retrive file fail")
+                return false
             }
         }
     }
@@ -379,7 +459,8 @@ class Util {
         withPathSlash: add pathSlash "/" at the end of the folder
      */
     public static func GetFolderByExtension(fextension: String, withPathSlash: Bool)->String?{
-        if (fextension) == (EXTENSION_JPEG) {
+        
+        if (fextension) == (EXTENSION_JPEG) || (fextension) == ("." + EXTENSION_JPEG) {
             return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
         }
         return nil
