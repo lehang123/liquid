@@ -11,6 +11,8 @@ import UIKit
 class AlbumDetailTableViewController: UITableViewController {
     var albumd: AlbumDetail!
     
+    private static let SHOW_PHOTO_DETAIL_SEGUE = "ShowPhotoDetail"
+    
     @IBOutlet weak var albumCoverImageView: UIImageView!
     var headerView : UIView!
     var updateHeaderlayout : CAShapeLayer!
@@ -57,6 +59,23 @@ class AlbumDetailTableViewController: UITableViewController {
         imagePicker.allowsEditing = true
         
         present(imagePicker, animated: true, completion:  nil)
+    }
+    
+    var displayPhotoViewController : DisplayPhotoViewController?
+    
+    /*view photo detail, present on display photo view controller */
+    func viewPhoto(photoDetail: PhotoDetail) {
+        
+        self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
+            if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
+                let photoDetail = sender as! PhotoDetail
+                photoDetailTVC.setPhotoUID(photoUID: photoDetail.getUID())
+            }
+        }
     }
     
     // MARK: - Table view data source
@@ -173,25 +192,30 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             return albumd.getPhotos().count
         }
 
-        /* photos cell that display photos' thumbnail */
+        /* called when photos cell that display photos' thumbnail is visible on device's screen */
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
-            
             let photo = albumd.getPhotos()[indexPath.item]
 
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
-            
+            /* load image with the cell is visible */
             Util.GetImageData(imageUID: photo.getUID(), completion: {
                 data in
                 if data != nil{
                     cell.image = UIImage(data: data!)
                 }
             })
-
+            
             return cell
+        }
+    
+        /* called when collectionview on touched, go view photos */
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let photo = albumd.getPhotos()[indexPath.item]
+            viewPhoto(photoDetail: photo)
         }
     }
 

@@ -395,6 +395,7 @@
                         <outlet property="carouselCollectionView" destination="Zdo-AO-OHu" id="oeq-U6-Czq"/>
                         <outlet property="profileImg" destination="jkZ-yY-BT1" id="xtz-Ir-asi"/>
                         <outlet property="profileImgContainer" destination="HaD-tf-z39" id="lS8-6s-sKS"/>
+                        <segue destination="52z-VG-Mfg" kind="show" identifier="ShowAlbumCovers" id="PUz-4k-VT8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lKB-f7-mqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1048,13 +1049,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Album" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tYC-sL-3bH">
-                                <rect key="frame" x="16" y="52" width="146" height="57"/>
+                                <rect key="frame" x="16" y="96" width="146" height="57"/>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0hV-k8-Tp2">
-                                <rect key="frame" x="0.0" y="109" width="320" height="459"/>
+                                <rect key="frame" x="0.0" y="153" width="320" height="415"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aga-7B-T7S">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1081,7 +1082,7 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bUI-VY-hdm">
-                                <rect key="frame" x="247" y="52" width="57" height="57"/>
+                                <rect key="frame" x="247" y="96" width="57" height="57"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="Rox-q1-CJ9"/>
                                     <constraint firstAttribute="width" constant="57" id="Wyg-hf-7Ri"/>
@@ -1115,7 +1116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kj7-l3-eNR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2985" y="-701.4084507042254"/>
+            <point key="canvasLocation" x="2464" y="-648"/>
         </scene>
         <!--Album Detail Table View Controller-->
         <scene sceneID="xVQ-lq-zwG">
@@ -1125,12 +1126,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" misplaced="YES" id="uf1-AN-yLR">
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="uf1-AN-yLR">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="420"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
+                                    <rect key="frame" x="0.0" y="-158" width="375" height="736"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1142,7 +1143,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AlbumDetailDescrpCell" rowHeight="158" id="dP9-AL-Ziv" customClass="AlbumDetailDescrpTableViewCell" customModule="ITProject" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AlbumDetailDescrpCell" rowHeight="158" id="dP9-AL-Ziv" customClass="AlbumDetailDescrpTableViewCell" customModule="ITProject" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="475.5" width="375" height="158"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" tableViewCell="dP9-AL-Ziv" id="7TJ-Iy-YFb">
@@ -1241,16 +1242,17 @@
                     <size key="freeformSize" width="375" height="1100"/>
                     <connections>
                         <outlet property="albumCoverImageView" destination="fqV-Dy-g6C" id="eZ7-O4-LOD"/>
+                        <segue destination="a5j-9A-YmN" kind="show" identifier="ShowPhotoDetail" id="DPD-hB-ndN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0cF-G5-pkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3910.3125" y="-882.04225352112678"/>
+            <point key="canvasLocation" x="3614" y="-870"/>
         </scene>
         <!--Display Photos Table View Controller-->
         <scene sceneID="E7N-pQ-DA5">
             <objects>
-                <tableViewController id="a5j-9A-YmN" userLabel="Display Photos Table View Controller" customClass="DisplayPhotoViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DisplayPhotoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="a5j-9A-YmN" userLabel="Display Photos Table View Controller" customClass="DisplayPhotoViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="KpO-V0-Rpa" customClass="Disp" customModule="ITProject">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1301,7 +1303,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="I5n-AV-v0M" userLabel="Bookmark">
-                                            <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
+                                            <rect key="frame" x="273" y="13.5" width="32.000000000000028" height="63.500000000000028"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
@@ -1408,7 +1410,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7G-cq-fgP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5715" y="-701.4084507042254"/>
+            <point key="canvasLocation" x="4761" y="-746"/>
         </scene>
         <!--Family Table Controller-->
         <scene sceneID="tlQ-ZY-Ess">
