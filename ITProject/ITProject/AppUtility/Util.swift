@@ -16,6 +16,7 @@ class Util {
     public static let BUTTON_DISMISS = "dismiss"
     
     public static let EXTENSION_JPEG = "jpg"
+    public static let EXTENSION_PNG = "png"
     public static let EXTENSION_ZIP = "zip"
     public static let IMAGE_FOLDER = "images"
     public static let TMP_FOLDER = "tmp"
@@ -148,7 +149,7 @@ class Util {
             
             let fileLastPathUrl = (url?.lastPathComponent)! as NSString
             let filenameWithNoExtension = fileLastPathUrl.deletingPathExtension
-            let fileExtension = "." + fileLastPathUrl.pathExtension
+            let fileExtension = fileLastPathUrl.pathExtension
             
             print("Get Image from serever, Full url file : " + (fileLastPathUrl as String))
             print("Get Image from serever , filenameWithNoExtension :" + filenameWithNoExtension)
@@ -305,13 +306,15 @@ class Util {
         var unzippedFile = (fileName as NSString).deletingPathExtension
         unzippedFile = (unzippedFile as NSString).appendingPathExtension(GetExtensionByFolderPath(fileFullPath: to as String)!)!
         
+        var unzippedOutputFile:URL?
         
         DispatchQueue(label: "working_queue", qos: .userInitiated).async {
             do {
                 try  Zip.unzipFile(URL(string: fullFilePath)!, destination: URL(string: to as String)!, overwrite: true, password: nil, progress: { (progress) -> () in
                     print("UnzipFile : progress " + String(progress))
                     if (progress >= 1.0){
-                        let unzipped = URL(string: (to.appendingPathComponent(unzippedFile)))
+                        let unzipped = unzippedOutputFile ?? URL(string: (to.appendingPathComponent(unzippedFile)))
+                        
                         completion(unzipped!)
                         if deleteAfterFinish{
                             do {
@@ -320,6 +323,13 @@ class Util {
                                 print ("UnzipFile : error occurs during remove unzip : " + error.localizedDescription)
                             }
                         }
+                    }
+                }, fileOutputHandler: {
+                    fileUrl in
+                    
+                    if !fileUrl.absoluteString.contains("/__MACOSX"){
+                        unzippedOutputFile = fileUrl
+                        print("unzipped file full url : " + fileUrl.absoluteString)
                     }
                 })
             }catch let error as NSError{
@@ -460,7 +470,10 @@ class Util {
      */
     public static func GetFolderByExtension(fextension: String, withPathSlash: Bool)->String?{
         
-        if (fextension) == (EXTENSION_JPEG) || (fextension) == ("." + EXTENSION_JPEG) {
+        if (fextension) == (EXTENSION_JPEG) ||
+            (fextension) == ("." + EXTENSION_JPEG) ||
+            (fextension) == (EXTENSION_PNG) ||
+            (fextension) == ("." + EXTENSION_PNG){
             return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
         }
         return nil

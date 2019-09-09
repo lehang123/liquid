@@ -29,8 +29,14 @@ class DisplayPhotoViewController: UITableViewController {
     private var commentCellsList = [CommentCellStruct]()
     private var hasHiddenCells = false
     
-    var headerView : UIView!
-    var updateHeaderlayout : CAShapeLayer!
+    private var photoUID: String!
+    
+    public func setPhotoUID(photoUID: String){
+        self.photoUID = photoUID
+    }
+    
+    private var headerView : UIView!
+    private var updateHeaderlayout : CAShapeLayer!
     
     private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut : CGFloat = 0
@@ -40,6 +46,8 @@ class DisplayPhotoViewController: UITableViewController {
     @IBOutlet weak var displayPhotoImageView: UIImageView!
     
     override func viewDidLoad() {
+        
+        print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
         makeDummyCommentSource(num: 20)
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
@@ -60,7 +68,7 @@ class DisplayPhotoViewController: UITableViewController {
         }
     }
     
-    @objc func checkAction(sender : UITapGestureRecognizer) {
+    @objc func scrollBackToTop(sender : UITapGestureRecognizer) {
         // make sure sender is not nil
         guard sender.view != nil else { return }
         if sender.state == .ended {// when touches end, scroll to top
@@ -206,14 +214,14 @@ class DisplayPhotoViewController: UITableViewController {
     /* the header that shows to image */
     private func setUpTableViewHeader(){
         /*test on read file for local file*/
-        Util.GetDataFromLocalFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg"){
-            data in
-            self.displayPhotoImageView.image = UIImage(data: data)
-        }
+        Util.GetImageData(imageUID: photoUID, completion: {
+                data in
+            self.displayPhotoImageView.image = UIImage(data: data!)
+        })
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
         self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
-        let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.checkAction))
+        let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.scrollBackToTop))
         /* note: GestureRecognizer will be disable while tableview is scrolling */
         headerView.addGestureRecognizer(headerViewGesture)
     }
