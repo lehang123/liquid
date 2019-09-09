@@ -175,6 +175,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         attributes.lifecycleEvents.didAppear = {
             contentView.becomeFirstResponder(with: 0)
         }
+        
         SwiftEntryKit.display(entry: contentView, using: attributes, presentInsideKeyWindow: true)
     }
     
@@ -182,9 +183,14 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         let testPhoto = PhotoDetail(title: "dummy", description: "is it?",
                                     UID : "test-small-size-image",
                                     likes: 0, comments: [PhotoDetail.comment]())
+        let testPhoto2 = PhotoDetail(title: "dummy", description: "is it?",
+                                    UID : "test-image-one",
+                                    likes: 0, comments: [PhotoDetail.comment]())
         
         var photos = [PhotoDetail]()
         photos.append(testPhoto)
+        photos.append(testPhoto2)
+        
         return photos
     }
 }

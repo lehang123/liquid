@@ -22,6 +22,8 @@ struct ModelCollectionFlowLayout {
 
 class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
+    
     @IBOutlet weak var profileImg: EnhancedCircleImageView!
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
@@ -72,6 +74,12 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW {
+            if let albumDetailTVC = segue.destination as? AlbumCoverViewController {
+                // todo : pass cache here !!!!
+                print(" FamilyMainPageViewController prepare : pass success !")
+            }
+        }
     }
     
     func collectData(){
@@ -96,20 +104,11 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         let funct = items[(indexPath as NSIndexPath).row]
         
         if funct.title == "Album" {
-            // through code
-            //                let vc = SettingViewController()
-            //                self.navigationController?.pushViewController(vc, animated: true)
-            
-            // through storyboard
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-            if vc == nil {
-            vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
-            }
-            self.navigationController!.pushViewController(vc!, animated: true) // this line shows error
-            
+            // shows album covers view controller
+            // todo : we send the album covers data through the sender,
+            // nil for now as we don't have any data
+            self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW, sender: nil)
         }
-
     }
     
     

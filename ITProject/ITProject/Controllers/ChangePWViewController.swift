@@ -66,7 +66,6 @@ class ChangePasswordViewController : UIViewController {
                            message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
                            action_title: Util.BUTTON_DISMISS,
                            on: self)
-
         }
 
     }
