@@ -20,8 +20,6 @@ import Firebase
         // Override point for customization after application launch.
         FirebaseApp.configure()
         Util.PrepareDocumentFolder()
-        
-        
         return true
     }
     
