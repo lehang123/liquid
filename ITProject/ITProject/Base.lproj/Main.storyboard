@@ -1035,6 +1035,24 @@
             </objects>
             <point key="canvasLocation" x="2912" y="137"/>
         </scene>
+        <!--Custom Form View Controller-->
+        <scene sceneID="60A-hi-ju8">
+            <objects>
+                <viewController storyboardIdentifier="CustomFormViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OIh-IM-N1d" customClass="CustomFormViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Btg-gv-qYS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="displayP3"/>
+                        <viewLayoutGuide key="safeArea" id="hKO-El-BgM"/>
+                    </view>
+                    <connections>
+                        <outlet property="view" destination="Btg-gv-qYS" id="4YO-0J-exd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OoM-AK-s5D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2981" y="-1466"/>
+        </scene>
         <!--Album Cover View Controller-->
         <scene sceneID="ltI-Uc-nAg">
             <objects>
@@ -1088,7 +1106,7 @@
                                 </constraints>
                                 <state key="normal" image="addIcon"/>
                                 <connections>
-                                    <action selector="addNew:" destination="52z-VG-Mfg" eventType="touchUpInside" id="OcZ-nA-8JD"/>
+                                    <segue destination="OIh-IM-N1d" kind="presentation" identifier="ShowFormView" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="kwT-CU-vjg"/>
                                 </connections>
                             </button>
                         </subviews>

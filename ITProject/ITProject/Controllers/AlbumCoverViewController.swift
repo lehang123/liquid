@@ -83,100 +83,98 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         }
     }
     
-    // Add new Album
-    @IBAction func addNew(_ sender: Any) {
-        print("albumList", albumDataList)
-        var attributes = PopUpFromWindow.setupFormPresets()
-        showSignupForm(attributes: &attributes, style: .light)
-//        self.loadData()
-        print("123123",self.albumDataList)
-        
-//        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
-//            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
-//       self.albumCollectionView.reloadData()
-//        })
-//
-        
 
-            
-    }
-    // pop up alter
-    private func showPopupMessage(attributes: EKAttributes) {
-        let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
-        let title = "Error!"
-        let description = "Album name already exist. Try give a unique name"
-        PopUpAlter.showPopupMessage(attributes: attributes,
-                                    title: title,
-                                    titleColor: .white,
-                                    description: description,
-                                    descriptionColor: .white,
-                                    buttonTitleColor: Color.Gray.mid,
-                                    buttonBackgroundColor: .white,
-                                    image: image)
-    }
+////        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
+////            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+////       self.albumCollectionView.reloadData()
+////        })
+////
+//
+//
+//
+//    }
+//    // pop up alter
+//    private func showPopupMessage(attributes: EKAttributes) {
+//        let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
+//        let title = "Error!"
+//        let description = "Album name already exist. Try give a unique name"
+//        PopUpAlter.showPopupMessage(attributes: attributes,
+//                                    title: title,
+//                                    titleColor: .white,
+//                                    description: description,
+//                                    descriptionColor: .white,
+//                                    buttonTitleColor: Color.Gray.mid,
+//                                    buttonBackgroundColor: .white,
+//                                    image: image)
+//    }
+//
+//    // Sign up form
+//    private func showSignupForm(attributes: inout EKAttributes, style: FormStyle) {
+//        let titleStyle = EKProperty.LabelStyle(
+//            font: MainFont.light.with(size: 14),
+//            color: style.textColor,
+//            displayMode: .light
+//        )
+//        let title = EKProperty.LabelContent(
+//            text: "Add new album",
+//            style: titleStyle
+//        )
+//        let textFields = AddAlbumUI.fields(
+//            by: [.albumName,.albumDescription],
+//            style: style
+//        )
+//
+//        let button = EKProperty.ButtonContent(
+//            label: .init(text: "Continue", style: style.buttonTitle),
+//            backgroundColor: style.buttonBackground,
+//            highlightedBackgroundColor: style.buttonBackground.with(alpha: 0.8),
+//            displayMode: .light) {
+//
+//                /* closure after album confirm created : Main Thread here */
+//                let albumName = textFields.first?.textContent
+//                let albumDescription = textFields.last?.textContent
+//                if (albumName == ""){
+//                }
+//                if (albumName != "" && albumName != nil && !self.albumDataList.contains(albumName!)){
+//                    //
+//                    //
+//                    //                } else {
+//                    //                if (albumName == ""){
+//                    //                    let popattributes = PopUpAlter.setupPopupPresets()
+//                    //                    self.showPopupMessage(attributes: popattributes)
+//                    //                } else {
+//                    //        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
+//                    //            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
+//                    // self.albumCollectionView.reloadData()
+//                    //        })
+//
+//                    /* make Album photos here
+//                     TO-DO : this is a dummy only */
+//                    let albumPhotos = self.createAlbumPhotos()
+//
+//                    let popattributes = PopUpAlter.setupPopupPresets()
+//                    self.showPopupMessage(attributes: popattributes)
+//
+//                    //SwiftEntryKit.dismiss()
+//                    self.albumsList.addNewAlbum(title: albumName!, description: albumDescription ?? "", UID: Util.GenerateUDID(), photos: albumPhotos)
+//
+//                    self.albumCollectionView.reloadData()
+//
+//                }
+//        }
+//
+//        let contentView = EKFormMessageView(
+//            with: title,
+//            textFieldsContent: textFields,
+//            buttonContent: button
+//        )
+//
+//        attributes.lifecycleEvents.didAppear = {
+//            contentView.becomeFirstResponder(with: 0)
+//        }
+//        SwiftEntryKit.display(entry: contentView, using: attributes, presentInsideKeyWindow: true)
+//    }
     
-    // Sign up form
-    private func showSignupForm(attributes: inout EKAttributes, style: FormStyle) {
-        let titleStyle = EKProperty.LabelStyle(
-            font: MainFont.light.with(size: 14),
-            color: style.textColor,
-            displayMode: .light
-        )
-        let title = EKProperty.LabelContent(
-            text: "Add new album",
-            style: titleStyle
-        )
-        let textFields = AddAlbumUI.fields(
-            by: [.albumName,.albumDescription],
-            style: style
-        )
-        
-        let button = EKProperty.ButtonContent(
-            label: .init(text: "Continue", style: style.buttonTitle),
-            backgroundColor: style.buttonBackground,
-            highlightedBackgroundColor: style.buttonBackground.with(alpha: 0.8),
-            displayMode: .light) {
-                
-                /* closure after album confirm created : Main Thread here */
-                let albumName = textFields.first?.textContent
-                let albumDescription = textFields.last?.textContent
-                print("123",self.albumDataList)
-                if (albumName != "" && albumName != nil && !self.albumDataList.contains(albumName!)){
-                    //
-                    //
-                    //                } else {
-                    //                if (albumName == ""){
-                    //                    let popattributes = PopUpAlter.setupPopupPresets()
-                    //                    self.showPopupMessage(attributes: popattributes)
-                    //                } else {
-                    //        AlbumDBController.getInstance().addNewAlbum(albumName: "orz", description: "test backend", completion: {document in
-                    //            self.albumCoverList.addNewAlbum(title: "orz", description: "test backend", UID: document!.documentID)
-                    // self.albumCollectionView.reloadData()
-                    //        })
-                    
-                    /* make Album photos here
-                     TO-DO : this is a dummy only */
-                    let albumPhotos = self.createAlbumPhotos()
-                    
-                    SwiftEntryKit.dismiss()
-                    self.albumsList.addNewAlbum(title: albumName!, description: albumDescription ?? "", UID: Util.GenerateUDID(), photos: albumPhotos)
-                    
-                    self.albumCollectionView.reloadData()
-                    
-                }
-        }
-        
-        let contentView = EKFormMessageView(
-            with: title,
-            textFieldsContent: textFields,
-            buttonContent: button
-        )
-        
-        attributes.lifecycleEvents.didAppear = {
-            contentView.becomeFirstResponder(with: 0)
-        }
-        SwiftEntryKit.display(entry: contentView, using: attributes, presentInsideKeyWindow: true)
-    }
     
     private func createAlbumPhotos()->[PhotoDetail]{
         let testPhoto = PhotoDetail(title: "dummy", description: "is it?",

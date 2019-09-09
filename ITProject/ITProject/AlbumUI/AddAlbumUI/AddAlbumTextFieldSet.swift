@@ -56,7 +56,7 @@ final class AddAlbumUI {
     class func albumName(placeholderStyle: EKProperty.LabelStyle,
                      textStyle: EKProperty.LabelStyle,
                      separatorColor: EKColor,
-                     style: FormStyle) -> EKProperty.TextFieldContent {
+                     style: FormStyle) -> CustomTextFieldContent {
         let albumNamePlaceholder = EKProperty.LabelContent(
             text: "Album Name",
             style: placeholderStyle
@@ -74,7 +74,7 @@ final class AddAlbumUI {
     class func albumDescription(placeholderStyle: EKProperty.LabelStyle,
                          textStyle: EKProperty.LabelStyle,
                          separatorColor: EKColor,
-                         style: FormStyle) -> EKProperty.TextFieldContent {
+                         style: FormStyle) -> CustomTextFieldContent {
         let albumNamePlaceholder = EKProperty.LabelContent(
             text: "Album Description",
             style: placeholderStyle
@@ -92,8 +92,8 @@ final class AddAlbumUI {
 
     
     class func fields(by set: TextFieldOptionSet,
-                      style: FormStyle) -> [EKProperty.TextFieldContent] {
-        var array: [EKProperty.TextFieldContent] = []
+                      style: FormStyle) -> [CustomTextFieldContent] {
+        var array: [CustomTextFieldContent] = []
         let placeholderStyle = style.placeholder
         let textStyle = EKProperty.LabelStyle(
             font: MainFont.light.with(size: 14),
