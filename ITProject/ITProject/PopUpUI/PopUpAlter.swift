@@ -23,7 +23,7 @@ class PopUpAlter {
         
         // Preset Center Alter
         attributes = EKAttributes.centerFloat
-        attributes.hapticFeedbackType = .success
+        attributes.hapticFeedbackType = .error
         attributes.displayDuration = .infinity
         attributes.entryBackground = .gradient(
             gradient: .init(
@@ -76,7 +76,7 @@ class PopUpAlter {
             height: .intrinsic
         )
         attributes.statusBar = .dark
-
+        
         return attributes
     }
     
