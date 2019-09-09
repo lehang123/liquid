@@ -78,7 +78,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
                 let selectedAlbum = albumsList.getAlbum(index: (sender as! IndexPath).row)
-                albumDetailTVC.albumd = selectedAlbum
+                albumDetailTVC.albumDetail = selectedAlbum
             }
         }
     }
@@ -175,14 +175,24 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
 //        SwiftEntryKit.display(entry: contentView, using: attributes, presentInsideKeyWindow: true)
 //    }
     
+
     
     private func createAlbumPhotos()->[PhotoDetail]{
         let testPhoto = PhotoDetail(title: "dummy", description: "is it?",
                                     UID : "test-small-size-image",
                                     likes: 0, comments: [PhotoDetail.comment]())
+        let testPhoto2 = PhotoDetail(title: "dummy", description: "is it?",
+                                    UID : "test-image-one",
+                                    likes: 0, comments: [PhotoDetail.comment]())
+        let testPhoto3 = PhotoDetail(title: "dummy", description: "is it?",
+                                     UID : "test-image-two",
+                                     likes: 0, comments: [PhotoDetail.comment]())
         
         var photos = [PhotoDetail]()
         photos.append(testPhoto)
+        photos.append(testPhoto2)
+        photos.append(testPhoto3)
+        
         return photos
     }
 }

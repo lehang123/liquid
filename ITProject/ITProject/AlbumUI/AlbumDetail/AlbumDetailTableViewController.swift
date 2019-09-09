@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import Photos
 
 class AlbumDetailTableViewController: UITableViewController {
-    var albumd: AlbumDetail!
+    var albumDetail: AlbumDetail!
+    
+    private static let SHOW_PHOTO_DETAIL_SEGUE = "ShowPhotoDetail"
     
     @IBOutlet weak var albumCoverImageView: UIImageView!
     var headerView : UIView!
@@ -33,12 +36,12 @@ class AlbumDetailTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.clearsSelectionOnViewWillAppear = false
-        
+        checkPermission()
         let addPhotos = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhotosTapped))
         self.navigationItem.rightBarButtonItem = addPhotos
 
 //        title = albumd.name
-        albumCoverImageView.image = albumd.getCoverImage()
+        albumCoverImageView.image = albumDetail.getCoverImage()
 
         self.tableView.estimatedRowHeight = self.tableView.rowHeight
         self.tableView.rowHeight = UITableView.automaticDimension
@@ -49,6 +52,32 @@ class AlbumDetailTableViewController: UITableViewController {
         
     }
     
+    func checkPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized:
+            print("checkPermission: Access is granted by user")
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                print("checkPermission: status is \(newStatus)")
+                if newStatus ==  PHAuthorizationStatus.authorized {
+                    /* do stuff here */
+                    print("checkPermission: success")
+                }
+            })
+            print("checkPermission: It is not determined until now")
+        case .restricted:
+            // same same
+            print("checkPermission: User do not have access to photo album.")
+        case .denied:
+            // same same
+            print("checkPermission: User has denied the permission.")
+        @unknown default:
+            print("checkPermission: fatal error.")
+        }
+    }
+    
     @objc private  func addPhotosTapped(){
         print("addPhotosTapped : Tapped")
         // pop gallery here
@@ -56,7 +85,24 @@ class AlbumDetailTableViewController: UITableViewController {
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
         
-        present(imagePicker, animated: true, completion:  nil)
+        self.present(imagePicker, animated: true, completion:  nil)
+    }
+    
+    var displayPhotoViewController : DisplayPhotoViewController?
+    
+    /*view photo detail, present on display photo view controller */
+    func viewPhoto(photoDetail: PhotoDetail) {
+        
+        self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
+            if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
+                let photoDetail = sender as! PhotoDetail
+                photoDetailTVC.setPhotoUID(photoUID: photoDetail.getUID())
+            }
+        }
     }
     
     // MARK: - Table view data source
@@ -95,7 +141,7 @@ class AlbumDetailTableViewController: UITableViewController {
     {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailDescrpCell, for: indexPath) as! AlbumDetailDescrpTableViewCell
-            cell.descrp = albumd
+            cell.descrp = albumDetail
             cell.selectionStyle = .none
             print("AlbumDetailTableViewController.tableView.cell :::", cell)
             return cell
@@ -141,57 +187,65 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
-
 extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    /* delegate function from the UIImagePickerControllerDelegate
-     called when choose button pressed
-     */
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-       
-        self.dismiss(animated: true, completion: { () -> Void in
-             print ("imagePickerController: Did picked pressed !!")
-        })
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else {
+            print("there is no edited Image ")
+            return
+        }
         
+        print ("imagePickerController: Did picked pressed !!")
+        picker.dismiss(animated: true, completion: nil)
+        
+        // todo : push add/edit photo view
     }
     
     /* delegate function from the UIImagePickerControllerDelegate
      called when canceled button pressed, get out of photo library
      */
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
-        self.dismiss(animated: true, completion: { () -> Void in
-            print ("imagePickerController: Did canceled pressed !!")
-        })
+        print ("imagePickerController: Did canceled pressed !!")
+        picker.dismiss(animated: true, completion: nil)
     }
+    
 }
+
+
 // TODO: finish collection view controller
 // MARK : UICollectionViewDataSource
 
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return albumd.getPhotos().count
+            return albumDetail.getPhotos().count
         }
 
-        /* photos cell that display photos' thumbnail */
+        /* called when photos cell that display photos' thumbnail is visible on device's screen */
         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
-            
-            let photo = albumd.getPhotos()[indexPath.item]
+            let photo = albumDetail.getPhotos()[indexPath.item]
 
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
-            
+            /* load image with the cell is visible */
             Util.GetImageData(imageUID: photo.getUID(), completion: {
                 data in
                 if data != nil{
                     cell.image = UIImage(data: data!)
                 }
             })
-
+            
             return cell
+        }
+    
+        /* called when collectionview on touched, go view photos */
+        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let photo = albumDetail.getPhotos()[indexPath.item]
+            viewPhoto(photoDetail: photo)
         }
     }
 
