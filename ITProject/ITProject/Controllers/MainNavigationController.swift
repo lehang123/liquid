@@ -82,9 +82,6 @@ class MainNavigationController :UINavigationController {
 //                                }
                             }
                     }
-
-
-
                 }else{
                     print("ERROR LOADING main login:: ");
                 }

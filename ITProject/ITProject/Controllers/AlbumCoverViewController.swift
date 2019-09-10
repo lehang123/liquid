@@ -23,14 +23,11 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     @IBAction func AddAlbumPressed(_ sender: Any) {
         print("AddAlbumPressed : ")
 
-        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController")
+        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
 //        VC1.modalPresentationStyle = .overCurrentContext
         self.present(VC1, animated:true, completion: {
-            
-            UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
-                VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-            }, completion:nil)
-            
+            VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+            VC1.setAlbumCoverViewController(albumCoverViewController: self)
         })
     }
     
@@ -76,7 +73,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     }
     
     private func loadData() {
-        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
+        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY) as! DocumentReference) { (querys, err) in
             
             querys?.documents.forEach({ (querydoc) in
                 self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
