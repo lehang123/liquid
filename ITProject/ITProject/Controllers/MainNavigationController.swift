@@ -45,54 +45,13 @@ class MainNavigationController :UINavigationController {
                 self.loadName()
 
                 print("ELSE I'm here : " + (user?.email)!)
-                self.startCache();
+                CacheHandler.getInstance().startCache();
                 print("Listener get called ")
             }
         }
     }
     
-    private func startCache(){
-        //set familyUID's cache:
-        let user = Auth.auth().currentUser!.uid
-        Util.ShowActivityIndicator(withStatus: "please wait...");
-
-        DBController.getInstance()
-            .getDocumentFromCollection(
-                collectionName: RegisterDBController.USER_COLLECTION_NAME,
-                documentUID:  user)
-            {  (userDocument, error) in
-                if let userDocument = userDocument, userDocument.exists {
-                    let familyDocRef:DocumentReference = userDocument.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
-                    familyDocRef.getDocument(completion: { (doc, err) in
-                        CacheHandler.getInstance().setCache(obj: doc?.data() as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
-                    })
-                    
-                    print("Caching in main login:: ");
-                    CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
-                    
-                    CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
-                    DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocRef)
-                        .getDocuments() { (querySnapshot, err) in
-                            if let err = err {
-                                print("STARTCACHE Error getting documents: \(err)")
-                            } else {
-                                CacheHandler.getInstance().setCache(obj: querySnapshot!, forKey: CacheHandler.ALBUM_DATA as AnyObject);
-//                                for document in querySnapshot!.documents {
-//                                    print("\(document.documentID) => \(document.data())")
-//                                }
-                            }
-                    }
-
-
-
-                }else{
-                    print("ERROR LOADING main login:: ");
-                }
-                Util.DismissActivityIndicator();
-
-        }
-
-    }
+   
     
     private func askForLogin(){
         guard let VC1 = UIApplication.getTopViewController()?.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") else { return }

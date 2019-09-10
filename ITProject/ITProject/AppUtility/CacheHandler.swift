@@ -141,6 +141,77 @@ class CacheHandler {
         
         
     }
+    public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
+        var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA as AnyObject) as? Dictionary<String, Dictionary<String , AnyObject>>;
+        if (tmp == nil){
+            self.startCache();
+             tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA as AnyObject) as? Dictionary<String, Dictionary<String , AnyObject>>;
+
+        }
+        return tmp!;
+    }
+    
+    public func getAnAlbum(documentName : String) -> Dictionary<String, AnyObject>{
+        var tmp =  self.getAlbums();
+       
+        return tmp[documentName] as! Dictionary<String, AnyObject>;
+    }
+    public func startCache(){
+        //set familyUID's cache:
+        let user = Auth.auth().currentUser!.uid
+        Util.ShowActivityIndicator(withStatus: "please wait...");
+        
+        DBController.getInstance()
+            .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID:  user)
+            {  (userDocument, error) in
+                if let userDocument = userDocument, userDocument.exists {
+                    let familyDocRef:DocumentReference = userDocument.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+                    familyDocRef.getDocument(completion: { (doc, err) in
+                        CacheHandler.getInstance().setCache(obj: doc?.data() as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
+                    })
+                    
+                    print("Caching in main login:: ");
+                    CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+                    
+                    CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+                    DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocRef)
+                        .getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                print("STARTCACHE Error getting documents: \(err)")
+                            } else {
+                                var albums : Dictionary <String, AnyObject> = Dictionary <String, AnyObject> ();
+                                for document in querySnapshot!.documents {
+                                    var name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                                    
+                                    albums[name] = document.data() as AnyObject;
+                                    
+                                    
+                                    //                                    print("DOC ID :::" ,albums[name]?.documentID);
+                                    //                                    print("\(document.documentID) => \(document.data())")
+                                    //                                    var curr : Dictionary<String,AnyObject> = albums[document.documentID] as! Dictionary<String, AnyObject>;
+                                    
+                                    
+                                }
+                                
+                                CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+                                print ( "albumsss::: ",CacheHandler.getInstance().getAlbums());
+                                print ( "1 albummm::: ",CacheHandler.getInstance().getAnAlbum(documentName:"gogogo"));
+                                
+                            }
+                    }
+                    
+                    
+                    
+                }else{
+                    print("ERROR LOADING main login:: ");
+                }
+                Util.DismissActivityIndicator();
+                
+        }
+        
+    }
     
     
     
