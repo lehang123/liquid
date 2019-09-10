@@ -41,12 +41,22 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         }, completion: nil)
     }
     
+    func addAlbum(title newAlbumTitle: String,
+                  description newAlbumDescrp: String,
+                  UID: String,
+                  photos: [PhotoDetail]? = nil,
+                  coverImage: UIImage? = nil){
+        // todo : this is just a dummy
+        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: nil)
+        self.albumCollectionView.reloadData()
+    }
+    
     
     //var activeCell = albumCollectionView
     //activeCell = AlbumCoverViewController.controlView
-    let cellScaling: CGFloat = 0.6
-    let albumsList = AlbumsList()
-    var albumDataList = [String]()
+    private let cellScaling: CGFloat = 0.6
+    private let albumsList = AlbumsList()
+    private var albumDataList = [String]()
     
     
     struct Storyboard {

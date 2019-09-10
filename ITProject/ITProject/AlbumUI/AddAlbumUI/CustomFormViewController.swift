@@ -81,7 +81,9 @@ class CustomFormViewController: UIViewController {
                     self.showPopupMessage(attributes: popattributes)
                 } else {
                     // create a album here
-                    self.dismissWithAnimation()
+                    self.dismissWithAnimation(){
+                        self.albumCoverViewController?.addAlbum(title: albumN, description: "todo", UID: Util.GenerateUDID())
+                    }
                 }
         }
         
@@ -124,14 +126,14 @@ class CustomFormViewController: UIViewController {
         return contentView
     }
     
-    private func dismissWithAnimation(completion: (() -> Void)? = nil){
+    private func dismissWithAnimation(completion: @escaping (() -> Void) = {}){
         UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
         }, completion:{
             bool in
             self.dismiss(animated: true, completion: {
+                completion()
                 self.albumCoverViewController = nil
-                completion!()
             })
         })
     }
