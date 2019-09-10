@@ -71,6 +71,18 @@ class MainNavigationController :UINavigationController {
                     CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
                     
                     CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+                    DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocRef)
+                        .getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                print("STARTCACHE Error getting documents: \(err)")
+                            } else {
+                                CacheHandler.getInstance().setCache(obj: querySnapshot!, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+//                                for document in querySnapshot!.documents {
+//                                    print("\(document.documentID) => \(document.data())")
+//                                }
+                            }
+                    }
+
 
 
                 }else{
