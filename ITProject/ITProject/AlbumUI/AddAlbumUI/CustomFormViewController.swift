@@ -74,6 +74,7 @@ class CustomFormViewController: UIViewController {
                     let popattributes = PopUpAlter.setupPopupPresets()
                     self.showPopupMessage(attributes: popattributes)
                 } else {
+                    // create a album here
                     self.dismiss(animated: true, completion: nil)
                 } 
         }
@@ -112,11 +113,8 @@ class CustomFormViewController: UIViewController {
         attributes.lifecycleEvents.didAppear = {
             contentView.becomeFirstResponder(with: 0)
         }
- 
-        
+
         return contentView
     }
-
-
-
+    
 }
