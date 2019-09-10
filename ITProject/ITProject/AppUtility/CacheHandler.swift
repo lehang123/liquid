@@ -141,6 +141,86 @@ class CacheHandler {
         
         
     }
+    public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
+        var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA ) as? Dictionary<String, Dictionary<String , AnyObject>>;
+        if (tmp == nil){
+            self.startCache();
+            tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
+
+        }
+        return tmp!;
+    }
+    
+    public func getAnAlbum(documentName : String) -> [String: AnyObject]{
+        var tmp =  self.getAlbums();
+       
+        return tmp[documentName] as! [String: AnyObject];
+    }
+    public func startCache(){
+        //set familyUID's cache:
+        let user = Auth.auth().currentUser!.uid
+        Util.ShowActivityIndicator(withStatus: "please wait...");
+        
+        DBController.getInstance()
+            .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID:  user)
+            {  (userDocument, error) in
+                if let userDocument = userDocument, userDocument.exists {
+                    let familyDocRef:DocumentReference = userDocument.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+                    familyDocRef.getDocument(completion: { (doc, err) in
+                        CacheHandler.getInstance().setCache(obj: doc?.data() as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
+                    })
+                    
+                    print("Caching in main login:: ");
+                    CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+                    
+                    CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+                    DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocRef)
+                        .getDocuments() { (querySnapshot, err) in
+                            if let err = err {
+                                print("STARTCACHE Error getting documents: \(err)")
+                            } else {
+                                var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+                                
+                                for document in querySnapshot!.documents {
+                                    let name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                                    let owner:DocumentReference? = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference;
+                                    albums[name] = [
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID,
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+                                                    document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+                                                    
+                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION]
+                                                    
+                                    ]
+                                    
+                                    
+                                    
+                                    
+                                    
+                                }
+                                CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+
+                                
+                                
+                            }
+                    }
+                    
+                    
+                    
+                }else{
+                    print("ERROR LOADING main login:: ");
+                }
+                Util.DismissActivityIndicator();
+                
+        }
+        
+    }
     
     
     
