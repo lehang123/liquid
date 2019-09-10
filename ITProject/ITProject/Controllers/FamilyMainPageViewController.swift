@@ -77,7 +77,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         if segue.identifier == FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW {
             if let albumDetailTVC = segue.destination as? AlbumCoverViewController {
                 // todo : pass cache here !!!!
-                print(" FamilyMainPageViewController prepare : pass success !")
+                print(" FamilyMainPageViewController prepare : pass success !");
+                print( CacheHandler.getInstance().getCache(forKey: CacheHandler.ALBUM_DATA));
+   
             }
         }
     }
