@@ -75,7 +75,12 @@ class CustomFormViewController: UIViewController {
                     self.showPopupMessage(attributes: popattributes)
                 } else {
                     // create a album here
-                    self.dismiss(animated: true, completion: nil)
+                    UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
+                        self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+                    }, completion:{
+                        bool in
+                        self.dismiss(animated: true, completion: nil)
+                    })
                 } 
         }
         
@@ -94,7 +99,13 @@ class CustomFormViewController: UIViewController {
             backgroundColor: .black,
             highlightedBackgroundColor: Color.Gray.a800.with(alpha: 0.8),
             displayMode: .light) {
-                self.dismiss(animated: true, completion: nil)
+                
+                UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
+                    self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+                }, completion:{
+                    bool in
+                    self.dismiss(animated: true, completion: nil)
+                })
         }
         // Generate the content
         let buttonsBarContent = EKProperty.ButtonBarContent(
