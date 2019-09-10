@@ -205,7 +205,7 @@ class Util {
                 UnzipFile(from: fileAt as NSString,
                           to: fileAt as NSString,
                           fileName: fileName as String,
-                          deleteAfterFinish: true){
+                          deleteAfterFinish: false){
                             filepath in
                             completion(filepath)
                 }

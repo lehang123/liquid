@@ -1278,11 +1278,16 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a0o-a7-uaA">
+                                <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a0o-a7-uaA">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
+                                    <gestureRecognizers/>
+                                    <connections>
+                                        <outletCollection property="gestureRecognizers" destination="Wd0-rv-4ym" appends="YES" id="Oj9-hE-1fN"/>
+                                    </connections>
                                 </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <gestureRecognizers/>
                             <constraints>
                                 <constraint firstItem="a0o-a7-uaA" firstAttribute="height" secondItem="mod-J9-nOU" secondAttribute="height" id="SLV-Oh-tSq"/>
                                 <constraint firstItem="a0o-a7-uaA" firstAttribute="centerX" secondItem="mod-J9-nOU" secondAttribute="centerX" id="Xg3-3n-if1"/>
@@ -1426,8 +1431,46 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E7G-cq-fgP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Wd0-rv-4ym">
+                    <connections>
+                        <action selector="imageTapped:" destination="a5j-9A-YmN" id="edA-8W-8Ki"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4761" y="-746"/>
+        </scene>
+        <!--Show Detail Photo View Controller-->
+        <scene sceneID="zYT-6r-5DT">
+            <objects>
+                <viewController storyboardIdentifier="ShowDetailPhotoViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="S3R-rC-FI0" customClass="ShowDetailPhotoViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Cfw-6r-XJE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-zN-tpe">
+                                <rect key="frame" x="40" y="88" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="dRZ-og-gzR" appends="YES" id="kgL-vq-Yq2"/>
+                                </connections>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="CbG-Gq-qoD"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="cEr-zN-tpe" id="43T-TE-yjJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b3O-rx-eLN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="dRZ-og-gzR">
+                    <connections>
+                        <action selector="TapToBack:" destination="S3R-rC-FI0" id="SIT-fj-Fde"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="5651" y="-747"/>
         </scene>
         <!--Family Table Controller-->
         <scene sceneID="tlQ-ZY-Ess">
