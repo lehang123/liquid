@@ -20,6 +20,12 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
 
     @IBOutlet weak var albumCollectionView: UICollectionView!
     
+    @IBAction func AddAlbumPressed(_ sender: Any) {
+        print("AddAlbumPressed : ")
+
+        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController")
+        self.present(VC1, animated:true, completion: nil)
+    }
     
     func removeAlbum(albumToDelete : AlbumDetail) {
         /*take album out of list and refresh*/
@@ -204,9 +210,7 @@ protocol RemoveAlbumDelegate {
 }
 
 protocol ReloadDelegate {
-    
     func loadDataDelegate()
-    
 }
 
 extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
