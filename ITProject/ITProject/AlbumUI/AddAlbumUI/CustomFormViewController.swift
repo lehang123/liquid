@@ -14,6 +14,12 @@ class CustomFormViewController: UIViewController {
 
 
     var contentv : UIView!
+    private var albumCoverViewController : AlbumCoverViewController?
+    
+    public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController){
+        self.albumCoverViewController = albumCoverViewController
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,13 +81,8 @@ class CustomFormViewController: UIViewController {
                     self.showPopupMessage(attributes: popattributes)
                 } else {
                     // create a album here
-                    UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
-                        self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
-                    }, completion:{
-                        bool in
-                        self.dismiss(animated: true, completion: nil)
-                    })
-                } 
+                    self.dismissWithAnimation()
+                }
         }
         
         let buttonFont = MainFont.medium.with(size: 16)
@@ -100,12 +101,7 @@ class CustomFormViewController: UIViewController {
             highlightedBackgroundColor: Color.Gray.a800.with(alpha: 0.8),
             displayMode: .light) {
                 
-                UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
-                    self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
-                }, completion:{
-                    bool in
-                    self.dismiss(animated: true, completion: nil)
-                })
+                self.dismissWithAnimation()
         }
         // Generate the content
         let buttonsBarContent = EKProperty.ButtonBarContent(
@@ -126,6 +122,18 @@ class CustomFormViewController: UIViewController {
         }
 
         return contentView
+    }
+    
+    private func dismissWithAnimation(completion: (() -> Void)? = nil){
+        UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
+        }, completion:{
+            bool in
+            self.dismiss(animated: true, completion: {
+                self.albumCoverViewController = nil
+                completion!()
+            })
+        })
     }
     
 }

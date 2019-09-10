@@ -47,7 +47,7 @@ class ProfileViewController: UIViewController {
         print("Button Tapped")
         let user = Auth.auth().currentUser
         
-        if (name.text != (CacheHandler.getInstance().getCache(forKey: "name" as AnyObject) as! String) ) {
+        if (name.text != (CacheHandler.getInstance().getCache(forKey: "name") as! String) ) {
             
             Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
             
@@ -67,7 +67,7 @@ class ProfileViewController: UIViewController {
     // Get the name of the user.
     private func getName() {
         
-        self.name.text = (CacheHandler.getInstance().getCache(forKey: "name" as AnyObject) as! String)
+        self.name.text = (CacheHandler.getInstance().getCache(forKey: "name") as! String)
     }
     
 
