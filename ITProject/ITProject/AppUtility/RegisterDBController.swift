@@ -20,6 +20,8 @@ class RegisterDBController {
     public static let USER_DOCUMENT_FIELD_NAME = "name" // user's name
     public static let USER_DOCUMENT_FIELD_FAMILY = "family" // user's family reference
     public static let USER_DOCUMENT_FIELD_POSITION = "position" // user's position in family
+    public static let USER_DOCUMENT_FIELD_GENDER = "gender" // user's gender
+    public static let USER_DOCUMENT_FIELD_PHONE = "phone" // user's phone #
 
 
     /* constant for FAMILIES collections */
