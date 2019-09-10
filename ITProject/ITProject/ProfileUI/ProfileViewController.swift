@@ -41,7 +41,7 @@ class ProfileViewController: UIViewController {
         
         //self.tableView.delgate = self
     }
-    
+
     @objc func DoneButtonTapped() {
         
         print("Button Tapped")

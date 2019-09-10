@@ -9,7 +9,8 @@
 import UIKit
 
 // todo : make the scorll back to the top while click on the header
-class DisplayPhotoViewController: UITableViewController {
+class DisplayPhotoViewController: UITableViewController{
+    
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
     private static let expandCollpaseTableViewCell = "ExpandCell"
@@ -20,6 +21,7 @@ class DisplayPhotoViewController: UITableViewController {
     private static let EXPAND_ROW_HEIGHT = UIScreen.main.bounds.height * 0.025
     private static let MAXIMUM_INIT_LIST_LENGTH = 10
     private static let MAXIMUM_EXPAND_LENGTH = 5
+    
     
     private struct CommentCellStruct{
         var comment = String()
@@ -51,6 +53,7 @@ class DisplayPhotoViewController: UITableViewController {
         super.viewDidLoad()
         makeDummyCommentSource(num: 20)
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -67,6 +70,16 @@ class DisplayPhotoViewController: UITableViewController {
             hasHiddenCells = true
         }
     }
+
+        @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
+    
+            let imageView = sender.view as! UIImageView
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
+            controller.selectedImage = imageView.image
+            self.present(controller, animated: true)
+        
+        }
+
     
     @objc func scrollBackToTop(sender : UITapGestureRecognizer) {
         // make sure sender is not nil
