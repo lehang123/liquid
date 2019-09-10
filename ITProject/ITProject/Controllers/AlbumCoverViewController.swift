@@ -24,7 +24,14 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         print("AddAlbumPressed : ")
 
         let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController")
-        self.present(VC1, animated:true, completion: nil)
+//        VC1.modalPresentationStyle = .overCurrentContext
+        self.present(VC1, animated:true, completion: {
+            
+            UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
+                VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+            }, completion:nil)
+            
+        })
     }
     
     func removeAlbum(albumToDelete : AlbumDetail) {
