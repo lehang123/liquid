@@ -142,19 +142,19 @@ class CacheHandler {
         
     }
     public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
-        var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA as AnyObject) as? Dictionary<String, Dictionary<String , AnyObject>>;
+        var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA ) as? Dictionary<String, Dictionary<String , AnyObject>>;
         if (tmp == nil){
             self.startCache();
-             tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA as AnyObject) as? Dictionary<String, Dictionary<String , AnyObject>>;
+            tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
 
         }
         return tmp!;
     }
     
-    public func getAnAlbum(documentName : String) -> Dictionary<String, AnyObject>{
+    public func getAnAlbum(documentName : String) -> [String: AnyObject]{
         var tmp =  self.getAlbums();
        
-        return tmp[documentName] as! Dictionary<String, AnyObject>;
+        return tmp[documentName] as! [String: AnyObject];
     }
     public func startCache(){
         //set familyUID's cache:
@@ -181,23 +181,32 @@ class CacheHandler {
                             if let err = err {
                                 print("STARTCACHE Error getting documents: \(err)")
                             } else {
-                                var albums : Dictionary <String, AnyObject> = Dictionary <String, AnyObject> ();
+                                var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+                                
                                 for document in querySnapshot!.documents {
-                                    var name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                                    let name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                                    let owner:DocumentReference? = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference;
+                                    albums[name] = [
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID,
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+                                                    document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+                                                    
+                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION]
+                                                    
+                                    ]
                                     
-                                    albums[name] = document.data() as AnyObject;
                                     
                                     
-                                    //                                    print("DOC ID :::" ,albums[name]?.documentID);
-                                    //                                    print("\(document.documentID) => \(document.data())")
-                                    //                                    var curr : Dictionary<String,AnyObject> = albums[document.documentID] as! Dictionary<String, AnyObject>;
                                     
                                     
                                 }
-                                
                                 CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
-                                print ( "albumsss::: ",CacheHandler.getInstance().getAlbums());
-                                print ( "1 albummm::: ",CacheHandler.getInstance().getAnAlbum(documentName:"gogogo"));
+
+                                
                                 
                             }
                     }

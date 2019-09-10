@@ -60,7 +60,9 @@ class RegisterDBController {
         DBController.getInstance().addDocumentToCollectionWithUID( documentUID : userUID, inputData:[
             RegisterDBController.USER_DOCUMENT_FIELD_NAME :username,
             RegisterDBController.USER_DOCUMENT_FIELD_FAMILY :familyDocumentReference,
-            RegisterDBController.USER_DOCUMENT_FIELD_POSITION : ""], collectionName :
+            RegisterDBController.USER_DOCUMENT_FIELD_POSITION : "",
+            RegisterDBController.USER_DOCUMENT_FIELD_PHONE : "" ,
+            RegisterDBController.USER_DOCUMENT_FIELD_GENDER : "" ], collectionName :
             RegisterDBController.USER_COLLECTION_NAME);
         
     }
