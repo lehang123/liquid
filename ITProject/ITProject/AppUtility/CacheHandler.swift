@@ -23,6 +23,8 @@ class CacheHandler {
     public static let FAMILY_KEY:String = "familyUID";
     public static let USER_DATA:String = "userData";
     public static let FAMILY_DATA:String = "familyData";
+    public static let ALBUM_DATA:String = "albumData";
+
 
     private static var single:CacheHandler!;
     init (){
