@@ -23,8 +23,12 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     @IBAction func AddAlbumPressed(_ sender: Any) {
         print("AddAlbumPressed : ")
 
-        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController")
-        self.present(VC1, animated:true, completion: nil)
+        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
+//        VC1.modalPresentationStyle = .overCurrentContext
+        self.present(VC1, animated:true, completion: {
+            VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+            VC1.setAlbumCoverViewController(albumCoverViewController: self)
+        })
     }
     
     func removeAlbum(albumToDelete : AlbumDetail) {
@@ -37,12 +41,22 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         }, completion: nil)
     }
     
+    func addAlbum(title newAlbumTitle: String,
+                  description newAlbumDescrp: String,
+                  UID: String,
+                  photos: [PhotoDetail]? = nil,
+                  coverImage: UIImage? = nil){
+        // todo : this is just a dummy
+        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: nil)
+        self.albumCollectionView.reloadData()
+    }
+    
     
     //var activeCell = albumCollectionView
     //activeCell = AlbumCoverViewController.controlView
-    let cellScaling: CGFloat = 0.6
-    let albumsList = AlbumsList()
-    var albumDataList = [String]()
+    private let cellScaling: CGFloat = 0.6
+    private let albumsList = AlbumsList()
+    private var albumDataList = [String]()
     
     
     struct Storyboard {
@@ -69,7 +83,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     }
     
     private func loadData() {
-        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject) as! DocumentReference) { (querys, err) in
+        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY) as! DocumentReference) { (querys, err) in
             
             querys?.documents.forEach({ (querydoc) in
                 self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)

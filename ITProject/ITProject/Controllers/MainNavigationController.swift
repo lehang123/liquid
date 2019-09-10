@@ -51,8 +51,7 @@ class MainNavigationController :UINavigationController {
         }
     }
     
-   
-    
+
     private func askForLogin(){
         guard let VC1 = UIApplication.getTopViewController()?.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") else { return }
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.

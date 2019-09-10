@@ -75,7 +75,7 @@ class AlbumDetail: Equatable
         photos = photos.filter{$0 != photo}
     }
     
-    init(title: String, description: String, UID : String, photos : [PhotoDetail], coverImage : UIImage?)
+    init(title: String, description: String, UID : String, photos : [PhotoDetail]?, coverImage : UIImage?)
     {
         let defaultImage : UIImage = #imageLiteral(resourceName: "item4")
         
@@ -83,7 +83,7 @@ class AlbumDetail: Equatable
         self.coverImage = coverImage ?? defaultImage
         self.description = description
         self.UID = UID
-        self.photos = photos
+        self.photos = photos ?? []
     }
     
 }

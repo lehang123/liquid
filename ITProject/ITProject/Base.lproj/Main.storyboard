@@ -1039,11 +1039,10 @@
         <!--Custom Form View Controller-->
         <scene sceneID="60A-hi-ju8">
             <objects>
-                <viewController storyboardIdentifier="CustomFormViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OIh-IM-N1d" customClass="CustomFormViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CustomFormViewController" modalPresentationStyle="overCurrentContext" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OIh-IM-N1d" customClass="CustomFormViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Btg-gv-qYS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.14999999999999999" colorSpace="custom" customColorSpace="displayP3"/>
                         <viewLayoutGuide key="safeArea" id="hKO-El-BgM"/>
                     </view>
                     <connections>
@@ -1321,7 +1320,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="I5n-AV-v0M" userLabel="Bookmark">
-                                            <rect key="frame" x="273" y="13.5" width="32.000000000000028" height="63.500000000000028"/>
+                                            <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
