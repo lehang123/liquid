@@ -117,7 +117,7 @@ class CacheHandler {
     /// - Parameter forKey: object's associated key
     /// - Returns:the stored object in NSDiscardableContent type
     public func getDiscardableCache( forKey: AnyObject) ->NSDiscardableContent{
-        self.dataCache.object(forKey: forKey)!.beginContentAccess();
+        _ = self.dataCache.object(forKey: forKey)!.beginContentAccess();
         return self.dataCache.object(forKey: forKey)! as! NSDiscardableContent;
         
     }
@@ -154,7 +154,7 @@ class CacheHandler {
     public func getAnAlbum(documentName : String) -> [String: AnyObject]{
         var tmp =  self.getAlbums();
        
-        return tmp[documentName] as! [String: AnyObject];
+        return tmp[documentName]!;
     }
     public func startCache(){
         //set familyUID's cache:
@@ -185,17 +185,17 @@ class CacheHandler {
                                 
                                 for document in querySnapshot!.documents {
                                     let name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
-                                    let owner:DocumentReference? = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference;
+                                    let owner:DocumentReference? = (document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
                                     albums[name] = [
-                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE],
-                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID,
-                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS],
-                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL],
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
                                                     AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
-                                                    document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION],
+                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
                                                     AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
                                                     
-                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION],
+                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
                                                     AlbumDBController.DOCUMENTID : document.documentID
                                                     
                                     ]
