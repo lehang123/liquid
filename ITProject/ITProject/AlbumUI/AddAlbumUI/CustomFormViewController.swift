@@ -15,9 +15,10 @@ class CustomFormViewController: UIViewController {
 
     var contentv : UIView!
     private var albumCoverViewController : AlbumCoverViewController?
-    
+    private var contentViewSize = 0.8
     public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController){
         self.albumCoverViewController = albumCoverViewController
+        //self.contentViewSize = albumCoverViewController.
     }
     
     override func viewDidLoad() {
@@ -31,7 +32,8 @@ class CustomFormViewController: UIViewController {
         contentview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         contentview.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         contentview.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
-        contentview.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.4).isActive = true
+        contentview.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.5).isActive = true
+
         contentview.backgroundColor = .white
         contentview.layer.cornerRadius = 10
         contentview.layer.masksToBounds = true
@@ -66,7 +68,7 @@ class CustomFormViewController: UIViewController {
             style: titleStyle
         )
         let textFields = AddAlbumUI.fields(
-            by: [.albumName,.albumDescription],
+            by: [.albumDescription],
             style: style
         )
         
@@ -107,7 +109,7 @@ class CustomFormViewController: UIViewController {
         }
         // Generate the content
         let buttonsBarContent = EKProperty.ButtonBarContent(
-            with: okButton, closeButton,
+            with: closeButton, okButton,
             separatorColor: Color.Gray.light,
             displayMode: .light,
             expandAnimatedly: true

@@ -31,6 +31,8 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         })
     }
     
+    //func getAddAlbumPopUpViewSize
+    
     func removeAlbum(albumToDelete : AlbumDetail) {
         /*take album out of list and refresh*/
         let index = albumsList.getIndexForItem(album: albumToDelete)
