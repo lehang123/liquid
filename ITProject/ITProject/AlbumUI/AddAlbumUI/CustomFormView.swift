@@ -19,9 +19,11 @@ class CustomFormView: UIView {
     
     private let titleLabel = UILabel()
     private let scrollView = UIScrollView()
+    private var imageView = UIImageView()
     private let textFieldsContent: [CustomTextFieldContent]
     private var textFieldViews: [CustomTextField] = []
     private var buttonBarView: EKButtonBarView!
+    private var imageViewContent: UIImage?
     
     private let titleContent: EKProperty.LabelContent
     
@@ -44,6 +46,28 @@ class CustomFormView: UIView {
             priority: .defaultHigh)
     }
     
+    public init(with title: EKProperty.LabelContent,
+                textFieldsContent: [CustomTextFieldContent],
+                buttonContent: EKProperty.ButtonBarContent,
+                imageViewContent: UIImage) {
+        self.titleContent = title
+        self.textFieldsContent = textFieldsContent
+        self.imageViewContent = imageViewContent
+        super.init(frame: UIScreen.main.bounds)
+        setupImageView()
+        setupScrollView()
+//        //setupTitleLabel()
+        setupTextFields(with: textFieldsContent)
+        setupButton(with: buttonContent)
+        setupTapGestureRecognizer()
+        scrollView.layoutIfNeeded()
+        set(.height,
+            of: scrollView.contentSize.height + scrollViewVerticalOffset * 2,
+            priority: .defaultHigh)
+    }
+    
+    
+    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -57,7 +81,12 @@ class CustomFormView: UIView {
             textFieldIndex += 1
             return textField
         }
-        textFieldViews.first!.layout(.top, to: .bottom, of: titleLabel, offset: 20)
+        if(imageViewContent != nil) {
+        textFieldViews.first!.layout(.top, to: .bottom, of: imageView, offset: 20)
+        } else {
+            textFieldViews.first!.layout(.top, to: .bottom, of: titleLabel, offset: 20)
+        }
+        
         textFieldViews.spread(.vertically, offset: 5)
         textFieldViews.layoutToSuperview(axis: .horizontally)
     }
@@ -70,6 +99,16 @@ class CustomFormView: UIView {
         )
         tapGestureRecognizer.numberOfTapsRequired = 1
         addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    private func setupImageView(){
+        scrollView.addSubview(imageView)
+        imageView.layoutToSuperview(.centerX, .centerY, .width)
+        imageView.contentMode = .scaleAspectFit
+        imageView.layoutToSuperview(.top, offset: 10)
+        imageView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor, multiplier: 0.5).isActive = true
+        imageView.image = imageViewContent
+       
     }
     
     private func setupScrollView() {
@@ -90,13 +129,13 @@ class CustomFormView: UIView {
     private func setupButton(with buttonsBarContent: EKProperty.ButtonBarContent) {
         var buttonsBarContent = buttonsBarContent
        
-        var extractcontent = buttonsBarContent.content[0]
+        var extractcontent = buttonsBarContent.content[1]
         let action = extractcontent.action
         extractcontent.action = { [weak self] in
             self?.extractTextFieldsContent()
             action?()
         }
-        buttonsBarContent.content[0] = extractcontent
+        buttonsBarContent.content[1] = extractcontent
         
             buttonBarView = EKButtonBarView(with: buttonsBarContent)
         buttonBarView.clipsToBounds = true

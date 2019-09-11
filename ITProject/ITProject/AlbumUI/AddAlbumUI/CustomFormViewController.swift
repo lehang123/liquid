@@ -15,15 +15,23 @@ class CustomFormViewController: UIViewController {
 
     var contentv : UIView!
     private var albumCoverViewController : AlbumCoverViewController?
+    private var albumDataList : [String] = []
     
-    public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController){
+    private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
+    private let EMPTYNAME_DES = "Album name is empty"
+
+    public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String]){
         self.albumCoverViewController = albumCoverViewController
+        self.albumDataList = albumDataList
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        setView()
+    }
+    
+    private func setView(){
         var attributes = PopUpFromWindow.setupFormPresets()
         let contentview = showSignupForm(attributes: &attributes, style: .light)
         self.view.addSubview(contentview)
@@ -32,16 +40,15 @@ class CustomFormViewController: UIViewController {
         contentview.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         contentview.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         contentview.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.4).isActive = true
+        
         contentview.backgroundColor = .white
         contentview.layer.cornerRadius = 10
         contentview.layer.masksToBounds = true
-        
     }
 
-    private func showPopupMessage(attributes: EKAttributes) {
+    private func showPopupMessage(attributes: EKAttributes, description: String) {
         let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
         let title = "Error!"
-        let description = "Album name already exist. Try give a unique name"
         PopUpAlter.showPopupMessage(attributes: attributes,
                                     title: title,
                                     titleColor: .white,
@@ -66,7 +73,7 @@ class CustomFormViewController: UIViewController {
             style: titleStyle
         )
         let textFields = AddAlbumUI.fields(
-            by: [.albumName,.albumDescription],
+            by: [.albumName, .albumDescription],
             style: style
         )
         
@@ -75,14 +82,19 @@ class CustomFormViewController: UIViewController {
             backgroundColor: style.buttonBackground,
             highlightedBackgroundColor: style.buttonBackground.with(alpha: 0.8),
             displayMode: .light) {
-                let albumN = textFields.first!.textContent
-                if (albumN == "") {
-                    let popattributes = PopUpAlter.setupPopupPresets()
-                    self.showPopupMessage(attributes: popattributes)
-                } else {
+                let albumName = textFields.first!.textContent
+                let albumDesc = textFields.last!.textContent
+                print("albumName", self.albumDataList)
+                let popattributes = PopUpAlter.setupPopupPresets()
+                if (albumName == "") {
+                    self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
+                } else if (self.albumDataList.contains(albumName) ){
+                    self.showPopupMessage(attributes: popattributes, description : self.REPEATNAME_DES)
+                    }
+                    else {
                     // create a album here
                     self.dismissWithAnimation(){
-                        self.albumCoverViewController?.addAlbum(title: albumN, description: "todo", UID: Util.GenerateUDID())
+                        self.albumCoverViewController?.addAlbum(title: albumName, description: albumDesc, UID: Util.GenerateUDID())
                     }
                 }
         }
@@ -107,7 +119,7 @@ class CustomFormViewController: UIViewController {
         }
         // Generate the content
         let buttonsBarContent = EKProperty.ButtonBarContent(
-            with: okButton, closeButton,
+            with: closeButton, okButton,
             separatorColor: Color.Gray.light,
             displayMode: .light,
             expandAnimatedly: true
