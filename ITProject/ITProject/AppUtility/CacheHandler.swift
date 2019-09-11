@@ -195,7 +195,8 @@ class CacheHandler {
                                                     document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION],
                                                     AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
                                                     
-                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION]
+                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION],
+                                                    AlbumDBController.DOCUMENTID : document.documentID
                                                     
                                     ]
                                     
