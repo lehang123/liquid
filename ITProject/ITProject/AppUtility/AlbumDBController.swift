@@ -39,6 +39,9 @@ class AlbumDBController {
     public static let MEDIA_DOCUMENT_FIELD_EXTENSION = "extension" // file extension field
     public static let MEDIA_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the media's created date
     public static let MEDIA_DOCUMENT_FIELD_ALBUM = "album_path" // reference back to album field
+    
+    //doc ID field:
+    public static let DOCUMENTID = "documentID" 
 
     
     init (){
@@ -62,7 +65,8 @@ class AlbumDBController {
     ///   - albumName: name of the album to be added.
     ///   - description: album's short description.
     ///   - completion: gives the album's DocumentReference.
-    public func addNewAlbum(albumName : String, description: String,
+    public func addNewAlbum(albumName : String, description: String,thumbnail : String,
+                            thumbnailExt : String,
                             completion: @escaping (DocumentReference?) -> () ) {
         //        let familyUID = CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject);
         //
@@ -87,6 +91,7 @@ class AlbumDBController {
                      update: album has photo thumbnail + date created is stored.
 
                      */
+                    
                     let albumDocumentReference:DocumentReference? = DBController.getInstance()
                         .addDocumentToCollection(
                             inputData: [
@@ -95,9 +100,9 @@ class AlbumDBController {
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description ,
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY : familyDocRef!,
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : userDocumentReference,
-                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL : "",
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL : thumbnail,
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : Timestamp(date: Date()),
-                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : ""],
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : thumbnailExt],
                             collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
 
 
