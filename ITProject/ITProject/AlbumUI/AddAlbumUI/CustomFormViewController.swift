@@ -84,7 +84,7 @@ class CustomFormViewController: UIViewController {
                 } else {
                     // create a album here
                     self.dismissWithAnimation(){
-                        self.albumCoverViewController?.addAlbum(title: albumN, description: "todo", UID: Util.GenerateUDID())
+                        self.albumCoverViewController?.loadAlbumToList(title: albumN, description: "todo", UID: Util.GenerateUDID())
                     }
                 }
         }

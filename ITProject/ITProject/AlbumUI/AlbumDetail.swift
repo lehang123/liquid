@@ -60,6 +60,17 @@ class AlbumDetail: Equatable
         return self.UID
     }
     
+    /* alubm created date */
+    private var createDate: Date!
+    
+    public func setCreateDate(date :Date){
+        self.createDate = date
+    }
+    
+    public func getCreateDate()->Date{
+        return self.createDate
+    }
+    
     /* photos that contained in the album */
     private var photos = [PhotoDetail]()
     

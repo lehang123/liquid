@@ -78,8 +78,24 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             if let albumDetailTVC = segue.destination as? AlbumCoverViewController {
                 // todo : pass cache here !!!!
                 print(" FamilyMainPageViewController prepare : pass success !");
-                print( CacheHandler.getInstance().getCache(forKey: CacheHandler.ALBUM_DATA));
-   
+                print( CacheHandler.getInstance().getAlbums());
+                
+                // todo : Add UID here , as it's random for now
+                CacheHandler.getInstance().getAlbums().forEach({
+                    (arg) in
+                    
+                    let (key, value) = arg
+                    
+                    var thumbnailImage:UIImage?
+                    Util.GetImageData(imageUID: ("test-small-size-image"), completion: {
+                        data in
+                        thumbnailImage = UIImage(data: data!)
+                        
+                        albumDetailTVC.loadAlbumToList(title: key, description: value[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: Util.GenerateUDID(),
+                            photos: value[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
+                                                coverImage: thumbnailImage)
+                    })
+                })
             }
         }
     }

@@ -189,7 +189,7 @@ class CacheHandler {
                                     albums[name] = [
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE],
                                                     AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID,
-                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA],
+                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS],
                                                     AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL],
                                                     AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
                                                     document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION],
