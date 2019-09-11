@@ -14,7 +14,7 @@ class CustomFormViewController: UIViewController {
 
 
     var contentv : UIView!
-    private var albumCoverViewController : AlbumCoverViewController?
+    private var albumCoverViewController : AlbumCoverViewController!
     private var albumDataList : [String] = []
     
     private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
@@ -94,11 +94,13 @@ class CustomFormViewController: UIViewController {
                     else {
                     // create a album here
                     self.dismissWithAnimation(){
-
-                        self.albumCoverViewController?.loadAlbumToList(title: albumName, description: albumDesc, UID: Util.GenerateUDID())
-                        // todo : add album to database as well
                         
-
+                        // todo : add the thumbnail is a dummy now, and, update cache
+                        AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: "test-small-size-image", thumbnailExt: Util.EXTENSION_JPEG, completion: {
+                            docRef in
+                            print("showSignupForm : are you here ?")
+                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID)
+                        })
                     }
                 }
         }
@@ -149,7 +151,7 @@ class CustomFormViewController: UIViewController {
             bool in
             self.dismiss(animated: true, completion: {
                 completion()
-                self.albumCoverViewController = nil
+//                self.albumCoverViewController = nil
             })
         })
     }

@@ -50,6 +50,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
                   photos: [PhotoDetail]? = nil,
                   coverImage: UIImage? = nil){
         // todo : this is just a dummy
+        print("loadAlbumToList : album is loaded")
         albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: coverImage)
         self.albumCollectionView.reloadData()
     }
