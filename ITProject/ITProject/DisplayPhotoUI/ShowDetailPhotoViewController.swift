@@ -19,20 +19,26 @@ class ShowDetailPhotoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //self.imageView = imageView
         imageView.image = selectedImage
         imageView.frame = self.view.bounds
         imageView.backgroundColor = .black
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
+        
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(self.pinGesture))
+        imageView.addGestureRecognizer(pinchGesture)
 
+    }
+    
+    @objc func pinGesture(sender:UIPinchGestureRecognizer) {
+        sender.view?.transform = (sender.view?.transform.scaledBy(x: sender.scale, y: sender.scale))!
+        sender.scale = 1.0
+        
     }
     
     
     @IBAction func TapToBack(_ sender: Any) {
-        
         self.dismiss(animated: true)
-        
     }
     
     
