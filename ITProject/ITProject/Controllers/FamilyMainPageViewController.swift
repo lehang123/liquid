@@ -84,16 +84,17 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 CacheHandler.getInstance().getAlbums().forEach({
                     (arg) in
                     
-                    let (key, value) = arg
+                    let (albumName, albumDetails) = arg
                     
                     var thumbnailImage:UIImage?
                     Util.GetImageData(imageUID: ("test-small-size-image"), completion: {
                         data in
                         thumbnailImage = UIImage(data: data!)
                         
-                        albumDetailTVC.loadAlbumToList(title: key, description: value[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: Util.GenerateUDID(),
-                            photos: value[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
-                                                coverImage: thumbnailImage)
+                        print("FamilyMainPageViewController prepare :: aaaa")
+                        albumDetailTVC.loadAlbumToList(title: albumName, description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: Util.GenerateUDID(),
+                            photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
+                                                coverImage: thumbnailImage,doesReload: false)
                     })
                 })
             }

@@ -48,11 +48,15 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
                   description newAlbumDescrp: String,
                   UID: String,
                   photos: [PhotoDetail]? = nil,
-                  coverImage: UIImage? = nil){
+                  coverImage: UIImage? = nil, doesReload: Bool = true){
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded")
         albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: coverImage)
-        self.albumCollectionView.reloadData()
+        
+        if (doesReload){
+             self.albumCollectionView.reloadData()
+        }
+
     }
     
     
