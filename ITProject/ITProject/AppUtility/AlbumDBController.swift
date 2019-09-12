@@ -22,7 +22,7 @@ class AlbumDBController {
     public static let ALBUM_DOCUMENT_FIELD_NAME = "name" // album's name
     public static let ALBUM_DOCUMENT_FIELD_DESCRIPTION = "description" // album's description
     
-    public static let ALBUM_DOCUMENT_FIELD_MEDIA = "media_file_paths" // the media files associated
+    public static let ALBUM_DOCUMENT_FIELD_MEDIAS = "media_file_paths" // the media files associated
     public static let ALBUM_DOCUMENT_FIELD_FAMILY = "family_path" // the families associated in album
     public static let ALBUM_DOCUMENT_FIELD_OWNER = "owner_path" // the owner associated in album
     public static let ALBUM_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the album's created date
@@ -39,6 +39,9 @@ class AlbumDBController {
     public static let MEDIA_DOCUMENT_FIELD_EXTENSION = "extension" // file extension field
     public static let MEDIA_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the media's created date
     public static let MEDIA_DOCUMENT_FIELD_ALBUM = "album_path" // reference back to album field
+    
+    //doc ID field:
+    public static let DOCUMENTID = "documentID" 
 
     
     init (){
@@ -62,7 +65,8 @@ class AlbumDBController {
     ///   - albumName: name of the album to be added.
     ///   - description: album's short description.
     ///   - completion: gives the album's DocumentReference.
-    public func addNewAlbum(albumName : String, description: String,
+    public func addNewAlbum(albumName : String, description: String,thumbnail : String,
+                            thumbnailExt : String,
                             completion: @escaping (DocumentReference?) -> () ) {
         //        let familyUID = CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY as AnyObject);
         //
@@ -87,17 +91,18 @@ class AlbumDBController {
                      update: album has photo thumbnail + date created is stored.
 
                      */
+                    
                     let albumDocumentReference:DocumentReference? = DBController.getInstance()
                         .addDocumentToCollection(
                             inputData: [
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME : albumName,
-                                AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA : [],
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS : [],
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : description ,
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY : familyDocRef!,
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : userDocumentReference,
-                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL : "",
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL : thumbnail,
                                 AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : Timestamp(date: Date()),
-                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : ""],
+                                AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : thumbnailExt],
                             collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
 
 
@@ -201,7 +206,7 @@ class AlbumDBController {
             .updateArrayField(
                 collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
                 documentUID: albumUID,
-                fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA,
+                fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS,
                 appendValue:mediaPath );
     }
     
@@ -220,7 +225,7 @@ class AlbumDBController {
                 if let document = document, document.exists {
                     //get all media file paths:
                     let mediaFilePaths:[String] = document
-                        .get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA) as! [String]
+                        .get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS) as! [String]
                     print("MediaFilePaths at getPhotosFromAlbum::: \(mediaFilePaths)");
                     
                     completion(mediaFilePaths);
@@ -287,7 +292,7 @@ class AlbumDBController {
             .removeArrayField(
                 collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
                 documentUID: albumUID,
-                fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA,
+                fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS,
                 removeValue: mediaPath);
         
         //TODO: remove photo file from storage:
