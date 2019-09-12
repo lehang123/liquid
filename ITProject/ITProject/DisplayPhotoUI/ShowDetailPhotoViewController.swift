@@ -24,7 +24,7 @@ class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         
         self.scrollViewForImage.minimumZoomScale = 1.0
-        self.scrollViewForImage.maximumZoomScale = 3.0
+        self.scrollViewForImage.maximumZoomScale = 2.0
         self.scrollViewForImage.contentSize = imageView.bounds.size
         
 
