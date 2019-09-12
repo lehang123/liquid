@@ -44,13 +44,14 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         }, completion: nil)
     }
     
-    func addAlbum(title newAlbumTitle: String,
+    func loadAlbumToList(title newAlbumTitle: String,
                   description newAlbumDescrp: String,
                   UID: String,
                   photos: [PhotoDetail]? = nil,
                   coverImage: UIImage? = nil){
         // todo : this is just a dummy
-        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: nil)
+        print("loadAlbumToList : album is loaded")
+        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: coverImage)
         self.albumCollectionView.reloadData()
     }
     
