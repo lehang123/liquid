@@ -1456,7 +1456,7 @@
                                 </connections>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="CbG-Gq-qoD"/>
                     </view>
                     <connections>
@@ -1466,7 +1466,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b3O-rx-eLN" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="dRZ-og-gzR">
                     <connections>
-                        <action selector="TapToBack:" destination="S3R-rC-FI0" id="SIT-fj-Fde"/>
+                        <action selector="tapBack:" destination="S3R-rC-FI0" id="cT5-Sd-VnB"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
