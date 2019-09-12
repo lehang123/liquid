@@ -15,7 +15,7 @@ import UIKit
 
 /// <#Description#>
 ///Handles caching data.
-class CacheHandler {
+class CacheHandler : NSObject {
     
     private var dataCache :NSCache<AnyObject, AnyObject>;
     private static var cachedCounter : Int = 0;  // keeps track of cachedData load. useful to check for limit later on.
@@ -27,11 +27,11 @@ class CacheHandler {
 
 
     private static var single:CacheHandler!;
-    init (){
-
+    override init (){
         dataCache = NSCache<AnyObject, AnyObject>()
+        super.init()
+        dataCache.delegate = self
         CacheHandler.addObjects();
-
     }
     
     /// <#Description#>
@@ -56,9 +56,7 @@ class CacheHandler {
     /// <#Description#>
     /// increments cache storage counter.
     private static func addCacheCounter(){
-        
         cachedCounter+=1;
-
     }
     
     /// <#Description#>
@@ -144,9 +142,9 @@ class CacheHandler {
     public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
         var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA ) as? Dictionary<String, Dictionary<String , AnyObject>>;
         if (tmp == nil){
-            self.startCache();
-            tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
-
+            self.startCache(){
+                tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
+            }
         }
         return tmp!;
     }
@@ -156,7 +154,7 @@ class CacheHandler {
        
         return tmp[documentName]!;
     }
-    public func startCache(){
+    public func startCache(completion: @escaping () -> () = {}){
         //set familyUID's cache:
         let user = Auth.auth().currentUser!.uid
         Util.ShowActivityIndicator(withStatus: "please wait...");
@@ -199,24 +197,16 @@ class CacheHandler {
                                                     AlbumDBController.DOCUMENTID : document.documentID
                                                     
                                     ]
-                                    
-                                    
-                                    
-                                    
-                                    
                                 }
                                 CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
-
-                                
-                                
                             }
                     }
-                    
-                    
-                    
                 }else{
                     print("ERROR LOADING main login:: ");
                 }
+                
+                // finished cache, maybe you can do something you want
+                completion()
                 Util.DismissActivityIndicator();
                 
         }
@@ -241,6 +231,16 @@ class CacheHandler {
 //        };
 //
 //    }
+    
+}
+
+extension CacheHandler :  NSCacheDelegate{
+    
+    func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
+        // todo : reload cache here if the cache is evit
+        print("CacheHandler : this is about to be evict : ")
+        print(obj)
+    }
     
 }
     
