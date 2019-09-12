@@ -99,7 +99,7 @@ class CustomFormViewController: UIViewController {
                         AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: "test-small-size-image", thumbnailExt: Util.EXTENSION_JPEG, completion: {
                             docRef in
                             print("showSignupForm : are you here ?")
-                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID)
+                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: "test-small-size-image", coverImageExtension: Util.EXTENSION_JPEG)
                         })
                     }
                 }
