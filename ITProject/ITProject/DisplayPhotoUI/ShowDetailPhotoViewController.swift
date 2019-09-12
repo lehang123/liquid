@@ -20,15 +20,13 @@ class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var scrollViewForImage: UIScrollView!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.scrollViewForImage.minimumZoomScale = 1.0
         self.scrollViewForImage.maximumZoomScale = 3.0
-        self.scrollViewForImage.bouncesZoom = true
-
+        self.scrollViewForImage.contentSize = imageView.bounds.size
+        
 
         imageView.image = selectedImage
         imageView.frame = self.view.bounds
@@ -52,11 +50,10 @@ class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate {
     
     @IBAction func tapBack(_ sender: Any) {
         
+//        self.imageView.transform != CGAffineTransform.identity
         
         if self.imageView.transform != CGAffineTransform.identity {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.imageView.transform = CGAffineTransform.identity
-            })
+            self.scrollViewForImage.setZoomScale(1, animated: true)
         }else{
             self.dismiss(animated: true)
         }
