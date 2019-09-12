@@ -85,16 +85,48 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     (arg) in
                     
                     let (key, value) = arg
+                    //parse in the photos details:
+                    let t : NSArray = value[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as! NSArray;
+                    var g : DocumentReference?;
+                    var photos: [PhotoDetail] = [PhotoDetail]() ;
+                    print("values for photos ::: ", value[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]);
+                    t.forEach({ (item) in
+                        g = item as? DocumentReference;
+                        g?.getDocument(completion: { (doc, Error) in
+                            var currData: [String: Any] = (doc?.data())!;
+                            
+                            //TODO: fill in comments (don't put as nil),
+                            photos.append(PhotoDetail(title: doc?.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: doc?.documentID, likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as? Int, comments: nil ))
+                            
+                            print("prepare::: photos");
+
+                            
+                            
+                        })
+                        
+                    })
+                    
+                    
                     
                     var thumbnailImage:UIImage?
+                    
+                    // before assigining, download thumbnail first :
                     Util.GetImageData(imageUID: ("test-small-size-image"), completion: {
+                        
                         data in
                         thumbnailImage = UIImage(data: data!)
                         
+                        
+                        //pass in all photos in photos array:
+                        
                         albumDetailTVC.loadAlbumToList(title: key, description: value[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: Util.GenerateUDID(),
-                            photos: value[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
-                                                coverImage: thumbnailImage)
+                                                       photos: photos,
+                                                       coverImage: thumbnailImage)
+                        
+                        
+                        
                     })
+                    
                 })
             }
         }
