@@ -34,20 +34,15 @@ class AlbumsList {
         return currentAlbums
     }
     
-    public func addNewAlbum(title newAlbumTitle: String,
-                            description newAlbumDescrp: String,
-                            UID: String,
-                            photos: [PhotoDetail]?,
-                            coverImage: UIImage? = nil){
-//            if !currentAlbums.contains(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList)){
-//                currentAlbums.append(AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, images : newImagesList))
-//            }
+    public func addNewAlbum(title: String, description: String, UID : String, photos : [PhotoDetail]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?){
         
-        let album = AlbumDetail(title: newAlbumTitle,
-                                description: newAlbumDescrp,
-                                UID:UID,
-                                photos: photos ?? nil,
-                                coverImage: coverImage)
+        let album = AlbumDetail(title: title,
+                               description: description,
+                               UID:UID,
+                               photos: photos ?? nil,
+                               coverImageUID: imageUID,
+                               coverImageExtension: imageExtension
+                               )
         
         if !currentAlbums.contains(album){
             currentAlbums.append(album)

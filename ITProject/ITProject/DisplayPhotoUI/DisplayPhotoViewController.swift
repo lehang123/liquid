@@ -229,7 +229,7 @@ class DisplayPhotoViewController: UITableViewController{
     /* the header that shows to image */
     private func setUpTableViewHeader(){
         /*test on read file for local file*/
-        Util.GetImageData(imageUID: photoUID, completion: {
+        Util.GetImageData(imageUID: photoUID, UIDExtension: Util.EXTENSION_JPEG, completion: {
                 data in
             self.displayPhotoImageView.image = UIImage(data: data!)
         })
