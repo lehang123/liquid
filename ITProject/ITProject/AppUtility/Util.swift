@@ -122,11 +122,12 @@ class Util {
     }
     
     public static func GetImageData(imageUID: String,
+                                    UIDExtension: String,
                                     completion: @escaping (Data?) -> () = { _ in },
                                     errorHandler: @escaping (Error?) -> () = { _ in }){
         
         
-        if GetDataFromLocalFile(filename: imageUID, fextension: Util.EXTENSION_JPEG, completion: completion){
+        if GetDataFromLocalFile(filename: imageUID, fextension: UIDExtension, completion: completion){
             print("GetImageData : getting image from local documentPath...")
         }else{
             print("GetImageData : Local folder doesn't have file, searching from sever..")

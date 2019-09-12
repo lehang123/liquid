@@ -86,16 +86,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     
                     let (albumName, albumDetails) = arg
                     
-                    var thumbnailImage:UIImage?
-                    Util.GetImageData(imageUID: ("test-small-size-image"), completion: {
-                        data in
-                        thumbnailImage = UIImage(data: data!)
-                        
-                        print("FamilyMainPageViewController prepare :: aaaa")
-                        albumDetailTVC.loadAlbumToList(title: albumName, description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: Util.GenerateUDID(),
-                            photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
-                                                coverImage: thumbnailImage,doesReload: false)
-                    })
+                    albumDetailTVC.loadAlbumToList(title: albumName,
+                                            description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
+                                                UID: Util.GenerateUDID(),
+                                                photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
+                                                coverImageUID: "test-small-size-image",
+                                                coverImageExtension: Util.EXTENSION_JPEG,
+                                                doesReload: false)
                 })
             }
         }
