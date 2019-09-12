@@ -52,7 +52,14 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded")
         albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: coverImage)
-        self.albumCollectionView.reloadData()
+        if (self.albumCollectionView == nil){
+            print("NIL DANGER albumCollectionView" );
+        }
+        else{
+            self.albumCollectionView.reloadData();
+            print("LOADED");
+        }
+        //print("AddAlbumPressed: "  + self.albumCollectionView);
     }
     
     
