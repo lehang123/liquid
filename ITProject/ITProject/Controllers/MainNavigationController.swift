@@ -45,7 +45,9 @@ class MainNavigationController :UINavigationController {
                 self.loadName()
 
                 print("ELSE I'm here : " + (user?.email)!)
-                CacheHandler.getInstance().startCache();
+                //start caching:
+                CacheHandler.getInstance().cacheUserAndFamily();
+
                 print("Listener get called ")
             }
         }
