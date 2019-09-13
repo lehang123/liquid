@@ -122,19 +122,23 @@ class Util {
         }
     }
     
-    public static func GetImageData(imageUID: String,
-                                    UIDExtension: String,
+    public static func GetImageData(imageUID: String?,
+                                    UIDExtension: String?,
                                     completion: @escaping (Data?) -> () = { _ in },
                                     errorHandler: @escaping (Error?) -> () = { _ in }){
         
         
-        if GetDataFromLocalFile(filename: imageUID, fextension: UIDExtension, completion: completion){
-            print("GetImageData : getting image from local documentPath...")
+        if let imageid = imageUID, let imageExt = UIDExtension{
+            if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion){
+                print("GetImageData : getting image from local documentPath...")
+            }else{
+                print("GetImageData : Local folder doesn't have file, searching from sever..")
+                GetImageFromServer(imageUID: imageid, completion: completion, errorHandler: errorHandler)
+            }
         }else{
-            print("GetImageData : Local folder doesn't have file, searching from sever..")
-            GetImageFromServer(imageUID: imageUID, completion: completion, errorHandler: errorHandler)
+            completion(nil)
+            print("GetImageData fails: empty Image URL")
         }
-        
     }
     
     /*short cut to get Image from server by UID
