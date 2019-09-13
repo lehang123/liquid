@@ -22,6 +22,8 @@ class CustomFormViewController: UIViewController {
     
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
+    private var albumThumbnailImage : UIImage? = nil
+    private var albumThumbnailString: String = "test-small-size-image"
 
     public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String]){
         self.albumCoverViewController = albumCoverViewController
@@ -37,6 +39,7 @@ class CustomFormViewController: UIViewController {
     private func setView(){
         var attributes = PopUpFromWindow.setupFormPresets()
         let contentview = showSignupForm(attributes: &attributes, style: .light)
+        
         self.view.addSubview(contentview)
         
         contentview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -115,10 +118,10 @@ class CustomFormViewController: UIViewController {
                     self.dismissWithAnimation(){
 
                         // todo : add the thumbnail is a dummy now, and, update cache
-                        AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: "test-small-size-image", thumbnailExt: Util.EXTENSION_JPEG, completion: {
+                        AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: self.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
                             docRef in
                             print("showSignupForm : are you here ?")
-                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: "test-small-size-image", coverImageExtension: Util.EXTENSION_JPEG)
+                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: self.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
                         })
                     }
                 }
@@ -160,7 +163,7 @@ class CustomFormViewController: UIViewController {
         )
         
         contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
-        
+        contentView.uploadButtonContent.setImage(albumThumbnailImage ?? UIImage(named: "upload"), for: .normal)
         
         attributes.lifecycleEvents.didAppear = {
             contentView.becomeFirstResponder(with: 0)
@@ -196,15 +199,33 @@ class CustomFormViewController: UIViewController {
 extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.editedImage] as? UIImage else {
-            print("there is no edited Image ")
-            return
+//        guard let image = info[.editedImage] as? UIImage else {
+//            print("there is no edited Image ")
+//            return
+//        }
+//
+//        print ("imagePickerController: Did picked pressed !!")
+//        picker.dismiss(animated: true, completion: nil)
+
+        // todo : push add/edit photo view
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.albumThumbnailImage =
+            editedImage.withRenderingMode(.alwaysOriginal)
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.albumThumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
         }
         
-        print ("imagePickerController: Did picked pressed !!")
-        picker.dismiss(animated: true, completion: nil)
-        
-        // todo : push add/edit photo view
+        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
+        let imageString = Util.GenerateUDID()!
+        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {_ in
+            self.albumThumbnailString = imageString
+        }, errorHandler: {e in
+                print("you get error from Thumbnail choose")
+            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+        })
+       
+        //print("Thumbnail check:", albumThumbnailImage)
+        dismiss(animated: true, completion: nil)
     }
     
     /* delegate function from the UIImagePickerControllerDelegate

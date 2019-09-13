@@ -53,7 +53,7 @@ class Util {
                                            errorHandler: @escaping (Error?) -> () = { _ in }) {
         UploadFileToServer(data: data,
                            metadata: metadata,
-                           fileFullName: fileName+fextension,
+                           fileFullName: fileName+"."+fextension,
                            completion: completion,
                            errorHandler: errorHandler)
     }

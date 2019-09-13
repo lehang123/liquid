@@ -147,7 +147,7 @@ class CustomFormView: UIView {
 
         uploadButtonContent.setTitleColor(.gray, for: .normal)
         uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
-        uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
+        //uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
         
         uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
         uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
