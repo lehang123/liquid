@@ -12,13 +12,26 @@ import Firebase
 
 class SideMenuTableViewController: UITableViewController {
     
-    struct userInfo {
-        var username: String
+    enum Gender : String{
+        case Male
+        case Female
     }
+    
+    struct UserInfo {
+        var username: String
+        var imageUID: String?
+        var imageExtension: String?
+        var phone: String?
+        var gender: Gender?
+        var familyRelation: String?
+    }
+    
+    var userInformation: UserInfo!
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        print("viewWillAppear: do you get called")
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
         // refresh cell blur effect in case it changed
         tableView.reloadData()
         
@@ -33,6 +46,12 @@ class SideMenuTableViewController: UITableViewController {
 //        tableView.backgroundView = imageView
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+         super.viewWillAppear(animated)
+         self.navigationController?.setNavigationBarHidden(false, animated: true)
+         print("viewWillDisappear: do you get called")
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath) as! UITableViewVibrantCell
         
@@ -45,12 +64,27 @@ class SideMenuTableViewController: UITableViewController {
             cellImg.layer.masksToBounds=true
             cellImg.contentMode = .scaleAspectFill
             cellImg.layer.masksToBounds=true
-            cellImg.image=#imageLiteral(resourceName: "tempProfileImage")
+            
+            if let imageUID = userInformation.imageUID,
+                let imageExtension = userInformation.imageExtension {
+                print("tableView : user has profile info with ID " + imageUID)
+                print("tableView : user has profile info with Extension " + imageExtension)
+                Util.GetImageData(imageUID: imageUID,
+                                  UIDExtension: imageExtension, completion: {
+                    data in
+                    cellImg.image = data != nil ? UIImage(data: data!): #imageLiteral(resourceName: "tempProfileImage")
+                })
+                
+            }else{
+                print("tableView : user has no profile info ")
+                cellImg.image = #imageLiteral(resourceName: "tempProfileImage")
+            }
+            
             cell.addSubview(cellImg)
             
             let cellLbl = UILabel(frame: CGRect(x: 110, y: cell.frame.height/2-15, width: 250, height: 30))
             cell.addSubview(cellLbl)
-            cellLbl.text = "HELLO PSYDUCK"
+            cellLbl.text = userInformation.username
             cellLbl.font = UIFont.systemFont(ofSize: 17)
             cellLbl.textColor = UIColor.black
         }

@@ -36,12 +36,9 @@ class LoginViewController: UIViewController {
                 self?.present(alertController, animated: true, completion: nil)
             } else {
                 Util.DismissActivityIndicator()
-                
-//                self?.getUserInfo(usrResult :user!)
+
                 self?.dismiss(animated: true, completion: nil)
                 
-//                self?.tFunction()
-//                self?.testFunction()
             }
         }
     }

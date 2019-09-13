@@ -45,7 +45,9 @@ class MainNavigationController :UINavigationController {
                 self.loadName()
 
                 print("ELSE I'm here : " + (user?.email)!)
-                CacheHandler.getInstance().startCache();
+                //start caching:
+                CacheHandler.getInstance().cacheUserAndFamily();
+
                 print("Listener get called ")
             }
         }
@@ -60,9 +62,9 @@ class MainNavigationController :UINavigationController {
 
     func loadName() {
         let user = Auth.auth().currentUser
+
         if let user = user {
             let uid = user.uid
-            
             DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: uid){
                 (document, error) in
                 if let document = document, document.exists {

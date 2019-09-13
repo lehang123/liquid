@@ -141,11 +141,11 @@ class CacheHandler : NSObject {
     }
     public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
         var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA ) as? Dictionary<String, Dictionary<String , AnyObject>>;
-        if (tmp == nil){
-            self.startCache(){
-                tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
-            }
-        }
+//        if (tmp == nil){
+//            self.startCache(){
+//                tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
+//            }
+//        }
         return tmp!;
     }
     
@@ -154,64 +154,183 @@ class CacheHandler : NSObject {
        
         return tmp[documentName]!;
     }
-    public func startCache(completion: @escaping () -> () = {}){
-        //set familyUID's cache:
+    //put user's info into cache.
+    public func cacheUserAndFamily(){
         let user = Auth.auth().currentUser!.uid
         Util.ShowActivityIndicator(withStatus: "please wait...");
-        
         DBController.getInstance()
             .getDocumentFromCollection(
                 collectionName: RegisterDBController.USER_COLLECTION_NAME,
-                documentUID:  user)
-            {  (userDocument, error) in
-                if let userDocument = userDocument, userDocument.exists {
-                    let familyDocRef:DocumentReference = userDocument.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
-                    familyDocRef.getDocument(completion: { (doc, err) in
-                        CacheHandler.getInstance().setCache(obj: doc?.data() as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
-                    })
-                    
-                    print("Caching in main login:: ");
-                    CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
-                    
-                    CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
-                    DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocRef)
-                        .getDocuments() { (querySnapshot, err) in
-                            if let err = err {
-                                print("STARTCACHE Error getting documents: \(err)")
-                            } else {
-                                var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
-                                
-                                for document in querySnapshot!.documents {
-                                    let name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
-                                    let owner:DocumentReference? = (document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
-                                    albums[name] = [
-                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
-                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
-                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
-                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
-                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
-                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
-                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
-                                                    
-                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
-                                                    AlbumDBController.DOCUMENTID : document.documentID
-                                                    
-                                    ]
-                                }
-                                CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
-                            }
+                documentUID:  user){
+                    (userDocument, error) in
+                    if let userDocument = userDocument, userDocument.exists {
+                        self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+                        self.cacheFamily();
+                        Util.DismissActivityIndicator();
+                    }else{
+                        print("ERROR LOADING cacheUserAndFam::: ", error);
                     }
-                }else{
-                    print("ERROR LOADING main login:: ");
                 }
-                
-                // finished cache, maybe you can do something you want
-                completion()
-                Util.DismissActivityIndicator();
-                
+        
+
+    }
+    public func cacheUser(){
+        let user = Auth.auth().currentUser!.uid
+        DBController.getInstance()
+            .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID:  user){
+                    (userDocument, error) in
+                    if let userDocument = userDocument, userDocument.exists {
+                        self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+                    }else{
+                        print("ERROR LOADING cacheUser::: ", error);
+                    }
         }
         
+        
     }
+    //get Family info and put it to cache:
+    public func cacheFamily(){
+        var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+        var familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+        familyDocumentReference.getDocument { (familyDocument, error) in
+            if let familyDocument = familyDocument, familyDocument.exists {
+                self.setCache(obj: familyDocument as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
+                self.setCache(obj: familyDocumentReference as AnyObject, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+
+            }else{
+                print("ERROR LOADING cacheFamily::: " , error);
+            }
+            
+        }
+        
+        
+    }
+    
+    //get all albums related to family and put it to cache:
+    public func cacheAlbums(){
+        //get user's familyDocumentReference:
+        var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+        var familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+        //once found, get all albums related to family:
+        DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocumentReference)
+            .getDocuments() { (querySnapshot, error) in
+                //error handle:
+                if let error = error {
+                    print("cacheAlbum Error getting documents: \(error)")
+                    
+                } else {
+                    
+                    var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+                    //loop thru each document, parse them into the required data format:
+                    for document in querySnapshot!.documents {
+                        let albumName :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                        let owner:DocumentReference? = (document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
+                        albums[albumName] = [
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+                                document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+                                
+                                document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
+                            AlbumDBController.DOCUMENTID : document.documentID
+                            
+                        ]
+                    }
+                    CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+                }
+        }
+    }
+//    public func startCache(completion: @escaping () -> () = {}){
+//        //set familyUID's cache:
+//        let user = Auth.auth().currentUser!.uid
+//
+//        DBController.getInstance()
+//            .getDocumentFromCollection(
+//                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+//                documentUID:  user)
+//            {  (userDocument, error) in
+//                if let userDocument = userDocument, userDocument.exists {
+//                    let familyDocRef:DocumentReference = userDocument.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference
+//                    familyDocRef.getDocument(completion: { (doc, err) in
+//                        CacheHandler.getInstance().setCache(obj: doc?.data() as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
+//                    })
+//
+//                    print("Caching in main login:: ");
+//                    CacheHandler.getInstance().setCache(obj: familyDocRef, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+//
+//                    CacheHandler.getInstance().setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+//                    DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocRef)
+//                        .getDocuments() { (querySnapshot, err) in
+//                            if let err = err {
+//                                print("STARTCACHE Error getting documents: \(err)")
+//                            } else {
+//                                var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+//
+//                                for document in querySnapshot!.documents {
+//                                    let name :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+//                                    let owner:DocumentReference? = (document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
+//                                    albums[name] = [
+//                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+//                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
+//                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+//                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
+//                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+//                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
+//                                                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+//
+//                                                        document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
+//                                                    AlbumDBController.DOCUMENTID : document.documentID
+//
+//                                    ]
+//                                }
+//                                CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+//                            }
+//                    }
+//                }else{
+//                    print("ERROR LOADING main login:: ");
+//                }
+//
+//                // finished cache, maybe you can do something you want
+//                completion()
+//                Util.DismissActivityIndicator();
+//
+//        }
+//
+//    }
+    // one album has many media files.
+    //so, load their data.
+//    public func getPhotos(albumDocRef : DocumentReference ) -> [PhotoDetail]{
+//
+//        var photos : [PhotoDetail] =  [PhotoDetail] ();
+//        //get all photos related to this albbum:
+//            DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: albumDocRef).getDocuments(completion: { (QuerySnapshot, error) in
+//
+//                if let error = error {
+//                    print("error at getPhotos::: " , error);
+//                }else{
+//                    //for each photo, parse details into PhotoDetail type:
+//                    //TODO: comments parse properly bro
+//                    for document in QuerySnapshot!.documents{
+//                        var data: [String : Any] =  document.data();
+//                        photos.append(PhotoDetail(title: document.documentID,
+//                                                  description: data[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as! String,
+//                                                  UID: document.documentID, likes: data[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as? Int,
+//                                                  comments: nil));
+//
+//
+//                    }
+//                }
+//
+//            })
+//
+//
+//
+//    }
     
     
     
