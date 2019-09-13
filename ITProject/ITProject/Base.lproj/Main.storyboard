@@ -1001,15 +1001,9 @@
                     <navigationItem key="navigationItem" id="Rkv-PJ-DIR"/>
                     <size key="freeformSize" width="320" height="700"/>
                     <connections>
-<<<<<<< HEAD
-                        <outlet property="gender" destination="feK-TA-bjA" id="pQP-sJ-cqP"/>
-                        <outlet property="name" destination="q3p-uK-JX8" id="cyD-yg-LMH"/>
-                        <outlet property="phoneNumber" destination="nAu-rN-acr" id="3md-8Y-lli"/>
-=======
                         <outlet property="genderField" destination="feK-TA-bjA" id="iKv-Hm-OU6"/>
                         <outlet property="name" destination="q3p-uK-JX8" id="cyD-yg-LMH"/>
                         <outlet property="phoneField" destination="nAu-rN-acr" id="vgE-3p-jPB"/>
->>>>>>> 51e5171319bc4712b9a3b6b498edd0d412c8c831
                         <outlet property="profilePicture" destination="WYE-xT-Ke1" id="oiT-gW-UK9"/>
                         <outlet property="relationship" destination="yRT-XW-5AG" id="baO-mQ-g4R"/>
                     </connections>

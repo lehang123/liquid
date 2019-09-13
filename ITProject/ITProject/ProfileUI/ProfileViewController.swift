@@ -20,15 +20,13 @@ class ProfileViewController: UIViewController {
     //@IBOutlet weak var name: UILabel!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var relationship: UITextField!
-<<<<<<< HEAD
+
     @IBOutlet weak var phoneNumber: UITextField!
     @IBOutlet weak var gender: UITextField!
-=======
     @IBOutlet weak var genderField: UITextField!
     @IBOutlet weak var phoneField: UITextField!
     
     var userInformation: SideMenuTableViewController.UserInfo!
->>>>>>> 51e5171319bc4712b9a3b6b498edd0d412c8c831
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,24 +60,21 @@ class ProfileViewController: UIViewController {
         self.genderField.text = userInformation.gender?.rawValue
     }
 
-<<<<<<< HEAD
+
     // To do change the username in database also in cache
     // To do change the username in database also in cache
     // To do change the username in database also in cache
     // To do change the username in database also in cache
     @objc func DoneButtonTapped() {
-=======
-    @objc private func DoneButtonTapped() {
->>>>>>> 51e5171319bc4712b9a3b6b498edd0d412c8c831
+
         
         print("Button Tapped")
         let user = Auth.auth().currentUser
         
         //get current name:
-//        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-//        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
+        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
         
-<<<<<<< HEAD
     
         if (name.text != userName ) {
             
@@ -92,22 +87,6 @@ class ProfileViewController: UIViewController {
             DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
             CacheHandler.getInstance().cacheUser();
         }
-=======
-        
-        //
-//        if (name.text != userName ) {
-//
-//            Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
-//
-//           // CacheHandler.getInstance().setCache(obj: name.text as AnyObject, forKey: "name" as AnyObject)
-//            //set new name:
-//
-//            //user?.uid
-//            DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-//            CacheHandler.getInstance().cacheUser();
-//
-//        }
->>>>>>> 51e5171319bc4712b9a3b6b498edd0d412c8c831
         
         
         // !!!!

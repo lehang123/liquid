@@ -184,11 +184,14 @@ class CacheHandler : NSObject {
                     (userDocument, error) in
                     if let userDocument = userDocument, userDocument.exists {
                         var data = userDocument.data()
-                        let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
-                        let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
+                        
+                        // TO DO !!!
+                        // MAKE SURE it is not nill
+                        //let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
+                        //let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
                         let familyDocRef : DocumentReference = data![RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
                         
-                        completion(position, SideMenuTableViewController.Gender(rawValue: gender), familyDocRef, error);
+//                        completion(position, SideMenuTableViewController.Gender(rawValue: gender!), familyDocRef, error);
 
                         Util.DismissActivityIndicator();
                     }else{
