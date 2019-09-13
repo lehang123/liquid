@@ -20,8 +20,8 @@ class ProfileViewController: UIViewController {
     //@IBOutlet weak var name: UILabel!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var relationship: UITextField!
-    
-
+    @IBOutlet weak var phoneNumber: UITextField!
+    @IBOutlet weak var gender: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +42,10 @@ class ProfileViewController: UIViewController {
         //self.tableView.delgate = self
     }
 
+    // To do change the username in database also in cache
+    // To do change the username in database also in cache
+    // To do change the username in database also in cache
+    // To do change the username in database also in cache
     @objc func DoneButtonTapped() {
         
         print("Button Tapped")
@@ -51,8 +55,7 @@ class ProfileViewController: UIViewController {
         var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
         var userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
         
-        
-        //
+    
         if (name.text != userName ) {
             
             Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
@@ -63,8 +66,16 @@ class ProfileViewController: UIViewController {
             //user?.uid
             DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
             CacheHandler.getInstance().cacheUser();
-
         }
+        
+        
+        // !!!!
+        // Here if these information not the same as before.
+        // Change the info in database and cache
+        // TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //if (phoneNumber.text != (The thing store in databse)) {}
+        
+        //if (gender.text != (The thing store in datasase)) {}
         
 
     }
