@@ -42,7 +42,4 @@ class ShowDetailPhotoViewController: UIViewController {
     }
     
     
-    
-    
-    
 }
