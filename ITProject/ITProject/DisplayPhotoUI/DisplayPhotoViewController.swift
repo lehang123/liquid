@@ -52,7 +52,7 @@ class DisplayPhotoViewController: UITableViewController{
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
         
-        //makeDummyCommentSource(num: 2)
+        makeDummyCommentSource(num: 20)
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
