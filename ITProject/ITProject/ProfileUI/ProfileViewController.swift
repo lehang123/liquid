@@ -20,8 +20,13 @@ class ProfileViewController: UIViewController {
     //@IBOutlet weak var name: UILabel!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var relationship: UITextField!
-    
 
+    @IBOutlet weak var phoneNumber: UITextField!
+    @IBOutlet weak var gender: UITextField!
+    @IBOutlet weak var genderField: UITextField!
+    @IBOutlet weak var phoneField: UITextField!
+    
+    var userInformation: SideMenuTableViewController.UserInfo!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,23 +41,41 @@ class ProfileViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = rightButtonItem
         
         // Do any additional setup after loading the view.
-        getName()
-        profilePicture.image=#imageLiteral(resourceName: "tempProfileImage")
         
-        //self.tableView.delgate = self
+        Util.GetImageData(imageUID: userInformation.imageUID, UIDExtension: userInformation.imageExtension, completion: {
+            data in
+            if let d = data{
+                print("get image success : loading data to image")
+                self.profilePicture.image = UIImage(data: d)
+            }else{
+                print("get image fails : loading data to image")
+                self.profilePicture.image=#imageLiteral(resourceName: "item4")
+            }
+        })
+
+        
+        self.name.text = userInformation.username
+        self.relationship.text = userInformation.familyRelation
+        self.phoneField.text = userInformation.phone
+        self.genderField.text = userInformation.gender?.rawValue
     }
 
+
+    // To do change the username in database also in cache
+    // To do change the username in database also in cache
+    // To do change the username in database also in cache
+    // To do change the username in database also in cache
     @objc func DoneButtonTapped() {
+
         
         print("Button Tapped")
         let user = Auth.auth().currentUser
         
         //get current name:
         var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        var userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
+        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
         
-        
-        //
+    
         if (name.text != userName ) {
             
             Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
@@ -63,8 +86,16 @@ class ProfileViewController: UIViewController {
             //user?.uid
             DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
             CacheHandler.getInstance().cacheUser();
-
         }
+        
+        
+        // !!!!
+        // Here if these information not the same as before.
+        // Change the info in database and cache
+        // TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        //if (phoneNumber.text != (The thing store in databse)) {}
+        
+        //if (gender.text != (The thing store in datasase)) {}
         
 
     }
@@ -72,14 +103,5 @@ class ProfileViewController: UIViewController {
     @IBAction private func close() {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    // Get the name of the user.
-    private func getName() {
-        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        var userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
-        self.name.text =  userName
-    }
-    
-
 }
 
