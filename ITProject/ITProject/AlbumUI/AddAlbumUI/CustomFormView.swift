@@ -24,6 +24,10 @@ class CustomFormView: UIView {
     private var textFieldViews: [CustomTextField] = []
     private var buttonBarView: EKButtonBarView!
     private var imageViewContent: UIImage?
+    private(set) var uploadButtonContent = UIButton()
+    private var withUploadFile = false
+    
+    private var imagePicker = UIImagePickerController()
     
     private let titleContent: EKProperty.LabelContent
     
@@ -31,13 +35,16 @@ class CustomFormView: UIView {
     
     public init(with title: EKProperty.LabelContent,
                 textFieldsContent: [CustomTextFieldContent],
-                buttonContent: EKProperty.ButtonBarContent) {
+                buttonContent: EKProperty.ButtonBarContent,
+                withUploadFile: Bool? = false) {
         self.titleContent = title
         self.textFieldsContent = textFieldsContent
+        self.withUploadFile = withUploadFile!
         super.init(frame: UIScreen.main.bounds)
         setupScrollView()
         setupTitleLabel()
         setupTextFields(with: textFieldsContent)
+        setupUploadView()
         setupButton(with: buttonContent)
         setupTapGestureRecognizer()
         scrollView.layoutIfNeeded()
@@ -49,14 +56,15 @@ class CustomFormView: UIView {
     public init(with title: EKProperty.LabelContent,
                 textFieldsContent: [CustomTextFieldContent],
                 buttonContent: EKProperty.ButtonBarContent,
-                imageViewContent: UIImage) {
+                imageViewContent: UIImage,
+                withUploadFile: Bool? = false) {
         self.titleContent = title
         self.textFieldsContent = textFieldsContent
         self.imageViewContent = imageViewContent
+        self.withUploadFile = withUploadFile!
         super.init(frame: UIScreen.main.bounds)
-        setupImageView()
         setupScrollView()
-//        //setupTitleLabel()
+        setupImageView()
         setupTextFields(with: textFieldsContent)
         setupButton(with: buttonContent)
         setupTapGestureRecognizer()
@@ -101,6 +109,13 @@ class CustomFormView: UIView {
         addGestureRecognizer(tapGestureRecognizer)
     }
     
+    private func setupScrollView() {
+        addSubview(scrollView)
+        scrollView.layoutToSuperview(axis: .horizontally, offset: 20)
+        scrollView.layoutToSuperview(axis: .vertically, offset: scrollViewVerticalOffset)
+        scrollView.layoutToSuperview(.width, .height, offset: -scrollViewVerticalOffset * 2)
+    }
+    
     private func setupImageView(){
         scrollView.addSubview(imageView)
         imageView.layoutToSuperview(.centerX, .centerY, .width)
@@ -108,14 +123,7 @@ class CustomFormView: UIView {
         imageView.layoutToSuperview(.top, offset: 10)
         imageView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor, multiplier: 0.5).isActive = true
         imageView.image = imageViewContent
-       
-    }
-    
-    private func setupScrollView() {
-        addSubview(scrollView)
-        scrollView.layoutToSuperview(axis: .horizontally, offset: 20)
-        scrollView.layoutToSuperview(axis: .vertically, offset: scrollViewVerticalOffset)
-        scrollView.layoutToSuperview(.width, .height, offset: -scrollViewVerticalOffset * 2)
+        
     }
     
     private func setupTitleLabel() {
@@ -124,6 +132,34 @@ class CustomFormView: UIView {
         titleLabel.layoutToSuperview(axis: .horizontally)
         titleLabel.forceContentWrap(.vertically)
         titleLabel.content = titleContent
+    }
+    
+    private func setupUploadView() {
+        scrollView.addSubview(uploadButtonContent)
+        uploadButtonContent.layoutToSuperview(.centerX)
+        uploadButtonContent.layout(.top, to: .bottom, of: textFieldViews.last!, offset: 20)
+        uploadButtonContent.layoutToSuperview(.width, offset: -40)
+        uploadButtonContent.heightAnchor.constraint(equalTo: self.uploadButtonContent.widthAnchor, multiplier: 0.2).isActive = true
+        uploadButtonContent.layer.cornerRadius = 5
+        
+        uploadButtonContent.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
+        uploadButtonContent.setTitle("Upload Thumbnail", for: .normal)
+
+        uploadButtonContent.setTitleColor(.gray, for: .normal)
+        uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
+        uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
+        
+        uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
+        uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
+        
+        // TODO: fix width and height (now hard code)
+        let bound = CGRect(x: 0,y: 0, width: 250, height: 50)
+        
+        uploadButtonContent.createDashedLine(bound: bound, color: .selfcOrg, strokeLength: 8, gapLength: 6, width: 2)
+        
+        
+        self.layoutIfNeeded()
+       
     }
     
     private func setupButton(with buttonsBarContent: EKProperty.ButtonBarContent) {
@@ -141,7 +177,13 @@ class CustomFormView: UIView {
         buttonBarView.clipsToBounds = true
         scrollView.addSubview(buttonBarView)
         buttonBarView.expand()
-        buttonBarView.layout(.top, to: .bottom, of: textFieldViews.last!, offset: 20)
+        
+        if(withUploadFile) {
+            buttonBarView.layout(.top, to: .bottom, of: uploadButtonContent, offset: 20)
+        } else {
+            buttonBarView.layout(.top, to: .bottom, of: textFieldViews.last!, offset: 20)
+        }
+        
         buttonBarView.layoutToSuperview(.centerX)
         buttonBarView.layoutToSuperview(.width, offset: -20)
         buttonBarView.layoutToSuperview(.bottom)
@@ -172,6 +214,7 @@ class CustomFormView: UIView {
     }
     
 }
+
 
 
 
