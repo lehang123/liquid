@@ -41,7 +41,10 @@ class AlbumDetailTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = addPhotos
 
 //        title = albumd.name
-        albumCoverImageView.image = albumDetail.getCoverImage()
+        Util.GetImageData(imageUID: albumDetail.coverImageUID, UIDExtension: albumDetail.coverImageExtension, completion: {
+            data in
+            self.albumCoverImageView.image = UIImage(data: data!)
+        })
 
         self.tableView.estimatedRowHeight = self.tableView.rowHeight
         self.tableView.rowHeight = UITableView.automaticDimension
@@ -219,7 +222,7 @@ extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINav
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return albumDetail.getPhotos().count
+            return albumDetail.photos.count
         }
 
         /* called when photos cell that display photos' thumbnail is visible on device's screen */
@@ -227,12 +230,12 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
-            let photo = albumDetail.getPhotos()[indexPath.item]
+            let photo = albumDetail.photos[indexPath.item]
 
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
             /* load image with the cell is visible */
-            Util.GetImageData(imageUID: photo.getUID(), completion: {
+            Util.GetImageData(imageUID: photo.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
                 data in
                 if data != nil{
                     cell.image = UIImage(data: data!)
@@ -244,7 +247,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
     
         /* called when collectionview on touched, go view photos */
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let photo = albumDetail.getPhotos()[indexPath.item]
+            let photo = albumDetail.photos[indexPath.item]
             viewPhoto(photoDetail: photo)
         }
     }
