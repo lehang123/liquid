@@ -37,11 +37,11 @@ class CustomFormViewController: UIViewController {
     }
     
     private func setView(){
-        var attributes = PopUpFromWindow.setupFormPresets()
-        let contentview = showSignupForm(attributes: &attributes, style: .light)
+        let contentview = showSignupForm(style: .light)
         
         self.view.addSubview(contentview)
         
+        // constraint
         contentview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         contentview.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         contentview.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
@@ -70,7 +70,7 @@ class CustomFormViewController: UIViewController {
 
 
     // Sign up form
-    private func showSignupForm(attributes: inout EKAttributes, style: FormStyle) -> CustomFormView {
+    private func showSignupForm(style: FormStyle) -> CustomFormView {
         let titleStyle = EKProperty.LabelStyle(
             font: MainFont.light.with(size: 14),
             color: style.textColor,
@@ -106,7 +106,7 @@ class CustomFormViewController: UIViewController {
                 
                 let albumName = textFields.first!.textContent
                 let albumDesc = textFields.last!.textContent
-                print("albumName", self.albumDataList)
+    
                 let popattributes = PopUpAlter.setupPopupPresets()
                 if (albumName == "") {
                     self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
@@ -164,10 +164,6 @@ class CustomFormViewController: UIViewController {
         
         contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
         contentView.uploadButtonContent.setImage(albumThumbnailImage ?? UIImage(named: "upload"), for: .normal)
-        
-        attributes.lifecycleEvents.didAppear = {
-            contentView.becomeFirstResponder(with: 0)
-        }
 
         return contentView
     }
