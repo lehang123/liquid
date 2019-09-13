@@ -52,7 +52,7 @@ class DisplayPhotoViewController: UITableViewController{
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
         
-        // makeDummyCommentSource(num: 20)
+        //makeDummyCommentSource(num: 2)
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
@@ -61,7 +61,7 @@ class DisplayPhotoViewController: UITableViewController{
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        // initCommentCellsList()
+        initCommentCellsList()
         setUpTableViewHeader()
         
         // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
@@ -106,7 +106,7 @@ class DisplayPhotoViewController: UITableViewController{
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return the number of rows
         if hasHiddenCells{
-            return tableView_cell_length+1
+            return tableView_cell_length + 1
         }else{
             return tableView_cell_length
         }
@@ -243,9 +243,10 @@ class DisplayPhotoViewController: UITableViewController{
     
     private func initCommentCellsList(){
         // load at most 5 comments from caches
-        
-        for i in 1...min(DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH, commentsSource.count) {
-            addCommentCellToList( commentStruct: commentsSource[i-1])
+        if (commentsSource.count != 0) {
+            for i in 1...min(DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH, commentsSource.count) {
+                addCommentCellToList( commentStruct: commentsSource[i-1])
+            }
         }
     }
     

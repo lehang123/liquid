@@ -631,9 +631,6 @@
                                                 <constraint firstAttribute="bottom" secondItem="gdq-4D-uOG" secondAttribute="bottom" id="hGj-Cy-XKr"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="J1w-0v-fpW" kind="show" id="YPJ-2Q-W5U"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="TlW-5H-txo" customClass="UITableViewVibrantCell" customModule="SideMenu">
                                         <rect key="frame" x="0.0" y="135" width="320" height="60"/>
@@ -722,9 +719,6 @@
                                                 <constraint firstItem="gQ5-ow-cFM" firstAttribute="leading" secondItem="6zd-Gt-LjJ" secondAttribute="leading" constant="16" id="uLo-X3-TVl"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="J1w-0v-fpW" kind="push" id="TE9-dn-a6a"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="mIP-j3-TYY" customClass="UITableViewVibrantCell" customModule="SideMenu">
                                         <rect key="frame" x="0.0" y="255" width="320" height="60"/>
@@ -823,6 +817,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="ocv-gD-WUn"/>
+                    <connections>
+                        <segue destination="J1w-0v-fpW" kind="show" identifier="ShowProfileViewController" id="omL-cp-BQo"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kyz-ob-OnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1004,7 +1001,9 @@
                     <navigationItem key="navigationItem" id="Rkv-PJ-DIR"/>
                     <size key="freeformSize" width="320" height="700"/>
                     <connections>
+                        <outlet property="genderField" destination="feK-TA-bjA" id="iKv-Hm-OU6"/>
                         <outlet property="name" destination="q3p-uK-JX8" id="cyD-yg-LMH"/>
+                        <outlet property="phoneField" destination="nAu-rN-acr" id="vgE-3p-jPB"/>
                         <outlet property="profilePicture" destination="WYE-xT-Ke1" id="oiT-gW-UK9"/>
                         <outlet property="relationship" destination="yRT-XW-5AG" id="baO-mQ-g4R"/>
                     </connections>
@@ -1421,6 +1420,23 @@
                                     <outlet property="expandLogo" destination="FPg-Rw-rS7" id="oc5-CK-7kF"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WwT-aa-7fm">
+                                <rect key="frame" x="0.0" y="418" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WwT-aa-7fm" id="fKF-b5-pqB">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yfX-RU-Ucn">
+                                            <rect key="frame" x="48" y="11" width="97" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="a5j-9A-YmN" id="gZg-TS-FXQ"/>
@@ -1537,7 +1553,4 @@
         <image name="menuIcon" width="22" height="22"/>
         <image name="settingIcon" width="108" height="110"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="TE9-dn-a6a"/>
-    </inferredMetricsTieBreakers>
 </document>

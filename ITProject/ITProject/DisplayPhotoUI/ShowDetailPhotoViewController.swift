@@ -17,7 +17,7 @@ class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate {
     var maxScale:CGFloat = 3.5
     var minScale:CGFloat = 1.1
     @IBOutlet var imageView: UIImageView!
-
+    @IBOutlet weak var enterText: UITextField!
     @IBOutlet weak var scrollViewForImage: UIScrollView!
     
     override func viewDidLoad() {
