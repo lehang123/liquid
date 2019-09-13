@@ -23,11 +23,23 @@ struct ModelCollectionFlowLayout {
 class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
+    private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
     
+    @IBOutlet weak var familyMotto: UILabel!
     @IBOutlet weak var profileImg: EnhancedCircleImageView!
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
+    
+//    var userInfo: String!
+//    var userImageUID: String!
+//    var userImageExtension: String!
  
+    @IBAction func SideMenuButtonTouched(_ sender: Any) {
+        
+        //shows side menu bar
+        self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
+        
+    }
     
     var items = [ModelCollectionFlowLayout]()
     
@@ -53,7 +65,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         
         
         // carousel effect
-        collectData()
+        self.collectData()
         self.carouselCollectionView.showsHorizontalScrollIndicator = false
         carouselCollectionView.register(UINib.init(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
         
@@ -64,8 +76,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         flowLayout.sideItemAlpha = 1.0
         flowLayout.spacingMode = .fixed(spacing: 5.0)
         carouselCollectionView.collectionViewLayout = flowLayout
-
-      
     }
     
     // MARK: - Navigation
@@ -78,25 +88,134 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             if let albumDetailTVC = segue.destination as? AlbumCoverViewController {
                 // todo : pass cache here !!!!
                 print(" FamilyMainPageViewController prepare : pass success !");
-                print( CacheHandler.getInstance().getAlbums());
+                self.retrieveAlbums(albumDetailTVC: albumDetailTVC);
                 
-                // todo : Add UID here , as it's random for now
-                CacheHandler.getInstance().getAlbums().forEach({
-                    (arg) in
-                    
-                    let (albumName, albumDetails) = arg
-                    
-                    albumDetailTVC.loadAlbumToList(title: albumName,
-                                            description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
-                                                UID: Util.GenerateUDID(),
-                                                photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
-                                                coverImageUID: "test-small-size-image",
-                                                coverImageExtension: Util.EXTENSION_JPEG,
-                                                doesReload: false)
-                })
             }
         }
+    else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
+        if let sideMenuNC = segue.destination as? UISideMenuNavigationController {
+            if let sideMenuVC = sideMenuNC.visibleViewController as? SideMenuTableViewController{
+                print(" FamilyMainPageViewController prepare : UISideMenuNavigationController !")
+                let currentUser = Auth.auth().currentUser
+                let profileURL = currentUser?.photoURL
+                let profileExtension = profileURL?.pathExtension
+                let profileUID = profileURL?.deletingPathExtension().absoluteString
+                sideMenuVC.userInformation = SideMenuTableViewController.UserInfo(
+                username:       currentUser?.displayName ?? "placeHolder",
+                imageUID: profileUID,
+                imageExtension: profileExtension,
+                phone: currentUser?.phoneNumber,
+                /*get from db*/                    gender: SideMenuTableViewController.Gender.Male,
+                /*get from db*/                    familyRelation: "doesn't have one now")
+                }
+            
+            }
+            
+        }
+        
     }
+        
+//                print( CacheHandler.getInstance().getAlbums());
+//                CacheHandler.getInstance().cacheAlbums();
+//                var albumData :  Dictionary <String, Dictionary<String, Any>> = CacheHandler.getInstance().getCache(forKey: CacheHandler.ALBUM_DATA) as! Dictionary<String, Dictionary<String, Any>>;
+//
+//                albumData.forEach { arg in
+//                    var albumName :String;
+//                    var albumDetails :Dictionary<String, Any>;
+//
+//                    (albumName, albumDetails) = arg
+//                    //get thumbnail path:
+//                    var currentThumbnail : String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String;
+//                    var currentThumbnailExt : String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String;
+//                    //TODO: replace arg to imageUID with currentThumbnail & currentThumbnailExt
+//
+//                    //download thumbnail photo:
+//                    Util.GetImageData(imageUID: ("test-small-size-image"), completion: {
+//
+//                        data in
+//                        var thumbnailImage : UIImage? = UIImage(data: data!)
+//
+//
+//
+//
+//                        print("FamilyMainPageViewController prepare :: aaaa")
+//                        //
+//                        albumDetailTVC.loadAlbumToList(title: albumName, description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: Util.GenerateUDID(),
+//                                                       photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as! Array,
+//                                                       coverImage: thumbnailImage,doesReload: false)
+//                    })
+//                }
+               
+                
+                
+            
+    
+    public func retrieveAlbums(albumDetailTVC : AlbumCoverViewController){
+        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+        var familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+        //once found, get all albums related to family:
+        DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocumentReference)
+            .getDocuments() { (querySnapshot, error) in
+                //error handle:
+                if let error = error {
+                    print("cacheAlbum Error getting documents: \(error)")
+                    
+                } else {
+                    
+                    var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+                    //loop thru each document, parse them into the required data format:
+                    for document in querySnapshot!.documents {
+                        let albumDetails : [String:Any] = document.data();
+                        let albumName :String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                        let owner:DocumentReference? = (albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
+                        //this is for the setCache:
+                        albums[albumName] = [
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+                                albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
+                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+                                
+                                albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
+                            AlbumDBController.DOCUMENTID : document.documentID
+                            
+                        ]
+                        //this is for the album view:
+                        //get thumbnail photo:
+                        
+                        //get thumbnail path:
+                        var currentThumbnail : String? = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String;
+                        var currentThumbnailExt : String? = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String;
+                        //TODO: replace arg to imageUID with currentThumbnail & currentThumbnailExt
+                        
+                        //download thumbnail photo:
+                        
+                        
+                            
+                            
+                            
+                            
+                            print("FamilyMainPageViewController prepare :: aaaa")
+                        
+                            albumDetailTVC.loadAlbumToList(title: albumName,
+                                                           description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
+                                                           UID: document.documentID,
+                                                           photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
+                                                           coverImageUID: "test-small-size-image",
+                                                           coverImageExtension: Util.EXTENSION_JPEG,
+                                                           doesReload: true)
+                        
+                        
+                       
+                    }
+                    
+                    CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+                    
+                    
+                }}}
+
     
     func collectData(){
         items = [
@@ -105,6 +224,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             ModelCollectionFlowLayout(title: "imageIcon", image: UIImage(named: "imageIcon")),
         ]
     }
+
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -196,4 +316,5 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 //        print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
 //    }
 //}
+
 

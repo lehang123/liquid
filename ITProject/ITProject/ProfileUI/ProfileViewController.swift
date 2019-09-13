@@ -47,14 +47,23 @@ class ProfileViewController: UIViewController {
         print("Button Tapped")
         let user = Auth.auth().currentUser
         
-        if (name.text != (CacheHandler.getInstance().getCache(forKey: "name") as! String) ) {
+        //get current name:
+        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+        var userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
+        
+        
+        //
+        if (name.text != userName ) {
             
             Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
             
-            CacheHandler.getInstance().setCache(obj: name.text as AnyObject, forKey: "name" as AnyObject)
+           // CacheHandler.getInstance().setCache(obj: name.text as AnyObject, forKey: "name" as AnyObject)
+            //set new name:
             
             //user?.uid
-            DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: "name", documentUID: user!.uid, collectionName: "users")
+            DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+            CacheHandler.getInstance().cacheUser();
+
         }
         
 
@@ -66,8 +75,9 @@ class ProfileViewController: UIViewController {
     
     // Get the name of the user.
     private func getName() {
-        
-        self.name.text = (CacheHandler.getInstance().getCache(forKey: "name") as! String)
+        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+        var userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
+        self.name.text =  userName
     }
     
 

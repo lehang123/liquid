@@ -54,6 +54,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded")
+
         albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
         
         if (doesReload){

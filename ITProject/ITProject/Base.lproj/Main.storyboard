@@ -386,21 +386,22 @@
                     <navigationItem key="navigationItem" id="jaq-WP-f8y">
                         <barButtonItem key="leftBarButtonItem" image="menuIcon" style="plain" id="NqA-YW-SD4">
                             <connections>
-                                <action selector="sideMenuClic:" destination="UyN-Uc-xy8" id="Moo-ZD-iUi"/>
-                                <segue destination="f61-Ch-3WS" kind="presentation" identifier="SideMenuClick" id="phY-sI-UZP"/>
+                                <action selector="SideMenuButtonTouched:" destination="UyN-Uc-xy8" id="ZEq-tF-ccG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="carouselCollectionView" destination="Zdo-AO-OHu" id="oeq-U6-Czq"/>
+                        <outlet property="familyMotto" destination="uOD-pg-66C" id="xho-HD-KgN"/>
                         <outlet property="profileImg" destination="jkZ-yY-BT1" id="xtz-Ir-asi"/>
                         <outlet property="profileImgContainer" destination="HaD-tf-z39" id="lS8-6s-sKS"/>
                         <segue destination="52z-VG-Mfg" kind="show" identifier="ShowAlbumCovers" id="PUz-4k-VT8"/>
+                        <segue destination="f61-Ch-3WS" kind="presentation" identifier="ShowSideMenuBar" id="zfw-vu-fL0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lKB-f7-mqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1318.125" y="137.32394366197184"/>
+            <point key="canvasLocation" x="1633" y="134"/>
         </scene>
         <!--Main Navigation Controller-->
         <scene sceneID="uJm-cN-ewe">
@@ -1447,20 +1448,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-zN-tpe">
-                                <rect key="frame" x="40" y="88" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ccr-7R-qV3">
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-zN-tpe">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="dRZ-og-gzR" appends="YES" id="kgL-vq-Yq2"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="cEr-zN-tpe" firstAttribute="top" secondItem="ccr-7R-qV3" secondAttribute="top" id="020-aY-wA2"/>
+                                    <constraint firstItem="cEr-zN-tpe" firstAttribute="leading" secondItem="ccr-7R-qV3" secondAttribute="leading" id="6gt-r5-XGB"/>
+                                    <constraint firstItem="cEr-zN-tpe" firstAttribute="height" secondItem="ccr-7R-qV3" secondAttribute="height" id="O2T-9Q-JPe"/>
+                                    <constraint firstItem="cEr-zN-tpe" firstAttribute="width" secondItem="ccr-7R-qV3" secondAttribute="width" id="b2l-sW-TRq"/>
+                                    <constraint firstAttribute="trailing" secondItem="cEr-zN-tpe" secondAttribute="trailing" id="vWV-Zp-NUf"/>
+                                    <constraint firstAttribute="bottom" secondItem="cEr-zN-tpe" secondAttribute="bottom" id="yfi-jL-EMg"/>
+                                </constraints>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="dRZ-og-gzR" appends="YES" id="kgL-vq-Yq2"/>
+                                    <outlet property="delegate" destination="S3R-rC-FI0" id="vG8-kb-69O"/>
                                 </connections>
-                            </imageView>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="CbG-Gq-qoD" firstAttribute="bottom" secondItem="ccr-7R-qV3" secondAttribute="bottom" id="CKL-3U-FYr"/>
+                            <constraint firstItem="CbG-Gq-qoD" firstAttribute="trailing" secondItem="ccr-7R-qV3" secondAttribute="trailing" id="XAZ-6I-u5n"/>
+                            <constraint firstItem="ccr-7R-qV3" firstAttribute="leading" secondItem="CbG-Gq-qoD" secondAttribute="leading" id="ggT-hK-qv2"/>
+                            <constraint firstItem="ccr-7R-qV3" firstAttribute="top" secondItem="CbG-Gq-qoD" secondAttribute="top" id="tJY-ya-Xft"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="CbG-Gq-qoD"/>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="cEr-zN-tpe" id="43T-TE-yjJ"/>
+                        <outlet property="scrollViewForImage" destination="ccr-7R-qV3" id="QG0-Lt-KuL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b3O-rx-eLN" userLabel="First Responder" sceneMemberID="firstResponder"/>

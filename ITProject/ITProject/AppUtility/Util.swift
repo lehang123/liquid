@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseStorage
+import Firebase
 import SVProgressHUD
 import Zip
 
@@ -609,6 +610,16 @@ class Util {
             SVProgressHUD.dismiss()
             UIApplication.shared.endIgnoringInteractionEvents()
         }
+    }
+    
+    public static func ChangeUserDisplayName (user: User, username: String, completion: @escaping (Error?) -> () = {_ in}){
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.displayName = username
+        changeRequest.commitChanges(completion: {
+            error in
+            print("ChangeUserDisplayName :add name in auth error : " + error!.localizedDescription)
+            completion(error)
+        })
     }
     
     public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
