@@ -12,6 +12,8 @@ import Firebase
 
 class SideMenuTableViewController: UITableViewController {
     
+    private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
+    
     enum Gender : String{
         case Male
         case Female
@@ -119,8 +121,22 @@ class SideMenuTableViewController: UITableViewController {
             }))
             self.present(alertController, animated: true, completion: nil)
             
+        }else if(indexPath.row == 0 || indexPath.row == 2){
+            self.performSegue(withIdentifier: SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE, sender: self)
         }
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE {
+            if let profileVC = segue.destination as? ProfileViewController {
+                // todo : pass cache here !!!!
+                print(" SideMenuTableViewController prepare : pass success !");
+                profileVC.userInformation = self.userInformation
+//                profileVC.name.text = userInformation.username
+//                profileVC.relationship.text = userInformation.familyRelation
+//                profileVC.phoneField.text = userInformation.phone
+//                profileVC.genderField.text = userInformation.gender?.rawValue
+            }
+        }
+    }
 }

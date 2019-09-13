@@ -14,7 +14,7 @@ class MainNavigationController :UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        login()
+        // login()
     }
     
     func login(){
@@ -46,7 +46,7 @@ class MainNavigationController :UINavigationController {
 
                 print("ELSE I'm here : " + (user?.email)!)
                 //start caching:
-                CacheHandler.getInstance().cacheUserAndFamily();
+                CacheHandler.getInstance().cacheUserAndFamily()
 
                 print("Listener get called ")
             }
