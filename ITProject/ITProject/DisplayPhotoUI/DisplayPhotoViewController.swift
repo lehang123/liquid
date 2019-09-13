@@ -52,7 +52,7 @@ class DisplayPhotoViewController: UITableViewController{
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
         
-        //makeDummyCommentSource(num: 20)
+        // makeDummyCommentSource(num: 20)
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
@@ -61,7 +61,7 @@ class DisplayPhotoViewController: UITableViewController{
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        //initCommentCellsList()
+        // initCommentCellsList()
         setUpTableViewHeader()
         
         // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)

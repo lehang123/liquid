@@ -386,21 +386,22 @@
                     <navigationItem key="navigationItem" id="jaq-WP-f8y">
                         <barButtonItem key="leftBarButtonItem" image="menuIcon" style="plain" id="NqA-YW-SD4">
                             <connections>
-                                <action selector="sideMenuClic:" destination="UyN-Uc-xy8" id="Moo-ZD-iUi"/>
-                                <segue destination="f61-Ch-3WS" kind="presentation" identifier="SideMenuClick" id="phY-sI-UZP"/>
+                                <action selector="SideMenuButtonTouched:" destination="UyN-Uc-xy8" id="ZEq-tF-ccG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="carouselCollectionView" destination="Zdo-AO-OHu" id="oeq-U6-Czq"/>
+                        <outlet property="familyMotto" destination="uOD-pg-66C" id="xho-HD-KgN"/>
                         <outlet property="profileImg" destination="jkZ-yY-BT1" id="xtz-Ir-asi"/>
                         <outlet property="profileImgContainer" destination="HaD-tf-z39" id="lS8-6s-sKS"/>
                         <segue destination="52z-VG-Mfg" kind="show" identifier="ShowAlbumCovers" id="PUz-4k-VT8"/>
+                        <segue destination="f61-Ch-3WS" kind="presentation" identifier="ShowSideMenuBar" id="zfw-vu-fL0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lKB-f7-mqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1318.125" y="137.32394366197184"/>
+            <point key="canvasLocation" x="1633" y="134"/>
         </scene>
         <!--Main Navigation Controller-->
         <scene sceneID="uJm-cN-ewe">

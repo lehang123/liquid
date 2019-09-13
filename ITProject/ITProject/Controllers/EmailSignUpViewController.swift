@@ -75,14 +75,7 @@ class EmailSignUpViewController : UIViewController {
             else{
                 self.authenticate(email: email, pw: pw)
             }
-            
-            
         }
-        
-        
-
-
-        
     }
     
     // Check is there any empty field when sign in the info
@@ -157,9 +150,10 @@ class EmailSignUpViewController : UIViewController {
                     //create a family:
                     familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.newFamilyField.text!, userUID: authResult!.user.uid);
 
-                    //add a user: 
+                    //add a user: todo: can remove this from db(optional)
                     RegisterDBController.getInstance().AddUser(familyUID: familyUID.documentID, userUID: authResult!.user.uid, username: self.username.text!);
-
+                    // add username in auth, add in database can be remove
+                    Util.ChangeUserDisplayName(user: authResult!.user, username: self.username.text!)
                     
                 }else if(!self.joinFamilyIDField.text!.isEmpty) {
 

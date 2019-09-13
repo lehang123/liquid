@@ -23,11 +23,23 @@ struct ModelCollectionFlowLayout {
 class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
+    private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
     
+    @IBOutlet weak var familyMotto: UILabel!
     @IBOutlet weak var profileImg: EnhancedCircleImageView!
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
+    
+//    var userInfo: String!
+//    var userImageUID: String!
+//    var userImageExtension: String!
  
+    @IBAction func SideMenuButtonTouched(_ sender: Any) {
+        
+        //shows side menu bar
+        self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
+        
+    }
     
     var items = [ModelCollectionFlowLayout]()
     
@@ -64,8 +76,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         flowLayout.sideItemAlpha = 1.0
         flowLayout.spacingMode = .fixed(spacing: 5.0)
         carouselCollectionView.collectionViewLayout = flowLayout
-
-      
     }
     
     // MARK: - Navigation
@@ -78,7 +88,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             if let albumDetailTVC = segue.destination as? AlbumCoverViewController {
                 // todo : pass cache here !!!!
                 print(" FamilyMainPageViewController prepare : pass success !");
-                print( CacheHandler.getInstance().getAlbums());
+                print(CacheHandler.getInstance().getAlbums());
                 
                 // todo : Add UID here , as it's random for now
                 CacheHandler.getInstance().getAlbums().forEach({
@@ -94,6 +104,24 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                                                 coverImageExtension: Util.EXTENSION_JPEG,
                                                 doesReload: false)
                 })
+            }
+        }else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
+            if let sideMenuNC = segue.destination as? UISideMenuNavigationController {
+                if let sideMenuVC = sideMenuNC.visibleViewController as? SideMenuTableViewController{
+                    print(" FamilyMainPageViewController prepare : UISideMenuNavigationController !")
+                    let currentUser = Auth.auth().currentUser
+                    let profileURL = currentUser?.photoURL
+                    let profileExtension = profileURL?.pathExtension
+                    let profileUID = profileURL?.deletingPathExtension().absoluteString
+                    sideMenuVC.userInformation = SideMenuTableViewController.UserInfo(
+                        username:       currentUser?.displayName ?? "placeHolder",
+                                                                    imageUID: profileUID,
+                                                                    imageExtension: profileExtension,
+                                                                    phone: currentUser?.phoneNumber,
+                                 /*get from db*/                    gender: SideMenuTableViewController.Gender.Male,
+                                 /*get from db*/                    familyRelation: "doesn't have one now")
+                }
+                
             }
         }
     }
