@@ -22,7 +22,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     func updateUI()
     {
         descpTitle.text = "Description"
-        descpDetail.text = descrp.getDescription()
+        descpDetail.text = descrp.description
     }
 
 }

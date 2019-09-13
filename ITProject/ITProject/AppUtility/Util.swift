@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseStorage
+import Firebase
 import SVProgressHUD
 import Zip
 
@@ -122,11 +123,12 @@ class Util {
     }
     
     public static func GetImageData(imageUID: String,
+                                    UIDExtension: String,
                                     completion: @escaping (Data?) -> () = { _ in },
                                     errorHandler: @escaping (Error?) -> () = { _ in }){
         
         
-        if GetDataFromLocalFile(filename: imageUID, fextension: Util.EXTENSION_JPEG, completion: completion){
+        if GetDataFromLocalFile(filename: imageUID, fextension: UIDExtension, completion: completion){
             print("GetImageData : getting image from local documentPath...")
         }else{
             print("GetImageData : Local folder doesn't have file, searching from sever..")
@@ -608,6 +610,16 @@ class Util {
             SVProgressHUD.dismiss()
             UIApplication.shared.endIgnoringInteractionEvents()
         }
+    }
+    
+    public static func ChangeUserDisplayName (user: User, username: String, completion: @escaping (Error?) -> () = {_ in}){
+        let changeRequest = user.createProfileChangeRequest()
+        changeRequest.displayName = username
+        changeRequest.commitChanges(completion: {
+            error in
+            print("ChangeUserDisplayName :add name in auth error : " + error!.localizedDescription)
+            completion(error)
+        })
     }
     
     public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {

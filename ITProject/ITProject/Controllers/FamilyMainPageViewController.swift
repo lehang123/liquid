@@ -23,11 +23,23 @@ struct ModelCollectionFlowLayout {
 class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
+    private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
     
+    @IBOutlet weak var familyMotto: UILabel!
     @IBOutlet weak var profileImg: EnhancedCircleImageView!
     @IBOutlet weak var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
+    
+//    var userInfo: String!
+//    var userImageUID: String!
+//    var userImageExtension: String!
  
+    @IBAction func SideMenuButtonTouched(_ sender: Any) {
+        
+        //shows side menu bar
+        self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
+        
+    }
     
     var items = [ModelCollectionFlowLayout]()
     
@@ -64,8 +76,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         flowLayout.sideItemAlpha = 1.0
         flowLayout.spacingMode = .fixed(spacing: 5.0)
         carouselCollectionView.collectionViewLayout = flowLayout
-
-      
     }
     
     // MARK: - Navigation
@@ -81,7 +91,29 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 self.retrieveAlbums(albumDetailTVC: albumDetailTVC);
                 
             }
-        }}
+        }
+    else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
+        if let sideMenuNC = segue.destination as? UISideMenuNavigationController {
+            if let sideMenuVC = sideMenuNC.visibleViewController as? SideMenuTableViewController{
+                print(" FamilyMainPageViewController prepare : UISideMenuNavigationController !")
+                let currentUser = Auth.auth().currentUser
+                let profileURL = currentUser?.photoURL
+                let profileExtension = profileURL?.pathExtension
+                let profileUID = profileURL?.deletingPathExtension().absoluteString
+                sideMenuVC.userInformation = SideMenuTableViewController.UserInfo(
+                username:       currentUser?.displayName ?? "placeHolder",
+                imageUID: profileUID,
+                imageExtension: profileExtension,
+                phone: currentUser?.phoneNumber,
+                /*get from db*/                    gender: SideMenuTableViewController.Gender.Male,
+                /*get from db*/                    familyRelation: "doesn't have one now")
+                }
+            
+            }
+            
+        }
+        
+    }
         
 //                print( CacheHandler.getInstance().getAlbums());
 //                CacheHandler.getInstance().cacheAlbums();
@@ -160,19 +192,21 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                         
                         //download thumbnail photo:
                         
-                        Util.GetImageData(imageUID: ("test-small-size-image"), completion: {
-                            
-                            data in
-                            var thumbnailImage : UIImage? = UIImage(data: data!)
+                        
                             
                             
                             
                             
                             print("FamilyMainPageViewController prepare :: aaaa")
-                            albumDetailTVC.loadAlbumToList(title: albumName, description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String, UID: document.documentID,
-                                                           photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as! Array,
-                                                           coverImage: thumbnailImage,doesReload: true)
-                        })
+                        
+                            albumDetailTVC.loadAlbumToList(title: albumName,
+                                                           description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
+                                                           UID: document.documentID,
+                                                           photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
+                                                           coverImageUID: "test-small-size-image",
+                                                           coverImageExtension: Util.EXTENSION_JPEG,
+                                                           doesReload: true)
+                        
                         
                        
                     }
@@ -180,8 +214,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
                     
                     
-                }}
-        }
+                }}}
+
     
     func collectData(){
         items = [
@@ -190,6 +224,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             ModelCollectionFlowLayout(title: "imageIcon", image: UIImage(named: "imageIcon")),
         ]
     }
+
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1

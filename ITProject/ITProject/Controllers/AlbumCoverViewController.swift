@@ -22,7 +22,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     
     @IBAction func AddAlbumPressed(_ sender: Any) {
         print("AddAlbumPressed : ")
-        self.loadNameData()
+//        self.loadNameData()
         
         let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
 //        VC1.modalPresentationStyle = .overCurrentContext
@@ -48,11 +48,14 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
                   description newAlbumDescrp: String,
                   UID: String,
                   photos: [PhotoDetail]? = nil,
-                  coverImage: UIImage? = nil, doesReload: Bool = true){
+                  coverImageUID imageUID : String?,
+                  coverImageExtension imageExtension : String?,
+                  doesReload: Bool = true){
+        
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded")
-        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImage: coverImage)
 
+        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
         
         if (doesReload){
              self.albumCollectionView.reloadData()
@@ -75,11 +78,9 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
-        
-        //TEMPTESTING
 
-        loadNameData()
-        
+//        loadNameData()
+        self.albumCollectionView.reloadData()
     }
     
     
@@ -91,14 +92,14 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-    private func loadNameData() {
-        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY) as! DocumentReference) { (querys, err) in
-            
-            querys?.documents.forEach({ (querydoc) in
-                self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
-            })
-        }
-    }
+//    private func loadNameData() {
+//        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY) as! DocumentReference) { (querys, err) in
+//
+//            querys?.documents.forEach({ (querydoc) in
+//                self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
+//            })
+//        }
+//    }
     
     /* prepare next view,
      passing album details to the display album content view
