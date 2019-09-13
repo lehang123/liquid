@@ -32,7 +32,7 @@ class RegisterDBController {
     public static let FAMILY_DOCUMENT_FIELD_ALBUM_PATHS = "album_paths" // paths to album
     public static let FAMILY_DOCUMENT_FIELD_MOTTO = "motto" // family's motto
     public static let FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE = "profile_picture" // paths to family profile pict
-
+    public static let FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE_EXT = "profile_picture_ext" 
 
     private static var single: RegisterDBController!;
     

@@ -58,9 +58,10 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
         
         if (doesReload){
-             self.albumCollectionView.reloadData()
+            if let albumCollectionView = self.albumCollectionView{
+                albumCollectionView.reloadData()
+            }
         }
-
     }
     
     
@@ -78,7 +79,6 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.loadAlbumCollectionView()
-
 //        loadNameData()
         self.albumCollectionView.reloadData()
     }

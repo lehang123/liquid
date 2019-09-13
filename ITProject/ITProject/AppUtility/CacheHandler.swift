@@ -165,15 +165,132 @@ class CacheHandler : NSObject {
                     (userDocument, error) in
                     if let userDocument = userDocument, userDocument.exists {
                         self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
-                        self.cacheFamily();
+//                        self.cacheFamily();
                         Util.DismissActivityIndicator();
                     }else{
-                        print("ERROR LOADING cacheUserAndFam::: ", error);
+                        print("ERROR LOADING cacheUserAndFam::: ", error as Any);
                     }
                 }
-        
-
     }
+    
+    //simply get user's info.
+    public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: SideMenuTableViewController.Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> () = {_,_,_,_ in}){
+        let user = Auth.auth().currentUser!.uid
+        Util.ShowActivityIndicator(withStatus: "retrieving user information...");
+        DBController.getInstance()
+            .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID:  user){
+                    (userDocument, error) in
+                    if let userDocument = userDocument, userDocument.exists {
+                        var data = userDocument.data()
+                        let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
+                        let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
+                        let familyDocRef : DocumentReference = data![RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
+                        
+                        completion(position, SideMenuTableViewController.Gender(rawValue: gender), familyDocRef, error);
+
+                        Util.DismissActivityIndicator();
+                    }else{
+                        print("ERROR LOADING cacheUserAndFam::: ", error as Any);
+                    }
+        }
+    }
+    
+    public func getAlbumInfo (familyID: DocumentReference, completion: @escaping (_ albums: Dictionary <String, Dictionary<String, Any>>?, _ error: Error?)->() = {_,_ in} ){
+        
+            Util.ShowActivityIndicator(withStatus: "retrieving album information...")
+        DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyID).getDocuments(completion: { (querySnapshot, error) in
+            
+                Util.DismissActivityIndicator()
+                            //error handle:
+                            if let error = error {
+                                print("cacheAlbum Error getting documents: \(error)")
+                                
+                            } else {
+                                
+                                var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+                                //loop thru each document, parse them into the required data format:
+                                for document in querySnapshot!.documents {
+                                    let albumDetails : [String:Any] = document.data();
+                                    let albumName :String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                                    let owner:DocumentReference? = (albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
+                                    //this is for the setCache:
+                                    albums[albumName] = [
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+                                            albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+                                            
+                                            albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
+                                        AlbumDBController.DOCUMENTID : document.documentID
+                                        
+                                    ]
+                                    
+                }
+                                completion(albums, error);
+            }
+        })
+            }
+    
+    public func getFamilyInfo(completion: @escaping (_ UID: String?, _ Motto: String?, _ Name: String?, _ profileUID: String?, _ profileExtension: String?, _ error: Error?) -> () = {_,_,_,_,_,_ in}){
+        //get user Document Ref:
+        let user = Auth.auth().currentUser!.uid;
+        let userDocRef = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user);
+        
+        Util.ShowActivityIndicator(withStatus: "retrieving user's family information...");
+        //get users related family:
+        DBController.getInstance().getDB().collection(RegisterDBController.FAMILY_COLLECTION_NAME).whereField(RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS, arrayContains: userDocRef as Any).getDocuments { (familyQuerySnapshot, error) in
+            Util.DismissActivityIndicator()
+            if let error = error {
+                print("ERROR GET FAM \(error)");
+            }
+            else{
+                for doc in familyQuerySnapshot!.documents{
+                    let data = doc.data()
+                    let motto = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO] as? String
+                    let name = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME] as? String
+                    let profile = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE] as? String
+                    let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE_EXT] as? String
+                    
+                    completion(doc.documentID, motto, name, profile, profileExt,error);
+                }
+            }
+        }}
+    
+//        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user) { (userData, error) in
+//            if let userData = userData, userData.exists{
+//                var familyDocRef:DocumentReference = userData!.data()![RegisterDBController.USER_DOCUMENT_FIELD_FAMILY]
+//            }
+//
+//            familyDocRef.getDocument(completion: { (familyData, error) in
+//
+//            })
+//        }
+//        DBController.getInstance()
+//            .getDocumentFromCollection(
+//                collectionName: RegisterDBController.FAMILY_COLLECTION_NAME,
+//                documentUID:  user){
+//                    (familyDocument, error) in
+//                    if let userDocument = userDocument, userDocument.exists {
+//                        var data = userDocument.data()
+//                        let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
+//                        let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
+//
+//                        completion(position, SideMenuTableViewController.Gender(rawValue: gender), error);
+//
+//                        Util.DismissActivityIndicator();
+//                    }else{
+//                        print("ERROR LOADING cacheUserAndFam::: ", error as Any);
+//                    }
+//        }
+//    }
+    
+    
+    
     public func cacheUser(){
         let user = Auth.auth().currentUser!.uid
         DBController.getInstance()
@@ -184,7 +301,7 @@ class CacheHandler : NSObject {
                     if let userDocument = userDocument, userDocument.exists {
                         self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
                     }else{
-                        print("ERROR LOADING cacheUser::: ", error);
+                        print("ERROR LOADING cacheUser::: ", error!);
                     }
         }
         
@@ -193,14 +310,14 @@ class CacheHandler : NSObject {
     //get Family info and put it to cache:
     public func cacheFamily(){
         var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        var familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+        let familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
         familyDocumentReference.getDocument { (familyDocument, error) in
             if let familyDocument = familyDocument, familyDocument.exists {
                 self.setCache(obj: familyDocument as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
                 self.setCache(obj: familyDocumentReference as AnyObject, forKey: CacheHandler.FAMILY_KEY as AnyObject);
 
             }else{
-                print("ERROR LOADING cacheFamily::: " , error);
+                print("ERROR LOADING cacheFamily::: " , error!);
             }
             
         }
@@ -212,7 +329,7 @@ class CacheHandler : NSObject {
     public func cacheAlbums(){
         //get user's familyDocumentReference:
         var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        var familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+        let familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
         //once found, get all albums related to family:
         DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocumentReference)
             .getDocuments() { (querySnapshot, error) in
