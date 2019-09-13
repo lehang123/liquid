@@ -19,6 +19,9 @@ class CustomFormViewController: UIViewController {
     
     private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
     private let EMPTYNAME_DES = "Album name is empty"
+    
+    // imagePicker that to open photos library
+    private var imagePicker = UIImagePickerController()
 
     public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String]){
         self.albumCoverViewController = albumCoverViewController
@@ -39,12 +42,14 @@ class CustomFormViewController: UIViewController {
         contentview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         contentview.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         contentview.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
-        contentview.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.4).isActive = true
+        contentview.heightAnchor.constraint(equalTo: contentview.heightAnchor).isActive = true
         
         contentview.backgroundColor = .white
         contentview.layer.cornerRadius = 10
         contentview.layer.masksToBounds = true
+    
     }
+    
 
     private func showPopupMessage(attributes: EKAttributes, description: String) {
         let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
@@ -77,11 +82,25 @@ class CustomFormViewController: UIViewController {
             style: style
         )
         
+       
+        let buttonFont = MainFont.medium.with(size: 16)
+        
+        // ok button setting
+        let okButtonLabelStyle = EKProperty.LabelStyle(
+            font: buttonFont,
+            color: .white,
+            displayMode: .light
+        )
+        let okButtonLabel = EKProperty.LabelContent(
+            text: "Create",
+            style: okButtonLabelStyle
+        )
         let okButton = EKProperty.ButtonContent(
-            label: .init(text: "Create", style: style.buttonTitle),
-            backgroundColor: style.buttonBackground,
-            highlightedBackgroundColor: style.buttonBackground.with(alpha: 0.8),
+            label: okButtonLabel,
+            backgroundColor: UIColor.selfcOrg.ekColor,
+            highlightedBackgroundColor: Color.Gray.a800.with(alpha: 0.8),
             displayMode: .light) {
+                
                 let albumName = textFields.first!.textContent
                 let albumDesc = textFields.last!.textContent
                 print("albumName", self.albumDataList)
@@ -90,11 +109,11 @@ class CustomFormViewController: UIViewController {
                     self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
                 } else if (self.albumDataList.contains(albumName) ){
                     self.showPopupMessage(attributes: popattributes, description : self.REPEATNAME_DES)
-                    }
-                    else {
+                }
+                else {
                     // create a album here
                     self.dismissWithAnimation(){
-                        
+
                         // todo : add the thumbnail is a dummy now, and, update cache
                         AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: "test-small-size-image", thumbnailExt: Util.EXTENSION_JPEG, completion: {
                             docRef in
@@ -105,7 +124,8 @@ class CustomFormViewController: UIViewController {
                 }
         }
         
-        let buttonFont = MainFont.medium.with(size: 16)
+        
+        // close button setting
         let closeButtonLabelStyle = EKProperty.LabelStyle(
             font: buttonFont,
             color: .white,
@@ -123,25 +143,40 @@ class CustomFormViewController: UIViewController {
                 
                 self.dismissWithAnimation()
         }
+        
         // Generate the content
         let buttonsBarContent = EKProperty.ButtonBarContent(
             with: closeButton, okButton,
             separatorColor: Color.Gray.light,
             displayMode: .light,
-            expandAnimatedly: true
-        )
+            expandAnimatedly: true)
+        
         
         let contentView = CustomFormView(
             with: title,
             textFieldsContent: textFields,
-            buttonContent: buttonsBarContent
+            buttonContent: buttonsBarContent,
+            withUploadFile: true
         )
+        
+        contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
+        
         
         attributes.lifecycleEvents.didAppear = {
             contentView.becomeFirstResponder(with: 0)
         }
 
         return contentView
+    }
+    
+    @objc private func uploadAction() {
+        print("addPhotosTapped : Tapped")
+        // pop gallery here
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        
+        self.present(imagePicker, animated: true, completion:  nil)
     }
     
     private func dismissWithAnimation(completion: @escaping (() -> Void) = {}){
@@ -155,5 +190,31 @@ class CustomFormViewController: UIViewController {
             })
         })
     }
+    
+}
+
+extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.editedImage] as? UIImage else {
+            print("there is no edited Image ")
+            return
+        }
+        
+        print ("imagePickerController: Did picked pressed !!")
+        picker.dismiss(animated: true, completion: nil)
+        
+        // todo : push add/edit photo view
+    }
+    
+    /* delegate function from the UIImagePickerControllerDelegate
+     called when canceled button pressed, get out of photo library
+     */
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        print ("imagePickerController: Did canceled pressed !!")
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
     
 }
