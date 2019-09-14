@@ -52,7 +52,7 @@ class DisplayPhotoViewController: UITableViewController{
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
         
-        //makeDummyCommentSource(num: 2)
+        makeDummyCommentSource(num: 20)
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
@@ -93,7 +93,7 @@ class DisplayPhotoViewController: UITableViewController{
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
+        self.tableView.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
     }
 
     // MARK: - Table view data source
@@ -235,7 +235,7 @@ class DisplayPhotoViewController: UITableViewController{
         })
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
-        self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
         let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.scrollBackToTop))
         /* note: GestureRecognizer will be disable while tableview is scrolling */
         headerView.addGestureRecognizer(headerViewGesture)

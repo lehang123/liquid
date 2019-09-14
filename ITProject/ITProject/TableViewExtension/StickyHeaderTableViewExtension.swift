@@ -2,27 +2,27 @@
 //  StickyHeaderTableViewExtension.swift
 //  ITProject
 //
-//  Created by Gong Lehan on 22/8/19.
+//  Created by Gong Lehan on 14/9/19.
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-extension UITableViewController {
+extension UITableView {
     
     func UpdateView(headerView : UIView, updateHeaderlayout : CAShapeLayer, headerHeight : CGFloat, headerCut : CGFloat) {
-        tableView.backgroundColor = UIColor.white
-        tableView.tableHeaderView = nil
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.addSubview(headerView)
+        self.backgroundColor = UIColor.white
+        self.tableHeaderView = nil
+        self.rowHeight = UITableView.automaticDimension
+        self.addSubview(headerView)
         
         updateHeaderlayout.fillColor = UIColor.black.cgColor
         headerView.layer.mask = updateHeaderlayout
         
         let newheight = headerHeight - headerCut / 2
-        tableView.contentInset = UIEdgeInsets(top: newheight, left: 0, bottom: 0, right: 0)
-        tableView.contentOffset = CGPoint(x: 0, y: -newheight)
+        self.contentInset = UIEdgeInsets(top: newheight, left: 0, bottom: 0, right: 0)
+        self.contentOffset = CGPoint(x: 0, y: -newheight)
         
         self.Setupnewview(headerView: headerView,
                           updateHeaderlayout: updateHeaderlayout,
@@ -32,16 +32,16 @@ extension UITableViewController {
     
     func Setupnewview(headerView : UIView, updateHeaderlayout : CAShapeLayer, headerHeight : CGFloat, headerCut : CGFloat, headerStopAt : CGFloat=0){
         let newheight = headerHeight - headerCut / 2
-        var headerframe = CGRect(x: 0, y: -newheight, width: tableView.bounds.width, height: headerHeight)
-        if tableView.contentOffset.y < newheight
+        var headerframe = CGRect(x: 0, y: -newheight, width: self.bounds.width, height: headerHeight)
+        if self.contentOffset.y < newheight
         {
-            headerframe.origin.y = tableView.contentOffset.y
-            headerframe.size.height = -tableView.contentOffset.y + headerCut / 2
+            headerframe.origin.y = self.contentOffset.y
+            headerframe.size.height = -self.contentOffset.y + headerCut / 2
         }
         
-        if tableView.contentOffset.y > (-headerStopAt)
+        if self.contentOffset.y > (-headerStopAt)
         {
-            headerframe.origin.y = tableView.contentOffset.y
+            headerframe.origin.y = self.contentOffset.y
             headerframe.size.height = headerStopAt
         }
         
@@ -55,10 +55,10 @@ extension UITableViewController {
         updateHeaderlayout.path = cutdirection.cgPath
     }
     
-//    func Setupnewview(headerView : UIView, updateHeaderlayout : CAShapeLayer, headerHeight : CGFloat, headerCut : CGFloat) {
-//
-//
-//        Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: 0)
-//
-//    }
+    //    func Setupnewview(headerView : UIView, updateHeaderlayout : CAShapeLayer, headerHeight : CGFloat, headerCut : CGFloat) {
+    //
+    //
+    //        Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: 0)
+    //
+    //    }
 }
