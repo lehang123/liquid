@@ -9,7 +9,7 @@
 import UIKit
 
 // todo : make the scorll back to the top while click on the header
-class DisplayPhotoViewController: UITableViewController{
+class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
@@ -46,6 +46,9 @@ class DisplayPhotoViewController: UITableViewController{
     private var tableView_cell_length = 0
     
     @IBOutlet weak var displayPhotoImageView: UIImageView!
+ 
+    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         
@@ -53,6 +56,9 @@ class DisplayPhotoViewController: UITableViewController{
         super.viewDidLoad()
         
         makeDummyCommentSource(num: 20)
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
 
@@ -72,15 +78,12 @@ class DisplayPhotoViewController: UITableViewController{
             hasHiddenCells = true
         }
     }
-
-        @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
-    
-            let imageView = sender.view as! UIImageView
-            let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
-            controller.selectedImage = imageView.image
-            self.present(controller, animated: true)
-        
-        }
+    @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
+        controller.selectedImage = imageView.image
+        self.present(controller, animated: true)
+    }
 
     
     @objc func scrollBackToTop(sender : UITapGestureRecognizer) {
@@ -92,18 +95,18 @@ class DisplayPhotoViewController: UITableViewController{
         }
     }
     
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
+     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        tableView.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
     }
 
     // MARK: - Table view data source
     // todo: only one for now, afterward, there is a way to expand a comment
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return the number of rows
         if hasHiddenCells{
             return tableView_cell_length + 1
@@ -113,7 +116,7 @@ class DisplayPhotoViewController: UITableViewController{
     }
 
     /*the row only get call when it's visible on the screeen in order to save memory*/
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.row == 0 {// like, watched cell. always there
             let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
@@ -138,7 +141,7 @@ class DisplayPhotoViewController: UITableViewController{
      todo :
             1.change the selected animation effect to touched
      */
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
             let selectedCell =
@@ -204,7 +207,7 @@ class DisplayPhotoViewController: UITableViewController{
     
     
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
@@ -235,7 +238,7 @@ class DisplayPhotoViewController: UITableViewController{
         })
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
-        self.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
         let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.scrollBackToTop))
         /* note: GestureRecognizer will be disable while tableview is scrolling */
         headerView.addGestureRecognizer(headerViewGesture)
@@ -270,7 +273,7 @@ class DisplayPhotoViewController: UITableViewController{
 
     
     // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
