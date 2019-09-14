@@ -38,7 +38,7 @@ class MainNavigationController :UINavigationController {
          */
         Auth.auth().addStateDidChangeListener { (auth, user) in
             // when current user is sign out
-            
+
             if auth.currentUser == nil {
                 self.askForLogin()
             }else{
