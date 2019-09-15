@@ -172,7 +172,7 @@ class CacheHandler : NSObject {
 //    }
     
     //simply get user's info.
-    public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: SideMenuTableViewController.Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> () = {_,_,_,_ in}){
+    public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> () = {_,_,_,_ in}){
         let user = Auth.auth().currentUser!.uid
         Util.ShowActivityIndicator(withStatus: "retrieving user information...");
         DBController.getInstance()
@@ -181,15 +181,15 @@ class CacheHandler : NSObject {
                 documentUID:  user){
                     (userDocument, error) in
                     if let userDocument = userDocument, userDocument.exists {
-                        var data = userDocument.data()
+                        var data : [String:Any] = userDocument.data()!
                         
-                        // TO DO !!!
-                        // MAKE SURE it is not nill
-                        let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
-                        let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
-                        let familyDocRef : DocumentReference = data![RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
+                        let gender = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
+
+                        let position = data[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as? String
+                        let familyDocRef : DocumentReference = data[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
                         
-                        completion(position, SideMenuTableViewController.Gender(rawValue: gender), familyDocRef, error);
+                        completion(position, Gender(rawValue: gender ?? "Unknown" ), familyDocRef, error);
+
 
                         Util.DismissActivityIndicator();
                     }else{
@@ -236,7 +236,9 @@ class CacheHandler : NSObject {
             }
         })
             }
-    
+
+    ///gets the user's family info.
+    /// - Returns:  completion : the relevant family's details to be retrieved.
     public func getFamilyInfo(completion: @escaping (_ UID: String?, _ Motto: String?, _ Name: String?, _ profileUID: String?, _ profileExtension: String?, _ error: Error?) -> () = {_,_,_,_,_,_ in}){
         //get user Document Ref:
         let user = Auth.auth().currentUser!.uid;

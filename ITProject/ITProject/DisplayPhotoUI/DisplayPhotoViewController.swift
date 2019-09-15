@@ -129,6 +129,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
         
     }
+
     
     @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
         let imageView = sender.view as! UIImageView
