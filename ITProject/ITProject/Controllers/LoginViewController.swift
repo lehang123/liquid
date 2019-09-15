@@ -21,6 +21,39 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
+        self.view.addGestureRecognizer(tapGestureBackground)
+    }
+    
+    @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
+    {
+        self.ID.endEditing(true)
+        self.password.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+
+            if password.isEditing{
+                
+                if self.view.frame.origin.y == 0 {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        self.view.frame.origin.y -= keyboardSize.height
+                    })
+                }
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.25, animations: {
+                 self.view.frame.origin.y = 0
+            })
+        }
     }
 
     @IBAction func LoginButtonOnTouch(_ sender: Any) {

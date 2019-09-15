@@ -53,7 +53,9 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
                   doesReload: Bool = true){
         
         // todo : this is just a dummy
-        print("loadAlbumToList : album is loaded")
+        print("loadAlbumToList : album is loaded with title : " + newAlbumTitle +
+            " with description : " + newAlbumDescrp +
+            " with UID " + UID)
 
         albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
         
@@ -91,15 +93,6 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         layout.itemSize = CGSize(width: (albumCollectionView.frame.size.width), height: (albumCollectionView.bounds.size.height)/2.2)
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
-    
-//    private func loadNameData() {
-//        AlbumDBController.getInstance().getAlbums(familyDocumentReference: CacheHandler.getInstance().getCache(forKey: CacheHandler.FAMILY_KEY) as! DocumentReference) { (querys, err) in
-//
-//            querys?.documents.forEach({ (querydoc) in
-//                self.albumDataList.append(querydoc.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String)
-//            })
-//        }
-//    }
     
     /* prepare next view,
      passing album details to the display album content view
