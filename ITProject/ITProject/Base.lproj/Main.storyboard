@@ -1442,23 +1442,27 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXR-Rt-XZ7">
-                                        <rect key="frame" x="279" y="8" width="37" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
+                                        <rect key="frame" x="271" y="8" width="37" height="30"/>
                                         <state key="normal" title="Enter"/>
+                                        <connections>
+                                            <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="MNA-qF-Ptv" firstAttribute="leading" secondItem="LQI-L1-LBa" secondAttribute="leading" constant="57" id="5mo-TW-15Q"/>
                                     <constraint firstItem="MNA-qF-Ptv" firstAttribute="centerY" secondItem="LQI-L1-LBa" secondAttribute="centerY" id="6lH-N6-EuA"/>
-                                    <constraint firstItem="yXR-Rt-XZ7" firstAttribute="leading" secondItem="MNA-qF-Ptv" secondAttribute="trailing" constant="16" id="8DZ-s8-zfW"/>
+                                    <constraint firstItem="Ral-km-w5x" firstAttribute="centerY" secondItem="MNA-qF-Ptv" secondAttribute="centerY" id="ET5-XC-FWk"/>
                                     <constraint firstItem="MNA-qF-Ptv" firstAttribute="centerX" secondItem="LQI-L1-LBa" secondAttribute="centerX" id="Gz2-00-LHd"/>
-                                    <constraint firstAttribute="bottom" secondItem="yXR-Rt-XZ7" secondAttribute="bottom" constant="8" id="Pj7-Ro-ZdQ"/>
+                                    <constraint firstItem="Ral-km-w5x" firstAttribute="leading" secondItem="MNA-qF-Ptv" secondAttribute="trailing" constant="8" id="rDk-7r-KlM"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="MNA-qF-Ptv" firstAttribute="top" secondItem="21E-H0-baM" secondAttribute="bottom" constant="8" id="0ZW-mM-5jI"/>
                             <constraint firstItem="LQI-L1-LBa" firstAttribute="bottom" secondItem="o8I-T4-BAO" secondAttribute="bottom" id="Azj-4y-Ki4"/>
                             <constraint firstItem="21E-H0-baM" firstAttribute="centerX" secondItem="o8I-T4-BAO" secondAttribute="centerX" id="Q9j-VH-ykr"/>
                             <constraint firstItem="21E-H0-baM" firstAttribute="leading" secondItem="o8I-T4-BAO" secondAttribute="leading" id="Qvx-m6-5ts"/>
@@ -1472,6 +1476,7 @@
                         <viewLayoutGuide key="safeArea" id="o8I-T4-BAO"/>
                     </view>
                     <connections>
+                        <outlet property="cmmentText" destination="MNA-qF-Ptv" id="ZjC-1F-gHF"/>
                         <outlet property="displayPhotoImageView" destination="38E-Ff-saF" id="hsH-20-dle"/>
                         <outlet property="tableView" destination="21E-H0-baM" id="3eM-2R-iOI"/>
                     </connections>

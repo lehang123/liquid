@@ -22,7 +22,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private static let MAXIMUM_INIT_LIST_LENGTH = 10
     private static let MAXIMUM_EXPAND_LENGTH = 5
     
-    
     private struct CommentCellStruct{
         var comment = String()
         var username = String()
@@ -47,6 +46,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBOutlet weak var displayPhotoImageView: UIImageView!
  
+    @IBOutlet weak var cmmentText: UITextField!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -54,9 +54,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
-        
-        makeDummyCommentSource(num: 20)
-
+    
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -69,6 +67,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         initCommentCellsList()
         setUpTableViewHeader()
+
         
         // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
         
@@ -77,7 +76,60 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             print("there is more source")
             hasHiddenCells = true
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
+        self.view.addGestureRecognizer(tapGestureBackground)
+
+        
     }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            if cmmentText.isEditing {
+                
+                if self.view.frame.origin.y == 0 {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        self.view.frame.origin.y -= keyboardSize.height
+                    })
+                }
+            }
+        }
+    }
+    
+    @objc func backgroundTapped(_ sender: UITapGestureRecognizer) {
+        self.cmmentText.endEditing(true)
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.view.frame.origin.y = 0
+            })
+        }
+    }
+    
+    // Enter comment here
+    // TO DO: gillbert
+    // To do store the comments in side the function
+    // Once the username can get replace 2 as username
+    @IBAction func EnterComment(_ sender: Any) {
+        
+        //print (CacheHandler.getInstance().getUserInfo())
+        if (cmmentText.text!.count != 0) {
+            print ("success enter comment")
+            addCommentCellToList(username: "2", comment: String(cmmentText.text!))
+            self.tableView.reloadData()
+            cmmentText.text = ""
+            
+            // storeComment()
+        
+        }
+        
+    }
+    
     @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
         let imageView = sender.view as! UIImageView
         let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
@@ -109,10 +161,10 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return the number of rows
-        if hasHiddenCells{
-            return tableView_cell_length + 1
+        if hasHiddenCells {
+            return tableView_cell_length + 2
         }else{
-            return tableView_cell_length
+            return tableView_cell_length + 1
         }
     }
 
@@ -124,7 +176,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             return cell0
         }else {// create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
-            if !hasHiddenCells || tableView_cell_length != indexPath.row{
+            if !hasHiddenCells || tableView_cell_length != (indexPath.row - 1){
                 
                 print("cellForRowAt : " + String(hasHiddenCells) + " and " + String(indexPath.row))
                 
@@ -212,7 +264,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
-        }else if indexPath.row == tableView_cell_length && hasHiddenCells{
+        }else if indexPath.row == tableView_cell_length + 1 && hasHiddenCells{
             return DisplayPhotoViewController.EXPAND_ROW_HEIGHT
         }else {
             return UITableView.automaticDimension
@@ -248,6 +300,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     private func initCommentCellsList(){
+
         // load at most 5 comments from caches
         if (commentsSource.count != 0) {
             for i in 1...min(DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH, commentsSource.count) {
@@ -258,7 +311,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     private func addCommentCellToList(commentStruct: CommentCellStruct){
         commentCellsList.append(commentStruct)
-        tableView_cell_length = 1 + commentCellsList.count
+        // tableView_cell_length = 1 + commentCellsList.count
+        tableView_cell_length = commentCellsList.count
     }
     
     private func addCommentCellToList(username: String, comment: String){
@@ -266,7 +320,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         commentCell.comment = comment
         commentCell.username = username
         commentCellsList.append(commentCell)
-        tableView_cell_length = 1 + commentCellsList.count
+        // tableView_cell_length = 1 + commentCellsList.count
+        tableView_cell_length = commentCellsList.count
     }
     
     private func removeLastCommentCellsFromList(numOfCells : Int){
