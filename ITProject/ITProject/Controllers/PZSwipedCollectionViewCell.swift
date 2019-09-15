@@ -55,7 +55,7 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
         self.removeAlbumDelegate = rmd
     }
     
-    public func cacheAlbumDetail(albumDetail: AlbumDetail){
+    public func cacheAlbumDetailForDeletion(albumDetail: AlbumDetail){
         self.albumDetail = albumDetail
     }
     
