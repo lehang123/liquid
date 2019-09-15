@@ -9,7 +9,7 @@
 import UIKit
 
 // todo : make the scorll back to the top while click on the header
-class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
     
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
@@ -22,11 +22,16 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private static let MAXIMUM_INIT_LIST_LENGTH = 10
     private static let MAXIMUM_EXPAND_LENGTH = 5
     
+    private static let LIKE_WATACHED_CELL_LENGTH = 1
+    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
+    
     private struct CommentCellStruct{
         var comment = String()
         var username = String()
     }
+    /* source is the total number of comments */
     private var commentsSource = [CommentCellStruct]()
+    /* list is the total number of comments to display */
     private var commentCellsList = [CommentCellStruct]()
     private var hasHiddenCells = false
     
@@ -54,11 +59,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
+        
+        makeDummyCommentSource(num: 20)
     
-        tableView.delegate = self
-        tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        
+        self.cmmentText.delegate = self
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -79,10 +88,16 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
-        self.view.addGestureRecognizer(tapGestureBackground)
-
-        
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldEndEditing : aaa")
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn : aaa")
+        return true
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -99,10 +114,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    @objc func backgroundTapped(_ sender: UITapGestureRecognizer) {
-        self.cmmentText.endEditing(true)
-    }
-    
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.25, animations: {
@@ -117,6 +128,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     // Once the username can get replace 2 as username
     @IBAction func EnterComment(_ sender: Any) {
         
+        self.cmmentText.endEditing(true)
         
         //print (CacheHandler.getInstance().getUserInfo())
         CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
@@ -130,8 +142,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
                     self.tableView.reloadData()
                     self.cmmentText.text = ""
-                    
-                    
                 }
                 
             }
@@ -145,7 +155,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     }
    
     
-    @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+
         let imageView = sender.view as! UIImageView
         let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
         controller.selectedImage = imageView.image
@@ -159,9 +170,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         if sender.state == .ended {// when touches end, scroll to top
             let topIndex = IndexPath(row: 0, section: 0)
             self.tableView.scrollToRow(at: topIndex, at: .top , animated: true)
+            self.cmmentText.endEditing(true)
         }
     }
-    
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.tableView.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
@@ -177,9 +188,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return the number of rows
         if hasHiddenCells {
-            return tableView_cell_length + 2
+            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH + DisplayPhotoViewController.EXPAND_COLLPASE_CELL_LENGTH
         }else{
-            return tableView_cell_length + 1
+            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
         }
     }
 
@@ -310,8 +321,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
         
         let headerViewGesture = UITapGestureRecognizer(target: self, action:  #selector(self.scrollBackToTop))
+        let zoomInGesture = UITapGestureRecognizer(target: self, action:  #selector(self.imageTapped))
+            zoomInGesture.numberOfTapsRequired = 2
+
         /* note: GestureRecognizer will be disable while tableview is scrolling */
         headerView.addGestureRecognizer(headerViewGesture)
+        displayPhotoImageView.addGestureRecognizer(zoomInGesture)
     }
     
     private func initCommentCellsList(){
