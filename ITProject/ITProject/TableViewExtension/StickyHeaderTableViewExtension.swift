@@ -15,7 +15,10 @@ extension UITableView {
         self.backgroundColor = UIColor.white
         self.tableHeaderView = nil
         self.rowHeight = UITableView.automaticDimension
+        
+        self.frame = headerView.bounds
         self.addSubview(headerView)
+       
         
         updateHeaderlayout.fillColor = UIColor.black.cgColor
         headerView.layer.mask = updateHeaderlayout
