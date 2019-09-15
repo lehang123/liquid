@@ -117,20 +117,33 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     // Once the username can get replace 2 as username
     @IBAction func EnterComment(_ sender: Any) {
         
-        //print (CacheHandler.getInstance().getUserInfo())
-        if (cmmentText.text!.count != 0) {
-            print ("success enter comment")
-            addCommentCellToList(username: "2", comment: String(cmmentText.text!))
-            self.tableView.reloadData()
-            cmmentText.text = ""
-            
-            // Here to do
-            // storeComment()
         
+        //print (CacheHandler.getInstance().getUserInfo())
+        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
+            if let error = error {
+                print("Error in EnterComment: \(error)")
+            } else {
+                if (self.cmmentText.text!.count != 0) {
+                    print ("success enter comment")
+                    self.addCommentCellToList(username: username!, comment: String(self.cmmentText.text!))
+                    self.storeComment(username: username!, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
+
+                    self.tableView.reloadData()
+                    self.cmmentText.text = ""
+                    
+                    
+                }
+                
+            }
         }
         
     }
-
+    // ASSUME : YOU NOT GONNA NEED TO RETRIEVE THESE AGAIN RELATIVE TO CERTAIN USER:
+    public func storeComment(username : String,  comment: String, photoUID : String) {
+        
+        AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, photoUID: photoUID);
+    }
+   
     
     @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
         let imageView = sender.view as! UIImageView
