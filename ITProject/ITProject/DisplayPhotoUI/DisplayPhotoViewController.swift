@@ -124,6 +124,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             self.tableView.reloadData()
             cmmentText.text = ""
             
+            // Here to do
             // storeComment()
         
         }
