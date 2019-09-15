@@ -10,10 +10,8 @@ import Foundation
 import UIKit
 import FirebaseStorage
 
-class MainViewController: UIViewController {
+class FamilyProfileViewController: UIViewController {
     //Mark: Properties
-    
-    @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
