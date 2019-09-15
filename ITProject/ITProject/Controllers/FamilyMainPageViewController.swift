@@ -31,13 +31,12 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     @IBOutlet var carouselCollectionView: UICollectionView!
     
     private var familyUID: String!
-    private var familyName: String!
-    
-    private var familyProfileUID: String!
-    private var familyProfileExtension: String!
-    
+    private var familyName: String?
+    private var familyProfileUID: String?
+    private var familyProfileExtension: String?
+
     private var userFamilyPosition: String?
-    private var userGender: SideMenuTableViewController.Gender?
+    private var userGender: Gender?
     
 //    var userInfo: String!
 //    var userImageUID: String!
@@ -54,6 +53,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("view did loaded called")
         login()
         
         self.navigationController?.navigationBar.items?.forEach{
@@ -89,6 +89,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        // everytime main view appear, reload user and user's family data
+        if Auth.auth().currentUser != nil{
+               self.loadUserAndFamilyDataForServer()
+        }
+    }
+    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -114,13 +121,22 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     let profileExtension = profileURL?.pathExtension
                     let profileUID = profileURL?.deletingPathExtension().absoluteString
                 
-                    sideMenuVC.userInformation = SideMenuTableViewController.UserInfo(
+                    sideMenuVC.userInformation = UserInfo(
                     username: currentUser?.displayName ?? "placeHolder",
                     imageUID: profileUID ?? "test-small-size-image",
                     imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
                     phone: currentUser?.phoneNumber ?? "12345678",
-                    gender: self.userGender ?? SideMenuTableViewController.Gender.Male,
+                    gender: self.userGender ?? Gender.Male,
                     familyRelation: self.userFamilyPosition ?? "None")
+                
+                // pass user's family info to the current sideMenuVC
+                    sideMenuVC.userFamilyInformation = UserFamilyInfo(
+                        familyUID: self.familyUID,
+                        familyName: self.familyName,
+                        familyProfileUID: self.familyProfileUID,
+                        familyProfileExtension: self.familyProfileExtension,
+                        familyMottoText: self.familyMotto.text
+                    )
                 }
             }
         }
@@ -217,38 +233,44 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 //                self.loadName()
                 
                 print("ELSE I'm here : " + (user?.email)!)
-                //start pulling data from server : family info
-                CacheHandler.getInstance().getFamilyInfo(completion: {
-                    uid, motto, name, profileUId, profileExtension, error in
-                    
-                    if let err = error {
-                        print("get family info from server error " + err.localizedDescription)
-                    }else {
-                        print("get family info from server success : ")
-                        
-                        self.familyUID = uid
-                        self.familyMotto.text = motto
-                        self.familyName = name
-                        self.familyProfileUID = profileUId
-                        self.familyProfileExtension = profileExtension
-                    }
-                })
                 
-                //start pulling data from server : user info
-                CacheHandler.getInstance().getUserInfo(completion: {
-                    relation, gender, _, error in
-                    
-                    if let err = error{
-                        print("get User Info from server error " + err.localizedDescription)
-                    }else {
-                        print("get User info from server success : ")
-                        self.userFamilyPosition = relation
-                        self.userGender = gender
-                    }
-                })
+                self.loadUserAndFamilyDataForServer()
+            
             }
             print("Listener get called ")
         }
+    }
+    
+    private func loadUserAndFamilyDataForServer(){
+        //start pulling data from server : family info
+        CacheHandler.getInstance().getFamilyInfo(completion: {
+            uid, motto, name, profileUId, profileExtension, error in
+            
+            if let err = error {
+                print("get family info from server error " + err.localizedDescription)
+            }else {
+                print("get family info from server success : ")
+                
+                self.familyUID = uid
+                self.familyMotto.text = motto
+                self.familyName = name
+                self.familyProfileUID = profileUId
+                self.familyProfileExtension = profileExtension
+            }
+        })
+        
+        //start pulling data from server : user info
+        CacheHandler.getInstance().getUserInfo(completion: {
+            relation, gender, _, error in
+            
+            if let err = error{
+                print("get User Info from server error " + err.localizedDescription)
+            }else {
+                print("get User info from server success : ")
+                self.userFamilyPosition = relation
+                self.userGender = gender
+            }
+        })
     }
     
     private func askForLogin(){

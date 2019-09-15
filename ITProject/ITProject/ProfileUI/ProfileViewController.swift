@@ -10,13 +10,12 @@ import Firebase
 import UIKit
 import EnhancedCircleImageView
 
-class ProfileViewController: UIViewController, UITextFieldDelegate {
+class ProfileViewController: UIViewController {
     
     private static let CHANGED_INFO = "Succesfully"
     private static let CHANGED_MESSAGE = "The information has changed"
     
     private var keyboardSize:CGRect!
-    
 
     @IBOutlet weak var profilePicture: EnhancedCircleImageView!
     //@IBOutlet weak var name: UILabel!
@@ -26,7 +25,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var genderField: UITextField!
     @IBOutlet weak var phoneField: UITextField!
     
-    var userInformation: SideMenuTableViewController.UserInfo!
+    var userInformation: UserInfo!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +38,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
             action: #selector(DoneButtonTapped)
         )
         self.navigationItem.rightBarButtonItem = rightButtonItem
-        
+
         // Do any additional setup after loading the view.
-        
+
         Util.GetImageData(imageUID: userInformation.imageUID, UIDExtension: userInformation.imageExtension, completion: {
             data in
+        
             if let d = data{
                 print("get image success : loading data to image")
                 self.profilePicture.image = UIImage(data: d)
@@ -51,17 +51,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate {
                 print("get image fails : loading data to image")
                 self.profilePicture.image=#imageLiteral(resourceName: "item4")
             }
+            self.profilePicture.layer.shadowColor = UIColor.selfcGrey.cgColor
+            self.profilePicture.layer.shadowOpacity = 0.7
+            self.profilePicture.layer.shadowOffset = CGSize(width: 10, height: 10)
+            self.profilePicture.layer.shadowRadius = 1
+            self.profilePicture.clipsToBounds = false
         })
-        self.name.delegate = self
+        
         self.name.text = userInformation.username
-        
-        self.relationship.delegate = self
         self.relationship.text = userInformation.familyRelation
-        
-        self.phoneField.delegate = self
         self.phoneField.text = userInformation.phone
-        
-        self.genderField.delegate = self
         self.genderField.text = userInformation.gender?.rawValue
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)

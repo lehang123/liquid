@@ -10,25 +10,35 @@ import UIKit
 import SideMenu
 import Firebase
 
+struct UserInfo {
+    var username: String
+    var imageUID: String?
+    var imageExtension: String?
+    var phone: String?
+    var gender: Gender?
+    var familyRelation: String?
+}
+
+enum Gender : String{
+    case Male
+    case Female
+}
+
+struct UserFamilyInfo {
+    var familyUID: String!
+    var familyName: String?
+    var familyProfileUID: String?
+    var familyProfileExtension: String?
+    var familyMottoText: String?
+}
+
 class SideMenuTableViewController: UITableViewController {
     
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
-    
-    enum Gender : String{
-        case Male
-        case Female
-    }
-    
-    struct UserInfo {
-        var username: String
-        var imageUID: String?
-        var imageExtension: String?
-        var phone: String?
-        var gender: Gender?
-        var familyRelation: String?
-    }
+    private static let SHOW_FAMILY_PROFILE_VIEW_SEGUE = "ShowFamilyProfileViewController"
     
     var userInformation: UserInfo!
+    var userFamilyInformation: UserFamilyInfo!
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -123,15 +133,23 @@ class SideMenuTableViewController: UITableViewController {
             
         }else if(indexPath.row == 0 || indexPath.row == 2){
             self.performSegue(withIdentifier: SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE, sender: self)
+        }else if(indexPath.row == 1){
+            self.performSegue(withIdentifier: SideMenuTableViewController.SHOW_FAMILY_PROFILE_VIEW_SEGUE, sender: self)
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE {
             if let profileVC = segue.destination as? ProfileViewController {
-                // todo : pass cache here !!!!
+                
                 print(" SideMenuTableViewController prepare : pass success !");
                 profileVC.userInformation = self.userInformation
+            }
+        }else if segue.identifier == SideMenuTableViewController.SHOW_FAMILY_PROFILE_VIEW_SEGUE{
+            if let FamilyProfileVC = segue.destination as? FamilyProfileViewController {
+                
+                print(" SideMenuTableViewController prepare : pass success !");
+                FamilyProfileVC.userFamilyInfo = self.userFamilyInformation
             }
         }
     }
