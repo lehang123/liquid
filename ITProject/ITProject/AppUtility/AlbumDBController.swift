@@ -240,11 +240,7 @@ class AlbumDBController {
                 
         }
     }
-    
-    
-    
-    
-    
+
     /// <#Description#>
     ///gets all album listeners for certain user's family.
     /// useful for getting notified for updates / deletions / additions to albums.
@@ -308,11 +304,6 @@ class AlbumDBController {
             .deleteWholeDocumentfromCollection(
                 documentUID: mediaPath,
                 collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
-        
-        
-        
-        
-        
     }
     /// <#Description#>
     /// completely delete a whole album including its media files and thumbnail.

@@ -128,8 +128,12 @@ class Util {
                                     errorHandler: @escaping (Error?) -> () = { _ in }){
         
         
-        if let imageid = imageUID, let imageExt = UIDExtension{
-            if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion){
+        if let imageid = imageUID, let imageExt = UIDExtension {
+            
+            if let dataCahe = CacheHandler.getInstance().getCache(forKey: imageid) {
+                print("GetImageData : data in cache, fetching... ")
+                completion(dataCahe)
+            }else if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion){
                 print("GetImageData : getting image from local documentPath...")
             }else{
                 print("GetImageData : Local folder doesn't have file, searching from sever..")
@@ -150,7 +154,6 @@ class Util {
                                            completion: @escaping (Data?) -> () = { _ in },
                                            errorHandler: @escaping (Error?) -> () = { _ in }){
         let fullFliePath = Util.GetImagePathByUID(imageUID: imageUID)
-        print("GetImageFromServer : did you get called twice ?")
         DownloadFileFromServer(fileFullPath: fullFliePath, completion: { url in
             
             let fileLastPathUrl = (url?.lastPathComponent)! as NSString
@@ -425,6 +428,9 @@ class Util {
             ReadFileFromDocumentDirectory(fileName: GetFullFilePath(fileName: filenameWithExtension!)){
                 data in
                 print("GetDataFromFile : get file data success")
+                // added cache here
+                CacheHandler.getInstance()
+                    .setCache(obj: data, forKey: filename)
                 DispatchQueue.main.async {
                       completion(data)
                 }

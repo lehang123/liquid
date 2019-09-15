@@ -74,12 +74,12 @@ class SideMenuTableViewController: UITableViewController {
                 Util.GetImageData(imageUID: imageUID,
                                   UIDExtension: imageExtension, completion: {
                     data in
-                    cellImg.image = data != nil ? UIImage(data: data!): #imageLiteral(resourceName: "tempProfileImage")
+                    cellImg.image = data != nil ? UIImage(data: data!): #imageLiteral(resourceName: "item4")
                 })
                 
             }else{
                 print("tableView : user has no profile info ")
-                cellImg.image = #imageLiteral(resourceName: "tempProfileImage")
+                cellImg.image = #imageLiteral(resourceName: "item4")
             }
             
             cell.addSubview(cellImg)
@@ -132,10 +132,6 @@ class SideMenuTableViewController: UITableViewController {
                 // todo : pass cache here !!!!
                 print(" SideMenuTableViewController prepare : pass success !");
                 profileVC.userInformation = self.userInformation
-//                profileVC.name.text = userInformation.username
-//                profileVC.relationship.text = userInformation.familyRelation
-//                profileVC.phoneField.text = userInformation.phone
-//                profileVC.genderField.text = userInformation.gender?.rawValue
             }
         }
     }
