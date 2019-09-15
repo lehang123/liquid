@@ -22,6 +22,7 @@ struct UserInfo {
 enum Gender : String{
     case Male
     case Female
+    case Unknown
 }
 
 struct UserFamilyInfo {

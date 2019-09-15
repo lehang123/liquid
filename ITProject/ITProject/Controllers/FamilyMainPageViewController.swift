@@ -126,7 +126,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     imageUID: profileUID ?? "test-small-size-image",
                     imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
                     phone: currentUser?.phoneNumber ?? "12345678",
-                    gender: self.userGender ?? Gender.Male,
+                    gender: self.userGender ?? Gender.Unknown,
                     familyRelation: self.userFamilyPosition ?? "None")
                 
                 // pass user's family info to the current sideMenuVC
@@ -266,7 +266,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             if let err = error{
                 print("get User Info from server error " + err.localizedDescription)
             }else {
-                print("get User info from server success : ")
                 self.userFamilyPosition = relation
                 self.userGender = gender
             }

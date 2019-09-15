@@ -1378,7 +1378,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="273" y="13.5" width="32.000000000000028" height="63.500000000000028"/>
+                                                    <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1571,7 +1571,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="I5n-AV-v0M" userLabel="Bookmark">
-                                            <rect key="frame" x="273" y="13.5" width="32.000000000000028" height="63.500000000000028"/>
+                                            <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
