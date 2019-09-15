@@ -48,6 +48,25 @@ class AlbumDBController {
         
         
     }
+    public func UpdateComments( username : String,  comment : String, photoUID : String){
+        //IF USING MAP::
+        // fieldname is in dot notation:
+//        let fieldName : String = AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS + "." + username;
+//
+//        //update to comment field:
+//        DBController.getInstance()
+//            .updateSpecificField(newValue: comment,
+//                                 fieldName: fieldName,
+//                                 documentUID: photoUID,
+//                                 collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
+        //USE : [ [ USERNAME : COMMENTS ] ]
+        DBController.getInstance()
+            .updateArrayField(
+            collectionName:AlbumDBController.MEDIA_COLLECTION_NAME,
+            documentUID: photoUID,
+            fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS,
+            appendValue: [username:comment]);
+    }
     /// <#Description#>
     /// singleton pattern:
     /// - Returns: return an instance of this AlbumDBController.
@@ -181,7 +200,8 @@ class AlbumDBController {
     ///   - mediaPath:  the media file's path to be inserted ( unique), preferrably fullPaths.
     public func addPhotoToAlbum(desc : String, ext : String, albumUID : String, mediaPath:String, dateCreated : Timestamp){
         /*init new media
-         * update: now has Date Created + reference to its own album */
+         * update: now has Date Created + reference to its own album
+         * update: COmment is in : Array of [String (username) : String (comment)] format */
         let albumDocRef :DocumentReference = DBController
             .getInstance()
             .getDocumentReference(
@@ -194,7 +214,7 @@ class AlbumDBController {
                 inputData: [
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH : 0,
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES :0,
-                    AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: "",
+                    AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION : ext,
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION : desc,
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM : albumDocRef,
@@ -208,6 +228,7 @@ class AlbumDBController {
                 documentUID: albumUID,
                 fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS,
                 appendValue:mediaPath );
+        
     }
     
     /// <#Description#>
