@@ -259,7 +259,7 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
 //        cell.album = albumData[indexPath.item]
         cell.album = albumsList.getAlbum(index: indexPath.item)
         cell.addRemoveAlbumDelegate(rmd: self)
-        cell.cacheAlbumDetail(albumDetail: albumsList.getAlbum(index: indexPath.item))
+        cell.cacheAlbumDetailForDeletion(albumDetail: albumsList.getAlbum(index: indexPath.item))
         
         return cell
     }
