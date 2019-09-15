@@ -1148,7 +1148,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="468" width="375" height="16"/>
+                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1431,7 +1431,26 @@
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LQI-L1-LBa">
                                 <rect key="frame" x="0.0" y="522" width="320" height="46"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Comment Here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MNA-qF-Ptv">
+                                        <rect key="frame" x="57" y="8" width="206" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXR-Rt-XZ7">
+                                        <rect key="frame" x="279" y="8" width="37" height="30"/>
+                                        <state key="normal" title="Enter"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="MNA-qF-Ptv" firstAttribute="leading" secondItem="LQI-L1-LBa" secondAttribute="leading" constant="57" id="5mo-TW-15Q"/>
+                                    <constraint firstItem="MNA-qF-Ptv" firstAttribute="centerY" secondItem="LQI-L1-LBa" secondAttribute="centerY" id="6lH-N6-EuA"/>
+                                    <constraint firstItem="yXR-Rt-XZ7" firstAttribute="leading" secondItem="MNA-qF-Ptv" secondAttribute="trailing" constant="16" id="8DZ-s8-zfW"/>
+                                    <constraint firstItem="MNA-qF-Ptv" firstAttribute="centerX" secondItem="LQI-L1-LBa" secondAttribute="centerX" id="Gz2-00-LHd"/>
+                                    <constraint firstAttribute="bottom" secondItem="yXR-Rt-XZ7" secondAttribute="bottom" constant="8" id="Pj7-Ro-ZdQ"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
