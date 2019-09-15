@@ -279,11 +279,17 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     func test (){
-        Util.DeleteFileFromServer(fileName: "8E6A110F-7447-4CC3-B0C8-EB4F726C64EA",
-                                  fextension: Util.EXTENSION_JPEG)
+//        Util.DeleteFileFromServer(fileName: "8E6A110F-7447-4CC3-B0C8-EB4F726C64EA",
+//                                  fextension: Util.EXTENSION_JPEG)
+        AlbumDBController.getInstance().addPhotoToAlbum(desc : "me me she", ext : ".jpg", albumUID : "0CiJH0s3tWLo2PwCNVYE", mediaPath: "iloveyou", dateCreated : Timestamp(date: Date()));
+        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "hahahah", photoUID: "iloveyou");
+        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "HALO 2 I LOVE YOU ", photoUID: "iloveyou");
+
+        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "PERFECT", photoUID: "iloveyou");
+        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "HALO 2 I LOVE YOU ", photoUID: "iloveyou");
     }
 
-}
+
     
 //extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
 //    func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -320,23 +326,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 //        return cell
 //    }
 //
-//    func test (){
-//
-//
-//
-
-//        //        AlbumDBController.getInstance().addNewAlbum(albumName: "gogogo", description: "gogogo test");
-//
-//        //        AlbumDBController.getInstance().addPhotoToAlbum(desc: "halo wamg test", ext: ".zip", albumUID: "1M9uyYemU1VWTm8ZkRGZ", mediaPath: "somewhere_in_my_heart_halohalo.zip");
-//        ///
-//        //        AlbumDBController.getInstance().addAlbumSnapshotListener();
-//        var x:CacheHandler  = CacheHandler();
-//        var y :CacheHandler = CacheHandler();
-//        x.setCache(obj: "halo" as AnyObject, forKey: 0 as AnyObject);
-//        y.setCache(obj: "hihi" as AnyObject, forKey: 1 as AnyObject);
-//        print( "x index 0::: " + ( x.getCache(forKey: 0 as AnyObject ) as! String));
-//        print( "y index 1::: " + (y.getCache(forKey: 1 as AnyObject ) as! String));
-//    }
-//}
+}
 
 
