@@ -78,6 +78,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             hasHiddenCells = true
         }
     }
+    
+    
     @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
         let imageView = sender.view as! UIImageView
         let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController

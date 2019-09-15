@@ -170,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				6C0151D2230053B300FEF794 /* ProfileViewController.swift */,
+				8423A6E822F9CA390049B656 /* FamilyProfileViewController.swift */,
 			);
 			path = ProfileUI;
 			sourceTree = "<group>";
@@ -247,7 +248,6 @@
 				84E9BA4722F941F4003EA693 /* LoginViewController.swift */,
 				6C3ECB9D22FC61FF003C89DB /* FamilyMainPageViewController.swift */,
 				520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */,
-				8423A6E822F9CA390049B656 /* FamilyProfileViewController.swift */,
 				8423A6FA22FE94720049B656 /* LoginNavigationController.swift */,
 				5206680D23042F85002C61B6 /* IndividualSettingTableViewController.swift */,
 				6C234F922305055B001561CA /* AlbumCoverViewController.swift */,

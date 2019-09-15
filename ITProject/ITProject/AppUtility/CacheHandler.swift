@@ -172,7 +172,7 @@ class CacheHandler : NSObject {
 //    }
     
     //simply get user's info.
-    public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: SideMenuTableViewController.Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> () = {_,_,_,_ in}){
+    public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> () = {_,_,_,_ in}){
         let user = Auth.auth().currentUser!.uid
         Util.ShowActivityIndicator(withStatus: "retrieving user information...");
         DBController.getInstance()
@@ -189,7 +189,7 @@ class CacheHandler : NSObject {
                         let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as? String
                         let familyDocRef : DocumentReference = data![RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
                         
-                        completion(position, SideMenuTableViewController.Gender(rawValue: gender ?? "Male"), familyDocRef, error);
+                        completion(position, Gender(rawValue: gender ?? "Male"), familyDocRef, error);
 
                         Util.DismissActivityIndicator();
                     }else{
