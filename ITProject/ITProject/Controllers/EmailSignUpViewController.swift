@@ -42,8 +42,44 @@ class EmailSignUpViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /* todo : don't init db here, init at the DBController */
-//         db = Firestore.firestore()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
+        self.view.addGestureRecognizer(tapGestureBackground)
+    }
+    
+    @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
+    {
+        self.emailAddress.endEditing(true)
+        self.password.endEditing(true)
+        self.confirmPW.endEditing(true)
+        self.username.endEditing(true)
+        self.joinFamilyIDField.endEditing(true)
+        self.newFamilyField.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            if newFamilyField.isEditing {
+                
+                if self.view.frame.origin.y == 0 {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        self.view.frame.origin.y -= keyboardSize.height
+                    })
+                }
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.view.frame.origin.y = 0
+            })
+        }
     }
     
     @IBAction func CreateButtonOnTouch(_ sender: Any) {

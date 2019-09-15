@@ -10,10 +10,12 @@ import Firebase
 import UIKit
 import EnhancedCircleImageView
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITextFieldDelegate {
     
     private static let CHANGED_INFO = "Succesfully"
     private static let CHANGED_MESSAGE = "The information has changed"
+    
+    private var keyboardSize:CGRect!
     
 
     @IBOutlet weak var profilePicture: EnhancedCircleImageView!
@@ -21,8 +23,6 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var relationship: UITextField!
 
-    @IBOutlet weak var phoneNumber: UITextField!
-    @IBOutlet weak var gender: UITextField!
     @IBOutlet weak var genderField: UITextField!
     @IBOutlet weak var phoneField: UITextField!
     
@@ -52,41 +52,84 @@ class ProfileViewController: UIViewController {
                 self.profilePicture.image=#imageLiteral(resourceName: "item4")
             }
         })
-
-        
+        self.name.delegate = self
         self.name.text = userInformation.username
+        
+        self.relationship.delegate = self
         self.relationship.text = userInformation.familyRelation
+        
+        self.phoneField.delegate = self
         self.phoneField.text = userInformation.phone
+        
+        self.genderField.delegate = self
         self.genderField.text = userInformation.gender?.rawValue
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        // but to stop editing when the user taps anywhere on the view, add this gesture recogniser
+        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
+        self.view.addGestureRecognizer(tapGestureBackground)
     }
-
+    
+    @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
+    {
+        self.name.endEditing(true)
+        self.relationship.endEditing(true)
+        self.phoneField.endEditing(true)
+        self.genderField.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            if self.view.frame.origin.y == 0 {
+                UIView.animate(withDuration: 0.25, animations: {
+                    self.view.frame.origin.y -= keyboardSize.height
+                })
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.view.frame.origin.y = 0
+            })
+        }
+    }
+    
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        print("textFieldDidEndEditing : hello")
+//    }
+//
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        print("textFieldDidBeginEditing : hello " + keyboardSize.height.description)
+//    }
 
     // To do change the username in database also in cache
     // To do change the username in database also in cache
     // To do change the username in database also in cache
     // To do change the username in database also in cache
     @objc func DoneButtonTapped() {
-
-        
-        print("Button Tapped")
         let user = Auth.auth().currentUser
         
         //get current name:
-        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
-        
-    
-        if (name.text != userName ) {
-            
-            Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
-            
-           // CacheHandler.getInstance().setCache(obj: name.text as AnyObject, forKey: "name" as AnyObject)
-            //set new name:
-            
-            //user?.uid
-            DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-            CacheHandler.getInstance().cacheUser();
-        }
+//        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+//        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
+//
+//
+//        if (name.text != userName ) {
+//
+//            Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
+//
+//           // CacheHandler.getInstance().setCache(obj: name.text as AnyObject, forKey: "name" as AnyObject)
+//            //set new name:
+//
+//            //user?.uid
+//            DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+//            CacheHandler.getInstance().cacheUser();
+//        }
         
         
         // !!!!

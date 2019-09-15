@@ -29,13 +29,5 @@ class IndividualSettingTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
     }
-    
-    
-
-    
-
-    
-    
-    
 }
 
