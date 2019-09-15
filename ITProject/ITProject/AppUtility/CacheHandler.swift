@@ -17,9 +17,11 @@ import UIKit
 ///Handles caching data.
 class CacheHandler : NSObject {
     
-    private var dataCache :NSCache<AnyObject, AnyObject>;
+    private var dataCache :NSCache<NSString, NSData>;
     private static var cachedCounter : Int = 0;  // keeps track of cachedData load. useful to check for limit later on.
     private static var dataObjects : Int = 0; // keeps track of # of objects ofCacheHandler.
+    
+    // *** deprecated : now cache will be used to store image only
     public static let FAMILY_KEY:String = "familyUID";
     public static let USER_DATA:String = "userData";
     public static let FAMILY_DATA:String = "familyData";
@@ -28,7 +30,7 @@ class CacheHandler : NSObject {
 
     private static var single:CacheHandler!;
     override init (){
-        dataCache = NSCache<AnyObject, AnyObject>()
+        dataCache = NSCache<NSString, NSData>()
         super.init()
         dataCache.delegate = self
         CacheHandler.addObjects();
@@ -66,9 +68,9 @@ class CacheHandler : NSObject {
     /// - Parameters:
     ///   - obj: object to be stored
     ///   - forKey: key of the object
-    public func setCache (obj: AnyObject, forKey: AnyObject){
+    public func setCache (obj: Data, forKey: String){
         
-        self.dataCache.setObject( obj, forKey: forKey);
+        self.dataCache.setObject( obj as NSData, forKey: forKey as NSString);
         CacheHandler.addCacheCounter();
         print("setCache::: caching : \(obj) with key : \(forKey) succeeded.");
     }
@@ -78,8 +80,12 @@ class CacheHandler : NSObject {
     /// gets an object from cache by its key.
     /// - Parameter forKey: key of the object
     /// - Returns: the object associated with the key given
-    public func getCache (forKey: String) -> AnyObject?{
-        return self.dataCache.object(forKey: forKey as AnyObject);
+    public func getCache (forKey: String) -> Data?{
+        if let data = self.dataCache.object(forKey: forKey as NSString){
+            return data as Data
+        }else{
+            return nil
+        }
     }
     /// <#Description#>
     /// removes all objects in cache. be mindful of this when working with others,
@@ -91,87 +97,79 @@ class CacheHandler : NSObject {
     /// <#Description#>
     /// removes 1 object with associated key.
     /// - Parameter forKey: key of the object to be removed.
-    public func removeFromCache(forKey: AnyObject){
-        self.dataCache.removeObject(forKey: forKey);
+    public func removeFromCache(forKey: String){
+        self.dataCache.removeObject(forKey: forKey as NSString);
     }
     
     
     
     /*using NSDiscardableContent's protocol for data that has short lifecycles:*/
     
-    /// <#Description#>
-    /// sets a NSDiscardableContent object into cache.
-    /// - Parameters:
-    ///   - obj: object to be inserted
-    ///   - forKey: object's associated key
-    public func setDiscardableCache(obj: NSDiscardableContent, forKey: AnyObject){
-        
-        
-        self.dataCache.setObject( obj, forKey:forKey );
-    }
+//    /// <#Description#>
+//    /// sets a NSDiscardableContent object into cache.
+//    /// - Parameters:
+//    ///   - obj: object to be inserted
+//    ///   - forKey: object's associated key
+//    public func setDiscardableCache(obj: NSDiscardableContent, forKey: String){
+//
+//        self.dataCache.setObject( obj as! NSData, forKey:forKey as NSString );
+//    }
+//
+//    /// <#Description#>
+//    ///gets a NSDiscardableContent object from cache.
+//    /// - Parameter forKey: object's associated key
+//    /// - Returns:the stored object in NSDiscardableContent type
+//    public func getDiscardableCache( forKey: String) ->NSDiscardableContent{
+//        _ = self.dataCache.object(forKey: forKey as NSString)!.beginContentAccess();
+//        return self.dataCache.object(forKey: forKey as NSString)! as! NSDiscardableContent;
+//
+//    }
+//
+//    /// <#Description#>
+//    /// use this finished after accessing a NSDiscardableContent object so that
+//    /// it can be removed when it's no longer needed.
+//    /// - Parameter forKey: object's associated key
+//    public func finishDiscardableAccess( forKey: AnyObject){
+//         self.dataCache.object(forKey: forKey)!.endContentAccess();
+//
+//    }
     
-    /// <#Description#>
-    ///gets a NSDiscardableContent object from cache.
-    /// - Parameter forKey: object's associated key
-    /// - Returns:the stored object in NSDiscardableContent type
-    public func getDiscardableCache( forKey: AnyObject) ->NSDiscardableContent{
-        _ = self.dataCache.object(forKey: forKey)!.beginContentAccess();
-        return self.dataCache.object(forKey: forKey)! as! NSDiscardableContent;
-        
-    }
-    
-    /// <#Description#>
-    /// use this finished after accessing a NSDiscardableContent object so that
-    /// it can be removed when it's no longer needed.
-    /// - Parameter forKey: object's associated key
-    public func finishDiscardableAccess( forKey: AnyObject){
-         self.dataCache.object(forKey: forKey)!.endContentAccess();
-        
-    }
-    
-    /// <#Description#>
-    ///tries to safely remove a NSDiscardableContent object.
-    /// - Parameter forKey: object's associated key to be removed.
-    public func enhanceMemory( forKey: AnyObject){
-        let willDiscard:NSDiscardableContent = self.dataCache.object(forKey: forKey) as! NSDiscardableContent;
-        
-        willDiscard.discardContentIfPossible();
-        
-        
-    }
-    public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
-        var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA ) as? Dictionary<String, Dictionary<String , AnyObject>>;
-//        if (tmp == nil){
-//            self.startCache(){
-//                tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA) as? Dictionary<String, Dictionary<String , AnyObject>>;
-//            }
-//        }
-        return tmp!;
-    }
-    
-    public func getAnAlbum(documentName : String) -> [String: AnyObject]{
-        var tmp =  self.getAlbums();
-       
-        return tmp[documentName]!;
-    }
+//    /// <#Description#>
+//    ///tries to safely remove a NSDiscardableContent object.
+//    /// - Parameter forKey: object's associated key to be removed.
+//    public func enhanceMemory( forKey: AnyObject){
+//        let willDiscard:NSDiscardableContent = self.dataCache.object(forKey: forKey) as! NSDiscardableContent;
+//
+//        willDiscard.discardContentIfPossible();
+//    }
+//    public func getAlbums() -> Dictionary<String , Dictionary<String , AnyObject>> {
+//        var tmp = self.getCache(forKey: CacheHandler.ALBUM_DATA ) as? Dictionary<String, Dictionary<String , AnyObject>>;
+//        return tmp!;
+//    }
+//
+//    public func getAnAlbum(documentName : String) -> [String: AnyObject]{
+//        var tmp =  self.getAlbums();
+//
+//        return tmp[documentName]!;
+//    }
     //put user's info into cache.
-    public func cacheUserAndFamily(){
-        let user = Auth.auth().currentUser!.uid
-        Util.ShowActivityIndicator(withStatus: "please wait...");
-        DBController.getInstance()
-            .getDocumentFromCollection(
-                collectionName: RegisterDBController.USER_COLLECTION_NAME,
-                documentUID:  user){
-                    (userDocument, error) in
-                    if let userDocument = userDocument, userDocument.exists {
-                        self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
-//                        self.cacheFamily();
-                        Util.DismissActivityIndicator();
-                    }else{
-                        print("ERROR LOADING cacheUserAndFam::: ", error as Any);
-                    }
-                }
-    }
+//    public func cacheUserAndFamily(){
+//        let user = Auth.auth().currentUser!.uid
+//        Util.ShowActivityIndicator(withStatus: "please wait...");
+//        DBController.getInstance()
+//            .getDocumentFromCollection(
+//                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+//                documentUID:  user){
+//                    (userDocument, error) in
+//                    if let userDocument = userDocument, userDocument.exists {
+//                        self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+////                        self.cacheFamily();
+//                        Util.DismissActivityIndicator();
+//                    }else{
+//                        print("ERROR LOADING cacheUserAndFam::: ", error as Any);
+//                    }
+//                }
+//    }
     
     //simply get user's info.
     public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: SideMenuTableViewController.Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> () = {_,_,_,_ in}){
@@ -187,11 +185,11 @@ class CacheHandler : NSObject {
                         
                         // TO DO !!!
                         // MAKE SURE it is not nill
-                        //let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
-                        //let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
+                        let gender = data?[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as! String
+                        let position = data?[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as! String
                         let familyDocRef : DocumentReference = data![RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
                         
-//                        completion(position, SideMenuTableViewController.Gender(rawValue: gender!), familyDocRef, error);
+                        completion(position, SideMenuTableViewController.Gender(rawValue: gender), familyDocRef, error);
 
                         Util.DismissActivityIndicator();
                     }else{
@@ -204,7 +202,7 @@ class CacheHandler : NSObject {
         
             Util.ShowActivityIndicator(withStatus: "retrieving album information...")
         DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyID).getDocuments(completion: { (querySnapshot, error) in
-            
+//                print("getAlbumInfo : do you get called")
                 Util.DismissActivityIndicator()
                             //error handle:
                             if let error = error {
@@ -293,78 +291,78 @@ class CacheHandler : NSObject {
 //    }
     
     
-    
-    public func cacheUser(){
-        let user = Auth.auth().currentUser!.uid
-        DBController.getInstance()
-            .getDocumentFromCollection(
-                collectionName: RegisterDBController.USER_COLLECTION_NAME,
-                documentUID:  user){
-                    (userDocument, error) in
-                    if let userDocument = userDocument, userDocument.exists {
-                        self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
-                    }else{
-                        print("ERROR LOADING cacheUser::: ", error!);
-                    }
-        }
-        
-        
-    }
+    // **** deprecated : Since Now we don't cahce any more
+//    public func cacheUser(){
+//        let user = Auth.auth().currentUser!.uid
+//        DBController.getInstance()
+//            .getDocumentFromCollection(
+//                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+//                documentUID:  user){
+//                    (userDocument, error) in
+//                    if let userDocument = userDocument, userDocument.exists {
+//                        self.setCache(obj: userDocument.data() as AnyObject, forKey: CacheHandler.USER_DATA as AnyObject);
+//                    }else{
+//                        print("ERROR LOADING cacheUser::: ", error!);
+//                    }
+//        }
+//
+//
+//    }
     //get Family info and put it to cache:
-    public func cacheFamily(){
-        var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        let familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
-        familyDocumentReference.getDocument { (familyDocument, error) in
-            if let familyDocument = familyDocument, familyDocument.exists {
-                self.setCache(obj: familyDocument as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
-                self.setCache(obj: familyDocumentReference as AnyObject, forKey: CacheHandler.FAMILY_KEY as AnyObject);
-
-            }else{
-                print("ERROR LOADING cacheFamily::: " , error!);
-            }
-            
-        }
-        
-        
-    }
+    // **** deprecated : Since Now we don't cahce any more
+//    public func cacheFamily(){
+//        var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+//        let familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+//        familyDocumentReference.getDocument { (familyDocument, error) in
+//            if let familyDocument = familyDocument, familyDocument.exists {
+//                self.setCache(obj: familyDocument as AnyObject, forKey: CacheHandler.FAMILY_DATA as AnyObject);
+//                self.setCache(obj: familyDocumentReference as AnyObject, forKey: CacheHandler.FAMILY_KEY as AnyObject);
+//
+//            }else{
+//                print("ERROR LOADING cacheFamily::: " , error!);
+//            }
+//
+//        }
+//    }
     
     //get all albums related to family and put it to cache:
-    public func cacheAlbums(){
-        //get user's familyDocumentReference:
-        var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-        let familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
-        //once found, get all albums related to family:
-        DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocumentReference)
-            .getDocuments() { (querySnapshot, error) in
-                //error handle:
-                if let error = error {
-                    print("cacheAlbum Error getting documents: \(error)")
-                    
-                } else {
-                    
-                    var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
-                    //loop thru each document, parse them into the required data format:
-                    for document in querySnapshot!.documents {
-                        let albumName :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
-                        let owner:DocumentReference? = (document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
-                        albums[albumName] = [
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
-                                document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
-                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
-                                
-                                document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
-                            AlbumDBController.DOCUMENTID : document.documentID
-                            
-                        ]
-                    }
-                    CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
-                }
-        }
-    }
+    // **** deprecated : Since Now we don't cahce any more
+//    public func cacheAlbums(){
+//        //get user's familyDocumentReference:
+//        var userData : [String:Any] = self.getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
+//        let familyDocumentReference : DocumentReference = userData[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference;
+//        //once found, get all albums related to family:
+//        DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyDocumentReference)
+//            .getDocuments() { (querySnapshot, error) in
+//                //error handle:
+//                if let error = error {
+//                    print("cacheAlbum Error getting documents: \(error)")
+//
+//                } else {
+//
+//                    var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+//                    //loop thru each document, parse them into the required data format:
+//                    for document in querySnapshot!.documents {
+//                        let albumName :String = document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+//                        let owner:DocumentReference? = (document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
+//                        albums[albumName] = [
+//                            AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+//                            AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
+//                            AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+//                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
+//                            AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION :
+//                                document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
+//                            AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION :
+//
+//                                document.data()[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
+//                            AlbumDBController.DOCUMENTID : document.documentID
+//
+//                        ]
+//                    }
+//                    CacheHandler.getInstance().setCache(obj: albums as AnyObject, forKey: CacheHandler.ALBUM_DATA as AnyObject);
+//                }
+//        }
+//    }
 //    public func startCache(completion: @escaping () -> () = {}){
 //        //set familyUID's cache:
 //        let user = Auth.auth().currentUser!.uid
