@@ -26,21 +26,21 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
     @IBAction func AddAlbumPressed(_ sender: Any) {
         print("AddAlbumPressed : ")
 //        self.loadNameData()
-        let formEle = self.setupFormELement()
-        print("FormElement ::: ", formEle)
+        
         let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
-//        VC1.modalPresentationStyle = .overCurrentContext
-//        let VC1 = CustomFormViewController(formELe: self.setupFormELement())
+        
+        let formEle = self.setupFormELement(customFormVC: VC1)
+    VC1.setAlbumCoverViewController(albumCoverViewController: self,
+                                        albumDataList: self.albumDataList,
+                                        formEle: formEle)
         self.present(VC1, animated:true, completion: {
             VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-            VC1.setAlbumCoverViewController(albumCoverViewController: self,
-                                            albumDataList: self.albumDataList,
-                                            formEle: formEle)
+            
         })
 
     }
     
-    private func setupFormELement() -> FormElement{
+    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
         let textFields = AddAlbumUI.fields(by: [.albumName,.albumDescription], style: .light)
         return .init(formType: .withImageView,
                      titleText: "Add new album",
@@ -61,19 +61,18 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
             }
             else {
                 // create a album here
-//                slef.dismissWithAnimation(){
-//
-//                    // todo : add the thumbnail is a dummy now, and, update cache
-//                    AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: self.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-//                        docRef in
-//                        print("showSignupForm : are you here ?")
-//                        self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: self.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
-//                    })
-//                }
-//    }
-                self.dismiss(animated: true, completion: nil)
+                customFormVC.dismissWithAnimation(){
+
+                    // todo : add the thumbnail is a dummy now, and, update cache
+                    AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: customFormVC.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
+                        docRef in
+                        print("showSignupForm : are you here ?")
+                        self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: customFormVC.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
+                    })
+                }
             }
         })
+
     }
     
     private func showPopupMessage(attributes: EKAttributes, description: String) {
