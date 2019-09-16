@@ -15,7 +15,7 @@ public struct FormElement{
         case withoutImageView
     }
     
-    public typealias Action = () -> ()
+    public typealias Action = () -> Void
     
     /** title Text String */
     public let titleText: String
@@ -31,18 +31,18 @@ public struct FormElement{
     
     public var okAction: Action?
     
-    public var cancelAction: Action?
+    public var cancelAction: Action? = nil
     
     public let formType: FormType
 
 
-    public init(titleText: String,
+    public init(formType: FormType,
+                titleText: String,
                 textFields: [CustomTextFieldContent],
-                okButtonText: String,
-                okAction: @escaping Action = {},
                 cancelButtonText: String,
+                okButtonText: String,
                 cancelAction: @escaping Action = {},
-                formType: FormType
+                okAction: @escaping Action = {}
                 ){
         self.titleText = titleText
         self.textFields = textFields
