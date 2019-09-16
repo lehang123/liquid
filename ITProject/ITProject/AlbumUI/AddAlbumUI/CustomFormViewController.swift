@@ -13,79 +13,75 @@ import SwiftEntryKit
 class CustomFormViewController: UIViewController {
 
 
-    var contentv : CustomFormView!
+    private var contentv : CustomFormView!
     private var albumCoverViewController : AlbumCoverViewController!
     private var albumDataList : [String] = []
     
-    private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
-    private let EMPTYNAME_DES = "Album name is empty"
     
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
     private var albumThumbnailImage : UIImage? = UIImage(named: "test-small-size-image")
     private var albumThumbnailString: String = "test-small-size-image"
+    private var formEle: FormElement!
 
-    public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String]){
+    public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String], formEle: FormElement){
         self.albumCoverViewController = albumCoverViewController
         self.albumDataList = albumDataList
+        self.formEle = formEle
+        setView()
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setView()
+        //setView()
     }
-    
+
+//    public init(albumCoverViewController : AlbumCoverViewController, albumDataList : [String], formEle: FormElement){
+//        self.albumCoverViewController = albumCoverViewController
+//        self.albumDataList = albumDataList
+//        self.formEle = formEle
+//        super.init(nibName: nil, bundle: nil)
+//        setView()
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     private func setView(){
-        self.contentv = showSignupForm(style: .light)
-        
+        print("hahah ::: 123\n")
+        self.contentv = showSignupForm(formEle: self.formEle, style: .light)
+
         self.view.addSubview(contentv)
-        
+
         // constraint
         contentv.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         contentv.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         contentv.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
         contentv.heightAnchor.constraint(equalTo: contentv.heightAnchor).isActive = true
-        
+
         contentv.backgroundColor = .white
         contentv.layer.cornerRadius = 10
         contentv.layer.masksToBounds = true
-    
+
     }
     
-
-    private func showPopupMessage(attributes: EKAttributes, description: String) {
-        let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
-        let title = "Error!"
-        PopUpAlter.showPopupMessage(attributes: attributes,
-                                    title: title,
-                                    titleColor: .white,
-                                    description: description,
-                                    descriptionColor: .white,
-                                    buttonTitleColor: Color.Gray.mid,
-                                    buttonBackgroundColor: .white,
-                                    image: image)
-    }
-
 
 
     // Sign up form
-    private func showSignupForm(style: FormStyle) -> CustomFormView {
+    private func showSignupForm(formEle: FormElement,style: FormStyle) -> CustomFormView {
         let titleStyle = EKProperty.LabelStyle(
             font: MainFont.light.with(size: 14),
             color: style.textColor,
             displayMode: .light
         )
         let title = EKProperty.LabelContent(
-            text: "Add new album",
+            text: formEle.titleText,
             style: titleStyle
         )
     
-        let textFields = AddAlbumUI.fields(
-            by: [.albumName, .albumDescription],
-            style: style
-        )
+        let textFields = formEle.textFields
         
        
         let buttonFont = MainFont.medium.with(size: 16)
@@ -97,7 +93,7 @@ class CustomFormViewController: UIViewController {
             displayMode: .light
         )
         let okButtonLabel = EKProperty.LabelContent(
-            text: "Create",
+            text: formEle.okButtonText,
             style: okButtonLabelStyle
         )
         let okButton = EKProperty.ButtonContent(
@@ -105,28 +101,29 @@ class CustomFormViewController: UIViewController {
             backgroundColor: UIColor.selfcOrg.ekColor,
             highlightedBackgroundColor: Color.Gray.a800.with(alpha: 0.8),
             displayMode: .light) {
+                formEle.okAction?()
                 
-                let albumName = textFields.first!.textContent
-                let albumDesc = textFields.last!.textContent
-    
-                let popattributes = PopUpAlter.setupPopupPresets()
-                if (albumName == "") {
-                    self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
-                } else if (self.albumDataList.contains(albumName) ){
-                    self.showPopupMessage(attributes: popattributes, description : self.REPEATNAME_DES)
-                }
-                else {
-                    // create a album here
-                    self.dismissWithAnimation(){
-
-                        // todo : add the thumbnail is a dummy now, and, update cache
-                        AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: self.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-                            docRef in
-                            print("showSignupForm : are you here ?")
-                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: self.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
-                        })
-                    }
-                }
+//                let albumName = textFields.first!.textContent
+//                let albumDesc = textFields.last!.textContent
+//
+//                let popattributes = PopUpAlter.setupPopupPresets()
+//                if (albumName == "") {
+//                    self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
+//                } else if (self.albumDataList.contains(albumName) ){
+//                    self.showPopupMessage(attributes: popattributes, description : self.REPEATNAME_DES)
+//                }
+//                else {
+//                    // create a album here
+//                    self.dismissWithAnimation(){
+//
+//                        // todo : add the thumbnail is a dummy now, and, update cache
+//                        AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: self.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
+//                            docRef in
+//                            print("showSignupForm : are you here ?")
+//                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: self.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
+//                        })
+//                    }
+            //}
         }
         
         
@@ -137,16 +134,19 @@ class CustomFormViewController: UIViewController {
             displayMode: .light
         )
         let closeButtonLabel = EKProperty.LabelContent(
-            text: "Cancel",
+            text: formEle.cancelButtonText,
             style: closeButtonLabelStyle
         )
-        let closeButton = EKProperty.ButtonContent(
+        var closeButton = EKProperty.ButtonContent(
             label: closeButtonLabel,
             backgroundColor: .black,
             highlightedBackgroundColor: Color.Gray.a800.with(alpha: 0.8),
-            displayMode: .light) {
-                
-                self.dismissWithAnimation()
+            displayMode: .light)
+        
+        let cancelAction = formEle.cancelAction
+        closeButton.action = {
+            self.dismissWithAnimation()
+            cancelAction?()
         }
         
         // Generate the content
@@ -154,7 +154,8 @@ class CustomFormViewController: UIViewController {
             with: closeButton, okButton,
             separatorColor: Color.Gray.light,
             displayMode: .light,
-            expandAnimatedly: true)
+            expandAnimatedly: true
+        )
         
         // todo: initial image content
         let contentView = CustomFormView(
