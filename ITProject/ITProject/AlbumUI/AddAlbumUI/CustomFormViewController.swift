@@ -20,37 +20,25 @@ class CustomFormViewController: UIViewController {
     
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
-    private var albumThumbnailImage : UIImage? = UIImage(named: "test-small-size-image")
-    private var albumThumbnailString: String = "test-small-size-image"
+    private(set) var albumThumbnailImage : UIImage? = UIImage(named: "test-small-size-image")
+    private(set) var albumThumbnailString: String = "test-small-size-image"
     private var formEle: FormElement!
 
     public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String], formEle: FormElement){
         self.albumCoverViewController = albumCoverViewController
         self.albumDataList = albumDataList
         self.formEle = formEle
-        setView()
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //setView()
+        setView()
     }
 
-//    public init(albumCoverViewController : AlbumCoverViewController, albumDataList : [String], formEle: FormElement){
-//        self.albumCoverViewController = albumCoverViewController
-//        self.albumDataList = albumDataList
-//        self.formEle = formEle
-//        super.init(nibName: nil, bundle: nil)
-//        setView()
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
+
     private func setView(){
-        print("hahah ::: 123\n")
+
         self.contentv = showSignupForm(formEle: self.formEle, style: .light)
 
         self.view.addSubview(contentv)
@@ -102,28 +90,6 @@ class CustomFormViewController: UIViewController {
             highlightedBackgroundColor: Color.Gray.a800.with(alpha: 0.8),
             displayMode: .light) {
                 formEle.okAction?()
-                
-//                let albumName = textFields.first!.textContent
-//                let albumDesc = textFields.last!.textContent
-//
-//                let popattributes = PopUpAlter.setupPopupPresets()
-//                if (albumName == "") {
-//                    self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
-//                } else if (self.albumDataList.contains(albumName) ){
-//                    self.showPopupMessage(attributes: popattributes, description : self.REPEATNAME_DES)
-//                }
-//                else {
-//                    // create a album here
-//                    self.dismissWithAnimation(){
-//
-//                        // todo : add the thumbnail is a dummy now, and, update cache
-//                        AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: self.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-//                            docRef in
-//                            print("showSignupForm : are you here ?")
-//                            self.albumCoverViewController.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: self.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
-//                        })
-//                    }
-            //}
         }
         
         
@@ -182,7 +148,7 @@ class CustomFormViewController: UIViewController {
         self.present(imagePicker, animated: true, completion:  nil)
     }
     
-    private func dismissWithAnimation(completion: @escaping (() -> Void) = {}){
+    public func dismissWithAnimation(completion: @escaping (() -> Void) = {}){
         UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
         }, completion:{
@@ -199,14 +165,6 @@ class CustomFormViewController: UIViewController {
 extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        guard let image = info[.editedImage] as? UIImage else {
-//            print("there is no edited Image ")
-//            return
-//        }
-//
-//        print ("imagePickerController: Did picked pressed !!")
-//        picker.dismiss(animated: true, completion: nil)
-
         // todo : push add/edit photo view
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.albumThumbnailImage =
@@ -223,7 +181,7 @@ extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigatio
                 print("you get error from Thumbnail choose")
             Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
         })
-        
+        print("ALBUMNAILSTIRNG", albumThumbnailString)
         // todo: update image from database
         contentv.resetImage(uiname: "item3")
         
