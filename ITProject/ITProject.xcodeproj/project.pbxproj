@@ -53,7 +53,6 @@
 		8446C077230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C076230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift */; };
 		8446C07F230F82DF000ABCD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8446C07E230F82DF000ABCD7 /* Assets.xcassets */; };
 		8446C081230F8AD9000ABCD7 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C080230F8AD9000ABCD7 /* CommentCell.swift */; };
-		8446C087230FB0B9000ABCD7 /* ExpandCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C086230FB0B9000ABCD7 /* ExpandCell.swift */; };
 		8446C0892321EA0A000ABCD7 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C0882321EA0A000ABCD7 /* PhotoDetail.swift */; };
 		84ACE91B232CA41300E08756 /* StickyHeaderTableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ACE91A232CA41300E08756 /* StickyHeaderTableViewExtension.swift */; };
 		84E9BA4622F941F4003EA693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E9BA4522F941F4003EA693 /* AppDelegate.swift */; };
@@ -125,7 +124,6 @@
 		8446C076230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWatchedBookmarkCell.swift; sourceTree = "<group>"; };
 		8446C07E230F82DF000ABCD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8446C080230F8AD9000ABCD7 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
-		8446C086230FB0B9000ABCD7 /* ExpandCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandCell.swift; sourceTree = "<group>"; };
 		8446C0882321EA0A000ABCD7 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
 		84ACE91A232CA41300E08756 /* StickyHeaderTableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickyHeaderTableViewExtension.swift; sourceTree = "<group>"; };
 		84E9BA4522F941F4003EA693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -286,7 +284,6 @@
 			children = (
 				8446C076230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift */,
 				8446C080230F8AD9000ABCD7 /* CommentCell.swift */,
-				8446C086230FB0B9000ABCD7 /* ExpandCell.swift */,
 			);
 			path = DisplayCell;
 			sourceTree = "<group>";
@@ -518,7 +515,6 @@
 				6C57C8FE2314AC19001D65EF /* PopUpAlter.swift in Sources */,
 				84ACE91B232CA41300E08756 /* StickyHeaderTableViewExtension.swift in Sources */,
 				52BBFA572306D5CB00495E66 /* ChangePWViewController.swift in Sources */,
-				8446C087230FB0B9000ABCD7 /* ExpandCell.swift in Sources */,
 				6C234F9A23051CC7001561CA /* AlbumDetail.swift in Sources */,
 				6C2A06EF2325F29A0060D7BA /* CustomFormView.swift in Sources */,
 				6C5221472306A1E9000FC9E4 /* AlbumsList.swift in Sources */,

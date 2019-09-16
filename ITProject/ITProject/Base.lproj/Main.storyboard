@@ -1198,7 +1198,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
+                                    <rect key="frame" x="0.0" y="468" width="375" height="16"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1375,7 +1375,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="273" y="13.5" width="32.000000000000028" height="63.500000000000028"/>
+                                                    <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1448,28 +1448,6 @@
                                             <outlet property="usernameLabel" destination="APr-WB-ZZb" id="1Em-VL-0Ek"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExpandCell" id="RFc-ol-rTR" userLabel="expandLogoCell" customClass="ExpandCell" customModule="ITProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="374" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RFc-ol-rTR" id="tLs-CQ-DfH">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="expand_down" translatesAutoresizingMaskIntoConstraints="NO" id="BXS-rO-8fl" userLabel="expand logo">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                                                </imageView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="BXS-rO-8fl" firstAttribute="width" secondItem="tLs-CQ-DfH" secondAttribute="width" id="NvP-O6-zHy"/>
-                                                <constraint firstItem="BXS-rO-8fl" firstAttribute="centerX" secondItem="tLs-CQ-DfH" secondAttribute="centerX" id="Qb9-LZ-gtC"/>
-                                                <constraint firstItem="BXS-rO-8fl" firstAttribute="height" secondItem="tLs-CQ-DfH" secondAttribute="height" id="oEO-od-QQP"/>
-                                                <constraint firstItem="BXS-rO-8fl" firstAttribute="centerY" secondItem="tLs-CQ-DfH" secondAttribute="centerY" id="xMr-xQ-Jzl"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="expandLogo" destination="BXS-rO-8fl" id="7NI-rX-vIF"/>
-                                        </connections>
-                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="zQN-g9-n7S" id="Qsx-kD-ODs"/>
@@ -1486,8 +1464,8 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="271" y="8" width="37" height="30"/>
-                                        <state key="normal" title="Enter"/>
+                                        <rect key="frame" x="271" y="8" width="36" height="30"/>
+                                        <state key="normal" title="Send"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
                                         </connections>
@@ -1615,7 +1593,6 @@
     <resources>
         <image name="addIcon" width="101" height="101"/>
         <image name="bookmark" width="107" height="107"/>
-        <image name="expand_down" width="117" height="110.5"/>
         <image name="eye" width="108" height="108"/>
         <image name="familyBackgroundImage" width="750" height="1334"/>
         <image name="item0" width="414" height="736"/>
