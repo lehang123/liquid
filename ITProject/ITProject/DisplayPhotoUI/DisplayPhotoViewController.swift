@@ -7,23 +7,20 @@
 //
 
 import UIKit
+import Firebase
 
 // todo : make the scorll back to the top while click on the header
 class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
     
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
-    private static let expandCollpaseTableViewCell = "ExpandCell"
     
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
     private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
     private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
-    private static let EXPAND_ROW_HEIGHT = UIScreen.main.bounds.height * 0.025
-    private static let MAXIMUM_INIT_LIST_LENGTH = 10
-    private static let MAXIMUM_EXPAND_LENGTH = 5
     
     private static let LIKE_WATACHED_CELL_LENGTH = 1
-    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
+//    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
     
     private struct CommentCellStruct{
         var comment = String()
@@ -32,8 +29,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     /* source is the total number of comments */
     private var commentsSource = [CommentCellStruct]()
     /* list is the total number of comments to display */
-    private var commentCellsList = [CommentCellStruct]()
-    private var hasHiddenCells = false
+//    private var commentCellsList = [CommentCellStruct]()
+//    private var hasHiddenCells = false
     
     private var photoUID: String!
     
@@ -47,7 +44,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut : CGFloat = 0
     
-    private var tableView_cell_length = 0
+//    private var tableView_cell_length = 0
     
     @IBOutlet weak var displayPhotoImageView: UIImageView!
  
@@ -74,17 +71,17 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        initCommentCellsList()
+//        initCommentCellsList()
         setUpTableViewHeader()
 
         
         // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
         
         //current cell doesn't show all the comments
-        if (commentsSource.count > commentCellsList.count){
-            print("there is more source")
-            hasHiddenCells = true
-        }
+//        if (commentsSource.count > commentCellsList.count){
+//            print("there is more source")
+//            hasHiddenCells = true
+//        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -131,25 +128,65 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.cmmentText.endEditing(true)
         
         //print (CacheHandler.getInstance().getUserInfo())
-        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
-            if let error = error {
-                print("Error in EnterComment: \(error)")
-            } else {
-                if (self.cmmentText.text!.count != 0) {
-                    print ("success enter comment")
-                    self.addCommentCellToList(username: username!, comment: String(self.cmmentText.text!))
-                    self.storeComment(username: username!, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
-
-                    self.tableView.reloadData()
-                    self.cmmentText.text = ""
-                }
-                
-            }
+        
+        let username = Auth.auth().currentUser?.displayName ?? "UNKNOW GUY"
+        
+        if (self.cmmentText.text!.count != 0){
+            self.storeCommentToServer(username: username, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
+            self.cmmentText.text = ""
         }
+
+        
+        // todo : pull latest comment from the server, and update comment source
+        
+        upadteCommentSource()
+        
+        
+//        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
+//            if let error = error {
+//                print("Error in EnterComment: \(error)")
+//            } else {
+//                if (self.cmmentText.text!.count != 0) {
+//                    print ("success enter comment")
+//                    self.addCommentCellToList(username: username!, comment: String(self.cmmentText.text!))
+//                    self.storeCommentToServer(username: username!, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
+//
+//                    self.tableView.reloadData()
+//                    self.cmmentText.text = ""
+//                }
+//
+//            }
+//        }
         
     }
+    
+    private func upadteCommentSource(){
+        // pull new comment from the server
+        
+        var indexPaths = [IndexPath]()
+        
+        tableView.beginUpdates()
+        
+        /* delete all the old source */
+        for i in 0...commentsSource.count-1{
+            indexPaths.append(IndexPath(row: i, section: 0))
+        }
+        commentsSource.removeAll()
+        tableView.deleteRows(at: indexPaths, with: .fade)
+        indexPaths.removeAll()
+        
+        /* loaded in new source */
+        makeDummyCommentSource(num: 21)
+        for i in 0...commentsSource.count-1{
+            indexPaths.append(IndexPath(row: i, section: 0))
+        }
+        tableView.insertRows(at: indexPaths, with: .fade)
+        tableView.endUpdates()
+        tableView.reloadData()
+    }
+    
     // ASSUME : YOU NOT GONNA NEED TO RETRIEVE THESE AGAIN RELATIVE TO CERTAIN USER:
-    public func storeComment(username : String,  comment: String, photoUID : String) {
+    private func storeCommentToServer(username : String,  comment: String, photoUID : String) {
         
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, photoUID: photoUID);
     }
@@ -186,12 +223,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("numberOfRowsInSection : how often do you called ?" )
         // return the number of rows
-        if hasHiddenCells {
-            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH + DisplayPhotoViewController.EXPAND_COLLPASE_CELL_LENGTH
-        }else{
-            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
-        }
+        
+//        if hasHiddenCells {
+//            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH + DisplayPhotoViewController.EXPAND_COLLPASE_CELL_LENGTH
+//        }else{
+//            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+//        }
+        
+        
+        return commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+        
     }
 
     /*the row only get call when it's visible on the screeen in order to save memory*/
@@ -202,100 +245,111 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             return cell0
         }else {// create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
-            if !hasHiddenCells || tableView_cell_length != (indexPath.row - 1){
-                
-                print("cellForRowAt : " + String(hasHiddenCells) + " and " + String(indexPath.row))
-                
-                let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
-                cell1.setUsernameLabel(username: commentCellsList[indexPath.row - 1].username)
-                cell1.setCommentLabel(comment: commentCellsList[indexPath.row - 1].comment)
-                return cell1
-            }else {
-                let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.expandCollpaseTableViewCell, for: indexPath) as!ExpandCell
-                return cell1
-            }
+//            print("cellForRowAt : " + String(hasHiddenCells) + " and " + String(indexPath.row))
+            
+            let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
+            cell1.setUsernameLabel(username: commentsSource[indexPath.row - 1].username)
+            cell1.setCommentLabel(comment: commentsSource[indexPath.row - 1].comment)
+            return cell1
         }
+            
+//            if !hasHiddenCells || tableView_cell_length != (indexPath.row - 1){
+//
+//                print("cellForRowAt : " + String(hasHiddenCells) + " and " + String(indexPath.row))
+//
+//                let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
+//                cell1.setUsernameLabel(username: commentCellsList[indexPath.row - 1].username)
+//                cell1.setCommentLabel(comment: commentCellsList[indexPath.row - 1].comment)
+//                return cell1
+//            }else {
+//                let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.expandCollpaseTableViewCell, for: indexPath) as!ExpandCell
+//                return cell1
+//            }
+//        }
     }
-    /* when row is selected, row expand test done.
-     todo :
-            1.change the selected animation effect to touched
+    /*
+        disable expansion
      */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
-            let selectedCell =
-                tableView.cellForRow(at: indexPath)as! ExpandCell
-            
-            if selectedCell.cellState == ExpandCell.Work.Expand{
-                // start expand here, expand at most 5 at a time, until source end
-                expandTableView(selectedCell: selectedCell)
-            }else if selectedCell.cellState == ExpandCell.Work.Collapse{
-                // start collapse here, collapse all the way back to max_init_cells
-                collapseTableView(selectedCell: selectedCell, tableView: tableView )
-            }
-        }
+//        if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
+//            let selectedCell =
+//                tableView.cellForRow(at: indexPath)as! ExpandCell
+//
+//            if selectedCell.cellState == ExpandCell.Work.Expand{
+//                // start expand here, expand at most 5 at a time, until source end
+//                expandTableView(selectedCell: selectedCell)
+//            }else if selectedCell.cellState == ExpandCell.Work.Collapse{
+//                // start collapse here, collapse all the way back to max_init_cells
+//                collapseTableView(selectedCell: selectedCell, tableView: tableView )
+//            }
+//        }
     }
     
-    private func collapseTableView(selectedCell: ExpandCell, tableView: UITableView){
-        let numOfRow = tableView.numberOfRows(inSection: 0)
-        var indexPaths = [IndexPath]()
-        let start = DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH+1
-        let end  = numOfRow-2
-        var a = 0
-        
-        for i in start...end{
-            a+=1
-            print("removing : " + String(i))
-            let indexPath = IndexPath(row: i, section: 0)
-            indexPaths.append(indexPath)
-        }
-        
-        removeLastCommentCellsFromList(numOfCells: end-start+1)
-        
-        tableView.beginUpdates()
-        tableView.deleteRows(at: indexPaths, with: .automatic)
-        tableView.endUpdates()
-        
-        selectedCell.setLogoExpand()
-    }
+//    private func collapseTableView(selectedCell: ExpandCell, tableView: UITableView){
+//        let numOfRow = tableView.numberOfRows(inSection: 0)
+//        var indexPaths = [IndexPath]()
+//        let start = DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH+1
+//        let end  = numOfRow-2
+//        var a = 0
+//
+//        for i in start...end{
+//            a+=1
+//            print("removing : " + String(i))
+//            let indexPath = IndexPath(row: i, section: 0)
+//            indexPaths.append(indexPath)
+//        }
+//
+//        removeLastCommentCellsFromList(numOfCells: end-start+1)
+//
+//        tableView.beginUpdates()
+//        tableView.deleteRows(at: indexPaths, with: .automatic)
+//        tableView.endUpdates()
+//
+//        selectedCell.setLogoExpand()
+//    }
     
-    private func expandTableView(selectedCell: ExpandCell){
-        var indexPaths = [IndexPath]()
-        for _ in 1...DisplayPhotoViewController.MAXIMUM_EXPAND_LENGTH{
-            if commentsSource.count<=(commentCellsList.count){
-                print("no more source")
-                selectedCell.setLogoCollapse()
-                break
-            }
-            print("didSelectRowAt : " + "at " + String((commentCellsList.count)))
-            addCommentCellToList( commentStruct: commentsSource[(commentCellsList.count)])
-            let indexPath = IndexPath(row: tableView_cell_length-1, section: 0)
-            indexPaths.append(indexPath)
-        }
-        
-        tableView.beginUpdates()
-        tableView.insertRows(at: indexPaths, with: .automatic)
-        tableView.endUpdates()
-        
-        if commentsSource.count<=(commentCellsList.count){
-            print("no more source")
-            selectedCell.setLogoCollapse()
-        }
-        
-    }
+//    private func expandTableView(selectedCell: ExpandCell){
+//        var indexPaths = [IndexPath]()
+//        for _ in 1...DisplayPhotoViewController.MAXIMUM_EXPAND_LENGTH{
+//            if commentsSource.count<=(commentCellsList.count){
+//                print("no more source")
+//                selectedCell.setLogoCollapse()
+//                break
+//            }
+//            print("didSelectRowAt : " + "at " + String((commentCellsList.count)))
+//            addCommentCellToList( commentStruct: commentsSource[(commentCellsList.count)])
+//            let indexPath = IndexPath(row: tableView_cell_length-1, section: 0)
+//            indexPaths.append(indexPath)
+//        }
+//
+//        tableView.beginUpdates()
+//        tableView.insertRows(at: indexPaths, with: .automatic)
+//        tableView.endUpdates()
+//
+//        if commentsSource.count<=(commentCellsList.count){
+//            print("no more source")
+//            selectedCell.setLogoCollapse()
+//        }
+//    }
     
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
+//        if indexPath.row == 0 {
+//            return DisplayPhotoViewController.LIKES_ROW_HEIGHT
+//        }else if indexPath.row == tableView_cell_length + 1 && hasHiddenCells{
+//            return DisplayPhotoViewController.EXPAND_ROW_HEIGHT
+//        }else {
+//            return UITableView.automaticDimension
+//        }
+        
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
-        }else if indexPath.row == tableView_cell_length + 1 && hasHiddenCells{
-            return DisplayPhotoViewController.EXPAND_ROW_HEIGHT
         }else {
             return UITableView.automaticDimension
         }
-        //should never go here
     }
     
     private func makeDummyCommentSource(num: Int){
@@ -329,35 +383,35 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         displayPhotoImageView.addGestureRecognizer(zoomInGesture)
     }
     
-    private func initCommentCellsList(){
-
-        // load at most 5 comments from caches
-        if (commentsSource.count != 0) {
-            for i in 1...min(DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH, commentsSource.count) {
-                addCommentCellToList( commentStruct: commentsSource[i-1])
-            }
-        }
-    }
+//    private func initCommentCellsList(){
+//
+//        // load at most 5 comments from caches
+//        if (commentsSource.count != 0) {
+//            for i in 1...min(DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH, commentsSource.count) {
+//                addCommentCellToList( commentStruct: commentsSource[i-1])
+//            }
+//        }
+//    }
     
-    private func addCommentCellToList(commentStruct: CommentCellStruct){
-        commentCellsList.append(commentStruct)
-        // tableView_cell_length = 1 + commentCellsList.count
-        tableView_cell_length = commentCellsList.count
-    }
-    
-    private func addCommentCellToList(username: String, comment: String){
-        var commentCell = CommentCellStruct()
-        commentCell.comment = comment
-        commentCell.username = username
-        commentCellsList.append(commentCell)
-        // tableView_cell_length = 1 + commentCellsList.count
-        tableView_cell_length = commentCellsList.count
-    }
-    
-    private func removeLastCommentCellsFromList(numOfCells : Int){
-        commentCellsList.removeLast(numOfCells)
-        tableView_cell_length = tableView_cell_length - numOfCells
-    }
+//    private func addCommentCellToList(commentStruct: CommentCellStruct){
+//        commentCellsList.append(commentStruct)
+//        // tableView_cell_length = 1 + commentCellsList.count
+//        tableView_cell_length = commentCellsList.count
+//    }
+//
+//    private func addCommentCellToList(username: String, comment: String){
+//        var commentCell = CommentCellStruct()
+//        commentCell.comment = comment
+//        commentCell.username = username
+//        commentCellsList.append(commentCell)
+//        // tableView_cell_length = 1 + commentCellsList.count
+//        tableView_cell_length = commentCellsList.count
+//    }
+//
+//    private func removeLastCommentCellsFromList(numOfCells : Int){
+//        commentCellsList.removeLast(numOfCells)
+//        tableView_cell_length = tableView_cell_length - numOfCells
+//    }
 
     
     // Override to support conditional editing of the table view.
