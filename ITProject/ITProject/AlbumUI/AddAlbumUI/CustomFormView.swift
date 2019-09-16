@@ -64,13 +64,15 @@ class CustomFormView: UIView {
         self.withUploadFile = withUploadFile!
         super.init(frame: UIScreen.main.bounds)
         setupScrollView()
+        setupTitleLabel()
         setupImageView()
         setupTextFields(with: textFieldsContent)
+        setupUploadView()
         setupButton(with: buttonContent)
         setupTapGestureRecognizer()
         scrollView.layoutIfNeeded()
         set(.height,
-            of: scrollView.contentSize.height + scrollViewVerticalOffset * 2,
+            of: scrollView.contentSize.height,
             priority: .defaultHigh)
     }
     
@@ -118,11 +120,16 @@ class CustomFormView: UIView {
     
     private func setupImageView(){
         scrollView.addSubview(imageView)
-        imageView.layoutToSuperview(.centerX, .centerY, .width)
+        imageView.layout(.top, to: .bottom, of: titleLabel, offset: 20)
+        imageView.layoutToSuperview(.centerX)
         imageView.contentMode = .scaleAspectFit
-        imageView.layoutToSuperview(.top, offset: 10)
-        imageView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor, multiplier: 0.5).isActive = true
+        //imageView.layoutToSuperview(.top, offset: 10)
+        imageView.layoutToSuperview(.width, offset: -20)
+   
+        // to-do: fix height
+        imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 0.5).isActive = true
         imageView.image = imageViewContent
+        self.layoutIfNeeded()
         
     }
     
@@ -144,10 +151,11 @@ class CustomFormView: UIView {
         
         uploadButtonContent.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
         uploadButtonContent.setTitle("Upload Thumbnail", for: .normal)
+        uploadButtonContent.setImage(UIImage(named: "upload"), for: .normal)
 
         uploadButtonContent.setTitleColor(.gray, for: .normal)
         uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
-        //uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
+        uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
         
         uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
         uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
@@ -211,6 +219,11 @@ class CustomFormView: UIView {
     // Tap Gesture
     @objc func tapGestureRecognized() {
         endEditing(true)
+    }
+    
+    // todo: update image from database
+    public func resetImage(uiname : String){
+        imageView.image = UIImage(named: uiname)
     }
     
 }

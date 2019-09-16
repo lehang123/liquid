@@ -13,7 +13,7 @@ import SwiftEntryKit
 class CustomFormViewController: UIViewController {
 
 
-    var contentv : UIView!
+    var contentv : CustomFormView!
     private var albumCoverViewController : AlbumCoverViewController!
     private var albumDataList : [String] = []
     
@@ -22,7 +22,7 @@ class CustomFormViewController: UIViewController {
     
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
-    private var albumThumbnailImage : UIImage? = nil
+    private var albumThumbnailImage : UIImage? = UIImage(named: "test-small-size-image")
     private var albumThumbnailString: String = "test-small-size-image"
 
     public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String]){
@@ -36,20 +36,21 @@ class CustomFormViewController: UIViewController {
         setView()
     }
     
+    
     private func setView(){
-        let contentview = showSignupForm(style: .light)
+        self.contentv = showSignupForm(style: .light)
         
-        self.view.addSubview(contentview)
+        self.view.addSubview(contentv)
         
         // constraint
-        contentview.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        contentview.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
-        contentview.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
-        contentview.heightAnchor.constraint(equalTo: contentview.heightAnchor).isActive = true
+        contentv.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        contentv.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        contentv.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
+        contentv.heightAnchor.constraint(equalTo: contentv.heightAnchor).isActive = true
         
-        contentview.backgroundColor = .white
-        contentview.layer.cornerRadius = 10
-        contentview.layer.masksToBounds = true
+        contentv.backgroundColor = .white
+        contentv.layer.cornerRadius = 10
+        contentv.layer.masksToBounds = true
     
     }
     
@@ -80,6 +81,7 @@ class CustomFormViewController: UIViewController {
             text: "Add new album",
             style: titleStyle
         )
+    
         let textFields = AddAlbumUI.fields(
             by: [.albumName, .albumDescription],
             style: style
@@ -154,17 +156,18 @@ class CustomFormViewController: UIViewController {
             displayMode: .light,
             expandAnimatedly: true)
         
-        
+        // todo: initial image content
         let contentView = CustomFormView(
             with: title,
             textFieldsContent: textFields,
             buttonContent: buttonsBarContent,
+            imageViewContent: UIImage(named: "item4")!,
             withUploadFile: true
         )
         
         contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
-        contentView.uploadButtonContent.setImage(albumThumbnailImage ?? UIImage(named: "upload"), for: .normal)
-
+        
+        
         return contentView
     }
     
@@ -219,8 +222,10 @@ extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigatio
                 print("you get error from Thumbnail choose")
             Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
         })
-       
-        //print("Thumbnail check:", albumThumbnailImage)
+        
+        // todo: update image from database
+        contentv.resetImage(uiname: "item3")
+        
         dismiss(animated: true, completion: nil)
     }
     
