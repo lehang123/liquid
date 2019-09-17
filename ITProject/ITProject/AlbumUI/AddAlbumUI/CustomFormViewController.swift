@@ -20,8 +20,8 @@ class CustomFormViewController: UIViewController {
     
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
-    private(set) var albumThumbnailImage : UIImage? = UIImage(named: "test-small-size-image")
-    private(set) var albumThumbnailString: String = "test-small-size-image"
+    private(set) var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
+    private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
 
     public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String], formEle: FormElement){
@@ -123,22 +123,13 @@ class CustomFormViewController: UIViewController {
             expandAnimatedly: true
         )
         
-        // todo: initial image content
-//        let contentView = CustomFormView(
-//            with: title,
-//            textFieldsContent: textFields,
-//            buttonContent: buttonsBarContent,
-//            imageViewContent: UIImage(named: "item4")!,
-//            withUploadFile: true
-  //      )
-        
         switch formEle.formType {
         case .withImageView:
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
                 buttonContent: buttonsBarContent,
-                imageViewContent: UIImage(named: "item4")!,
+                imageViewContent: UIImage(named: Util.DEFAULT_IMAGE)!,
                 withUploadFile: true
             )
             contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
