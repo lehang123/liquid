@@ -14,9 +14,7 @@ class CustomFormViewController: UIViewController {
 
 
     private var contentv : CustomFormView!
-    private var albumCoverViewController : AlbumCoverViewController!
-    private var albumDataList : [String] = []
-    
+
     
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
@@ -24,9 +22,7 @@ class CustomFormViewController: UIViewController {
     private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
 
-    public func setAlbumCoverViewController(albumCoverViewController : AlbumCoverViewController, albumDataList : [String], formEle: FormElement){
-        self.albumCoverViewController = albumCoverViewController
-        self.albumDataList = albumDataList
+    public func initFormELement(formEle: FormElement){
         self.formEle = formEle
         
     }
@@ -130,7 +126,8 @@ class CustomFormViewController: UIViewController {
                 textFieldsContent: textFields,
                 buttonContent: buttonsBarContent,
                 imageViewContent: UIImage(named: Util.DEFAULT_IMAGE)!,
-                withUploadFile: true
+                withUploadFile: true,
+                uploadString: formEle.uploadTitle
             )
             contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
              return contentView
@@ -139,7 +136,8 @@ class CustomFormViewController: UIViewController {
                 with: title,
                 textFieldsContent: textFields,
                 buttonContent: buttonsBarContent,
-                withUploadFile: true
+                withUploadFile: true,
+                uploadString: formEle.uploadTitle
             )
             return contentView
         case .defaultForm:
@@ -172,7 +170,6 @@ class CustomFormViewController: UIViewController {
             bool in
             self.dismiss(animated: true, completion: {
                 completion()
-//                self.albumCoverViewController = nil
             })
         })
     }
