@@ -155,8 +155,7 @@ class CustomFormViewController: UIViewController {
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
-                buttonContent: buttonsBarContent,
-                withUploadFile: true
+                buttonContent: buttonsBarContent
             )
             return contentView
         }
