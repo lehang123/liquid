@@ -20,7 +20,15 @@ struct ModelCollectionFlowLayout {
     var image: UIImage!
 }
 
-class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+protocol FamilyProfileViewDelegate {
+    func didUpdateFamilyInfo()
+}
+
+protocol UserProfileViewDelegate {
+    func didUpdateUserInfo()
+}
+
+class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, FamilyProfileViewDelegate, UserProfileViewDelegate  {
     
     private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
     private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
@@ -89,13 +97,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        // everytime main view appear, reload user and user's family data
-        if Auth.auth().currentUser != nil{
-               self.loadUserAndFamilyDataForServer()
-        }
-    }
-    
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -127,7 +128,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
                     phone: currentUser?.phoneNumber ?? "12345678",
                     gender: self.userGender ?? Gender.Unknown,
-                    familyRelation: self.userFamilyPosition ?? "None")
+                    familyRelation: self.userFamilyPosition ?? "None",
+                    userInfoDelegate: self)
                 
                 // pass user's family info to the current sideMenuVC
                     sideMenuVC.userFamilyInformation = UserFamilyInfo(
@@ -135,10 +137,25 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                         familyName: self.familyName,
                         familyProfileUID: self.familyProfileUID,
                         familyProfileExtension: self.familyProfileExtension,
-                        familyMottoText: self.familyMotto.text
+                        familyMottoText: self.familyMotto.text,
+                        familyInfoDelegate: self
                     )
                 }
             }
+        }
+    }
+    
+    func didUpdateFamilyInfo() {
+        // reload Family Info
+        if Auth.auth().currentUser != nil{
+            self.loadFamilyInformFromServer()
+        }
+    }
+    
+    func didUpdateUserInfo() {
+        // reload User Info
+        if Auth.auth().currentUser != nil{
+            self.loadUserInformFromServer()
         }
     }
     
@@ -241,7 +258,21 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         }
     }
     
-    private func loadUserAndFamilyDataForServer(){
+    private func loadUserInformFromServer(){
+        //start pulling data from server : user info
+        CacheHandler.getInstance().getUserInfo(completion: {
+            relation, gender, _, error in
+            
+            if let err = error{
+                print("get User Info from server error " + err.localizedDescription)
+            }else {
+                self.userFamilyPosition = relation
+                self.userGender = gender
+            }
+        })
+    }
+    
+    private func loadFamilyInformFromServer(){
         //start pulling data from server : family info
         CacheHandler.getInstance().getFamilyInfo(completion: {
             uid, motto, name, profileUId, profileExtension, error in
@@ -258,18 +289,40 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 self.familyProfileExtension = profileExtension
             }
         })
+    }
+    
+    private func loadUserAndFamilyDataForServer(){
         
-        //start pulling data from server : user info
-        CacheHandler.getInstance().getUserInfo(completion: {
-            relation, gender, _, error in
-            
-            if let err = error{
-                print("get User Info from server error " + err.localizedDescription)
-            }else {
-                self.userFamilyPosition = relation
-                self.userGender = gender
-            }
-        })
+        loadFamilyInformFromServer()
+        loadUserInformFromServer()
+//        //start pulling data from server : family info
+//        CacheHandler.getInstance().getFamilyInfo(completion: {
+//            uid, motto, name, profileUId, profileExtension, error in
+//
+//            if let err = error {
+//                print("get family info from server error " + err.localizedDescription)
+//            }else {
+//                print("get family info from server success : ")
+//
+//                self.familyUID = uid
+//                self.familyMotto.text = motto
+//                self.familyName = name
+//                self.familyProfileUID = profileUId
+//                self.familyProfileExtension = profileExtension
+//            }
+//        })
+//
+//        //start pulling data from server : user info
+//        CacheHandler.getInstance().getUserInfo(completion: {
+//            relation, gender, _, error in
+//
+//            if let err = error{
+//                print("get User Info from server error " + err.localizedDescription)
+//            }else {
+//                self.userFamilyPosition = relation
+//                self.userGender = gender
+//            }
+//        })
     }
     
     private func askForLogin(){
