@@ -70,10 +70,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         }
         
         //testing functions. dont forget to delete!::
-//       test()
         
         // set Profile Image
-        profileImg.image = UIImage(named: "tempProfileImage")
+//        profileImg.image = UIImage(named: "tempProfileImage")
         // loading profileImage with shadow
         profileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
         profileImg.layer.shadowOpacity = 0.7
@@ -285,8 +284,23 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 self.familyUID = uid
                 self.familyMotto.text = motto
                 self.familyName = name
+                
+                if self.familyProfileUID != profileUId{
+                    // profileImageChanged, reload stuffs
+                    Util.GetImageData(imageUID: profileUId, UIDExtension: profileExtension, completion: {
+                        data in
+                        
+                        if let d = data {
+                            self.profileImg.image = UIImage(data: d)
+                        }else{
+                            self.profileImg.image = UIImage(named: Util.DEFAULT_IMAGE)
+                        }
+                    })
+                }
+                
                 self.familyProfileUID = profileUId
                 self.familyProfileExtension = profileExtension
+                
             }
         })
     }
@@ -295,34 +309,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         
         loadFamilyInformFromServer()
         loadUserInformFromServer()
-//        //start pulling data from server : family info
-//        CacheHandler.getInstance().getFamilyInfo(completion: {
-//            uid, motto, name, profileUId, profileExtension, error in
-//
-//            if let err = error {
-//                print("get family info from server error " + err.localizedDescription)
-//            }else {
-//                print("get family info from server success : ")
-//
-//                self.familyUID = uid
-//                self.familyMotto.text = motto
-//                self.familyName = name
-//                self.familyProfileUID = profileUId
-//                self.familyProfileExtension = profileExtension
-//            }
-//        })
-//
-//        //start pulling data from server : user info
-//        CacheHandler.getInstance().getUserInfo(completion: {
-//            relation, gender, _, error in
-//
-//            if let err = error{
-//                print("get User Info from server error " + err.localizedDescription)
-//            }else {
-//                self.userFamilyPosition = relation
-//                self.userGender = gender
-//            }
-//        })
     }
     
     private func askForLogin(){
