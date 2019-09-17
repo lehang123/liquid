@@ -88,7 +88,28 @@ class AlbumDetailTableViewController: UITableViewController {
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
         
-        self.present(imagePicker, animated: true, completion:  nil)
+        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
+        
+        let formEle = self.setupFormELement(customFormVC: VC1)
+        VC1.initFormELement(formEle: formEle)
+        self.present(VC1, animated:true, completion: {
+            VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+
+        })
+    }
+    
+    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
+        let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
+        return .init(formType: .withImageView,
+                     titleText: "Add new photo",
+                     textFields: textFields,
+                     uploadTitle: "Upload photo",
+                     cancelButtonText: "Cancel",
+                     okButtonText: "Create",
+                     cancelAction:{},
+                     okAction: {}
+                    )
+        
     }
     
     var displayPhotoViewController : DisplayPhotoViewController?
