@@ -198,7 +198,7 @@ class CacheHandler : NSObject {
         }
     }
     
-    public func getAlbumInfo (familyID: DocumentReference, completion: @escaping (_ albums: Dictionary <String, Dictionary<String, Any>>?, _ error: Error?)->() = {_,_ in} ){
+    public func getAlbumInfo (familyID: DocumentReference, completion: @escaping (_ albums: [(key: String, value: Dictionary<String, Any>)], _ error: Error?)->() = {_,_ in} ){
         
             Util.ShowActivityIndicator(withStatus: "retrieving album information...")
         DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyID).getDocuments(completion: { (querySnapshot, error) in
@@ -211,11 +211,13 @@ class CacheHandler : NSObject {
                             } else {
                                 
                                 var albums : Dictionary <String, Dictionary<String, Any>> = Dictionary <String, Dictionary<String,Any>> ();
+                                var sortedAlbums :[(key: String, value: Dictionary<String, Any>)] = [(key: String, value: Dictionary<String, Any>)]();
                                 //loop thru each document, parse them into the required data format:
                                 for document in querySnapshot!.documents {
                                     let albumDetails : [String:Any] = document.data();
                                     let albumName :String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
                                     let owner:DocumentReference? = (albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
+                                    
                                     //this is for the setCache:
                                     albums[albumName] = [
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
@@ -228,8 +230,30 @@ class CacheHandler : NSObject {
                                         
                                     ]
                                     
+                                    sortedAlbums =  albums.sorted(by: { (first, second) -> Bool in
+                                        
+                                        let (_, firstDetail) = first
+
+                                        let (_, secondDetail) = second
+                                        let  firstDate : Timestamp =  firstDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp;
+                                        let secondDate : Timestamp = secondDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp;
+                                        switch firstDate.compare(secondDate){
+                                            
+                                        case .orderedAscending:
+                                            return false;
+                                        case .orderedSame:
+                                            return true;
+
+                                        case .orderedDescending:
+                                            return true;
+
+                                        };
+                                        
+                                    })
+                                
+                                    
                 }
-                                completion(albums, error);
+                                completion(sortedAlbums , error);
             }
         })
             }
