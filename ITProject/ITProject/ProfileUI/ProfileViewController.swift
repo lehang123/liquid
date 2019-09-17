@@ -30,6 +30,8 @@ class ProfileViewController: UIViewController {
     
     var userInformation: UserInfo!
     
+    var didChangeUserInfo:Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -124,6 +126,10 @@ class ProfileViewController: UIViewController {
     // To do change the username in database also in cache
     @objc func DoneButtonTapped() {
         let user = Auth.auth().currentUser
+        
+        
+        didChangeUserInfo = true
+        userInformation.userInfoDelegate.didUpdateUserInfo()
         
         //get current name:
 //        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
