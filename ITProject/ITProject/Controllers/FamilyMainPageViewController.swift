@@ -166,7 +166,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             if let err = error {
                 print("error occurs during passAlbumsData : " + err.localizedDescription)
             }else{
-                albumDic?.forEach({
+                albumDic.forEach({
                     (arg) in
                     
                     let (albumName, albumDetails) = arg
@@ -174,8 +174,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                                                    description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
                                                    UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
                                                    photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
-                                                   coverImageUID: "test-small-size-image",
-                                                   coverImageExtension: Util.EXTENSION_JPEG,
+                                                   coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
+                                                   coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
                                                    doesReload: true)
                     
                 })

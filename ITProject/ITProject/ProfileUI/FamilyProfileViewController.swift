@@ -32,6 +32,12 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     
     var didChangeFamilyInfo:Bool!
     
+    
+    private var currentFamilyNameField :String?
+     private var currentMotto :String?
+     private var currentPhotoString :String?
+    private var currentPhotoStringExt :String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -41,6 +47,12 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         self.displayFamilyUID.text = userFamilyInfo.familyUID
         self.mottoTextView.text = userFamilyInfo.familyMottoText
         
+        //set current ones:
+        self.currentFamilyNameField = userFamilyInfo.familyName
+        self.currentMotto = userFamilyInfo.familyMottoText
+        self.currentPhotoString = userFamilyInfo.familyProfileUID
+        self.currentPhotoStringExt = userFamilyInfo.familyProfileExtension
+
         // Set right bar button as Done to store any changes that user made
         let rightButtonItem = UIBarButtonItem.init(
             title: "Done",
@@ -104,8 +116,26 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         // if user commit change to db
         didChangeFamilyInfo = true
         userFamilyInfo.familyInfoDelegate.didUpdateFamilyInfo()
+        
+        //update according to what has changed:
+        
+        if (self.currentFamilyNameField != self.familyNameField.text){
+            
+            DBController.getInstance().updateSpecificField(newValue: self.familyNameField.text!, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
+            self.currentFamilyNameField = self.familyNameField.text
+        }
+        if (self.currentMotto != self.mottoTextView.text ){
+            DBController.getInstance().updateSpecificField(newValue: self.mottoTextView.text!, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
+            self.currentMotto = self.mottoTextView.text
+        }
+        //TODO: where is the photo string to be checked against:
+//        if (self.currentPhotoString != ...){
+//            DBController.getInstance().updateSpecificField(newValue: self.mottoTextView.text!, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
+//
+//        }
+
+      
     }
-    
     @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
     {
         self.mottoTextView.endEditing(true)
