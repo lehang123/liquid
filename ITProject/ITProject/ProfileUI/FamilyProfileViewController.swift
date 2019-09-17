@@ -26,6 +26,8 @@ class FamilyProfileViewController: UIViewController {
     
     var userFamilyInfo: UserFamilyInfo!
     
+    var didChangeFamilyInfo:Bool!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -77,9 +79,20 @@ class FamilyProfileViewController: UIViewController {
         self.view.addGestureRecognizer(tapGestureBackground)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        if self.isMovingFromParent {
+            // Your code...
+            print("view is disappearing from it's parent")
+        }
+    }
+    
     @objc func DoneButtonTapped() {
         // commit change to db
         print("FamilyProfileViewController : done button pressed, commit change to db,then dismiss")
+        // if user commit change to db
+        didChangeFamilyInfo = true
+        userFamilyInfo.familyInfoDelegate.didUpdateFamilyInfo()
     }
     
     @objc func backgroundTapped(_ sender: UITapGestureRecognizer)

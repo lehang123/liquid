@@ -17,6 +17,7 @@ struct UserInfo {
     var phone: String?
     var gender: Gender?
     var familyRelation: String?
+    var userInfoDelegate: UserProfileViewDelegate!
 }
 
 enum Gender : String{
@@ -31,6 +32,7 @@ struct UserFamilyInfo {
     var familyProfileUID: String?
     var familyProfileExtension: String?
     var familyMottoText: String?
+    var familyInfoDelegate: FamilyProfileViewDelegate!
 }
 
 class SideMenuTableViewController: UITableViewController {
