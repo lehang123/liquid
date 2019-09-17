@@ -13,6 +13,7 @@ public struct FormElement{
     public enum FormType {
         case withImageView
         case withoutImageView
+        case defaultForm
     }
     
     public typealias Action = () -> Void

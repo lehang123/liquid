@@ -124,18 +124,45 @@ class CustomFormViewController: UIViewController {
         )
         
         // todo: initial image content
-        let contentView = CustomFormView(
-            with: title,
-            textFieldsContent: textFields,
-            buttonContent: buttonsBarContent,
-            imageViewContent: UIImage(named: "item4")!,
-            withUploadFile: true
-        )
+//        let contentView = CustomFormView(
+//            with: title,
+//            textFieldsContent: textFields,
+//            buttonContent: buttonsBarContent,
+//            imageViewContent: UIImage(named: "item4")!,
+//            withUploadFile: true
+  //      )
         
-        contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
+        switch formEle.formType {
+        case .withImageView:
+            let contentView = CustomFormView(
+                with: title,
+                textFieldsContent: textFields,
+                buttonContent: buttonsBarContent,
+                imageViewContent: UIImage(named: "item4")!,
+                withUploadFile: true
+            )
+            contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
+             return contentView
+        case .withoutImageView:
+            let contentView = CustomFormView(
+                with: title,
+                textFieldsContent: textFields,
+                buttonContent: buttonsBarContent,
+                withUploadFile: true
+            )
+            return contentView
+        case .defaultForm:
+            let contentView = CustomFormView(
+                with: title,
+                textFieldsContent: textFields,
+                buttonContent: buttonsBarContent,
+                withUploadFile: true
+            )
+            return contentView
+        }
+
         
-        
-        return contentView
+       
     }
     
     @objc private func uploadAction() {
