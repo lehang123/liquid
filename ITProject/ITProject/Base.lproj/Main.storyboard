@@ -124,8 +124,8 @@
                                     <action selector="updateProfileImage:" destination="eBw-8f-een" eventType="touchUpInside" id="GLz-Em-T0d"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motto" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0pt-zq-a3h">
-                                <rect key="frame" x="28" y="398" width="46" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motto (Maximum 250 chars)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0pt-zq-a3h">
+                                <rect key="frame" x="28" y="398" width="217.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -312,9 +312,8 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="redraw" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="familyBackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="hQG-Td-jmp">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FFFFFF" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOD-pg-66C">
-                                <rect key="frame" x="183" y="99" width="57" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Testing moto" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOD-pg-66C">
+                                <rect key="frame" x="100" y="99" width="210" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -387,11 +386,14 @@
                             <constraint firstItem="HaD-tf-z39" firstAttribute="bottom" secondItem="Zdo-AO-OHu" secondAttribute="top" multiplier="0.95" constant="5" id="2Ma-V6-pzY"/>
                             <constraint firstItem="hQG-Td-jmp" firstAttribute="height" secondItem="VlL-iV-m8m" secondAttribute="height" id="ARn-2y-pDf"/>
                             <constraint firstItem="HaD-tf-z39" firstAttribute="centerX" secondItem="hQG-Td-jmp" secondAttribute="centerX" constant="-55" id="AUy-Cn-FZm"/>
+                            <constraint firstItem="rRE-pQ-YPd" firstAttribute="trailing" secondItem="uOD-pg-66C" secondAttribute="trailing" constant="10" id="D51-My-P1p"/>
                             <constraint firstItem="Zdo-AO-OHu" firstAttribute="height" secondItem="VlL-iV-m8m" secondAttribute="height" multiplier="0.33" id="Ek9-o8-ZPT"/>
+                            <constraint firstItem="uOD-pg-66C" firstAttribute="leading" secondItem="rRE-pQ-YPd" secondAttribute="leading" constant="100" id="Gah-3l-0Wj"/>
                             <constraint firstItem="Zdo-AO-OHu" firstAttribute="leading" secondItem="rRE-pQ-YPd" secondAttribute="leading" id="Hdm-ag-qfH"/>
                             <constraint firstItem="hQG-Td-jmp" firstAttribute="leading" secondItem="rRE-pQ-YPd" secondAttribute="leading" id="KrC-rZ-u0n"/>
                             <constraint firstItem="HaD-tf-z39" firstAttribute="width" secondItem="hQG-Td-jmp" secondAttribute="width" multiplier="0.5" id="MgC-mI-VdC"/>
                             <constraint firstItem="hQG-Td-jmp" firstAttribute="width" secondItem="VlL-iV-m8m" secondAttribute="width" id="S1K-Yp-RjJ"/>
+                            <constraint firstItem="uOD-pg-66C" firstAttribute="top" secondItem="rRE-pQ-YPd" secondAttribute="top" constant="35" id="cGi-7U-2DH"/>
                             <constraint firstItem="HaD-tf-z39" firstAttribute="centerY" secondItem="hQG-Td-jmp" secondAttribute="centerY" constant="-20" id="eOn-bY-qvA"/>
                             <constraint firstItem="rRE-pQ-YPd" firstAttribute="trailing" secondItem="Zdo-AO-OHu" secondAttribute="trailing" id="fjh-jL-MbD"/>
                             <constraint firstItem="hQG-Td-jmp" firstAttribute="top" secondItem="VlL-iV-m8m" secondAttribute="top" id="umN-MP-9eK"/>
