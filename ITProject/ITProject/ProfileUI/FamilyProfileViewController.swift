@@ -14,11 +14,9 @@ import EnhancedCircleImageView
 class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     //Mark: Properties
     
-    private static let TEXT_VIEW_WORD_LIMIT = 250
+    private static let TEXT_VIEW_WORD_LIMIT = 150
     
     private var imagePicker = UIImagePickerController()
-    private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
-    private var albumThumbnailString: String = Util.DEFAULT_IMAGE
 
     @IBOutlet weak var familyProfileImageView: EnhancedCircleImageView!
     
@@ -30,7 +28,8 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     
     var userFamilyInfo: UserFamilyInfo!
     
-    var didChangeFamilyInfo:Bool!
+    private var didChangeFamilyInfo:Bool!
+    private var didChangeFamilyProfile:Bool!
     
     
     private var currentFamilyNameField :String?
@@ -52,6 +51,8 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         self.currentMotto = userFamilyInfo.familyMottoText
         self.currentPhotoString = userFamilyInfo.familyProfileUID
         self.currentPhotoStringExt = userFamilyInfo.familyProfileExtension
+        
+        self.didChangeFamilyInfo = false
 
         // Set right bar button as Done to store any changes that user made
         let rightButtonItem = UIBarButtonItem.init(
@@ -104,8 +105,8 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        if self.isMovingFromParent {
-            // Your code...
+        if self.isMovingFromParent && didChangeFamilyInfo {
+            userFamilyInfo.familyInfoDelegate.didUpdateFamilyInfo()
             print("view is disappearing from it's parent")
         }
     }
@@ -115,7 +116,6 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         print("FamilyProfileViewController : done button pressed, commit change to db,then dismiss")
         // if user commit change to db
         didChangeFamilyInfo = true
-        userFamilyInfo.familyInfoDelegate.didUpdateFamilyInfo()
         
         //update according to what has changed:
         
@@ -127,6 +127,24 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         if (self.currentMotto != self.mottoTextView.text ){
             DBController.getInstance().updateSpecificField(newValue: self.mottoTextView.text!, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
             self.currentMotto = self.mottoTextView.text
+        }
+        
+        if didChangeFamilyProfile {
+            didChangeFamilyInfo = true
+            // todo : upload file string to db as well
+            if let imageData = self.familyProfileImageView.image?.jpegData(compressionQuality: 1.0), let imageString = Util.GenerateUDID(){
+                Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
+                    
+                    if url != nil{
+                        // TODO : change in database
+                        
+                    }
+                    
+                }, errorHandler: {e in
+                    print("you get error from Thumbnail choose")
+                    Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                })
+            }
         }
         //TODO: where is the photo string to be checked against:
 //        if (self.currentPhotoString != ...){
@@ -175,32 +193,13 @@ extension FamilyProfileViewController: UIImagePickerControllerDelegate, UINaviga
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // todo : push add/edit photo view
+        didChangeFamilyProfile = true
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            self.albumThumbnailImage =
+            self.familyProfileImageView.image =
                 editedImage.withRenderingMode(.alwaysOriginal)
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            self.albumThumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
+            self.familyProfileImageView.image = originalImage.withRenderingMode(.alwaysOriginal)
         }
-        
-        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
-        let imageString = Util.GenerateUDID()!
-        
-        // todo : also update this string to db
-        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-            
-            if url != nil{
-                self.albumThumbnailString = imageString
-                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
-                
-                // TODO : change in database
-                self.familyProfileImageView.image = #imageLiteral(resourceName: "tempProfileImage")
-                
-            }
-            
-        }, errorHandler: {e in
-            print("you get error from Thumbnail choose")
-            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-        })
         
         
         dismiss(animated: true, completion: nil)

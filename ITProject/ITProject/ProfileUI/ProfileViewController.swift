@@ -17,8 +17,8 @@ class ProfileViewController: UIViewController {
     
     private var keyboardSize:CGRect!
     private var imagePicker = UIImagePickerController()
-    private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
-    private var albumThumbnailString: String = Util.DEFAULT_IMAGE
+//    private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
+//    private var albumThumbnailString: String = Util.DEFAULT_IMAGE
 
     @IBOutlet weak var profilePicture: EnhancedCircleImageView!
     //@IBOutlet weak var name: UILabel!
@@ -32,6 +32,7 @@ class ProfileViewController: UIViewController {
     var userInformation: UserInfo!
     
     var didChangeUserInfo:Bool!
+    var didChangeUserProfile:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +72,8 @@ class ProfileViewController: UIViewController {
         
         self.currentRelationship = userInformation.familyRelation
         self.currentGender = self.genderField.text
+        
+        self.didChangeUserInfo = false
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -115,6 +118,14 @@ class ProfileViewController: UIViewController {
         self.present(imagePicker, animated: true, completion:  nil)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        if self.isMovingFromParent && didChangeUserInfo {
+            userInformation.userInfoDelegate.didUpdateUserInfo()
+            print("view is disappearing from it's parent")
+        }
+        
+    }
     
 //    func textFieldDidEndEditing(_ textField: UITextField) {
 //        print("textFieldDidEndEditing : hello")
@@ -131,17 +142,37 @@ class ProfileViewController: UIViewController {
     @objc func DoneButtonTapped() {
         let user = Auth.auth().currentUser
         
-        didChangeUserInfo = true
-        userInformation.userInfoDelegate.didUpdateUserInfo()
+        
         
         //update DB according to what has changed:
         if (self.currentRelationship != self.relationship.text){
+            didChangeUserInfo = true
             DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME);
             self.currentRelationship = self.relationship.text
         }
         if (self.currentGender != self.genderField.text){
+            didChangeUserInfo = true
             DBController.getInstance().updateSpecificField(newValue: self.genderField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME);
             self.currentGender = self.genderField.text
+        }
+        
+        if didChangeUserProfile {
+            didChangeUserInfo = true
+            // todo : upload file string to db as well
+            if let imageData = self.profilePicture.image?.jpegData(compressionQuality: 1.0),
+                let imageString = Util.GenerateUDID(){
+                Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
+                    
+                    if url != nil{
+                        // TODO : change in database
+                        
+                    }
+                    
+                }, errorHandler: {e in
+                    print("you get error from Thumbnail choose")
+                    Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                })
+            }
         }
         //get current name:
 //        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
@@ -181,32 +212,30 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // todo : push add/edit photo view
+        didChangeUserProfile = true
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            self.albumThumbnailImage =
+            self.profilePicture.image =
                 editedImage.withRenderingMode(.alwaysOriginal)
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            self.albumThumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
+            self.profilePicture.image = originalImage.withRenderingMode(.alwaysOriginal)
         }
         
-        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
-        let imageString = Util.GenerateUDID()!
-        
         // todo : also update this string to db
-        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-            
-            if url != nil{
-                self.albumThumbnailString = imageString
-                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
-                
-                // TODO : change in database
-                self.profilePicture.image = #imageLiteral(resourceName: "tempProfileImage")
-                
-            }
-            
-        }, errorHandler: {e in
-            print("you get error from Thumbnail choose")
-            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-        })
+//        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
+//
+//            if url != nil{
+//                self.albumThumbnailString = imageString
+//                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
+//
+//                // TODO : change in database
+//                self.profilePicture.image = #imageLiteral(resourceName: "tempProfileImage")
+//
+//            }
+//
+//        }, errorHandler: {e in
+//            print("you get error from Thumbnail choose")
+//            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+//        })
         
         
         dismiss(animated: true, completion: nil)
