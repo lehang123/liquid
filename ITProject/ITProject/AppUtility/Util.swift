@@ -23,6 +23,8 @@ class Util {
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
     
+    public static let DEFAULT_IMAGE = "default"
+    
     public static func GenerateUDID () -> String!{
         let uuid = UUID().uuidString
         return uuid
