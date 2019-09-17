@@ -16,6 +16,9 @@ class ProfileViewController: UIViewController {
     private static let CHANGED_MESSAGE = "The information has changed"
     
     private var keyboardSize:CGRect!
+    private var imagePicker = UIImagePickerController()
+    private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
+    private var albumThumbnailString: String = Util.DEFAULT_IMAGE
 
     @IBOutlet weak var profilePicture: EnhancedCircleImageView!
     //@IBOutlet weak var name: UILabel!
@@ -26,6 +29,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var phoneField: UITextField!
     
     var userInformation: UserInfo!
+    
+    var didChangeUserInfo:Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +43,12 @@ class ProfileViewController: UIViewController {
             action: #selector(DoneButtonTapped)
         )
         self.navigationItem.rightBarButtonItem = rightButtonItem
-
+        
         // Do any additional setup after loading the view.
-
+        
         Util.GetImageData(imageUID: userInformation.imageUID, UIDExtension: userInformation.imageExtension, completion: {
             data in
-        
+            
             if let d = data{
                 print("get image success : loading data to image")
                 self.profilePicture.image = UIImage(data: d)
@@ -98,6 +103,15 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    @IBAction func changeProfilePhoto(_ sender: Any) {
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        
+        self.present(imagePicker, animated: true, completion:  nil)
+    }
+
+    
 //    func textFieldDidEndEditing(_ textField: UITextField) {
 //        print("textFieldDidEndEditing : hello")
 //    }
@@ -112,6 +126,10 @@ class ProfileViewController: UIViewController {
     // To do change the username in database also in cache
     @objc func DoneButtonTapped() {
         let user = Auth.auth().currentUser
+        
+        
+        didChangeUserInfo = true
+        userInformation.userInfoDelegate.didUpdateUserInfo()
         
         //get current name:
 //        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
@@ -146,4 +164,52 @@ class ProfileViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 }
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // todo : push add/edit photo view
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.albumThumbnailImage =
+                editedImage.withRenderingMode(.alwaysOriginal)
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.albumThumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
+        }
+        
+        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
+        let imageString = Util.GenerateUDID()!
+        
+        // todo : also update this string to db
+        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
+            
+            if url != nil{
+                self.albumThumbnailString = imageString
+                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
+                
+                // TODO : change in database
+                self.profilePicture.image = #imageLiteral(resourceName: "tempProfileImage")
+                
+            }
+            
+        }, errorHandler: {e in
+            print("you get error from Thumbnail choose")
+            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+        })
+        
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    /* delegate function from the UIImagePickerControllerDelegate
+     called when canceled button pressed, get out of photo library
+     */
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        print ("imagePickerController: Did canceled pressed !!")
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    
+}
+
 
