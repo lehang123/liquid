@@ -161,7 +161,8 @@ class CustomFormView: UIView {
         uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
         
         // TODO: fix width and height (now hard code)
-        let bound = CGRect(x: 0,y: 0, width: 250, height: 50)
+        let buttonWidth = scrollView.frame.width - 115
+        let bound = CGRect(x: 0,y: 0, width: buttonWidth, height: buttonWidth * 0.2)
         
         uploadButtonContent.createDashedLine(bound: bound, color: .selfcOrg, strokeLength: 8, gapLength: 6, width: 2)
         
