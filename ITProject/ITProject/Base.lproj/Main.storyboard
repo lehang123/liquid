@@ -124,6 +124,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4vG-9m-9nL" userLabel="update profile image">
                                 <rect key="frame" x="89.5" y="278" width="141" height="30"/>
                                 <state key="normal" title="update profile image"/>
+                                <connections>
+                                    <action selector="updateProfileImage:" destination="eBw-8f-een" eventType="touchUpInside" id="GLz-Em-T0d"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motto" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0pt-zq-a3h">
                                 <rect key="frame" x="28" y="398" width="46" height="21"/>
@@ -186,7 +189,6 @@
                         <outlet property="familyNameField" destination="f5I-47-zQL" id="fxM-Xi-rAk"/>
                         <outlet property="familyProfileImageView" destination="6G4-Ze-wt9" id="lvR-8u-Zff"/>
                         <outlet property="mottoTextView" destination="Bk8-sW-rYZ" id="at4-yO-Xy1"/>
-                        <outlet property="updateProfileButton" destination="4vG-9m-9nL" id="p6B-sg-TvA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c0p-IM-jxq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -974,6 +976,9 @@
                                 <state key="normal" title="Change Profile Photo">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="changeProfilePhoto:" destination="J1w-0v-fpW" eventType="touchUpInside" id="NpZ-iN-coe"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndT-vA-NJB">
                                 <rect key="frame" x="19" y="473" width="49" height="23"/>
@@ -1198,7 +1203,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="468" width="375" height="16"/>
+                                    <rect key="frame" x="0.0" y="108" width="375" height="736"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1375,7 +1380,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
+                                                    <rect key="frame" x="273" y="13.5" width="32.000000000000028" height="63.500000000000028"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>

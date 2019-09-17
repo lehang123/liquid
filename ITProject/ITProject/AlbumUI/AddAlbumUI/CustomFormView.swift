@@ -36,7 +36,8 @@ class CustomFormView: UIView {
     public init(with title: EKProperty.LabelContent,
                 textFieldsContent: [CustomTextFieldContent],
                 buttonContent: EKProperty.ButtonBarContent,
-                withUploadFile: Bool? = false) {
+                withUploadFile: Bool? = false,
+                uploadString: String? = "") {
         self.titleContent = title
         self.textFieldsContent = textFieldsContent
         self.withUploadFile = withUploadFile!
@@ -44,7 +45,7 @@ class CustomFormView: UIView {
         setupScrollView()
         setupTitleLabel()
         setupTextFields(with: textFieldsContent)
-        setupUploadView()
+        setupUploadView(uploadTitle: uploadString ?? "")
         setupButton(with: buttonContent)
         setupTapGestureRecognizer()
         scrollView.layoutIfNeeded()
@@ -57,7 +58,8 @@ class CustomFormView: UIView {
                 textFieldsContent: [CustomTextFieldContent],
                 buttonContent: EKProperty.ButtonBarContent,
                 imageViewContent: UIImage,
-                withUploadFile: Bool? = false) {
+                withUploadFile: Bool? = false,
+                uploadString: String? = "") {
         self.titleContent = title
         self.textFieldsContent = textFieldsContent
         self.imageViewContent = imageViewContent
@@ -67,7 +69,7 @@ class CustomFormView: UIView {
         setupTitleLabel()
         setupImageView()
         setupTextFields(with: textFieldsContent)
-        setupUploadView()
+        setupUploadView(uploadTitle: uploadString ?? "")
         setupButton(with: buttonContent)
         setupTapGestureRecognizer()
         scrollView.layoutIfNeeded()
@@ -141,33 +143,34 @@ class CustomFormView: UIView {
         titleLabel.content = titleContent
     }
     
-    private func setupUploadView() {
-        scrollView.addSubview(uploadButtonContent)
-        uploadButtonContent.layoutToSuperview(.centerX)
-        uploadButtonContent.layout(.top, to: .bottom, of: textFieldViews.last!, offset: 20)
-        uploadButtonContent.layoutToSuperview(.width, offset: -40)
-        uploadButtonContent.heightAnchor.constraint(equalTo: self.uploadButtonContent.widthAnchor, multiplier: 0.2).isActive = true
-        uploadButtonContent.layer.cornerRadius = 5
-        
-        uploadButtonContent.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
-        uploadButtonContent.setTitle("Upload Thumbnail", for: .normal)
-        uploadButtonContent.setImage(UIImage(named: "upload"), for: .normal)
+    private func setupUploadView(uploadTitle: String) {
+        if(withUploadFile){
+            scrollView.addSubview(uploadButtonContent)
+            uploadButtonContent.layoutToSuperview(.centerX)
+            uploadButtonContent.layout(.top, to: .bottom, of: textFieldViews.last!, offset: 20)
+            uploadButtonContent.layoutToSuperview(.width, offset: -40)
+            uploadButtonContent.heightAnchor.constraint(equalTo: self.uploadButtonContent.widthAnchor, multiplier: 0.2).isActive = true
+            uploadButtonContent.layer.cornerRadius = 5
+            
+            uploadButtonContent.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
+            uploadButtonContent.setTitle(uploadTitle, for: .normal)
+            uploadButtonContent.setImage(UIImage(named: "uploadIcon"), for: .normal)
 
-        uploadButtonContent.setTitleColor(.gray, for: .normal)
-        uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
-        uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
-        
-        uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
-        uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
-        
-        // TODO: fix width and height (now hard code)
-        let bound = CGRect(x: 0,y: 0, width: 250, height: 50)
-        
-        uploadButtonContent.createDashedLine(bound: bound, color: .selfcOrg, strokeLength: 8, gapLength: 6, width: 2)
-        
-        
-        self.layoutIfNeeded()
-       
+            uploadButtonContent.setTitleColor(.gray, for: .normal)
+            uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
+            
+            
+            uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
+            uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
+            
+            // TODO: fix width and height (now hard code)
+            let bound = CGRect(x: 0,y: 0, width: 210, height: uploadButtonContent.intrinsicContentSize.height)
+            
+            uploadButtonContent.createDashedLine(bound: bound, color: .selfcOrg, strokeLength: 8, gapLength: 6, width: 2)
+            
+            
+            self.layoutIfNeeded()
+        }
     }
     
     private func setupButton(with buttonsBarContent: EKProperty.ButtonBarContent) {

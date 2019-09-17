@@ -30,9 +30,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
         
         let formEle = self.setupFormELement(customFormVC: VC1)
-    VC1.setAlbumCoverViewController(albumCoverViewController: self,
-                                        albumDataList: self.albumDataList,
-                                        formEle: formEle)
+        VC1.initFormELement(formEle: formEle)
         self.present(VC1, animated:true, completion: {
             VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
             
@@ -45,6 +43,7 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
         return .init(formType: .withImageView,
                      titleText: "Add new album",
                      textFields: textFields,
+                     uploadTitle: "Upload Thumbnail",
                      cancelButtonText: "Cancel",
                      okButtonText: "Create",
                      cancelAction:{},
