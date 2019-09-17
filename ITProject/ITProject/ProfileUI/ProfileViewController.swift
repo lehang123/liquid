@@ -21,8 +21,9 @@ class ProfileViewController: UIViewController {
     //@IBOutlet weak var name: UILabel!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var relationship: UITextField!
-
+    var currentRelationship:String?
     @IBOutlet weak var genderField: UITextField!
+    var currentGender:String?
     @IBOutlet weak var phoneField: UITextField!
     
     var userInformation: UserInfo!
@@ -64,6 +65,9 @@ class ProfileViewController: UIViewController {
         self.relationship.text = userInformation.familyRelation
         self.phoneField.text = userInformation.phone
         self.genderField.text = userInformation.gender?.rawValue
+        
+        self.currentRelationship = userInformation.familyRelation
+        self.currentGender = self.genderField.text
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -115,10 +119,18 @@ class ProfileViewController: UIViewController {
     @objc func DoneButtonTapped() {
         let user = Auth.auth().currentUser
         
-        
         didChangeUserInfo = true
         userInformation.userInfoDelegate.didUpdateUserInfo()
         
+        //update DB according to what has changed:
+        if (self.currentRelationship != self.relationship.text){
+            DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME);
+            self.currentRelationship = self.relationship.text
+        }
+        if (self.currentGender != self.genderField.text){
+            DBController.getInstance().updateSpecificField(newValue: self.genderField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME);
+            self.currentGender = self.genderField.text
+        }
         //get current name:
 //        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
 //        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
