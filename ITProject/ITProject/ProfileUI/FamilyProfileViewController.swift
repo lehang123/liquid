@@ -11,8 +11,10 @@ import UIKit
 import FirebaseStorage
 import EnhancedCircleImageView
 
-class FamilyProfileViewController: UIViewController {
+class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     //Mark: Properties
+    
+    private static let TEXT_VIEW_WORD_LIMIT = 250
     
     private var imagePicker = UIImagePickerController()
     private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
@@ -73,12 +75,19 @@ class FamilyProfileViewController: UIViewController {
         self.mottoTextView.layer.borderWidth = 2.0
         self.mottoTextView.layer.cornerRadius = 8
         self.mottoTextView.layer.borderColor = UIColor.gray.cgColor
+        self.mottoTextView.delegate = self
     
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     
         let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
         self.view.addGestureRecognizer(tapGestureBackground)
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < FamilyProfileViewController.TEXT_VIEW_WORD_LIMIT;
     }
     
     override func viewWillDisappear(_ animated: Bool) {
