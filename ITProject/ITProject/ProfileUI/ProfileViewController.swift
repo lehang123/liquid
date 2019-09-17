@@ -103,7 +103,7 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    @IBAction func changeProfilePhoto(_ sender: Any) {
+    @IBAction func updateProfileImage(_ sender: Any) {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true

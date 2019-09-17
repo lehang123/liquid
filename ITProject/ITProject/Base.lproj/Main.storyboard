@@ -62,7 +62,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="xsF-qG-scW" userLabel="CreateAccountStackView">
-                                <rect key="frame" x="59.5" y="457.5" width="201.5" height="80.5"/>
+                                <rect key="frame" x="59.5" y="487.5" width="201.5" height="50.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Doesn't have an account ?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KbL-uh-6pV">
                                         <rect key="frame" x="0.0" y="0.0" width="201.5" height="20.5"/>
@@ -70,12 +70,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Id1-81-HYc">
-                                        <rect key="frame" x="0.0" y="20.5" width="201.5" height="30"/>
-                                        <state key="normal" title="Use Email"/>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xy3-jv-Obs">
-                                        <rect key="frame" x="0.0" y="50.5" width="201.5" height="30"/>
+                                        <rect key="frame" x="0.0" y="20.5" width="201.5" height="30"/>
                                         <state key="normal" title="Create Now"/>
                                         <connections>
                                             <segue destination="RVD-0H-nJq" kind="show" id="QQC-YS-sms"/>
@@ -122,8 +118,8 @@
                                 <rect key="frame" x="0.0" y="74" width="320" height="184"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4vG-9m-9nL" userLabel="update profile image">
-                                <rect key="frame" x="89.5" y="278" width="141" height="30"/>
-                                <state key="normal" title="update profile image"/>
+                                <rect key="frame" x="88" y="278" width="144" height="30"/>
+                                <state key="normal" title="Update Profile Image"/>
                                 <connections>
                                     <action selector="updateProfileImage:" destination="eBw-8f-een" eventType="touchUpInside" id="GLz-Em-T0d"/>
                                 </connections>
@@ -194,34 +190,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c0p-IM-jxq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3525" y="931.69014084507046"/>
-        </scene>
-        <!--Setting View Controller-->
-        <scene sceneID="TEL-GN-n6g">
-            <objects>
-                <viewController storyboardIdentifier="SettingViewController" id="VQK-qI-B5T" customClass="SettingViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="6Jz-pT-k3s">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="77a-58-Tkt">
-                                <rect key="frame" x="109" y="269" width="53" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Damn it">
-                                    <color key="titleColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="dismissTap:" destination="VQK-qI-B5T" eventType="touchUpInside" id="qcN-a1-Yng"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="x1x-Eu-ftz"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="HYU-12-Flj"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5Hf-bO-Gxv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5139" y="1139"/>
         </scene>
         <!--Change Password-->
         <scene sceneID="Le6-9E-JWl">
@@ -976,11 +944,11 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYT-38-dLW">
                                 <rect key="frame" x="64" y="306" width="192" height="30"/>
-                                <state key="normal" title="Change Profile Photo">
+                                <state key="normal" title="Update Profile Image">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="changeProfilePhoto:" destination="J1w-0v-fpW" eventType="touchUpInside" id="NpZ-iN-coe"/>
+                                    <action selector="updateProfileImage:" destination="J1w-0v-fpW" eventType="touchUpInside" id="NpZ-iN-coe"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndT-vA-NJB">
@@ -1512,7 +1480,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="42M-wJ-vJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4760.625" y="-1589.7887323943662"/>
+            <point key="canvasLocation" x="4785" y="-748"/>
         </scene>
         <!--Show Detail Photo View Controller-->
         <scene sceneID="zYT-6r-5DT">
@@ -1595,7 +1563,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m7E-MW-MQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-529" y="-428"/>
+            <point key="canvasLocation" x="4558" y="932"/>
         </scene>
     </scenes>
     <resources>
