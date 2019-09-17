@@ -166,7 +166,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             if let err = error {
                 print("error occurs during passAlbumsData : " + err.localizedDescription)
             }else{
-                albumDic?.forEach({
+                albumDic.forEach({
                     (arg) in
                     
                     let (albumName, albumDetails) = arg

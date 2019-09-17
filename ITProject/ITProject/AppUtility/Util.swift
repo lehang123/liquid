@@ -629,7 +629,10 @@ class Util {
         changeRequest.displayName = username
         changeRequest.commitChanges(completion: {
             error in
-            print("ChangeUserDisplayName :add name in auth error : " + error!.localizedDescription)
+            if let e = error {
+                print("ChangeUserDisplayName :add name in auth error : " + error!.localizedDescription)
+            }
+
             completion(error)
         })
     }
