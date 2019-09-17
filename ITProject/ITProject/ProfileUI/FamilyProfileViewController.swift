@@ -13,10 +13,12 @@ import EnhancedCircleImageView
 
 class FamilyProfileViewController: UIViewController {
     //Mark: Properties
+    
+    private var imagePicker = UIImagePickerController()
+    private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
+    private var albumThumbnailString: String = Util.DEFAULT_IMAGE
 
     @IBOutlet weak var familyProfileImageView: EnhancedCircleImageView!
-    
-    @IBOutlet weak var updateProfileButton: UIButton!
     
     @IBOutlet weak var mottoTextView: UITextView!
     
@@ -149,4 +151,61 @@ class FamilyProfileViewController: UIViewController {
         }
     }
     
+    @IBAction func updateProfileImage(_ sender: Any) {
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        
+        self.present(imagePicker, animated: true, completion:  nil)
+    }
+    
+    
 }
+
+extension FamilyProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    
+    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // todo : push add/edit photo view
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            self.albumThumbnailImage =
+                editedImage.withRenderingMode(.alwaysOriginal)
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            self.albumThumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
+        }
+        
+        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
+        let imageString = Util.GenerateUDID()!
+        
+        // todo : also update this string to db
+        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
+            
+            if url != nil{
+                self.albumThumbnailString = imageString
+                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
+                
+                // TODO : change in database
+                self.familyProfileImageView.image = #imageLiteral(resourceName: "tempProfileImage")
+                
+            }
+            
+        }, errorHandler: {e in
+            print("you get error from Thumbnail choose")
+            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+        })
+        
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    /* delegate function from the UIImagePickerControllerDelegate
+     called when canceled button pressed, get out of photo library
+     */
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        
+        print ("imagePickerController: Did canceled pressed !!")
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    
+}
+

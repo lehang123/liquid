@@ -24,6 +24,8 @@ public struct FormElement{
     /** okButton Text String **/
     public let textFields: [CustomTextFieldContent]
     
+    public var uploadTitle: String
+    
     /** okButton Text String **/
     public let okButtonText: String
 
@@ -35,11 +37,12 @@ public struct FormElement{
     public var cancelAction: Action? = nil
     
     public let formType: FormType
-
+    
 
     public init(formType: FormType,
                 titleText: String,
                 textFields: [CustomTextFieldContent],
+                uploadTitle: String,
                 cancelButtonText: String,
                 okButtonText: String,
                 cancelAction: @escaping Action = {},
@@ -47,6 +50,7 @@ public struct FormElement{
                 ){
         self.titleText = titleText
         self.textFields = textFields
+        self.uploadTitle = uploadTitle
         self.okButtonText = okButtonText
         self.cancelButtonText = cancelButtonText
         self.okAction = okAction

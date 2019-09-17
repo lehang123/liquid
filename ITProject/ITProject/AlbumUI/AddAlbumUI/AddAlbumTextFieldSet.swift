@@ -12,6 +12,7 @@ struct TextFieldOptionSet: OptionSet {
     let rawValue: Int
     static let albumName = TextFieldOptionSet(rawValue: 1 << 0)
     static let albumDescription = TextFieldOptionSet(rawValue: 1 << 1)
+    static let photoDescription = TextFieldOptionSet(rawValue: 1 << 2)
 }
 
 enum FormStyle {
@@ -89,6 +90,24 @@ final class AddAlbumUI {
                      accessibilityIdentifier: "albumDescriptionTextField")
     }
     
+    class func photoDescription(placeholderStyle: EKProperty.LabelStyle,
+                                textStyle: EKProperty.LabelStyle,
+                                separatorColor: EKColor,
+                                style: FormStyle) -> CustomTextFieldContent {
+        let albumNamePlaceholder = EKProperty.LabelContent(
+            text: "Photo Description",
+            style: placeholderStyle
+        )
+        return .init(keyboardType: .emailAddress,
+                     placeholder: albumNamePlaceholder,
+                     tintColor: style.textColor,
+                     displayMode: displayMode,
+                     textStyle: textStyle,
+                     leadingImage: UIImage(named: "descriptionIcon")!.withRenderingMode(.alwaysTemplate),
+                     bottomBorderColor: separatorColor,
+                     accessibilityIdentifier: "photoDescriptionTextField")
+    }
+    
 
     
     class func fields(by set: TextFieldOptionSet,
@@ -113,6 +132,13 @@ final class AddAlbumUI {
                                    textStyle: textStyle,
                                    separatorColor: separatorColor,
                                    style: style))
+        }
+        
+        if set.contains(.photoDescription) {
+            array.append(photoDescription(placeholderStyle: placeholderStyle,
+                                          textStyle: textStyle,
+                                          separatorColor: separatorColor,
+                                          style: style))
         }
 
         return array

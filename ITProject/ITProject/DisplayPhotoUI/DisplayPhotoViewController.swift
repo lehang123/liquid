@@ -120,14 +120,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     }
     
     // Enter comment here
-    // TO DO: gillbert
-    // To do store the comments in side the function
-    // Once the username can get replace 2 as username
     @IBAction func EnterComment(_ sender: Any) {
         
         self.cmmentText.endEditing(true)
-        
-        //print (CacheHandler.getInstance().getUserInfo())
         
         let username = Auth.auth().currentUser?.displayName ?? "UNKNOW GUY"
         
@@ -189,6 +184,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private func storeCommentToServer(username : String,  comment: String, photoUID : String) {
         
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, photoUID: photoUID);
+        
     }
    
     
@@ -198,6 +194,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         let controller = self.storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
         controller.selectedImage = imageView.image
         self.present(controller, animated: true)
+        
     }
 
     
@@ -232,8 +229,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 //            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
 //        }
         
-        
         return commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        if (indexPath.row == 0) {
+            print ("comments go heres")
+        }
         
     }
 
