@@ -229,18 +229,20 @@ class CustomFormView: UIView {
     // todo: update image from database
     public func updatePreView(imageUID : String, imageExtension : String){
         
-        if imageUID != Util.DEFAULT_IMAGE{
-            Util.GetImageData(imageUID: imageUID, UIDExtension: imageExtension, completion: {
-                data in
-                if let d = data {
-                    self.imageView.image = UIImage(data: d)
-                }else{
-                    print("updatePreView : thumbnail preview error !!!!")
-                }
-            })
-        }else{
-            self.imageView.image = UIImage(named: Util.DEFAULT_IMAGE)
-        }
+        Util.GetImageData(imageUID: imageUID, UIDExtension: imageExtension, completion: {
+            data in
+            if let d = data {
+                self.imageView.image = UIImage(data: d)
+            }else{
+                print("updatePreView : thumbnail preview error !!!!")
+            }
+        })
+        
+//        if imageUID != Util.DEFAULT_IMAGE{
+//
+//        }else{
+//            self.imageView.image = UIImage(named: Util.DEFAULT_IMAGE)
+//        }
     }
     
 }
