@@ -31,8 +31,8 @@ class RegisterDBController {
     public static let FAMILY_DOCUMENT_FIELD_MEMBERS = "family_members" // the members
     public static let FAMILY_DOCUMENT_FIELD_ALBUM_PATHS = "album_paths" // paths to album
     public static let FAMILY_DOCUMENT_FIELD_MOTTO = "motto" // family's motto
-    public static let FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE = "profile_picture" // paths to family profile pict
-    public static let FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE_EXT = "profile_picture_ext" 
+    public static let FAMILY_DOCUMENT_FIELD_THUMBNAIL = "profile_picture" // paths to family profile pict
+    public static let FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT = "profile_picture_ext" 
 
     private static var single: RegisterDBController!;
     
@@ -80,7 +80,7 @@ class RegisterDBController {
             RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS : [userDocumentReference],
             RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS : [],
                 RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO :"",
-                RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE : ""], collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
+                RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL : ""], collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
         return familyUID;
         
         

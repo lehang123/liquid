@@ -277,8 +277,8 @@ class CacheHandler : NSObject {
                     let data = doc.data()
                     let motto = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO] as? String
                     let name = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME] as? String
-                    let profile = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE] as? String
-                    let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE_EXT] as? String
+                    let profile = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL] as? String
+                    let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT] as? String
                     
                     completion(doc.documentID, motto, name, profile, profileExt,error);
                 }
