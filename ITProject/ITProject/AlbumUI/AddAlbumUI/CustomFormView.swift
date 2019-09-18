@@ -159,7 +159,7 @@ class CustomFormView: UIView {
 
             uploadButtonContent.setTitleColor(.gray, for: .normal)
             uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
-            uploadButtonContent.setImage(#imageLiteral(resourceName: "upload"), for: .normal)
+            uploadButtonContent.setImage(#imageLiteral(resourceName: "uploadIcon"), for: .normal)
             
             uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
             uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
@@ -228,14 +228,19 @@ class CustomFormView: UIView {
     
     // todo: update image from database
     public func updatePreView(imageUID : String, imageExtension : String){
-        Util.GetImageData(imageUID: imageUID, UIDExtension: imageExtension, completion: {
-            data in
-            if let d = data {
-                self.imageView.image = UIImage(data: d)
-            }else{
-                print("updatePreView : thumbnail preview error !!!!")
-            }
-        })
+        
+        if imageUID != Util.DEFAULT_IMAGE{
+            Util.GetImageData(imageUID: imageUID, UIDExtension: imageExtension, completion: {
+                data in
+                if let d = data {
+                    self.imageView.image = UIImage(data: d)
+                }else{
+                    print("updatePreView : thumbnail preview error !!!!")
+                }
+            })
+        }else{
+            self.imageView.image = UIImage(named: Util.DEFAULT_IMAGE)
+        }
     }
     
 }
