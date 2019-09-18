@@ -138,10 +138,6 @@ class AlbumDBController {
                     //returns the album's DocumentReference
                     completion(albumDocumentReference);
 
-
-
-
-
                 } else {
                     print("ERROR at addNewAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
                 }

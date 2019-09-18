@@ -31,8 +31,8 @@ class ProfileViewController: UIViewController {
     
     var userInformation: UserInfo!
     
-    var didChangeUserInfo:Bool!
-    var didChangeUserProfile:Bool!
+    var didChangeUserInfo:Bool = false
+    var didChangeUserProfile:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()

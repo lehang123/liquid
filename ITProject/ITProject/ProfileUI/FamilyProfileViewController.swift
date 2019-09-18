@@ -28,9 +28,8 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     
     var userFamilyInfo: UserFamilyInfo!
     
-    private var didChangeFamilyInfo:Bool!
-    private var didChangeFamilyProfile:Bool!
-    
+    private var didChangeFamilyInfo:Bool = false
+    private var didChangeFamilyProfile:Bool = false
     
     private var currentFamilyNameField :String?
      private var currentMotto :String?
