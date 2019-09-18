@@ -132,14 +132,19 @@ class Util {
         
         if let imageid = imageUID, let imageExt = UIDExtension {
             
-            if let dataCahe = CacheHandler.getInstance().getCache(forKey: imageid) {
-                print("GetImageData : data in cache, fetching... ")
-                completion(dataCahe)
-            }else if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion){
-                print("GetImageData : getting image from local documentPath...")
-            }else{
-                print("GetImageData : Local folder doesn't have file, searching from sever..")
-                GetImageFromServer(imageUID: imageid, completion: completion, errorHandler: errorHandler)
+            if imageid == Util.DEFAULT_IMAGE {
+                let uiImage = UIImage(named: Util.DEFAULT_IMAGE)
+                completion(uiImage?.jpegData(compressionQuality: 1.0))
+            }else {
+                if let dataCahe = CacheHandler.getInstance().getCache(forKey: imageid) {
+                    print("GetImageData : data in cache, fetching... ")
+                    completion(dataCahe)
+                }else if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion){
+                    print("GetImageData : getting image from local documentPath...")
+                }else{
+                    print("GetImageData : Local folder doesn't have file, searching from sever..")
+                    GetImageFromServer(imageUID: imageid, completion: completion, errorHandler: errorHandler)
+                }
             }
         }else{
             completion(nil)

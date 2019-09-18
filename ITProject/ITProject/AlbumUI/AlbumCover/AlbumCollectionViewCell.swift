@@ -23,6 +23,7 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
     private func updateUI()
     {
         if let album = album {
+            
             Util.GetImageData(imageUID: album.coverImageUID,
                               UIDExtension: album.coverImageExtension, completion: {
                                 data in
