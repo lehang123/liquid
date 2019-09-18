@@ -120,17 +120,18 @@ class SideMenuTableViewController: UITableViewController {
             let alertController = UIAlertController(title: "Log out", message:"Are you sure to log out?", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "NO", style: .default))
             alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (action: UIAlertAction!) in
-                do {
-                    // dismiss the side bar(have to)
-                    self.dismiss(animated: true, completion: nil)
-                    try Auth.auth().signOut()
-                    CacheHandler.getInstance().cleanCache()
+                
+                // dismiss the side bar(have to)
+                self.dismiss(animated: true, completion: {
                     
-                }catch let e as NSError {
-                    print("you get error")
-                    Util.ShowAlert(title: "Sign Out Fail", message: e.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-                }
-
+                    do {
+                        try Auth.auth().signOut()
+                    }catch let e as NSError {
+                        print("you get error")
+                        Util.ShowAlert(title: "Sign Out Fail", message: e.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                    }
+                    
+                })
             }))
             self.present(alertController, animated: true, completion: nil)
             
