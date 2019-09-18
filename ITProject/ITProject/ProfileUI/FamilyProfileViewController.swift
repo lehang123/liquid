@@ -135,8 +135,13 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
                 Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
                     
                     if url != nil{
-                        // TODO : change in database
+                        //  change  thumbnail path updated in database
+                     
+                        DBController.getInstance().updateSpecificField(newValue: imageString, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
+                        DBController.getInstance().updateSpecificField(newValue: Util.EXTENSION_JPEG, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
                         
+                        
+                     
                     }
                     
                 }, errorHandler: {e in
@@ -145,11 +150,7 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
                 })
             }
         }
-        //TODO: where is the photo string to be checked against:
-//        if (self.currentPhotoString != ...){
-//            DBController.getInstance().updateSpecificField(newValue: self.mottoTextView.text!, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
-//
-//        }
+        
 
       
     }
