@@ -175,7 +175,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                                                    photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
                                                    coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
                                                    coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
-                                                   doesReload: true)
+                                                   doesReload: true,
+                                                   reveseOrder: false)
                     
                 })
             }

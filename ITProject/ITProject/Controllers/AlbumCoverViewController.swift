@@ -61,13 +61,26 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
             else {
                 // create a album here
                 customFormVC.dismissWithAnimation(){
-
-                    // todo : add the thumbnail is a dummy now, and, update cache
-                    AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: customFormVC.albumThumbnailString, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-                        docRef in
-                        print("showSignupForm : are you here ?")
-                        self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: customFormVC.albumThumbnailString, coverImageExtension: Util.EXTENSION_JPEG)
-                    })
+                    imageData in
+                    if let imaged = imageData,
+                        let imageUid = Util.GenerateUDID(){
+                        Util.ShowActivityIndicator(withStatus: "Creating album ...")
+                        Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: {url in
+                            Util.DismissActivityIndicator()
+                            if url != nil{
+                                // todo : add the thumbnail is a dummy now, and, update cache
+                                AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG, completion: {
+                                    docRef in
+                                    print("showSignupForm : are you here ?")
+                                    self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
+                                })
+                            }
+                            
+                        }, errorHandler: {e in
+                            print("you get error from Thumbnail choose")
+                            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                        })
+                    }
                 }
             }
         })
@@ -106,14 +119,23 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
                   photos: [PhotoDetail]? = nil,
                   coverImageUID imageUID : String?,
                   coverImageExtension imageExtension : String?,
-                  doesReload: Bool = true){
+                  doesReload: Bool = true,
+                  reveseOrder: Bool = true){
         
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded with title : " + newAlbumTitle +
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
-
-        albumsList.addNewAlbum(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
+        
+        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
+        
+        
+        albumCollectionView.performBatchUpdates({
+            albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reveseOrder)
+            let index = albumsList.getIndexForItem(album: newAlbum)
+            let indexPath = IndexPath(item: index, section: 0)
+            albumCollectionView.insertItems(at: [indexPath])
+        }, completion: nil)
         
         if (doesReload){
             if let albumCollectionView = self.albumCollectionView{
