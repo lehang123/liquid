@@ -15,14 +15,15 @@ class AlbumCoverViewController: UIViewController
 {
     
 
-    private static let NIB_NAME = "AlbumTableViewCell"
+    private static let NIB_NAME = "AlbumCollectionViewCell"
     private static let CELL_IDENTIFIER = "AlbumCell"
     
     private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
     private let EMPTYNAME_DES = "Album name is empty"
 
 
-    @IBOutlet weak var albumTableView: UITableView!
+
+    @IBOutlet weak var albumCollectionView: UICollectionView!
     
     @IBAction func AddAlbumPressed(_ sender: Any) {
         print("AddAlbumPressed : ")
@@ -130,17 +131,17 @@ class AlbumCoverViewController: UIViewController
         let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension)
         
         
-        albumTableView.performBatchUpdates({
+        albumCollectionView.performBatchUpdates({
             albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reveseOrder)
             let index = albumsList.getIndexForItem(album: newAlbum)
             let indexPath = IndexPath(item: index, section: 0)
-            albumTableView.insertRows(at: [indexPath], with: .fade)
+            albumCollectionView.insertItems(at: [indexPath])
             
         }, completion: nil)
         
         if (doesReload){
-            if let albumTableView = self.albumTableView{
-                albumTableView.reloadData()
+            if let albumCollectionView = self.albumCollectionView{
+                albumCollectionView.reloadData()
             }
         }
     }
@@ -159,18 +160,20 @@ class AlbumCoverViewController: UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loadAlbumTableView()
+        self.loadAlbumCollectionView()
         //        loadNameData()
-        self.albumTableView.reloadData()
-        self.albumTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        self.albumCollectionView.reloadData()
+
     }
     
     
-    private func loadAlbumTableView(){
-        self.albumTableView.showsVerticalScrollIndicator = false
+    private func loadAlbumCollectionView(){
+        self.albumCollectionView.showsVerticalScrollIndicator = false
         
-        albumTableView.register(UINib.init(nibName: AlbumCoverViewController.NIB_NAME, bundle: nil), forCellReuseIdentifier: AlbumCoverViewController.CELL_IDENTIFIER)
-        print("ALBUM CELL123 :: ")
+        albumCollectionView.register(UINib.init(nibName: AlbumCoverViewController.NIB_NAME, bundle: nil), forCellWithReuseIdentifier: AlbumCoverViewController.CELL_IDENTIFIER)
+        let layout = albumCollectionView!.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSize(width: (albumCollectionView.frame.size.width), height: (albumCollectionView.bounds.size.height) / 2.2)
+        albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 9, right: 0)
     }
     
     
@@ -216,23 +219,23 @@ class AlbumCoverViewController: UIViewController
     }
 }
 
-protocol RemoveAlbumDelegate {
-    
-    func removeAlbum(albumToDelete : AlbumDetail)
-    
-}
+//protocol RemoveAlbumDelegate {
+//
+//    func removeAlbum(albumToDelete : AlbumDetail)
+//
+//}
+//
+//protocol ReloadDelegate {
+//    func loadDataDelegate()
+//}
 
-protocol ReloadDelegate {
-    func loadDataDelegate()
-}
-
-extension AlbumCoverViewController: UITableViewDelegate, UITableViewDataSource{
-    func numberOfSections(in tableView: UITableView) -> Int {
+extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         // return the number of sections
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return albumsList.count()
     }
@@ -240,36 +243,23 @@ extension AlbumCoverViewController: UITableViewDelegate, UITableViewDataSource{
     /*when album on clicked :
      open albumDetail controller
      */
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         self.performSegue(withIdentifier: Storyboard.showAlbumDetail, sender: indexPath)
     }
     
     
     /*called in viewDidLoad*/
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "AlbumCell", for: indexPath) as! AlbumTableViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
         
-        print("ALBUM CELL :: ", cell)
+ 
         cell.album = albumsList.getAlbum(index: indexPath.item)
-        cell.layer.borderColor = UIColor.clear.cgColor
-        cell.backgroundColor = .clear
-        
-        return cell
+
     }
     
-    
-    /// <#Description#>
-    ///
-    /// - Parameters:
-    ///   - tableView: <#tableView description#>
-    ///   - indexPath: <#indexPath description#>
-    /// - Returns: <#return value description#>
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->CGFloat {
-        return tableView.bounds.height / 3
-        
-    }
+
     
 }
 

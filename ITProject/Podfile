@@ -21,6 +21,7 @@ target 'ITProject' do
   pod 'SideMenu'
   pod 'EnhancedCircleImageView'
   pod 'SwiftEntryKit'
+  pod 'SwipeCellKit'
 
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'

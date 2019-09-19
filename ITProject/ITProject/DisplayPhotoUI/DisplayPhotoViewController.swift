@@ -130,8 +130,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             self.storeCommentToServer(username: username, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
             self.cmmentText.text = ""
         }
-
-        
         // todo : pull latest comment from the server, and update comment source
         
         upadteCommentSource()
@@ -222,22 +220,23 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("numberOfRowsInSection : how often do you called ?" )
         // return the number of rows
-        
-//        if hasHiddenCells {
-//            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH + DisplayPhotoViewController.EXPAND_COLLPASE_CELL_LENGTH
-//        }else{
-//            return tableView_cell_length + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
-//        }
-        
         return commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
         
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    // To do for erya
+    @objc func liketapFunction(sender:UITapGestureRecognizer) {
+        print("like tap working")
+        //sender.
+        //cell.likeNumbers.text = cell.likeNumbers!.text!
+        //LikeWatchedBookmarkCell.
+        //self.reloadData
         
-        if (indexPath.row == 0) {
-            print ("comments go heres")
-        }
+        
+    }
+    
+    @objc func bookmarktapFunction(sender:UITapGestureRecognizer) {
+        print("book mark tap working")
         
     }
 
@@ -246,35 +245,34 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         if indexPath.row == 0 {// like, watched cell. always there
             let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
-            return cell0
-        }else {// create comment cell
-            // show the comments, if there are hidden cells, show expandsion cell in the last cell
-//            print("cellForRowAt : " + String(hasHiddenCells) + " and " + String(indexPath.row))
             
+            // Add gesture to tap
+            let liketap = UITapGestureRecognizer(target: self, action: #selector(self.liketapFunction(sender:)))
+            cell0.likeLabel.isUserInteractionEnabled = true
+            cell0.likeLabel.addGestureRecognizer(liketap)
+            
+            let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(bookmarktapFunction(sender:)))
+            cell0.Bookmark.isUserInteractionEnabled = true
+            cell0.Bookmark.addGestureRecognizer(bookmarktap)
+            return cell0
+        }else {
+            // create comment cell
+            // show the comments, if there are hidden cells, show expandsion cell in the last cell
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
             cell1.setUsernameLabel(username: commentsSource[indexPath.row - 1].username)
             cell1.setCommentLabel(comment: commentsSource[indexPath.row - 1].comment)
             return cell1
         }
-            
-//            if !hasHiddenCells || tableView_cell_length != (indexPath.row - 1){
-//
-//                print("cellForRowAt : " + String(hasHiddenCells) + " and " + String(indexPath.row))
-//
-//                let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
-//                cell1.setUsernameLabel(username: commentCellsList[indexPath.row - 1].username)
-//                cell1.setCommentLabel(comment: commentCellsList[indexPath.row - 1].comment)
-//                return cell1
-//            }else {
-//                let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.expandCollpaseTableViewCell, for: indexPath) as!ExpandCell
-//                return cell1
-//            }
-//        }
     }
     /*
         disable expansion
      */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if (indexPath.row == 0) {
+//            let headerCell =  tableView.cellForRow(at: indexPath)
+//
+//
+//        }
         
 //        if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
 //            let selectedCell =
@@ -340,14 +338,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
-//        if indexPath.row == 0 {
-//            return DisplayPhotoViewController.LIKES_ROW_HEIGHT
-//        }else if indexPath.row == tableView_cell_length + 1 && hasHiddenCells{
-//            return DisplayPhotoViewController.EXPAND_ROW_HEIGHT
-//        }else {
-//            return UITableView.automaticDimension
-//        }
         
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
