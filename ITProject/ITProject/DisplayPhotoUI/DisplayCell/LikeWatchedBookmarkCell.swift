@@ -8,10 +8,11 @@
 
 import Foundation
 import UIKit
+import FaveButton
 
 class LikeWatchedBookmarkCell: UITableViewCell {
 
-    @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var likeButton: FaveButton!
     @IBOutlet weak var likeNumbers: UILabel!
     @IBOutlet weak var watchedLabel: UIImageView!
     @IBOutlet weak var watchedNumbers: UILabel!

@@ -8,9 +8,11 @@
 
 import UIKit
 import Firebase
+import FaveButton
 
 // todo : make the scorll back to the top while click on the header
-class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate{
+class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate{
+
     
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
@@ -43,6 +45,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut : CGFloat = 0
+    private var cell0Info : LikeWatchedBookmarkCell!
+
     
 //    private var tableView_cell_length = 0
     
@@ -239,6 +243,19 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         print("book mark tap working")
         
     }
+    
+    func faveButton(_ faveButton: FaveButton, didSelected selected: Bool) {
+        if(selected){
+            cell0Info.likeNumbers.text = "1"
+            
+        } else {
+            cell0Info.likeNumbers.text = "0"
+        }
+    }
+    func getCellInfo(cell: LikeWatchedBookmarkCell) {
+        self.cell0Info = cell
+    }
+
 
     /*the row only get call when it's visible on the screeen in order to save memory*/
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -246,10 +263,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         if indexPath.row == 0 {// like, watched cell. always there
             let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
             
-            // Add gesture to tap
-            let liketap = UITapGestureRecognizer(target: self, action: #selector(self.liketapFunction(sender:)))
-            cell0.likeLabel.isUserInteractionEnabled = true
-            cell0.likeLabel.addGestureRecognizer(liketap)
+            // add like button animation
+            cell0.likeButton.setSelected(selected: true, animated: false)
+        
+            cell0.likeButton.setSelected(selected: false, animated: false)
+            cell0.likeButton.delegate = self
+            getCellInfo(cell: cell0)
+            
+            
+        
             
             let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(bookmarktapFunction(sender:)))
             cell0.Bookmark.isUserInteractionEnabled = true
