@@ -27,7 +27,7 @@ class CustomFormView: UIView {
     private(set) var uploadButtonContent = UIButton()
     private var withUploadFile = false
     
-    private var imagePicker = UIImagePickerController()
+//    private var imagePicker = UIImagePickerController()
     
     private let titleContent: EKProperty.LabelContent
     
@@ -237,12 +237,15 @@ class CustomFormView: UIView {
                 print("updatePreView : thumbnail preview error !!!!")
             }
         })
-        
-//        if imageUID != Util.DEFAULT_IMAGE{
-//
-//        }else{
-//            self.imageView.image = UIImage(named: Util.DEFAULT_IMAGE)
-//        }
+    
+    }
+    
+    public func updatePreView(image: UIImage){
+        self.imageView.image = image
+    }
+    
+    public func getPreViewImage()->Data{
+        return (self.imageView.image?.jpegData(compressionQuality: 1.0))!
     }
     
 }
