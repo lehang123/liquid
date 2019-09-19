@@ -49,33 +49,17 @@ class AlbumDetail: Equatable
     private var createDate: Date!
     
     /* photos that contained in the album */
-    private(set) var photos = [PhotoDetail]()
-    
-//    public func getPhotos()->[PhotoDetail]{
-//        return photos
-//    }
-
-    public func addPhoto(photo : PhotoDetail){
-        photos.append(photo)
-        //TODO : REPLACE EXTENSION_JPEG WITH THE EXTENSION FROM PHOTO DETAIL
-    }
-
-    public func removePhoto(photo : PhotoDetail){
-        photos = photos.filter{$0 != photo}
-    }
-    
-//    init(title: String, description: String, UID : String, photos : [PhotoDetail]?, coverImage : UIImage?)
-//    {
-//        let defaultImage : UIImage = #imageLiteral(resourceName: "item4")
+//    private(set) var photos = [PhotoDetail]()
 //
-//        self.title = title
-//        self.coverImage = coverImage ?? defaultImage
-//        self.description = description
-//        self.UID = UID
-//        self.photos = photos ?? []
+//    public func addPhoto(photo : PhotoDetail){
+//        photos.append(photo)
+//    }
+//
+//    public func removePhoto(photo : PhotoDetail){
+//        photos = photos.filter{$0 != photo}
 //    }
     
-    init(title: String, description: String, UID : String, photos : [PhotoDetail]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?)
+    init(title: String, description: String, UID : String, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?)
     {
         
         self.title = title
@@ -83,7 +67,6 @@ class AlbumDetail: Equatable
         self.coverImageExtension = imageExtension
         self.description = description
         self.UID = UID
-        self.photos = photos ?? []
     }
     
 }

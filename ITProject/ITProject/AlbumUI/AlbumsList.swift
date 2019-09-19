@@ -34,19 +34,38 @@ class AlbumsList {
         return currentAlbums
     }
     
-    public func addNewAlbum(title: String, description: String, UID : String, photos : [PhotoDetail]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?){
+    public func addNewAlbum(title: String, description: String, UID : String, photos : [String]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?, addToHead:Bool = true){
         
         let album = AlbumDetail(title: title,
                                description: description,
                                UID:UID,
-                               photos: photos ?? nil,
                                coverImageUID: imageUID,
-                               coverImageExtension: imageExtension
-                               )
+                               coverImageExtension: imageExtension)
         
-        if !currentAlbums.contains(album){
-            currentAlbums.append(album)
+        
+        addNewAlbum(newAlbum: album, addToHead: true)
+        
+//        if !currentAlbums.contains(album){
+//
+//            if addToHead {
+//                currentAlbums.insert(album, at: 0)
+//            }else{
+//                currentAlbums.append(album)
+//            }
+//        }
+    }
+    
+    public func addNewAlbum(newAlbum: AlbumDetail, addToHead:Bool = true){
+
+        if !currentAlbums.contains(newAlbum){
+            
+            if addToHead {
+                currentAlbums.insert(newAlbum, at: 0)
+            }else{
+                currentAlbums.append(newAlbum)
+            }
         }
+        
     }
     
     

@@ -173,10 +173,10 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     albumDetailTVC.loadAlbumToList(title: albumName,
                                                    description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
                                                    UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
-                                                   photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
                                                    coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
                                                    coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
-                                                   doesReload: true)
+                                                   doesReload: true,
+                                                   reveseOrder: false)
                     
                 })
             }
@@ -308,12 +308,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     private func loadUserAndFamilyDataForServer(){
-        
+        print("loading user info !!! from login")
         loadFamilyInformFromServer()
         loadUserInformFromServer()
     }
     
     private func askForLogin(){
+        CacheHandler.getInstance().cleanCache()
         guard let VC1 = UIApplication.getTopViewController()?.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") else { return }
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
         self.present(navController, animated:true, completion: nil)
@@ -329,44 +330,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "PERFECT", photoUID: "iloveyou");
         AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "HALO 2 I LOVE YOU ", photoUID: "iloveyou");
     }
-
-
-    
-//extension FamilyMainPageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
-//    func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return 1
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return items.count
-//    }
-//
-
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let funct = items[(indexPath as NSIndexPath).row]
-//
-//            if funct.title == "Album" {
-//                // through code
-////                let vc = SettingViewController()
-////                self.navigationController?.pushViewController(vc, animated: true)
-//
-//                // through storyboard
-//                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//                let vc = storyboard.instantiateViewController(withIdentifier: "AlbumCoverViewController")
-//                self.navigationController!.pushViewController(vc, animated: true) // this line shows error
-//
-//            }
-
-//    }
-//
-//
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CarouselEffectCollectionViewCell
-//        cell.iconImage.image = items[indexPath.row].image
-//        cell.labelInf.text = items[indexPath.row].title
-//        return cell
-//    }
-//
 }
 
 
