@@ -25,11 +25,13 @@ class PhotoDetail: Equatable
     }
     
     /* filename :  UID.zip or UID.jpg */
-    private let UID:String!;
+    public let UID:String!;
+    public let ext :String!;
     
     public func getUID()->String{
         return self.UID
     }
+    
     
     /* photo's title */
     private var title:String!;
@@ -89,12 +91,13 @@ class PhotoDetail: Equatable
     }
     
     init(title: String!, description: String!,
-         UID : String!, likes: Int!, comments: [comment]!)
+         UID : String!, likes: Int!, comments: [comment]!, ext: String!)
     {
         self.UID = UID
         self.title = title;
         self.description = description;
         self.likes = likes
         self.comments = comments
+        self.ext = ext
     }
 }

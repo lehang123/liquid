@@ -642,6 +642,16 @@ class Util {
         })
     }
     
+    public static func ChangeUserPhotoURL (imagePath : String, ext: String){
+        var request =  Auth.auth().currentUser?.createProfileChangeRequest()
+        request?.photoURL = URL(string: imagePath + "." + ext)
+        request?.commitChanges(completion: { (error) in
+            if let error  = error{
+                print("error in ChangePhotoURL ::: ", error);
+            }
+        })
+    }
+    
     public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }

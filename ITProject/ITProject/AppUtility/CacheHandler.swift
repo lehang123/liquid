@@ -213,21 +213,27 @@ class CacheHandler : NSObject {
                                 var sortedAlbums :[(key: String, value: Dictionary<String, Any>)] = [(key: String, value: Dictionary<String, Any>)]();
                                 //loop thru each document, parse them into the required data format:
                                 for document in querySnapshot!.documents {
+                                    
                                     let albumDetails : [String:Any] = document.data();
+                                    
                                     let albumName :String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String;
+                                    
                                     let owner:DocumentReference? = (albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference);
                                     
-                                    //this is for the setCache:
+                                  
                                     albums[albumName] = [
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER : owner?.documentID as Any,
-                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS]!,
+                                        AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as Any ,
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL :albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
                                         AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
-                                        AlbumDBController.DOCUMENTID : document.documentID
+                                        AlbumDBController.DOCUMENTID : document.documentID]
+                                    
+                                }
+                                    
                                         
-                                    ]
+                                    
                                     
                                     sortedAlbums =  albums.sorted(by: { (first, second) -> Bool in
                                         
@@ -249,13 +255,46 @@ class CacheHandler : NSObject {
                                         };
                                         
                                     })
-                                
-                                    
-                }
                                 completion(sortedAlbums , error);
             }
         })
             }
+    
+    public func getAllPhotosInfo (currAlbum : String, completion: @escaping (_ allMedias : [PhotoDetail] , _ error: Error?)->() = {_,_ in} )  {
+        var allMedias : [PhotoDetail] = [PhotoDetail]();
+        let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: currAlbum)
+        DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: currAlbumRef).getDocuments { (mediaQS, error) in
+            if let error = error {
+                print("error at getAllPhotosInfo::: ", error)
+            }
+            else{
+                for doc in mediaQS!.documents{
+                    //get current data:
+                    let currData : [String : Any] = (doc.data())
+    
+                    //process comments :
+                    let currComments : [String : String ] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [String : String]
+    
+                    var parsedComments : [PhotoDetail.comment] =  [PhotoDetail.comment]()
+    
+                    currComments.forEach({ (arg0) in
+    
+                    let (user, comment) = arg0
+                    parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: user, said: comment))
+                    })
+    
+                    //parse all data:
+                    allMedias.append(PhotoDetail(title: doc.documentID  , description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID:  doc.documentID  , likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES ] as? Int, comments: parsedComments, ext:  currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String) );
+                    
+                }
+                completion(allMedias,error)
+
+            }
+            
+
+        }
+        
+    }
 
     ///gets the user's family info.
     /// - Returns:  completion : the relevant family's details to be retrieved.
@@ -282,8 +321,8 @@ class CacheHandler : NSObject {
                     let data = doc.data()
                     let motto = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO] as? String
                     let name = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME] as? String
-                    let profile = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE] as? String
-                    let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_PROFILE_PICTURE_EXT] as? String
+                    let profile = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL] as? String
+                    let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT] as? String
                     
                     completion(doc.documentID, motto, name, profile, profileExt,error);
                 }
@@ -496,6 +535,38 @@ class CacheHandler : NSObject {
 //        };
 //
 //    }
+    
+    //        var allMedias : [PhotoDetail] = [PhotoDetail]();
+    //        // loop thru each media, get their details:
+    //        currMedias.forEach({ (mediaDocRef) in
+    //            mediaDocRef.getDocument(completion: { (mediaDocSnap, e) in
+    //                if let e = e {
+    //                    print("error at getAllPhotosInfo : " , e)
+    //                }
+    //                else{
+    //                    //get current data:
+    //                    let currData : [String : Any] = (mediaDocSnap?.data())!
+    //
+    //                    //process comments :
+    //                    let currComments : [String : String ] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [String : String]
+    //
+    //                    var parsedComments : [PhotoDetail.comment] =  [PhotoDetail.comment]()
+    //
+    //                    currComments.forEach({ (arg0) in
+    //
+    //                        let (user, comment) = arg0
+    //                        parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: user, said: comment))
+    //                    })
+    //
+    //                    //parse all data:
+    //                    allMedias.append(PhotoDetail(title: mediaDocSnap?.documentID , description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: mediaDocSnap?.documentID, likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES ] as? Int, comments: parsedComments, ext:  currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String) );
+    //                }
+    //            })
+    //        })
+    //
+    //
+    //        return allMedias;
+
     
 }
 

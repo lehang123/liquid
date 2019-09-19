@@ -45,6 +45,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
     private var userFamilyPosition: String?
     private var userGender: Gender?
+    private var profileURL: String?
+    private var profileExtension: String?
     
 //    var userInfo: String!
 //    var userImageUID: String!
@@ -69,7 +71,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             item.leftBarButtonItem?.tintColor = UIColor.black
         }
         
-        //testing functions. dont forget to delete!::
         
         // set Profile Image
 //        profileImg.image = UIImage(named: "tempProfileImage")
@@ -117,13 +118,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 
                 // pass user info to the current sideMenuVC
                     let currentUser = Auth.auth().currentUser
-                    let profileURL = currentUser?.photoURL
-                    let profileExtension = profileURL?.pathExtension
-                    let profileUID = profileURL?.deletingPathExtension().absoluteString
+                    profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
+                
+                    profileExtension = currentUser?.photoURL?.pathExtension
                 
                     sideMenuVC.userInformation = UserInfo(
                     username: currentUser?.displayName ?? "placeHolder",
-                    imageUID: profileUID ?? "test-small-size-image",
+                    imageUID: profileURL ?? Util.DEFAULT_IMAGE,
                     imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
                     phone: currentUser?.phoneNumber ?? "12345678",
                     gender: self.userGender ?? Gender.Unknown,
@@ -172,7 +173,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     albumDetailTVC.loadAlbumToList(title: albumName,
                                                    description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
                                                    UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
-                                                   photos: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as? Array,
                                                    coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
                                                    coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
                                                    doesReload: true,
@@ -268,6 +268,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             }else {
                 self.userFamilyPosition = relation
                 self.userGender = gender
+                
             }
         })
     }

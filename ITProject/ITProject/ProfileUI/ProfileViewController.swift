@@ -164,8 +164,9 @@ class ProfileViewController: UIViewController {
                 Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
                     
                     if url != nil{
-                        // TODO : change in database
+                        // change photo url in auth service
                         
+                        Util.ChangeUserPhotoURL(imagePath:imageString , ext: Util.EXTENSION_JPEG)
                     }
                     
                 }, errorHandler: {e in
@@ -174,32 +175,6 @@ class ProfileViewController: UIViewController {
                 })
             }
         }
-        //get current name:
-//        var userData : [String:Any] = CacheHandler.getInstance().getCache(forKey: CacheHandler.USER_DATA) as! [String : Any];
-//        let userName : String = userData[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as! String;
-//
-//
-//        if (name.text != userName ) {
-//
-//            Util.ShowAlert(title: ProfileViewController.CHANGED_INFO, message: ProfileViewController.CHANGED_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
-//
-//           // CacheHandler.getInstance().setCache(obj: name.text as AnyObject, forKey: "name" as AnyObject)
-//            //set new name:
-//
-//            //user?.uid
-//            DBController.getInstance().updateSpecificField(newValue: name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-//            CacheHandler.getInstance().cacheUser();
-//        }
-        
-        
-        // !!!!
-        // Here if these information not the same as before.
-        // Change the info in database and cache
-        // TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //if (phoneNumber.text != (The thing store in databse)) {}
-        
-        //if (gender.text != (The thing store in datasase)) {}
-        
 
     }
     
