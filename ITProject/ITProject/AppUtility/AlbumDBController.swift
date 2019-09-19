@@ -40,6 +40,11 @@ class AlbumDBController {
     public static let MEDIA_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the media's created date
     public static let MEDIA_DOCUMENT_FIELD_ALBUM = "album_path" // reference back to album field
     
+    //comments array of maps:
+    public static let COMMENTS_USERNAME = "username" // reference back to album field
+    public static let COMMENTS_MESSAGE = "message" // reference back to album field
+
+    
     //doc ID field:
     public static let DOCUMENTID = "documentID" 
 
@@ -59,13 +64,13 @@ class AlbumDBController {
 //                                 fieldName: fieldName,
 //                                 documentUID: photoUID,
 //                                 collectionName: AlbumDBController.MEDIA_COLLECTION_NAME);
-        //USE : [ [ USERNAME : COMMENTS ] ]
+        //USE : [ [  "username" : USERNAME, "message"  : COMMENTS ] ]
         DBController.getInstance()
             .updateArrayField(
             collectionName:AlbumDBController.MEDIA_COLLECTION_NAME,
             documentUID: photoUID,
             fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS,
-            appendValue: [username:comment]);
+            appendValue: [ AlbumDBController.COMMENTS_USERNAME: username, AlbumDBController.COMMENTS_MESSAGE: comment]);
     }
     /// <#Description#>
     /// singleton pattern:
