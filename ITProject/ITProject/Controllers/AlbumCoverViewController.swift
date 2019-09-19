@@ -117,7 +117,6 @@ class AlbumCoverViewController: UIViewController
     func loadAlbumToList(title newAlbumTitle: String,
                   description newAlbumDescrp: String,
                   UID: String,
-                  photos: [PhotoDetail]? = nil,
                   coverImageUID imageUID : String?,
                   coverImageExtension imageExtension : String?,
                   doesReload: Bool = true,
@@ -128,7 +127,7 @@ class AlbumCoverViewController: UIViewController
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
         
-        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, photos: createAlbumPhotos(), coverImageUID: imageUID, coverImageExtension: imageExtension)
+        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension)
         
         
         albumTableView.performBatchUpdates({
@@ -183,27 +182,22 @@ class AlbumCoverViewController: UIViewController
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
                 let selectedAlbum = albumsList.getAlbum(index: (sender as! IndexPath).row)
                 albumDetailTVC.albumDetail = selectedAlbum
+                
+                // todo : make album's photo according to the photo UID
+                let albumUID = albumDetailTVC.albumDetail.UID
+                // put it in here : albumDetailTVC.albumContents
             }
         }
     }
     
 
     
-    private func createAlbumPhotos()->[PhotoDetail]{
-        let testPhoto = PhotoDetail(title: "dummy", description: "is it?",
-                                    UID : "test-small-size-image",
-                                    likes: 0, comments: [PhotoDetail.comment]())
-        let testPhoto2 = PhotoDetail(title: "dummy", description: "is it?",
-                                    UID : "test-image-one",
-                                    likes: 0, comments: [PhotoDetail.comment]())
-        let testPhoto3 = PhotoDetail(title: "dummy", description: "is it?",
-                                     UID : "test-image-two",
-                                     likes: 0, comments: [PhotoDetail.comment]())
+    private func createAlbumPhotos()->[String]{
         
-        var photos = [PhotoDetail]()
-        photos.append(testPhoto)
-        photos.append(testPhoto2)
-        photos.append(testPhoto3)
+        var photos = [String]()
+        photos.append("test-small-size-image")
+        photos.append("test-image-one")
+        photos.append("test-image-two")
         
         return photos
     }

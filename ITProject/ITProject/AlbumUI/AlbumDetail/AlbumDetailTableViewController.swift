@@ -11,6 +11,7 @@ import Photos
 
 class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
+    var albumContents = [PhotoDetail]()
     
     private static let SHOW_PHOTO_DETAIL_SEGUE = "ShowPhotoDetail"
     
@@ -243,7 +244,8 @@ extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINav
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return albumDetail.photos.count
+            
+            return albumContents.count
         }
 
         /* called when photos cell that display photos' thumbnail is visible on device's screen */
@@ -251,7 +253,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
         {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
-            let photo = albumDetail.photos[indexPath.item]
+            let photo = albumContents[indexPath.item]
 
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
@@ -268,7 +270,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
     
         /* called when collectionview on touched, go view photos */
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let photo = albumDetail.photos[indexPath.item]
+            let photo = albumContents[indexPath.item]
             viewPhoto(photoDetail: photo)
         }
     }
