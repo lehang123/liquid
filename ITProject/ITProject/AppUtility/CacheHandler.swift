@@ -263,11 +263,14 @@ class CacheHandler : NSObject {
     public func getAllPhotosInfo (currAlbum : String, completion: @escaping (_ allMedias : [PhotoDetail] , _ error: Error?)->() = {_,_ in} )  {
         var allMedias : [PhotoDetail] = [PhotoDetail]();
         let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: currAlbum)
+       
+        print("getting currAlbumRef : " + currAlbumRef.documentID)
         DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: currAlbumRef).getDocuments { (mediaQS, error) in
             if let error = error {
                 print("ERROR AT getAllPhotosInfo: ", error )
             }
             else{
+                print(mediaQS!.documents)
                 for doc in mediaQS!.documents{
 
                     //get current data:
@@ -282,14 +285,13 @@ class CacheHandler : NSObject {
                     currComments.forEach({ (commentRow) in
     
                     
-                        parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String ,  said: commentRow[AlbumDBController.COMMENTS_MESSAGE] as! String))
+                        parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String ,  said: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
                         print("access labebl::: ",  commentRow[AlbumDBController.COMMENTS_USERNAME],commentRow[AlbumDBController.COMMENTS_MESSAGE]  )
+                        
                     })
                     
-    
                     //parse all data:
                     allMedias.append(PhotoDetail(title: doc.documentID  , description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID:  doc.documentID  , likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES ] as? Int, comments: parsedComments, ext:  currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String) );
-                    
                     
                 }
                 

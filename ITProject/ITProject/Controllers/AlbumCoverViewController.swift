@@ -197,7 +197,8 @@ class AlbumCoverViewController: UIViewController
                     else {
                         print("albumUID : " ,albumUID, "name: " , albumDetailTVC.albumDetail.title)
                         albumDetailTVC.albumContents = detail
-                        print("detail gilbertttt : ",albumDetailTVC.albumContents)
+                        albumDetailTVC.displayPhotoCollectionView?.reloadData()
+                        print("detail gilbertttt : ",albumDetailTVC.albumContents.count)
                         //TODO: reload data :
                     }
                 }
@@ -256,6 +257,8 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         
  
         cell.album = albumsList.getAlbum(index: indexPath.item)
+        
+        return cell
 
     }
     
