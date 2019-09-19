@@ -129,20 +129,20 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         }
         
         if didChangeFamilyProfile {
+            didChangeFamilyProfile = false
             didChangeFamilyInfo = true
             // todo : upload file string to db as well
             if let imageData = self.familyProfileImageView.image?.jpegData(compressionQuality: 1.0), let imageString = Util.GenerateUDID(){
+                Util.ShowActivityIndicator(withStatus: "uploading Profile...")
                 Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-                    
+                   
                     if url != nil{
                         //  change  thumbnail path updated in database
                      
                         DBController.getInstance().updateSpecificField(newValue: imageString, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
                         DBController.getInstance().updateSpecificField(newValue: Util.EXTENSION_JPEG, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME);
-                        
-                        
-                     
                     }
+                    Util.DismissActivityIndicator()
                     
                 }, errorHandler: {e in
                     print("you get error from Thumbnail choose")

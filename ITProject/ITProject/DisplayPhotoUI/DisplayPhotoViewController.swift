@@ -56,6 +56,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBOutlet weak var tableView: UITableView!
     
+    // GILBERTTTTTTT
     override func viewDidLoad() {
         
         print("DisplayPhotoViewController : view did loaded ")
@@ -69,7 +70,28 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         
         self.cmmentText.delegate = self
+        
+        
+        // TO DO!!!!!!!!!!!!!!
+        // LOAD THE NUMBER OF WATCH AND LIKE HERE
+        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
+//        if (not watched) {
+//
+//            cell.watchedNumbers.text = String(((Int((cell.watchedNumbers.text!))!) + 1))
+//        }
+       // cell.likeNumbers.text = "load number here"
+        // Store the watch data here
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -228,19 +250,31 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
     }
     
-    // To do for erya
+    // To do for gillbert
     @objc func liketapFunction(sender:UITapGestureRecognizer) {
         print("like tap working")
         //sender.
         //cell.likeNumbers.text = cell.likeNumbers!.text!
-        //LikeWatchedBookmarkCell.
-        //self.reloadData
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
+        
+        
+        // To do
+        // Store the number of likes here and check if this photo has been watched or liked by current user
+        //if (not watched)
+        cell.likeNumbers.text = String(((Int((cell.likeNumbers.text!))!) + 1))
+        //else (watched)
+        cell.likeNumbers.text = String(((Int((cell.likeNumbers.text!))!) - 1 ))
+        
         
         
     }
     
+    // To do
+    // Need to create another ui for store bookmark photo
     @objc func bookmarktapFunction(sender:UITapGestureRecognizer) {
         print("book mark tap working")
+        
         
     }
     
@@ -276,6 +310,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(bookmarktapFunction(sender:)))
             cell0.Bookmark.isUserInteractionEnabled = true
             cell0.Bookmark.addGestureRecognizer(bookmarktap)
+            
+            // TO DO GILLBERT
+            // LOAD THE likeNumbers and watched numbers
+            //cell0.likeNumbers.text = "number here"
+            //cell0.watchedNumbers.text = "number here"
+            
             return cell0
         }else {
             // create comment cell
