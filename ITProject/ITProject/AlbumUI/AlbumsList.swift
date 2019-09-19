@@ -34,12 +34,11 @@ class AlbumsList {
         return currentAlbums
     }
     
-    public func addNewAlbum(title: String, description: String, UID : String, photos : [PhotoDetail]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?, addToHead:Bool = true){
+    public func addNewAlbum(title: String, description: String, UID : String, photos : [String]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?, addToHead:Bool = true){
         
         let album = AlbumDetail(title: title,
                                description: description,
                                UID:UID,
-                               photos: photos ?? nil,
                                coverImageUID: imageUID,
                                coverImageExtension: imageExtension)
         
