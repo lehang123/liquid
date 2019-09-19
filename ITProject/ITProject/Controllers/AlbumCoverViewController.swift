@@ -158,6 +158,10 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
                 let selectedAlbum = albumsList.getAlbum(index: (sender as! IndexPath).row)
                 albumDetailTVC.albumDetail = selectedAlbum
+//                selectedAlbum.photos.forEach { (photo) in
+//                    Util.downloadImage(from: )
+//                }
+                
             }
         }
     }
@@ -165,15 +169,17 @@ class AlbumCoverViewController: UIViewController, RemoveAlbumDelegate
 
     
     private func createAlbumPhotos()->[PhotoDetail]{
+        
+        
         let testPhoto = PhotoDetail(title: "dummy", description: "is it?",
                                     UID : "test-small-size-image",
-                                    likes: 0, comments: [PhotoDetail.comment]())
+                                    likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG)
         let testPhoto2 = PhotoDetail(title: "dummy", description: "is it?",
                                     UID : "test-image-one",
-                                    likes: 0, comments: [PhotoDetail.comment]())
+                                    likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG)
         let testPhoto3 = PhotoDetail(title: "dummy", description: "is it?",
                                      UID : "test-image-two",
-                                     likes: 0, comments: [PhotoDetail.comment]())
+                                     likes: 0, comments: [PhotoDetail.comment](),  ext: Util.EXTENSION_JPEG)
         
         var photos = [PhotoDetail]()
         photos.append(testPhoto)
