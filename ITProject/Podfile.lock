@@ -192,6 +192,7 @@ PODS:
   - SVProgressHUD (2.2.5)
   - SwiftEntryKit (1.1.1):
     - QuickLayout (= 3.0.0)
+  - SwipeCellKit (2.6.0)
   - UPCarouselFlowLayout (1.1.2)
   - Zip (1.1.0)
 
@@ -206,6 +207,7 @@ DEPENDENCIES:
   - SideMenu
   - SVProgressHUD
   - SwiftEntryKit
+  - SwipeCellKit
   - UPCarouselFlowLayout
   - Zip (~> 1.1)
 
@@ -244,6 +246,7 @@ SPEC REPOS:
     - SideMenu
     - SVProgressHUD
     - SwiftEntryKit
+    - SwipeCellKit
     - UPCarouselFlowLayout
     - Zip
 
@@ -281,9 +284,10 @@ SPEC CHECKSUMS:
   SideMenu: 7e7f16f229c8d160830e5449308f6562821d762d
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftEntryKit: df2d08f3ba46b3972ce163537a64e87c2518f611
+  SwipeCellKit: 935ca28c187ec6e1ffb2b578cf8ddca842bfdcbb
   UPCarouselFlowLayout: 4c7d2c43a10ebb1597bde502a53699d378341dad
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: fada9c61f8c8f045116ccc4bc46eb37ebd5169f9
+PODFILE CHECKSUM: 2bf447ec27467d942fc96808db1dc5bac7f61a79
 
 COCOAPODS: 1.7.5
