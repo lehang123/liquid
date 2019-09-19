@@ -68,9 +68,9 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
         self.hideRevealView(withAnimated: true)
         print("custom revealView delete")
         
-        if removeAlbumDelegate != nil {
-            removeAlbumDelegate.removeAlbum(albumToDelete: self.albumDetail)
-        }
+//        if removeAlbumDelegate != nil {
+//            removeAlbumDelegate.removeAlbum(albumToDelete: self.albumDetail)
+//        }
         
     }
     

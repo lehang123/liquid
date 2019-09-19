@@ -13,7 +13,8 @@ class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
     var albumContents = [PhotoDetail]()
     
-
+    private(set) var displayPhotoCollectionView:UICollectionView?
+    
     private static let SHOW_PHOTO_DETAIL_SEGUE = "ShowPhotoDetail"
     
     @IBOutlet weak var albumCoverImageView: UIImageView!
@@ -188,11 +189,11 @@ class AlbumDetailTableViewController: UITableViewController {
     {
         if indexPath.row == 1 {
             if let cell = cell as? AlbumDetailPhotoTableViewCell {
+                displayPhotoCollectionView = cell.photoCollectionView
                 cell.photoCollectionView.dataSource = self
                 cell.photoCollectionView.delegate = self
                 cell.photoCollectionView.reloadData()
                 cell.photoCollectionView.isScrollEnabled = true
-                
             }
         }
     }
@@ -259,7 +260,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
             /* load image with the cell is visible */
-            Util.GetImageData(imageUID: photo.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
+            Util.GetImageData(imageUID: photo.getUID(), UIDExtension: photo.ext, completion: {
                 data in
                 if data != nil{
                     cell.image = UIImage(data: data!)

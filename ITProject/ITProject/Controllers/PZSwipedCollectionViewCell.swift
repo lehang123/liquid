@@ -47,13 +47,13 @@ class PZSwipedCollectionViewCell: UICollectionViewCell,UIGestureRecognizerDelega
     typealias delete = (_ sender: UIButton) -> ()
     
 
-    var removeAlbumDelegate: RemoveAlbumDelegate!
+//    var removeAlbumDelegate: RemoveAlbumDelegate!
     
     var albumDetail: AlbumDetail!
     
-    public func addRemoveAlbumDelegate(rmd: RemoveAlbumDelegate){
-        self.removeAlbumDelegate = rmd
-    }
+//    public func addRemoveAlbumDelegate(rmd: RemoveAlbumDelegate){
+//        self.removeAlbumDelegate = rmd
+//    }
     
     public func cacheAlbumDetailForDeletion(albumDetail: AlbumDetail){
         self.albumDetail = albumDetail
