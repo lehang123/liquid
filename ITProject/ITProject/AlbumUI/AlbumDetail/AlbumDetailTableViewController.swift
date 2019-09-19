@@ -39,7 +39,7 @@ class AlbumDetailTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.clearsSelectionOnViewWillAppear = false
-        checkPermission()
+        Util.CheckPhotoAcessPermission()
         let addPhotos = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhotosTapped))
         self.navigationItem.rightBarButtonItem = addPhotos
 
@@ -55,34 +55,44 @@ class AlbumDetailTableViewController: UITableViewController {
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
         self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
-        
     }
     
-    func checkPermission() {
-        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-        switch photoAuthorizationStatus {
-        case .authorized:
-            print("checkPermission: Access is granted by user")
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization({
-                (newStatus) in
-                print("checkPermission: status is \(newStatus)")
-                if newStatus ==  PHAuthorizationStatus.authorized {
-                    /* do stuff here */
-                    print("checkPermission: success")
+    func reloadPhoto(newPhotos: [PhotoDetail]){
+        self.displayPhotoCollectionView?.performBatchUpdates({
+            var indexPaths = [IndexPath]()
+            //make sure it's clear
+            if self.albumContents.count > 0{
+                for i in 0...self.albumContents.count - 1 {
+                    indexPaths.append(IndexPath(item: i, section: 0))
                 }
-            })
-            print("checkPermission: It is not determined until now")
-        case .restricted:
-            // same same
-            print("checkPermission: User do not have access to photo album.")
-        case .denied:
-            // same same
-            print("checkPermission: User has denied the permission.")
-        @unknown default:
-            print("checkPermission: fatal error.")
-        }
+                self.albumContents.removeAll()
+                self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
+                indexPaths.removeAll()
+            }
+
+            for i in 0...newPhotos.count - 1 {
+                self.albumContents.append(newPhotos[i])
+                // first one for description
+                indexPaths.append(IndexPath(item: i, section: 0))
+            }
+            self.displayPhotoCollectionView?.insertItems(at: indexPaths)
+        }, completion: nil)
     }
+    
+    func updatePhoto(newPhotos: PhotoDetail){
+        if !albumContents.contains(newPhotos){
+            self.displayPhotoCollectionView?.performBatchUpdates({
+                albumContents.append(newPhotos)
+                
+                if let index = self.albumContents.firstIndex(of: newPhotos){
+                    let indexPath = IndexPath(item: index, section: 0)
+                    self.displayPhotoCollectionView?.insertItems(at: [indexPath])
+                }
+            }, completion: nil)
+        }
+        
+    }
+
     
     @objc private  func addPhotosTapped(){
         print("addPhotosTapped : Tapped")
@@ -110,7 +120,16 @@ class AlbumDetailTableViewController: UITableViewController {
                      cancelButtonText: "Cancel",
                      okButtonText: "Create",
                      cancelAction:{},
-                     okAction: {}
+                     okAction: {
+                        /* todo : upload photo to db and storage and
+                         reload current album's photo
+                        */
+                        
+                        let v = PhotoDetail(title: "none", description: "none",
+                                            UID : "test-small-size-image", likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG)
+                        self.updatePhoto(newPhotos: v)
+                        
+        }
                     )
         
     }
