@@ -224,11 +224,13 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
     }
     
+    // To do for erya
     @objc func liketapFunction(sender:UITapGestureRecognizer) {
         print("like tap working")
-        let cell = sender.view as! LikeWatchedBookmarkCell
-        cell.likeNumbers.text = cell.likeNumbers.text + 1
+        //sender.
+        //cell.likeNumbers.text = cell.likeNumbers!.text!
         //LikeWatchedBookmarkCell.
+        //self.reloadData
         
         
     }
