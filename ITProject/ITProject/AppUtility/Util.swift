@@ -11,7 +11,7 @@ import FirebaseStorage
 import Firebase
 import SVProgressHUD
 import Zip
-
+import Photos
 
 class Util {
     public static let BUTTON_DISMISS = "dismiss"
@@ -635,7 +635,7 @@ class Util {
         changeRequest.commitChanges(completion: {
             error in
             if let e = error {
-                print("ChangeUserDisplayName :add name in auth error : " + error!.localizedDescription)
+                print("ChangeUserDisplayName :add name in auth error : " + e.localizedDescription)
             }
 
             completion(error)
@@ -643,13 +643,39 @@ class Util {
     }
     
     public static func ChangeUserPhotoURL (imagePath : String, ext: String){
-        var request =  Auth.auth().currentUser?.createProfileChangeRequest()
+        let request =  Auth.auth().currentUser?.createProfileChangeRequest()
         request?.photoURL = URL(string: imagePath + "." + ext)
         request?.commitChanges(completion: { (error) in
             if let error  = error{
                 print("error in ChangePhotoURL ::: ", error);
             }
         })
+    }
+    
+    public static func CheckPhotoAcessPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized:
+            print("checkPermission: Access is granted by user")
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                print("checkPermission: status is \(newStatus)")
+                if newStatus ==  PHAuthorizationStatus.authorized {
+                    /* do stuff here */
+                    print("checkPermission: success")
+                }
+            })
+            print("checkPermission: It is not determined until now")
+        case .restricted:
+            // same same
+            print("checkPermission: User do not have access to photo album.")
+        case .denied:
+            // same same
+            print("checkPermission: User has denied the permission.")
+        @unknown default:
+            print("checkPermission: fatal error.")
+        }
     }
     
     public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {

@@ -196,10 +196,7 @@ class AlbumCoverViewController: UIViewController
                     }
                     else {
                         print("albumUID : " ,albumUID, "name: " , albumDetailTVC.albumDetail.title)
-                        albumDetailTVC.albumContents = detail
-                        albumDetailTVC.displayPhotoCollectionView?.reloadData()
-                        print("detail gilbertttt : ",albumDetailTVC.albumContents.count)
-                        //TODO: reload data :
+                        albumDetailTVC.reloadPhoto(newPhotos: detail)
                     }
                 }
             }

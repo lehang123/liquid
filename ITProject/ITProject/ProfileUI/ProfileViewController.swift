@@ -142,7 +142,14 @@ class ProfileViewController: UIViewController {
     @objc func DoneButtonTapped() {
         let user = Auth.auth().currentUser
         
-        
+        if let u = user {
+            if u.displayName != self.name.text{
+                didChangeUserInfo = true
+                Util.ChangeUserDisplayName(user: u, username: self.name.text!)
+            }
+        }
+        // todo : change of user's phone number has to be done in db.
+
         
         //update DB according to what has changed:
         if (self.currentRelationship != self.relationship.text){
@@ -157,18 +164,20 @@ class ProfileViewController: UIViewController {
         }
         
         if didChangeUserProfile {
+            didChangeUserProfile = false
             didChangeUserInfo = true
             // todo : upload file string to db as well
             if let imageData = self.profilePicture.image?.jpegData(compressionQuality: 1.0),
                 let imageString = Util.GenerateUDID(){
+                Util.ShowActivityIndicator(withStatus: "uploading Profile...")
                 Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-                    
+                 
                     if url != nil{
                         // change photo url in auth service
                         
                         Util.ChangeUserPhotoURL(imagePath:imageString , ext: Util.EXTENSION_JPEG)
                     }
-                    
+                    Util.DismissActivityIndicator()
                 }, errorHandler: {e in
                     print("you get error from Thumbnail choose")
                     Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
