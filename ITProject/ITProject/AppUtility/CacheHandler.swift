@@ -262,31 +262,37 @@ class CacheHandler : NSObject {
     
     public func getAllPhotosInfo (currAlbum : String, completion: @escaping (_ allMedias : [PhotoDetail] , _ error: Error?)->() = {_,_ in} )  {
         var allMedias : [PhotoDetail] = [PhotoDetail]();
-        let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: currAlbum)
+        let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: currAlbum)
         DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: currAlbumRef).getDocuments { (mediaQS, error) in
             if let error = error {
-                print("error at getAllPhotosInfo::: ", error)
+                print("ERROR AT getAllPhotosInfo: ", error )
             }
             else{
                 for doc in mediaQS!.documents{
+
                     //get current data:
                     let currData : [String : Any] = (doc.data())
-    
-                    //process comments :
-                    let currComments : [String : String ] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [String : String]
+                    print("currData labebl::: " )
+
+                    //process comments :>
+                    let currComments:[[String:Any] ] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [[String : Any]]
     
                     var parsedComments : [PhotoDetail.comment] =  [PhotoDetail.comment]()
+
+                    currComments.forEach({ (commentRow) in
     
-                    currComments.forEach({ (arg0) in
-    
-                    let (user, comment) = arg0
-                    parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: user, said: comment))
+                    
+                        parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String ,  said: commentRow[AlbumDBController.COMMENTS_MESSAGE] as! String))
+                        print("access labebl::: ",  commentRow[AlbumDBController.COMMENTS_USERNAME],commentRow[AlbumDBController.COMMENTS_MESSAGE]  )
                     })
+                    
     
                     //parse all data:
                     allMedias.append(PhotoDetail(title: doc.documentID  , description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID:  doc.documentID  , likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES ] as? Int, comments: parsedComments, ext:  currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String) );
                     
+                    
                 }
+                
                 completion(allMedias,error)
 
             }

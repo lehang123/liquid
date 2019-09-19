@@ -13,6 +13,7 @@ class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
     var albumContents = [PhotoDetail]()
     
+
     private static let SHOW_PHOTO_DETAIL_SEGUE = "ShowPhotoDetail"
     
     @IBOutlet weak var albumCoverImageView: UIImageView!
