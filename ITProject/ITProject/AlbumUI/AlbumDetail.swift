@@ -57,6 +57,7 @@ class AlbumDetail: Equatable
 
     public func addPhoto(photo : PhotoDetail){
         photos.append(photo)
+        //TODO : REPLACE EXTENSION_JPEG WITH THE EXTENSION FROM PHOTO DETAIL
     }
 
     public func removePhoto(photo : PhotoDetail){
