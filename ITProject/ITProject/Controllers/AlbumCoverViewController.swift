@@ -205,15 +205,15 @@ class AlbumCoverViewController: UIViewController
     }
 }
 
-protocol RemoveAlbumDelegate {
-    
-    func removeAlbum(albumToDelete : AlbumDetail)
-    
-}
-
-protocol ReloadDelegate {
-    func loadDataDelegate()
-}
+//protocol RemoveAlbumDelegate {
+//
+//    func removeAlbum(albumToDelete : AlbumDetail)
+//
+//}
+//
+//protocol ReloadDelegate {
+//    func loadDataDelegate()
+//}
 
 extension AlbumCoverViewController: UITableViewDelegate, UITableViewDataSource{
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -243,6 +243,7 @@ extension AlbumCoverViewController: UITableViewDelegate, UITableViewDataSource{
         print("ALBUM CELL :: ", cell)
         cell.album = albumsList.getAlbum(index: indexPath.item)
         cell.layer.borderColor = UIColor.clear.cgColor
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
         cell.backgroundColor = .clear
         
         return cell
