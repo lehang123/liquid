@@ -32,7 +32,6 @@ class CacheHandler : NSObject {
     override init (){
         dataCache = NSCache<NSString, NSData>()
         super.init()
-        dataCache.delegate = self
         CacheHandler.addObjects();
     }
     
@@ -302,17 +301,23 @@ class CacheHandler : NSObject {
     public func getFamilyInfo(completion: @escaping (_ UID: String?, _ Motto: String?, _ Name: String?, _ profileUID: String?, _ profileExtension: String?, _ error: Error?) -> () = {_,_,_,_,_,_ in}){
         //get user Document Ref:
         let user = Auth.auth().currentUser!.uid;
+        
+        print("getting family info with uid : " + user)
         let userDocRef = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user);
+        print("getting family info with userDocRef : " + userDocRef.documentID)
         
         Util.ShowActivityIndicator(withStatus: "retrieving user's family information...");
         //get users related family:
+        // question ? : why FAMILY_DOCUMENT_FIELD_MEMBERS
         DBController.getInstance().getDB().collection(RegisterDBController.FAMILY_COLLECTION_NAME).whereField(RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS, arrayContains: userDocRef as Any).getDocuments { (familyQuerySnapshot, error) in
             Util.DismissActivityIndicator()
             if let error = error {
                 print("ERROR GET FAM \(error)");
             }
             else{
+                print("come to here with userDocRef : ")
                 for doc in familyQuerySnapshot!.documents{
+                     print("come to here with userDocRef : with the doc")
                     let data = doc.data()
                     let motto = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO] as? String
                     let name = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME] as? String
@@ -565,15 +570,6 @@ class CacheHandler : NSObject {
     
 }
 
-extension CacheHandler :  NSCacheDelegate{
-    
-    func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
-        // todo : reload cache here if the cache is evit
-        print("CacheHandler : this is about to be evict : ")
-        print(obj)
-    }
-    
-}
     
     
     
