@@ -2,26 +2,36 @@
 //  AlbumCollectionViewCell.swift
 //  ITProject
 //
-//  Created by Erya Wen on 2019/8/15.
+//  Created by Erya Wen on 2019/9/19.
 //  Copyright © 2019 liquid. All rights reserved.
 //
-
 import UIKit
 
-class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
-    
-    @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var albumTitleLabel: UILabel!
-    @IBOutlet weak var backgroundMask: UIView!
+class AlbumTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var backgroundMask: UIView!
+    @IBOutlet weak var albumTitleLabel: UILabel!
+    
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        // Initialization code
+//    }
+//
+//    override func setSelected(_ selected: Bool, animated: Bool) {
+//        super.setSelected(selected, animated: animated)
+//
+//        // Configure the view for the selected state
+//    }
     var album: AlbumDetail? {
         didSet {
             self.updateUI()
         }
     }
-
+    
     private func updateUI()
     {
+        self.createAlbumLayout()
         if let album = album {
             
             Util.GetImageData(imageUID: album.coverImageUID,
@@ -29,8 +39,8 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
                                 data in
                                 self.backgroundImageView.image = UIImage(data: data!)
                                 self.albumTitleLabel.text = album.title
-                                self.createAlbumLayout()
-                    
+                                //                                self.createAlbumLayout()
+                                
             })
             
         } else {
@@ -59,19 +69,19 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
         deleteButton.layer.cornerRadius = 15.0
         deleteButton.layer.masksToBounds = true
         
-        deleteButton.addTarget(self, action: #selector(deleteSelf), for: .touchUpInside)
-        self.revealView = deleteButton
+        //deleteButton.addTarget(self, action: #selector(deleteSelf), for: .touchUpInside)
+        //self.revealView = deleteButton
     }
     
-    @objc func deleteSelf() {
-        self.hideRevealView(withAnimated: true)
-        print("custom revealView delete")
-        
-        if removeAlbumDelegate != nil {
-            removeAlbumDelegate.removeAlbum(albumToDelete: self.albumDetail)
-        }
-        
-    }
+    //    @objc func deleteSelf() {
+    //        self.hideRevealView(withAnimated: true)
+    //        print("custom revealView delete")
+    //
+    //        if removeAlbumDelegate != nil {
+    //            removeAlbumDelegate.removeAlbum(albumToDelete: self.albumDetail)
+    //        }
+    //
+    //    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -83,4 +93,5 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
         
         self.clipsToBounds = false
     }
+    
 }
