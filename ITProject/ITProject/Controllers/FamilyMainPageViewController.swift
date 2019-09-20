@@ -14,12 +14,13 @@ import FirebaseStorage
 import Firebase
 import EnhancedCircleImageView
 
-
+// Structure
 struct ModelCollectionFlowLayout {
     var title: String = ""
     var image: UIImage!
 }
 
+// Delegation goes here
 protocol FamilyProfileViewDelegate {
     func didUpdateFamilyInfo()
 }
@@ -30,33 +31,29 @@ protocol UserProfileViewDelegate {
 
 class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, FamilyProfileViewDelegate, UserProfileViewDelegate  {
     
+    // Constants and properties go here
     private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
     private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
-    
-    @IBOutlet weak var familyMotto: UILabel!
-    @IBOutlet weak var profileImg: EnhancedCircleImageView!
-    @IBOutlet weak var profileImgContainer: UIView!
-    @IBOutlet var carouselCollectionView: UICollectionView!
-    
     private var familyUID: String!
     private var familyName: String?
     private var familyProfileUID: String?
     private var familyProfileExtension: String?
-
     private var userFamilyPosition: String?
     private var userGender: Gender?
     private var profileURL: String?
     private var profileExtension: String?
     
-//    var userInfo: String!
-//    var userImageUID: String!
-//    var userImageExtension: String!
+    @IBOutlet weak var familyMotto: UILabel!
+    @IBOutlet weak var profileImg: EnhancedCircleImageView!
+    @IBOutlet weak var profileImgContainer: UIView!
+    @IBOutlet var carouselCollectionView: UICollectionView!
  
+    /// <#Description#>
+    /// shows side menu bar
+    ///
+    /// - Parameter sender: touch the side menu bar
     @IBAction func SideMenuButtonTouched(_ sender: Any) {
-        
-        //shows side menu bar
         self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
-        
     }
     
     var items = [ModelCollectionFlowLayout]()
@@ -73,7 +70,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         
         
         // set Profile Image
-//        profileImg.image = UIImage(named: "tempProfileImage")
         // loading profileImage with shadow
         profileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
         profileImg.layer.shadowOpacity = 0.7
@@ -97,9 +93,12 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
     }
     
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    /// <#Description#>
+    /// In a storyboard-based application, you will often want to do a little preparation before navigation
+    ///
+    /// - Parameters:
+    ///   - segue: the next vc
+    ///   - sender: <#sender description#>
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
@@ -185,6 +184,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
 
     
+    /// <#Description#>
+    /// Collecting all the data store it
     func collectData(){
         items = [
             ModelCollectionFlowLayout(title: "Album", image: UIImage(named: "imageIcon")),
@@ -194,16 +195,31 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
 
     
+    /// <#Description#>
+    ///
+    /// - Parameter collectionView: The collection view requesting this information.
+    /// - Returns: The number of sections in collectionView.
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting this information.
+    ///   - section: An index number identifying a section in collectionView.
+    /// - Returns: The number of rows in section.
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
     
     var vc : UIViewController?
 
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting this information.
+    ///   - section: An index number identifying a section in collectionView.
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let funct = items[(indexPath as NSIndexPath).row]
         
@@ -216,6 +232,12 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting this information.
+    ///   - section: An index number identifying a section in collectionView.
+    /// - Returns: A configured cell object.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CarouselEffectCollectionViewCell
         cell.iconImage.image = items[indexPath.row].image
@@ -259,6 +281,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         }
     }
     
+    /// <#Description#>
+    /// Get uers' infomation from server
     private func loadUserInformFromServer(){
         //start pulling data from server : user info
         CacheHandler.getInstance().getUserInfo(completion: {
@@ -274,6 +298,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         })
     }
     
+    /// <#Description#>
+    /// Get family's information from server
     private func loadFamilyInformFromServer(){
         //start pulling data from server : family info
         CacheHandler.getInstance().getFamilyInfo(completion: {
@@ -308,12 +334,16 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         })
     }
     
+    /// <#Description#>
+    /// Get all the user and family data
     private func loadUserAndFamilyDataForServer(){
         print("loading user info !!! from login")
         loadFamilyInformFromServer()
         loadUserInformFromServer()
     }
     
+    /// <#Description#>
+    /// user asked for login
     private func askForLogin(){
         CacheHandler.getInstance().cleanCache()
         guard let VC1 = UIApplication.getTopViewController()?.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") else { return }
