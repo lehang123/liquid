@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SwiftEntryKit
+
 extension UILabel {
     var style: EKProperty.LabelStyle {
         set {
