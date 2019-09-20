@@ -69,12 +69,15 @@ class AlbumDetailTableViewController: UITableViewController {
                 self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
                 indexPaths.removeAll()
             }
-
-            for i in 0...newPhotos.count - 1 {
-                self.albumContents.append(newPhotos[i])
-                // first one for description
-                indexPaths.append(IndexPath(item: i, section: 0))
+            
+            if newPhotos.count  > 0 {
+                for i in 0...newPhotos.count - 1 {
+                    self.albumContents.append(newPhotos[i])
+                    // first one for description
+                    indexPaths.append(IndexPath(item: i, section: 0))
+                }
             }
+            
             self.displayPhotoCollectionView?.insertItems(at: indexPaths)
         }, completion: nil)
     }
@@ -126,7 +129,7 @@ class AlbumDetailTableViewController: UITableViewController {
                         */
                         
                         let v = PhotoDetail(title: "none", description: "none",
-                                            UID : "test-small-size-image", likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG)
+                                            UID : "test-small-size-image", likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG, watch : 0)
                         self.updatePhoto(newPhotos: v)
                         
         }
@@ -146,7 +149,9 @@ class AlbumDetailTableViewController: UITableViewController {
         if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! PhotoDetail
-                photoDetailTVC.setPhotoUID(photoUID: photoDetail.getUID())
+                photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
+                
+
             }
         }
     }

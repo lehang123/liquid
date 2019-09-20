@@ -35,9 +35,20 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 //    private var hasHiddenCells = false
     
     private var photoUID: String!
+    private var photoDetail : PhotoDetail!
+  
     
-    public func setPhotoUID(photoUID: String){
-        self.photoUID = photoUID
+    public func setPhotoDetailData(photoDetail : PhotoDetail){
+        self.photoDetail = photoDetail
+        self.fillCommentSource()
+        
+    }
+    public func fillCommentSource(){
+        let currSrc: [PhotoDetail.comment] = self.photoDetail.getComments()
+        
+        currSrc.forEach { (item) in
+            commentsSource.append(DisplayPhotoViewController.CommentCellStruct(comment: item.message, username: item.username))
+        }
     }
     
     private var headerView : UIView!
@@ -56,13 +67,13 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     @IBOutlet weak var tableView: UITableView!
     
-    // GILBERTTTTTTT
     override func viewDidLoad() {
         
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
         
-        makeDummyCommentSource(num: 20)
+        //makeDummyCommentSource(num: 20)
+        
     
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -74,23 +85,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         // TO DO!!!!!!!!!!!!!!
         // LOAD THE NUMBER OF WATCH AND LIKE HERE
-        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
-//        if (not watched) {
-//
-//            cell.watchedNumbers.text = String(((Int((cell.watchedNumbers.text!))!) + 1))
-//        }
-       // cell.likeNumbers.text = "load number here"
         // Store the watch data here
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -151,9 +146,10 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.cmmentText.endEditing(true)
         
         let username = Auth.auth().currentUser?.displayName ?? "UNKNOW GUY"
-        
         if (self.cmmentText.text!.count != 0){
-            self.storeCommentToServer(username: username, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
+
+            
+            self.storeCommentToServer(username: username, comment:  self.cmmentText.text!, photoUID: self.photoDetail.getUID())
             self.cmmentText.text = ""
         }
         // todo : pull latest comment from the server, and update comment source
@@ -187,20 +183,28 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         tableView.beginUpdates()
         
         /* delete all the old source */
-        for i in 0...commentsSource.count-1{
-            indexPaths.append(IndexPath(row: i, section: 0))
-        }
-        commentsSource.removeAll()
-        tableView.deleteRows(at: indexPaths, with: .fade)
-        indexPaths.removeAll()
+//        for i in 0...commentsSource.count-1{
+//            indexPaths.append(IndexPath(row: i, section: 0))
+//        }
+//        commentsSource.removeAll()
+//        tableView.deleteRows(at: indexPaths, with: .fade)
+//        indexPaths.removeAll()
         
         /* loaded in new source */
-        makeDummyCommentSource(num: 21)
-        for i in 0...commentsSource.count-1{
-            indexPaths.append(IndexPath(row: i, section: 0))
-        }
-        tableView.insertRows(at: indexPaths, with: .fade)
+//        makeDummyCommentSource(num: 21)
+//        var i = 0;
+//        commentsSource.forEach { (data) in
+//            indexPaths.append(IndexPath(row: i, section: 0))
+//            i+=1;
+//        }
+        print("COUNT IS: " ,commentsSource.count)
+        indexPaths.append(IndexPath(row: commentsSource.count, section: 0))
+//        for i in 0...commentsSource.count-1{
+//            indexPaths.append(IndexPath(row: i, section: 0))
+//        }
+        tableView.insertRows(at: indexPaths, with: .top)
         tableView.endUpdates()
+        tableView.scrollToRow(at: IndexPath(row: commentsSource.count, section: 0), at: .bottom, animated: true)
         tableView.reloadData()
     }
     
@@ -208,7 +212,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private func storeCommentToServer(username : String,  comment: String, photoUID : String) {
         
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, photoUID: photoUID);
-        
+        self.commentsSource.append(DisplayPhotoViewController.CommentCellStruct(comment: comment, username: username));
+
     }
    
     
@@ -257,15 +262,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         //cell.likeNumbers.text = cell.likeNumbers!.text!
 
         let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
-        
-        
+
+
         // To do
         // Store the number of likes here and check if this photo has been watched or liked by current user
         //if (not watched)
         cell.likeNumbers.text = String(((Int((cell.likeNumbers.text!))!) + 1))
         //else (watched)
         cell.likeNumbers.text = String(((Int((cell.likeNumbers.text!))!) - 1 ))
-        
+//
         
         
     }
@@ -304,22 +309,20 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell0.likeButton.delegate = self
             getCellInfo(cell: cell0)
             
-            
-        
-            
             let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(bookmarktapFunction(sender:)))
             cell0.Bookmark.isUserInteractionEnabled = true
             cell0.Bookmark.addGestureRecognizer(bookmarktap)
             
             // TO DO GILLBERT
             // LOAD THE likeNumbers and watched numbers
-            //cell0.likeNumbers.text = "number here"
-            //cell0.watchedNumbers.text = "number here"
+            cell0.likeNumbers.text = String(self.photoDetail.getLikes())
+            cell0.watchedNumbers.text =  String(self.photoDetail.getWatch() )
             
             return cell0
         }else {
             // create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
+            
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
             cell1.setUsernameLabel(username: commentsSource[indexPath.row - 1].username)
             cell1.setCommentLabel(comment: commentsSource[indexPath.row - 1].comment)
@@ -418,10 +421,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
+    
+    
     /* the header that shows to image */
     private func setUpTableViewHeader(){
         /*test on read file for local file*/
-        Util.GetImageData(imageUID: photoUID, UIDExtension: Util.EXTENSION_JPEG, completion: {
+        Util.GetImageData(imageUID: self.photoDetail.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
                 data in
             self.displayPhotoImageView.image = UIImage(data: data!)
         })
