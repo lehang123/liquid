@@ -8,10 +8,14 @@
 
 import UIKit
 import Photos
+import SwiftEntryKit
 
 class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
     var albumContents = [PhotoDetail]()
+    
+    private static let DELETE_PHOTO_TEXT = "Delete Photo"
+    private static let CANCEL_TEXT = "Cancel"
     
     private(set) var displayPhotoCollectionView:UICollectionView?
     
@@ -113,6 +117,7 @@ class AlbumDetailTableViewController: UITableViewController {
         })
     }
     
+
     private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
         let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
         return .init(formType: .withImageView,
@@ -130,8 +135,7 @@ class AlbumDetailTableViewController: UITableViewController {
                         let v = PhotoDetail(title: "none", description: "none",
                                             UID : "test-small-size-image", likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG)
                         self.updatePhoto(newPhotos: v)
-                        
-        }
+                        }
                     )
         
     }
@@ -195,10 +199,37 @@ class AlbumDetailTableViewController: UITableViewController {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoTableViewCell
+            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+            
+            cell.addGestureRecognizer(longPressRecognizer)
 
             return cell
         }
     }
+    
+    /// long pressed : used on imageView, when pressed, tried delete
+    ///
+    /// - Parameter sender: senderGesture, attached on image
+    @objc func longPressed(sender: UILongPressGestureRecognizer)
+    {
+        // Create you actionsheet - preferredStyle: .actionSheet
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let deleteAction = UIAlertAction(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive) { (action) in
+            print("didPress block")
+        }
+
+        let cancelAction = UIAlertAction(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel) { (action) in
+            print("didPress cancel")
+        }
+
+        // Add the actions to your actionSheet
+        actionSheet.addAction(deleteAction)
+        actionSheet.addAction(cancelAction)
+        // Present the controller
+        self.present(actionSheet, animated: true, completion: nil)
+    }
+    
 
     /// <#Description#>
     ///

@@ -25,6 +25,23 @@ class PopUpAlter {
         attributes = EKAttributes.centerFloat
         attributes.hapticFeedbackType = .error
         attributes.displayDuration = .infinity
+        attributes.screenInteraction = .dismiss
+        attributes.entryInteraction = .absorbTouches
+        attributes.scroll = .enabled(
+            swipeable: true,
+            pullbackAnimation: .jolt
+        )
+        attributes.roundCorners = .all(radius: 8)
+        attributes.positionConstraints.size = .init(
+            width: .offset(value: 20),
+            height: .intrinsic
+        )
+        attributes.positionConstraints.maxSize = .init(
+            width: .constant(value: UIScreen.main.minEdge),
+            height: .intrinsic
+        )
+        attributes.statusBar = .dark
+        
         attributes.entryBackground = .gradient(
             gradient: .init(
                 colors: [EKColor(rgb: 0xfffbd5), EKColor(rgb: 0xb20a2c)],
@@ -40,13 +57,6 @@ class PopUpAlter {
                 radius: 8
             )
         )
-        attributes.screenInteraction = .dismiss
-        attributes.entryInteraction = .absorbTouches
-        attributes.scroll = .enabled(
-            swipeable: true,
-            pullbackAnimation: .jolt
-        )
-        attributes.roundCorners = .all(radius: 8)
         attributes.entranceAnimation = .init(
             translate: .init(
                 duration: 0.7,
@@ -67,15 +77,7 @@ class PopUpAlter {
                 translate: .init(duration: 0.35)
             )
         )
-        attributes.positionConstraints.size = .init(
-            width: .offset(value: 20),
-            height: .intrinsic
-        )
-        attributes.positionConstraints.maxSize = .init(
-            width: .constant(value: UIScreen.main.minEdge),
-            height: .intrinsic
-        )
-        attributes.statusBar = .dark
+
         
         return attributes
     }
@@ -143,4 +145,6 @@ class PopUpAlter {
         let contentView = EKPopUpMessageView(with: message)
         SwiftEntryKit.display(entry: contentView, using: attributes)
     }
+    
+    
 }
