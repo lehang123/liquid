@@ -119,8 +119,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 // pass user info to the current sideMenuVC
                     let currentUser = Auth.auth().currentUser
                     profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
-                
                     profileExtension = currentUser?.photoURL?.pathExtension
+                
+                    print("currentUser : " + profileURL!)
                 
                     sideMenuVC.userInformation = UserInfo(
                     username: currentUser?.displayName ?? "placeHolder",
