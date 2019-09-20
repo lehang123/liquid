@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-public struct TimeFrame{
+public struct TimelineField{
     
     // The date that the event occured.
     let date: String
