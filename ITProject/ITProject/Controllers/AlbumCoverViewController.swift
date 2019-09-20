@@ -263,23 +263,25 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         guard orientation == .right else { return nil }
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            // handle action by updating model with deletion
+            
+            self.albumsList.removeAlbum(at: indexPath.row)
+            action.fulfill(with: .delete)
+            
         }
         
         // customize the action appearance
-        deleteAction.image = UIImage(named: Util.DEFAULT_IMAGE)
+//        deleteAction.image = UIImage(named: Util.DEFAULT_IMAGE)
         
         return [deleteAction]
     }
     
     func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
-        options.expansionStyle = .selection
-        options.transitionStyle = .border
+        options.expansionStyle = .destructive
+        options.transitionStyle = .drag
         return options
     }
 
-    
 }
 
 
