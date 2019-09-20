@@ -1290,7 +1290,7 @@
             </objects>
             <point key="canvasLocation" x="3614" y="-870"/>
         </scene>
-        <!--Display Photo View Controller-->
+        <!--Delegate-->
         <scene sceneID="8jZ-8q-mBh">
             <objects>
                 <viewController id="zQN-g9-n7S" customClass="DisplayPhotoViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
@@ -1327,22 +1327,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="90.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Like" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vqz-2u-2jK" userLabel="Like">
-                                                    <rect key="frame" x="0.0" y="0.0" width="48" height="90.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" translatesAutoresizingMaskIntoConstraints="NO" id="rF1-zc-94m" userLabel="Likes number">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" translatesAutoresizingMaskIntoConstraints="NO" id="rF1-zc-94m" userLabel="Likes number">
                                                     <rect key="frame" x="48" y="0.0" width="24" height="90.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="cms-Sz-D2f" userLabel="Watched">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="eye" translatesAutoresizingMaskIntoConstraints="NO" id="cms-Sz-D2f" userLabel="Watched">
                                                     <rect key="frame" x="72" y="0.0" width="32" height="90.5"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YX2-tn-i8S" userLabel="Watched number">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YX2-tn-i8S" userLabel="Watched number">
                                                     <rect key="frame" x="104" y="0.0" width="24" height="90.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1351,34 +1345,41 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
                                                     <rect key="frame" x="273" y="13.5" width="32" height="63.5"/>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owC-ug-4kH" customClass="FaveButton" customModule="FaveButton">
+                                                    <rect key="frame" x="10" y="22.5" width="45.5" height="45.5"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="owC-ug-4kH" secondAttribute="height" multiplier="1:1" id="V2A-xi-X9O"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Button" image="heartIcon"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="zQN-g9-n7S" id="gMG-Mn-PPY"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="YX2-tn-i8S" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="0Lm-2O-g6R"/>
                                                 <constraint firstItem="4Lz-go-1pw" firstAttribute="height" secondItem="sEm-hM-BI3" secondAttribute="height" multiplier="0.7" id="15R-td-zVX"/>
-                                                <constraint firstItem="Vqz-2u-2jK" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="5sc-Dj-744"/>
                                                 <constraint firstItem="4Lz-go-1pw" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="68W-a5-nKl"/>
-                                                <constraint firstItem="rF1-zc-94m" firstAttribute="width" secondItem="Vqz-2u-2jK" secondAttribute="width" multiplier="0.5" id="BJc-ZY-HEb"/>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="C8V-hU-MfC"/>
-                                                <constraint firstItem="Vqz-2u-2jK" firstAttribute="height" secondItem="sEm-hM-BI3" secondAttribute="height" id="ExT-xn-nHQ"/>
-                                                <constraint firstItem="Vqz-2u-2jK" firstAttribute="leading" secondItem="sEm-hM-BI3" secondAttribute="leading" id="HBF-2U-spv"/>
+                                                <constraint firstItem="owC-ug-4kH" firstAttribute="width" secondItem="sEm-hM-BI3" secondAttribute="height" multiplier="0.5" id="E4V-Kb-FWA"/>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="width" secondItem="sEm-hM-BI3" secondAttribute="width" multiplier="0.1" id="Hxq-Dc-XFg"/>
                                                 <constraint firstItem="YX2-tn-i8S" firstAttribute="height" secondItem="sEm-hM-BI3" secondAttribute="height" id="ORz-VT-ytf"/>
                                                 <constraint firstAttribute="trailing" secondItem="4Lz-go-1pw" secondAttribute="trailing" multiplier="1.05" id="QE9-kG-dGq"/>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="leading" secondItem="rF1-zc-94m" secondAttribute="trailing" id="SA8-rJ-ejV"/>
                                                 <constraint firstItem="rF1-zc-94m" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="cUS-ft-Seb"/>
                                                 <constraint firstItem="YX2-tn-i8S" firstAttribute="width" secondItem="rF1-zc-94m" secondAttribute="width" id="dAm-T3-FTZ"/>
-                                                <constraint firstItem="rF1-zc-94m" firstAttribute="leading" secondItem="Vqz-2u-2jK" secondAttribute="trailing" id="dfr-0S-cfy"/>
                                                 <constraint firstItem="4Lz-go-1pw" firstAttribute="width" secondItem="cms-Sz-D2f" secondAttribute="width" id="e6N-oF-spd"/>
+                                                <constraint firstItem="owC-ug-4kH" firstAttribute="leading" secondItem="sEm-hM-BI3" secondAttribute="leading" constant="10" id="ee5-fq-1qe"/>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="height" secondItem="sEm-hM-BI3" secondAttribute="height" id="gk7-NS-Qm4"/>
                                                 <constraint firstItem="rF1-zc-94m" firstAttribute="height" secondItem="sEm-hM-BI3" secondAttribute="height" id="lWY-8W-PEa"/>
-                                                <constraint firstItem="Vqz-2u-2jK" firstAttribute="width" secondItem="sEm-hM-BI3" secondAttribute="width" multiplier="0.15" id="tBJ-LP-mQ7"/>
                                                 <constraint firstItem="YX2-tn-i8S" firstAttribute="leading" secondItem="cms-Sz-D2f" secondAttribute="trailing" id="wRJ-2w-C8P"/>
                                                 <constraint firstItem="4Lz-go-1pw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YX2-tn-i8S" secondAttribute="trailing" constant="8" symbolic="YES" id="x6A-nC-4Ms"/>
+                                                <constraint firstItem="owC-ug-4kH" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="yOl-OQ-fgs"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="Bookmark" destination="4Lz-go-1pw" id="tYP-AB-Jtc"/>
-                                            <outlet property="likeLabel" destination="Vqz-2u-2jK" id="eK1-tf-vUb"/>
+                                            <outlet property="likeButton" destination="owC-ug-4kH" id="vHo-0B-eiv"/>
                                             <outlet property="likeNumbers" destination="rF1-zc-94m" id="hhl-6W-icp"/>
                                             <outlet property="watchedLabel" destination="cms-Sz-D2f" id="Un0-cU-Rfs"/>
                                             <outlet property="watchedNumbers" destination="YX2-tn-i8S" id="MNg-nl-Sjy"/>
@@ -1478,7 +1479,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="42M-wJ-vJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4785" y="-748"/>
+            <point key="canvasLocation" x="4785" y="-748.94366197183103"/>
         </scene>
         <!--Show Detail Photo View Controller-->
         <scene sceneID="zYT-6r-5DT">
@@ -1570,6 +1571,7 @@
         <image name="defaultImage" width="800" height="600"/>
         <image name="eye" width="108" height="108"/>
         <image name="familyBackgroundImage" width="750" height="1334"/>
+        <image name="heartIcon" width="128" height="128.5"/>
         <image name="item0" width="414" height="736"/>
         <image name="logoutIcon" width="100" height="100"/>
         <image name="menuIcon" width="22" height="22"/>

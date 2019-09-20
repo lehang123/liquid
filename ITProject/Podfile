@@ -22,6 +22,7 @@ target 'ITProject' do
   pod 'EnhancedCircleImageView'
   pod 'SwiftEntryKit'
   pod 'SwipeCellKit'
+  pod 'FaveButton'
 
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'
