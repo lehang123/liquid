@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwipeCellKit
 
-class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
+class AlbumCollectionViewCell: SwipeCollectionViewCell {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var albumTitleLabel: UILabel!
@@ -61,11 +62,11 @@ class AlbumCollectionViewCell: PZSwipedCollectionViewCell {
         deleteButton.layer.masksToBounds = true
         
         deleteButton.addTarget(self, action: #selector(deleteSelf), for: .touchUpInside)
-        self.revealView = deleteButton
+//        self.revealView = deleteButton
     }
     
     @objc func deleteSelf() {
-        self.hideRevealView(withAnimated: true)
+//        self.hideRevealView(withAnimated: true)
         print("custom revealView delete")
         
 //        if removeAlbumDelegate != nil {

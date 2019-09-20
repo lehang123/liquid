@@ -2,7 +2,7 @@
 //  ChangePWViewController.swift
 //  ITProject
 //
-//  Created by 陳信宏保佑🙏 on 2019/8/16.
+//  Created by Zhu Chenghong on 2019/8/16.
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
@@ -10,8 +10,11 @@ import Foundation
 import UIKit
 import Firebase
 
+/// <#Description#>
+/// This view controller is mainly for user to change the password
 class ChangePasswordViewController : UIViewController {
     
+    // Constants and properties go here
     private static let PASSWORD_INVALID = "The original password is invalid"
     private static let PASSWORD_LENGTH_NOT_ENOUGH = "Minimum length is 8"
     private static let CONFIRMED_INCORRECT_WRONG = "Mismatch password, please try again"
@@ -27,10 +30,13 @@ class ChangePasswordViewController : UIViewController {
         super.viewDidLoad()
     }
     
+    /// <#Description#>
+    /// Check if the entered passwords are the same
+    /// If they are satisfied, then update it to databse
+    ///
+    /// - Parameter sender: Clike the confirm bottom
     @IBAction func Confirm(_ sender: Any) {
         
-        print (newPW!)
-        print (confirmedPassword!)
         //make sure both new and old passwords are at least 8 characters.
         if (newPW.text!.count < 8) {
             Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_LENGTH_NOT_ENOUGH,
@@ -38,13 +44,15 @@ class ChangePasswordViewController : UIViewController {
                            action_title: Util.BUTTON_DISMISS,
                            on: self)
         }
+        
         if (originalPW.text!.count<8){
             Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_INVALID,
                            message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
                            action_title: Util.BUTTON_DISMISS,
                            on: self)
         }
-
+        
+        // Check if the typed passwords are the same
         if (newPW.text == confirmedPassword.text) {
     
             let user = Auth.auth().currentUser
@@ -70,18 +78,18 @@ class ChangePasswordViewController : UIViewController {
 
     }
 
+    
+    /// <#Description#>
+    /// Update the password to the databse
+    ///
+    /// - Parameter newPW: the new password that user want to use
     func updatePassword(newPW : String) {
         Auth.auth().currentUser?.updatePassword(to: newPW) { (error) in
 
             if (error == nil) {
-                
                 Util.ShowAlert(title: ChangePasswordViewController.CREATE_CORRECT, message: ChangePasswordViewController.PASSWORD_CHANGE_SUCCESS, action_title: ChangePasswordViewController.CREATE_CORRECT, on: self ){
-                    
-                    // pop back to the family view
-//                    self.navigationController?.popViewController(animated: true)
                     self.navigationController?.popToRootViewController(animated: true)
                 }
-                
             }else {
                 Util.ShowAlert(title: error!.localizedDescription,
                                message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title:  Util.BUTTON_DISMISS,

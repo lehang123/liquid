@@ -11,7 +11,7 @@ import Firebase
 import FirebaseCore
 import FirebaseFirestore
 
-/// <#Description#>
+/// Description
 ///DBController to read,add,update,delete data in Firestore DB with singleton pattern.
 class DBController {
    

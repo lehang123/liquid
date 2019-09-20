@@ -84,7 +84,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.dataSource = self
         
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        
         self.cmmentText.delegate = self
         
         
@@ -302,6 +301,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell0.Bookmark.isUserInteractionEnabled = true
             cell0.Bookmark.addGestureRecognizer(bookmarktap)
             
+            cell0.selectionStyle = UITableViewCell.SelectionStyle.none
+            
             // TO DO GILLBERT
             // LOAD THE likeNumbers and watched numbers
             cell0.likeNumbers.text = String(self.photoDetail.getLikes())
@@ -315,6 +316,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as!CommentCell
             cell1.setUsernameLabel(username: commentsSource[indexPath.row - 1].username)
             cell1.setCommentLabel(comment: commentsSource[indexPath.row - 1].comment)
+            
+            cell1.selectionStyle = UITableViewCell.SelectionStyle.none
+            
             return cell1
         }
     }

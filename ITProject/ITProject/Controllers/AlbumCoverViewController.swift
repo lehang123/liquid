@@ -10,36 +10,41 @@ import UIKit
 import UPCarouselFlowLayout
 import Firebase
 import SwiftEntryKit
+import SwipeCellKit
 
-class AlbumCoverViewController: UIViewController
-{
+class AlbumCoverViewController: UIViewController {
     
-
+    // Constants and properties go here
     private static let NIB_NAME = "AlbumCollectionViewCell"
     private static let CELL_IDENTIFIER = "AlbumCell"
-    
     private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
     private let EMPTYNAME_DES = "Album name is empty"
 
-
-
     @IBOutlet weak var albumCollectionView: UICollectionView!
     
+    /// <#Description#>
+    /// User need to add the album
+    ///
+    /// - Parameter sender: the button for creating album
     @IBAction func AddAlbumPressed(_ sender: Any) {
         print("AddAlbumPressed : ")
-//        self.loadNameData()
-        
+
         let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
         
         let formEle = self.setupFormELement(customFormVC: VC1)
         VC1.initFormELement(formEle: formEle)
         self.present(VC1, animated:true, completion: {
             VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-            
         })
 
     }
     
+    
+    /// <#Description#>
+    /// Setting up all infomation signed by user to create the album
+    ///
+    /// - Parameter customFormVC: customFormVC
+    /// - Returns: formElement: formElement with all information
     private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
         let textFields = AddAlbumUI.fields(by: [.albumName,.albumDescription], style: .light)
         return .init(formType: .withImageView,
@@ -89,6 +94,12 @@ class AlbumCoverViewController: UIViewController
 
     }
     
+    /// <#Description#>
+    /// Pop up error message
+    ///
+    /// - Parameters:
+    ///   - attributes: attributes description
+    ///   - description: decription about what is wrong
     private func showPopupMessage(attributes: EKAttributes, description: String) {
         let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
         let title = "Error!"
@@ -101,20 +112,17 @@ class AlbumCoverViewController: UIViewController
                                     buttonBackgroundColor: .white,
                                     image: image)
     }
-
     
-    //func getAddAlbumPopUpViewSize
-    
-//    func removeAlbum(albumToDelete : AlbumDetail) {
-//        /*take album out of list and refresh*/
-//        let index = albumsList.getIndexForItem(album: albumToDelete)
-//        albumCollectionView.performBatchUpdates({
-//            let indexPath = IndexPath(item: index, section: 0)
-//            albumCollectionView.deleteItems(at: [indexPath])
-//            albumsList.removeAlbum(albumToDelete: albumToDelete)
-//        }, completion: nil)
-//    }
-    
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - newAlbumTitle: new album title description
+    ///   - newAlbumDescrp: new album descrpiton
+    ///   - UID: user id
+    ///   - imageUID: imageUID
+    ///   - imageExtension: imageExtension
+    ///   - doesReload: doesReload
+    ///   - reveseOrder: reveseOrder
     func loadAlbumToList(title newAlbumTitle: String,
                   description newAlbumDescrp: String,
                   UID: String,
@@ -153,7 +161,6 @@ class AlbumCoverViewController: UIViewController
     private let albumsList = AlbumsList()
     private var albumDataList = [String]()
     
-    
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
     }
@@ -167,6 +174,8 @@ class AlbumCoverViewController: UIViewController
     }
     
     
+    /// Description
+    /// Load the album collection view for the vc
     private func loadAlbumCollectionView(){
         self.albumCollectionView.showsVerticalScrollIndicator = false
         
@@ -177,16 +186,19 @@ class AlbumCoverViewController: UIViewController
     }
     
     
-    /* prepare next view,
-     passing album details to the display album content view
-     To-do: changed list data structure so it fits for database */
+        //To-do: changed list data structure so it fits for database */
+    /// <#Description#>
+    /// prepare next view, passing album details to the display album content view
+    ///
+    /// - Parameters:
+    ///   - segue: vc you want to go
+    ///   - sender: sender
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Storyboard.showAlbumDetail {
             if let albumDetailTVC = segue.destination as? AlbumDetailTableViewController {
                 let selectedAlbum = albumsList.getAlbum(index: (sender as! IndexPath).row)
                 albumDetailTVC.albumDetail = selectedAlbum
 
-                
                 // todo : make album's photo according to the photo UID
                 let albumUID = albumDetailTVC.albumDetail.UID
                 // put it in here : albumDetailTVC.albumContents
@@ -202,65 +214,92 @@ class AlbumCoverViewController: UIViewController
             }
         }
     }
-    
 
-    
-  
-    private func createAlbumPhotos()->[String]{
-        
-        var photos = [String]()
-        photos.append("test-small-size-image")
-        photos.append("test-image-one")
-        photos.append("test-image-two")
-        
-        return photos
-    }
 }
 
-//protocol RemoveAlbumDelegate {
-//
-//    func removeAlbum(albumToDelete : AlbumDetail)
-//
-//}
-//
-//protocol ReloadDelegate {
-//    func loadDataDelegate()
-//}
-
-extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, SwipeCollectionViewCellDelegate{
+    
+    /// <#Description#>
+    ///
+    /// - Parameter collectionView: The collection view requesting this information.
+    /// - Returns: the number of sections
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // return the number of sections
         return 1
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view requesting this information.
+    ///   - section: An index number identifying a section in collectionView.
+    /// - Returns: The number of rows in section.
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return albumsList.count()
     }
     
-    /*when album on clicked :
-     open albumDetail controller
-     */
+    
+    /// <#Description#>
+    ///when album on clicked : open albumDetail controller
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view object that is notifying you of the selection change.
+    ///   - indexPath: The index path of the cell that was selected.
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         self.performSegue(withIdentifier: Storyboard.showAlbumDetail, sender: indexPath)
     }
     
     
-    /*called in viewDidLoad*/
+    /// <#Description#>
+    /// called in viewDidLoad
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view object that is notifying you of the selection change.
+    ///   - indexPath: The index path of the cell that was selected.
+    /// - Returns: A configured cell object.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
         
- 
         cell.album = albumsList.getAlbum(index: indexPath.item)
-        
+        cell.delegate = self
         return cell
 
     }
     
-
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view object that is notifying you of the selection change.
+    ///   - indexPath: The index path of the cell that was selected.
+    ///   - orientation: orientation
+    /// - Returns: return value
+    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            
+            self.albumsList.removeAlbum(at: indexPath.row)
+            action.fulfill(with: .delete)
+            
+        }
     
+        return [deleteAction]
+    }
+    
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - collectionView: The collection view object that is notifying you of the selection change.
+    ///   - indexPath: The index path of the cell that was selected.
+    ///   - orientation: orientation
+    /// - Returns: return value
+    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        options.transitionStyle = .drag
+        return options
+    }
+
 }
 
 
