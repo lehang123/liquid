@@ -169,6 +169,7 @@ class CustomFormViewController: UIViewController {
         }, completion:{
             bool in
             self.dismiss(animated: true, completion: {
+                
                 completion(self.contentv.getPreViewImage())
             })
         })

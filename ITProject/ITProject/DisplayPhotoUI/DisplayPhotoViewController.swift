@@ -44,10 +44,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
     }
     public func fillCommentSource(){
-        let currSrc: [PhotoDetail.comment] = self.photoDetail.getComments()
+        let currSrc: [PhotoDetail.comment]? = self.photoDetail.getComments()
         
-        currSrc.forEach { (item) in
-            commentsSource.append(DisplayPhotoViewController.CommentCellStruct(comment: item.message, username: item.username))
+        currSrc?.forEach { (item) in
+            if let item:PhotoDetail.comment? = item{
+                commentsSource.append(DisplayPhotoViewController.CommentCellStruct(
+                    comment: item?.message ?? "",
+                    username: item?.username ?? ""))
+
+            }
         }
     }
     
