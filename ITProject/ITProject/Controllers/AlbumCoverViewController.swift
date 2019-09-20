@@ -203,10 +203,7 @@ class AlbumCoverViewController: UIViewController
             }
         }
     }
-    
 
-    
-  
     private func createAlbumPhotos()->[String]{
         
         var photos = [String]()

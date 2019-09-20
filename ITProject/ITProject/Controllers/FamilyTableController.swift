@@ -29,8 +29,7 @@ class FamilyTableController: UITableViewController{
     func populateData(){
         
         data = [CellData.init(position: "position ", name : "name" , role  : "role" ),CellData.init(position: "wo jiu jiu ni ", name : "Ivan Wibowo", role  : "can edit" ), CellData.init(position: "wo jiu 22jiu ni ", name : "Maris Stella Angelita GUnadi", role  : "can delete"),CellData.init(position: "wo jiu jiu ni ", name : "Aurelia Griselda Wibowo", role  : "can view")]
-
-    
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
