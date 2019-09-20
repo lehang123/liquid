@@ -8,10 +8,13 @@
 
 import UIKit
 import Photos
+import Firebase
 
 class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
+    
     var albumContents = [PhotoDetail]()
+    
     
     private(set) var displayPhotoCollectionView:UICollectionView?
     
@@ -115,6 +118,7 @@ class AlbumDetailTableViewController: UITableViewController {
     
     private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
         let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
+        
         return .init(formType: .withImageView,
                      titleText: "Add new photo",
                      textFields: textFields,
@@ -127,12 +131,43 @@ class AlbumDetailTableViewController: UITableViewController {
                          reload current album's photo
                         */
                         
-                        let v = PhotoDetail(title: "none", description: "none",
-                                            UID : "test-small-size-image", likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG)
-                        self.updatePhoto(newPhotos: v)
+//                        let v = PhotoDetail(title: "none", description: "none",
+//                                            UID : "test-small-size-image", likes: 0, comments: [PhotoDetail.comment](), ext: Util.EXTENSION_JPEG, watch : 0)
+                            customFormVC.dismissWithAnimation(){
+                                imageData in
+                                
+                                
+                                
+                                
+                                if let imageData = imageData,
+                                   let imageUID = Util.GenerateUDID(){
+                                    print("imageData IS IN setupFormELement :::", textFields.first?.textContent);
+                                    Util.ShowActivityIndicator(withStatus: "Creating photo ...")
+                                    Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
+                                        Util.DismissActivityIndicator()
+                                        if url != nil{
+//                                            // todo : add the thumbnail is a dummy now, and, update cache
+                                            AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
+                                            
+                                                self.updatePhoto(newPhotos: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: 0, comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                            
+                                           
+                                        }
+                                })
+                                
+                        }
                         
-        }
-                    )
+                        }}
+//            ,
+//
+//                     errorHandler: { e in
+//                        print("you get error from Thumbnail choose")
+//                        Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+//        }
+        )
+                                
+                        
+        
         
     }
     
@@ -148,7 +183,9 @@ class AlbumDetailTableViewController: UITableViewController {
         if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! PhotoDetail
-                photoDetailTVC.setPhotoUID(photoUID: photoDetail.getUID())
+                photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
+                
+
             }
         }
     }

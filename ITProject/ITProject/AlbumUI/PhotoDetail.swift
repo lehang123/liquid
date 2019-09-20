@@ -16,8 +16,8 @@ class PhotoDetail: Equatable
     
     public struct comment:Equatable {
         let commentID:String!
-        let who:String!
-        let said: String!
+        let username:String!
+        let message: String!
         
         static func == (lhs: comment, rhs: comment) -> Bool {
             return lhs.commentID == rhs.commentID
@@ -27,6 +27,7 @@ class PhotoDetail: Equatable
     /* filename :  UID.zip or UID.jpg */
     public let UID:String!;
     public let ext :String!;
+    private var watch : Int;
     
     public func getUID()->String{
         return self.UID
@@ -75,6 +76,10 @@ class PhotoDetail: Equatable
     
     public func getComments()-> [comment]! {
         return comments;
+        
+    }
+    public func getWatch()-> Int {
+        return watch;
     }
     
     public func addComments(comment : comment) {
@@ -91,7 +96,7 @@ class PhotoDetail: Equatable
     }
     
     init(title: String!, description: String!,
-         UID : String!, likes: Int!, comments: [comment]!, ext: String!)
+         UID : String!, likes: Int!, comments: [comment]!, ext: String!, watch : Int)
     {
         self.UID = UID
         self.title = title;
@@ -99,5 +104,6 @@ class PhotoDetail: Equatable
         self.likes = likes
         self.comments = comments
         self.ext = ext
+        self.watch = watch
     }
 }
