@@ -13,16 +13,18 @@ import SVProgressHUD
 import Zip
 import Photos
 
+/// <#Description#>
+/// This is file which share the common constants or functions to the whole project
 class Util {
-    public static let BUTTON_DISMISS = "dismiss"
     
+    // Constants and properties go here
+    public static let BUTTON_DISMISS = "dismiss"
     public static let EXTENSION_JPEG = "jpg"
     public static let EXTENSION_PNG = "png"
     public static let EXTENSION_ZIP = "zip"
     public static let IMAGE_FOLDER = "images"
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
-    
     public static let DEFAULT_IMAGE = "defaultImage"
     
     public static func GenerateUDID () -> String!{
@@ -37,16 +39,18 @@ class Util {
         }
     }
     
-    /*
-     data : the file date you want to store in the server
-     metadata : metadata to record your file, usually nil
-     fileName : the file name of your data with no extension
-        e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654
-     fextension : file extension
-        e.g. .jpg
-     completion Handlder : do whatever you want when completed, 1 args : download url to the file in the cloud
-     errorHandler : handle when error pop up, 1 args : error that occur
-     */
+
+    /// <#Description#>
+    /// data : the file date you want to store in the server
+    /// metadata : metadata to record your file, usually nil
+    /// fileName : the file name of your data with no extension
+    /// e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654
+    /// fextension : file extension
+    /// e.g. .jpg
+    /// completion Handlder : do whatever you want when completed, 1 args : download url to the file in the cloud
+    /// errorHandler : handle when error pop up, 1 args : error that occur
+    ///
+    /// - Returns: return
     public static func UploadFileToServer (data: Data,
                                            metadata: StorageMetadata?,
                                            fileName: String,
@@ -60,14 +64,16 @@ class Util {
                            errorHandler: errorHandler)
     }
     
-    /*
-      data : the file date you want to store in the server
-      metadata : metadata to record your file, usually nil
-      fileFullName : the file name of your data with extension
-         e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
-      completion Handlder : do whatever you want when completed, 1 args : download url to the file in the cloud
-      errorHandler : handle when error pop up, 1 args : error that occur
-     */
+
+    /// <#Description#>
+    /// data : the file date you want to store in the server
+    /// metadata : metadata to record your file, usually nil
+    /// fileFullName : the file name of your data with extension
+    /// e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
+    /// completion Handlder : do whatever you want when completed, 1 args : download url to the file in the cloud
+    ///errorHandler : handle when error pop up, 1 args : error that occur
+    ///
+    /// - Returns: return value
     public static func UploadFileToServer(data: Data,
                                           metadata: StorageMetadata?,
                                           fileFullName: String,
@@ -124,6 +130,10 @@ class Util {
         }
     }
     
+    /// <#Description#>
+    // Get the image data
+    ///
+    /// - Returns: <#return value description#>
     public static func GetImageData(imageUID: String?,
                                     UIDExtension: String?,
                                     completion: @escaping (Data?) -> () = { _ in },
@@ -152,11 +162,15 @@ class Util {
         }
     }
     
-    /*short cut to get Image from server by UID
-        imageUID : UID of the image
-        completion : do whatever you want to do when completion data : the image data
-        errorHandler : do whatever you want to do when error occur
-     */
+
+    /// <#Description#>
+    /// Get the image from server
+    ///short cut to get Image from server by UID
+    /// imageUID : UID of the image
+    /// completion : do whatever you want to do when completion data : the image data
+    /// errorHandler : do whatever you want to do when error occur
+    ///
+    /// - Returns: return value
     public static func GetImageFromServer (imageUID: String,
                                            completion: @escaping (Data?) -> () = { _ in },
                                            errorHandler: @escaping (Error?) -> () = { _ in }){
@@ -179,16 +193,21 @@ class Util {
         }, errorHandler: errorHandler)
     }
     
+    /// <#Description#>
+    /// Get the image path
+    ///
+    /// - Parameter imageUID: image id
+    /// - Returns: return value
     public static func GetImagePathByUID(imageUID:String) ->String{
         return Util.IMAGE_FOLDER + "/" + imageUID + "." + Util.EXTENSION_ZIP
     }
     
     
-    /* test image link   "images/795C8939-982E-40C8-AE2D-610A6EBA5866.zip"
-     error solver error 518:
-     https://stackoverflow.com/questions/37470266/error-when-downloading-from-firebase-storage
-     todo: get extension from database, here should be doing unzip
-    */
+    
+    /// <#Description#>
+    /// Download file from server and unzip the image
+    ///
+    /// - Returns: return value
     public static func DownloadFileFromServer (fileFullPath:String,
                                                completion: @escaping (URL?) -> () = { _  in },
                                                errorHandler: @escaping (Error?) -> () = { _ in }){
@@ -229,6 +248,12 @@ class Util {
         }
     }
     
+    /// <#Description#>
+    /// Delete the selected file from server
+    ///
+    /// - Parameters:
+    ///   - fileName: file name
+    ///   - fextension: fextension description
     public static func DeleteFileFromServer(fileName : String, fextension : String){
         let fileFullPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)! + fileName + "." + Util.EXTENSION_ZIP
         let desertRef = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
@@ -245,7 +270,10 @@ class Util {
         }
     }
     
-    public static func GetMetadataFromServer (fileName:String){
+    /// <#Description#>
+    ///
+    /// - Parameter fileName: file name
+    public static func GetMetadataFromServer (fileName:String) {
         let fileFullPath = GetFullFilePath(fileName: fileName)
         print("GetMetadataFromServer :file path " + fileFullPath)
         let gsReference = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
@@ -264,16 +292,18 @@ class Util {
         }
     }
     
-    // todo : password for encrytion
-    /*
-     Zipfile function :
-     
-         from : zipfile location (folderPath)
-         to : destination (folderPath)
-         filename : the file need to be ziped, with no extension
-         fextension : the file extension
-         deleteAfterFinish : delete the original file after finished zipping
-         completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  /Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip */
+
+    /// <#Description#>
+    /// Zipfile function :
+    ///
+    /// from : zipfile location (folderPath)
+    /// to : destination (folderPath)
+    /// filename : the file need to be ziped, with no extension
+    /// fextension : the file extension
+    /// deleteAfterFinish : delete the original file after finished zipping
+    /// completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  /Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip
+    ///
+    /// - Returns: return value
     public static func ZipFile(from: NSString, to: NSString,
                                fileName: String, fextension: String,
                                deleteAfterFinish: Bool,
@@ -307,13 +337,15 @@ class Util {
         return nil
     }
     
-    /*
-     Unzipfile function :
-         from : unzipfile location (folderPath)
-         to : destination (folderPath)
-         filename : the file need to be unzip, with extension .zip
-         deleteAfterFinish : delete the zip file after finished unzipping
-         completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  file:/Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.jpg */
+    /// <#Description#>
+    /// Unzipfile function :
+    /// from : unzipfile location (folderPath)
+    /// to : destination (folderPath)
+    /// filename : the file need to be unzip, with extension .zip
+    /// deleteAfterFinish : delete the zip file after finished unzipping
+    /// completion handler : what you want to do after unzip, argument url : fullPath to the destination with filename. e.g.  file:/Users/xxxxxxxxxxxx/Documents/images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.jpg */
+    ///
+    /// - Returns: return value
     public static func UnzipFile(from: NSString, to: NSString,
                                  fileName: String, deleteAfterFinish: Bool,
                                 completion: @escaping ((URL) -> Void) = {_ in }){
@@ -355,15 +387,17 @@ class Util {
     }
 
     
-    /*note : read write file opearation, use worker thread to do it*/
-    /*
-     Read file from document directory
-     
-         fileFullname : fileFullname with extension including extension folder path
-            e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
-         completion Handlder : do stuffs when completed,
-         1 args data that you have read from the file
-     */
+
+    /// <#Description#>
+    /// note : read write file opearation, use worker thread to do it*/
+    ///
+    /// Read file from document directory
+    /// fileFullname : fileFullname with extension including extension folder path
+    /// e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
+    /// completion Handlder : do stuffs when completed,
+    /// 1 args data that you have read from the file
+    ///
+    /// - Returns: return value
     public static func ReadFileFromDocumentDirectory(fileName: String,
                                                      completion:@escaping (Data)->() = {_ in })
     {
@@ -380,17 +414,17 @@ class Util {
         }
     }
     
-    /*note : read write file opearation, use worker thread to do it*/
-    /*
-     Write file to document directory
-     
-        data : the data that write to the file
-        fileFullname : fileFullname including extension folder path
-            e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
-        completion Handlder : do stuffs when completed,
-            1 args full filePath to written file.
-            e.g. file:///Users/xxxx/Documents/images/544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
-     */
+    /// <#Description#>
+    ///note : read write file opearation, use worker thread to do it
+    /// Write file to document directory
+    /// data : the data that write to the file
+    /// fileFullname : fileFullname including extension folder path
+    /// e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
+    /// completion Handlder : do stuffs when completed,
+    /// 1 args full filePath to written file.
+    /// e.g. file:///Users/xxxx/Documents/images/544D51AC-9608-46BD-AE6E-B325F2FC3654.jpg
+    ///
+    /// - Returns: <#return value description#>
     public static func WriteFileToDocumentDirectory(data: Data,
                                                     fileFullName: String,
                                                     completion:@escaping (URL)->() = {_ in }){
@@ -407,14 +441,16 @@ class Util {
         }
     }
     
-    /* usually is a zip file, so we need to unzip
-     , NOTE : completion is in main thread, as it's usually a UI task.
-            switch to background thread outside if you need it.
-        filename : fileName with no extension
-            e.g. "544D51AC-9608-46BD-AE6E-B325F2FC3654"
-        fextension : file extension e.g. ".jpg"
-        completion Handler : do what you want with the file data with it, 1 args data
-     */
+    /// <#Description#>
+    /// usually is a zip file, so we need to unzip
+    /// , NOTE : completion is in main thread, as it's usually a UI task.
+    /// switch to background thread outside if you need it.
+    /// filename : fileName with no extension
+    /// e.g. "544D51AC-9608-46BD-AE6E-B325F2FC3654"
+    /// fextension : file extension e.g. ".jpg"
+    /// completion Handler : do what you want with the file data with it, 1 args data
+    ///
+    /// - Returns: <#return value description#>
     public static func GetDataFromLocalFile(filename: String, fextension: String, completion:@escaping (Data)->() = {_ in })->Bool{
         
         print ("GetDataFromLocalFile : filename : " + filename)
@@ -474,19 +510,20 @@ class Util {
     }
     
     public static func GetFolderForFile(fileName: NSString, withPathSlash: Bool)->String?{
-//        if ("." + fileName.pathExtension) == (EXTENSION_JPEG) {
-//
-//            return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
-//        }
         return GetFolderByExtension(fextension: "." + fileName.pathExtension,
                                     withPathSlash: withPathSlash)
     }
     
-    /*
-     find correspond folder for the extension
-        fextension: file extension e.g. ".jpg"
-        withPathSlash: add pathSlash "/" at the end of the folder
-     */
+
+    /// <#Description#>
+    /// find correspond folder for the extension
+    /// fextension: file extension e.g. ".jpg"
+    /// withPathSlash: add pathSlash "/" at the end of the folder
+    ///
+    /// - Parameters:
+    ///   - fextension: fextension
+    ///   - withPathSlash: withPathSlash
+    /// - Returns: return value
     public static func GetFolderByExtension(fextension: String, withPathSlash: Bool)->String?{
         
         if (fextension) == (EXTENSION_JPEG) ||
@@ -502,17 +539,24 @@ class Util {
         return GetDocumentsDirectory().appendingPathComponent(GetFolderForFile(fileName: fileName as NSString)!+fileName).absoluteString
     }
     
-    /* get file full path according to the file extension
-         fileName : file name with extension
-            e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
-         return : fileFolder/filename
-            e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
-     */
+
+    /// <#Description#>
+    /// get file full path according to the file extension
+    /// fileName : file name with extension
+    /// e.g. 544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
+    /// return : fileFolder/filename
+    /// e.g. images/544D51AC-9608-46BD-AE6E-B325F2FC3654.zip
+    ///
+    /// - Parameter fileName: file name
+    /// - Returns: return the string the the file folder
     public static func GetFullFilePath(fileName:String)->String{
         return GetFolderForFile(fileName: fileName as NSString)!+fileName
     }
 
-    /* DocumentDirectory for the app that allows us to do read and write */
+    /// <#Description#>
+    /// DocumentDirectory for the app that allows us to do read and write
+    ///
+    /// - Returns: return the document directory
     public static func GetDocumentsDirectory()->URL{
         return URL(string :(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]))!
     }
@@ -524,7 +568,11 @@ class Util {
     public static func GetTmpDirectory()->URL{
         return GetDocumentsDirectory().appendingPathComponent(TMP_FOLDER, isDirectory: true)
     }
-    
+
+    /// <#Description#>
+    /// Create folders in the documents
+    ///
+    /// - Parameter folderURL: folder URL
     public static func CreateFolderInDocuments(folderURL:URL){
         var isDir : ObjCBool = true
 
@@ -541,25 +589,47 @@ class Util {
         }
     }
     
+    
+    /// <#Description#>
+    /// Create the image folder for later use
     public static func CreateImageFolder(){
         let dataPath = GetDocumentsDirectory().appendingPathComponent(IMAGE_FOLDER, isDirectory: true)
         CreateFolderInDocuments(folderURL: dataPath)
     }
     
+    /// <#Description#>
+    /// Create the tmp folder for later use
     public static func CreateTmpFolder(){
-        
         let dataPath = GetDocumentsDirectory().appendingPathComponent(TMP_FOLDER, isDirectory: true)
         CreateFolderInDocuments(folderURL: dataPath)
     }
     
+    
+    /// <#Description#>
+    /// Check if the file exist
+    ///
+    /// - Parameter fullPath: the path u want to check
+    /// - Returns: true for exist
     public static func DoesFileExist(fullPath:String)->Bool{
         return DoesFileExist(fullPath: fullPath, checkIsDirectory: false)
     }
     
+    /// <#Description#>
+    /// Check if the directory exist
+    ///
+    /// - Parameter fullPath: the path u want to check
+    /// - Returns: true for exist
     public static func DoesDirectoryExist(fullPath:String)->Bool{
         return DoesFileExist(fullPath: fullPath, checkIsDirectory: true)
     }
     
+
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - fullPath: the path u want to check
+    ///   - checkIsDirectory: check if it is a directory
+    /// - Returns: true for exist
     public static func DoesFileExist(fullPath:String, checkIsDirectory:Bool)-> Bool{
         let fileManager = FileManager.default
         var isDir : ObjCBool = false
@@ -592,6 +662,10 @@ class Util {
         }
     }
     
+    /// <#Description#>
+    /// Based on the string given, pop alert to the user
+    ///
+    /// - Returns: <#return value description#>
     public static func ShowAlert (title: String,
                                   message: String,
                                   action_title: String,
@@ -629,6 +703,10 @@ class Util {
         }
     }
     
+    /// <#Description#>
+    /// Change user's displayed names
+    ///
+    /// - Returns: <#return value description#>
     public static func ChangeUserDisplayName (user: User, username: String, completion: @escaping (Error?) -> () = {_ in}){
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = username
@@ -642,6 +720,12 @@ class Util {
         })
     }
     
+    /// <#Description#>
+    /// Change users' photo url
+    ///
+    /// - Parameters:
+    ///   - imagePath: the image path u want to change
+    ///   - ext: ext
     public static func ChangeUserPhotoURL (imagePath : String, ext: String){
         let request =  Auth.auth().currentUser?.createProfileChangeRequest()
         request?.photoURL = URL(string: imagePath + "." + ext)
@@ -652,6 +736,9 @@ class Util {
         })
     }
     
+    /// <#Description#>
+    /// There are differernt level of priority
+    /// Check if the photo can be acessed by this user
     public static func CheckPhotoAcessPermission() {
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         switch photoAuthorizationStatus {
@@ -682,7 +769,11 @@ class Util {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }
     
-    /*   test image : https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg */
+
+    /// <#Description#>
+    /// Download the image from the given url
+    ///
+    /// - Returns: <#return value description#>
     public static func downloadImage(from url: URL,
                                      completion: @escaping (Data?, URLResponse?, Error?) -> () = {_,_,_ in }) {
         print("Download Started")

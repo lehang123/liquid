@@ -12,27 +12,23 @@ import EnhancedCircleImageView
 
 class ProfileViewController: UIViewController {
     
+    // Constants and properties go here
     private static let CHANGED_INFO = "Succesfully"
     private static let CHANGED_MESSAGE = "The information has changed"
-    
     private var keyboardSize:CGRect!
     private var imagePicker = UIImagePickerController()
-//    private var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
-//    private var albumThumbnailString: String = Util.DEFAULT_IMAGE
-
-    @IBOutlet weak var profilePicture: EnhancedCircleImageView!
-    //@IBOutlet weak var name: UILabel!
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var relationship: UITextField!
     var currentRelationship:String?
-    @IBOutlet weak var genderField: UITextField!
     var currentGender:String?
-    @IBOutlet weak var phoneField: UITextField!
-    
     var userInformation: UserInfo!
-    
     var didChangeUserInfo:Bool = false
     var didChangeUserProfile:Bool = false
+    
+    @IBOutlet weak var profilePicture: EnhancedCircleImageView!
+    @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var relationship: UITextField!
+    @IBOutlet weak var genderField: UITextField!
+    @IBOutlet weak var phoneField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +41,7 @@ class ProfileViewController: UIViewController {
             action: #selector(DoneButtonTapped)
         )
         self.navigationItem.rightBarButtonItem = rightButtonItem
-        
-        // Do any additional setup after loading the view.
-        
+
         Util.GetImageData(imageUID: userInformation.imageUID, UIDExtension: userInformation.imageExtension, completion: {
             data in
             
@@ -127,18 +121,9 @@ class ProfileViewController: UIViewController {
         
     }
     
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        print("textFieldDidEndEditing : hello")
-//    }
-//
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        print("textFieldDidBeginEditing : hello " + keyboardSize.height.description)
-//    }
-
-    // To do change the username in database also in cache
-    // To do change the username in database also in cache
-    // To do change the username in database also in cache
-    // To do change the username in database also in cache
+    
+    /// <#Description#>
+    /// When the button tapped, save all the changes that made by the user
     @objc func DoneButtonTapped() {
         let user = Auth.auth().currentUser
         
@@ -148,9 +133,7 @@ class ProfileViewController: UIViewController {
                 Util.ChangeUserDisplayName(user: u, username: self.name.text!)
             }
         }
-        // todo : change of user's phone number has to be done in db.
 
-        
         //update DB according to what has changed:
         if (self.currentRelationship != self.relationship.text){
             didChangeUserInfo = true
@@ -166,7 +149,6 @@ class ProfileViewController: UIViewController {
         if didChangeUserProfile {
             didChangeUserProfile = false
             didChangeUserInfo = true
-            // todo : upload file string to db as well
             if let imageData = self.profilePicture.image?.jpegData(compressionQuality: 1.0),
                 let imageString = Util.GenerateUDID(){
                 Util.ShowActivityIndicator(withStatus: "uploading Profile...")
@@ -174,7 +156,6 @@ class ProfileViewController: UIViewController {
                  
                     if url != nil{
                         // change photo url in auth service
-                        
                         Util.ChangeUserPhotoURL(imagePath:imageString , ext: Util.EXTENSION_JPEG)
                     }
                     Util.DismissActivityIndicator()
@@ -194,6 +175,12 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
+    /// <#Description#>
+    /// Pick the specific image
+    ///
+    /// - Parameters:
+    ///   - picker: picker description
+    ///   - info: info description
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // todo : push add/edit photo view
         didChangeUserProfile = true
@@ -204,30 +191,14 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
             self.profilePicture.image = originalImage.withRenderingMode(.alwaysOriginal)
         }
         
-        // todo : also update this string to db
-//        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-//
-//            if url != nil{
-//                self.albumThumbnailString = imageString
-//                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
-//
-//                // TODO : change in database
-//                self.profilePicture.image = #imageLiteral(resourceName: "tempProfileImage")
-//
-//            }
-//
-//        }, errorHandler: {e in
-//            print("you get error from Thumbnail choose")
-//            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-//        })
-        
-        
         dismiss(animated: true, completion: nil)
     }
-    
-    /* delegate function from the UIImagePickerControllerDelegate
-     called when canceled button pressed, get out of photo library
-     */
+
+    /// <#Description#>
+    /// delegate function from the UIImagePickerControllerDelegate
+    /// called when canceled button pressed, get out of photo library
+    ///
+    /// - Parameter picker: picker
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         print ("imagePickerController: Did canceled pressed !!")
