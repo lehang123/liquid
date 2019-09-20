@@ -108,6 +108,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 // todo : pass cache here !!!!
                 print(" FamilyMainPageViewController prepare : pass success !");
                 self.passAlbumsData(to: albumDetailTVC)
+                
             }
         }
     else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
@@ -121,7 +122,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
                 
                     profileExtension = currentUser?.photoURL?.pathExtension
-                
                     sideMenuVC.userInformation = UserInfo(
                     username: currentUser?.displayName ?? "placeHolder",
                     imageUID: profileURL ?? Util.DEFAULT_IMAGE,
