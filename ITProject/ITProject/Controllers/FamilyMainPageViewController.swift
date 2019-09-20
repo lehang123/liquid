@@ -107,6 +107,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 // todo : pass cache here !!!!
                 print(" FamilyMainPageViewController prepare : pass success !");
                 self.passAlbumsData(to: albumDetailTVC)
+                
             }
         }
     else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
@@ -120,10 +121,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
                     profileExtension = currentUser?.photoURL?.pathExtension
                 
-                    print("currentUser : " + profileURL!)
-                
                     sideMenuVC.userInformation = UserInfo(
-                    username: currentUser?.displayName ?? "placeHolder",
+                    username: Auth.auth().currentUser?.displayName ?? "anonymous",
                     imageUID: profileURL ?? Util.DEFAULT_IMAGE,
                     imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
                     phone: currentUser?.phoneNumber ?? "12345678",
@@ -148,14 +147,14 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     func didUpdateFamilyInfo() {
         // reload Family Info
         if Auth.auth().currentUser != nil{
-            self.loadFamilyInformFromServer()
+            self.loadFamilyInfoFromServer()
         }
     }
     
     func didUpdateUserInfo() {
         // reload User Info
         if Auth.auth().currentUser != nil{
-            self.loadUserInformFromServer()
+            self.loadUserInfoFromServer()
         }
     }
     
@@ -283,7 +282,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     
     /// <#Description#>
     /// Get uers' infomation from server
-    private func loadUserInformFromServer(){
+    private func loadUserInfoFromServer(){
         //start pulling data from server : user info
         CacheHandler.getInstance().getUserInfo(completion: {
             relation, gender, _, error in
@@ -300,7 +299,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     
     /// <#Description#>
     /// Get family's information from server
-    private func loadFamilyInformFromServer(){
+    private func loadFamilyInfoFromServer(){
         //start pulling data from server : family info
         CacheHandler.getInstance().getFamilyInfo(completion: {
             uid, motto, name, profileUId, profileExtension, error in
@@ -338,8 +337,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     /// Get all the user and family data
     private func loadUserAndFamilyDataForServer(){
         print("loading user info !!! from login")
-        loadFamilyInformFromServer()
-        loadUserInformFromServer()
+        loadFamilyInfoFromServer()
+        loadUserInfoFromServer()
     }
     
     /// <#Description#>

@@ -285,13 +285,13 @@ class CacheHandler : NSObject {
                     currComments.forEach({ (commentRow) in
     
                     
-                        parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), who: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String ,  said: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
+                        parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String ,  message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
                         print("access labebl::: ",  commentRow[AlbumDBController.COMMENTS_USERNAME],commentRow[AlbumDBController.COMMENTS_MESSAGE]  )
                         
                     })
                     
                     //parse all data:
-                    allMedias.append(PhotoDetail(title: doc.documentID  , description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID:  doc.documentID  , likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES ] as? Int, comments: parsedComments, ext:  currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String) );
+                    allMedias.append(PhotoDetail(title: doc.documentID  , description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID:  doc.documentID  , likes: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES ] as? Int, comments: parsedComments, ext:  currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as! Int) );
                     
                 }
                 
