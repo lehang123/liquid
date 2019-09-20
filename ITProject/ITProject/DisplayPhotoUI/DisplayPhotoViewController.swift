@@ -159,7 +159,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
         // todo : pull latest comment from the server, and update comment source
         
-        upadteCommentSource()
+        updateCommentSource()
         
         
 //        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
@@ -180,33 +180,17 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
     }
     
-    private func upadteCommentSource(){
+    private func updateCommentSource(){
         // pull new comment from the server
         
         var indexPaths = [IndexPath]()
         
         tableView.beginUpdates()
         
-        /* delete all the old source */
-//        for i in 0...commentsSource.count-1{
-//            indexPaths.append(IndexPath(row: i, section: 0))
-//        }
-//        commentsSource.removeAll()
-//        tableView.deleteRows(at: indexPaths, with: .fade)
-//        indexPaths.removeAll()
-        
-        /* loaded in new source */
-//        makeDummyCommentSource(num: 21)
-//        var i = 0;
-//        commentsSource.forEach { (data) in
-//            indexPaths.append(IndexPath(row: i, section: 0))
-//            i+=1;
-//        }
-        print("COUNT IS: " ,commentsSource.count)
+ 
+//        print("COUNT IS: " ,commentsSource.count)
         indexPaths.append(IndexPath(row: commentsSource.count, section: 0))
-//        for i in 0...commentsSource.count-1{
-//            indexPaths.append(IndexPath(row: i, section: 0))
-//        }
+
         tableView.insertRows(at: indexPaths, with: .top)
         tableView.endUpdates()
         tableView.scrollToRow(at: IndexPath(row: commentsSource.count, section: 0), at: .bottom, animated: true)
