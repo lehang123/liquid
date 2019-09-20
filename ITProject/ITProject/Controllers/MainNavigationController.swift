@@ -19,6 +19,11 @@ class MainNavigationController :UINavigationController {
 
 extension UIApplication {
     
+    /// <#Description#>
+    /// Back to the root controller
+    ///
+    /// - Parameter base: <#base description#>
+    /// - Returns: return to the topest controller
     class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         
         if let nav = base as? UINavigationController {

@@ -13,50 +13,33 @@ import FaveButton
 // todo : make the scorll back to the top while click on the header
 class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate{
 
-    
-    private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
-    private static let commentTableViewCell = "CommentCell"
-    
-    private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
-    private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
-    private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
-    
-    private static let LIKE_WATACHED_CELL_LENGTH = 1
-//    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
-    
     private struct CommentCellStruct{
         var comment = String()
         var username = String()
     }
-    /* source is the total number of comments */
-    private var commentsSource = [CommentCellStruct]()
-    /* list is the total number of comments to display */
-//    private var commentCellsList = [CommentCellStruct]()
-//    private var hasHiddenCells = false
-    
+    // Constants and properties go here
+    private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
+    private static let commentTableViewCell = "CommentCell"
+    private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
+    private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
+    private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
+    private static let LIKE_WATACHED_CELL_LENGTH = 1
+    private var headerView : UIView!
+    private var updateHeaderlayout : CAShapeLayer!
+    private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
+    private let headerCut : CGFloat = 0
+    private var cell0Info : LikeWatchedBookmarkCell!
+    private var commentsSource = [CommentCellStruct]()     // source is the total number of comments
     private var photoUID: String!
     
+    @IBOutlet weak var displayPhotoImageView: UIImageView!
+    @IBOutlet weak var cmmentText: UITextField!
+    @IBOutlet weak var tableView: UITableView!
+
     public func setPhotoUID(photoUID: String){
         self.photoUID = photoUID
     }
     
-    private var headerView : UIView!
-    private var updateHeaderlayout : CAShapeLayer!
-    
-    private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.6
-    private let headerCut : CGFloat = 0
-    private var cell0Info : LikeWatchedBookmarkCell!
-
-    
-//    private var tableView_cell_length = 0
-    
-    @IBOutlet weak var displayPhotoImageView: UIImageView!
- 
-    @IBOutlet weak var cmmentText: UITextField!
-    
-    @IBOutlet weak var tableView: UITableView!
-    
-    // GILBERTTTTTTT
     override func viewDidLoad() {
         
         print("DisplayPhotoViewController : view did loaded ")
@@ -73,7 +56,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         // TO DO!!!!!!!!!!!!!!
         // LOAD THE NUMBER OF WATCH AND LIKE HERE
-        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
 //        if (not watched) {
 //
 //            cell.watchedNumbers.text = String(((Int((cell.watchedNumbers.text!))!) + 1))
