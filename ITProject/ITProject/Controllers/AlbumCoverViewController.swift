@@ -10,6 +10,7 @@ import UIKit
 import UPCarouselFlowLayout
 import Firebase
 import SwiftEntryKit
+import SwipeCellKit
 
 class AlbumCoverViewController: UIViewController
 {
@@ -227,7 +228,7 @@ class AlbumCoverViewController: UIViewController
 //    func loadDataDelegate()
 //}
 
-extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, SwipeCollectionViewCellDelegate{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // return the number of sections
         return 1
@@ -252,13 +253,31 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
         
- 
         cell.album = albumsList.getAlbum(index: indexPath.item)
-        
+        cell.delegate = self
         return cell
 
     }
     
+    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: Util.DEFAULT_IMAGE)
+        
+        return [deleteAction]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .selection
+        options.transitionStyle = .border
+        return options
+    }
 
     
 }
