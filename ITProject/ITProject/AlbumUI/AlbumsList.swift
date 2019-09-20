@@ -88,6 +88,10 @@ class AlbumsList {
         currentAlbums.remove(at: currentAlbums.firstIndex(of: albumToDelete)!)
     }
     
+    public func removeAlbum(at: Int) {
+        currentAlbums.remove(at: at)
+    }
+    
     public func getAlbum(index : Int)->AlbumDetail{
         return currentAlbums[index]
     }
