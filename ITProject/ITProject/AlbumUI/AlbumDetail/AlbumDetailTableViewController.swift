@@ -69,11 +69,13 @@ class AlbumDetailTableViewController: UITableViewController {
                 self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
                 indexPaths.removeAll()
             }
-
-            for i in 0...newPhotos.count - 1 {
-                self.albumContents.append(newPhotos[i])
-                // first one for description
-                indexPaths.append(IndexPath(item: i, section: 0))
+            
+            if (newPhotos.count - 1 > 0) {
+                for i in 0...newPhotos.count - 1 {
+                    self.albumContents.append(newPhotos[i])
+                    // first one for description
+                    indexPaths.append(IndexPath(item: i, section: 0))
+                }
             }
             self.displayPhotoCollectionView?.insertItems(at: indexPaths)
         }, completion: nil)
