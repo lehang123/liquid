@@ -73,7 +73,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         // TO DO!!!!!!!!!!!!!!
         // LOAD THE NUMBER OF WATCH AND LIKE HERE
-        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
+
 //        if (not watched) {
 //
 //            cell.watchedNumbers.text = String(((Int((cell.watchedNumbers.text!))!) + 1))
@@ -81,16 +81,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
        // cell.likeNumbers.text = "load number here"
         // Store the watch data here
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -285,6 +275,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell0Info.likeNumbers.text = "0"
         }
     }
+    
     func getCellInfo(cell: LikeWatchedBookmarkCell) {
         self.cell0Info = cell
     }
