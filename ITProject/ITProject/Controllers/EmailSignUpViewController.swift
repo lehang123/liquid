@@ -2,7 +2,7 @@
 //  EmailLoginViewController.swift
 //  ITProject
 //
-//  Created by 陳信宏保佑🙏 on 2019/8/7.
+//  Created by Zhu Chenghong on 2019/8/7.
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
@@ -12,9 +12,11 @@ import Firebase
 import FirebaseCore
 import FirebaseFirestore
 
+/// <#Description#>
+/// This class is mainly for user log in the app
 class EmailSignUpViewController : UIViewController {
-//    var db: Firestore!
-    
+
+    // Constants  and properties goes here
     private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
     private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
     private static let CONFIRMED_INCORRECT_WRONG = "Wrong Password"
@@ -31,18 +33,17 @@ class EmailSignUpViewController : UIViewController {
     private static let BACK_TO_LOGIN = "Back to login."
     private static let WAITING_AUTHENTICATE = "Creating.."
     
-    
     @IBOutlet weak var emailAddress: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var confirmPW: UITextField!
     @IBOutlet weak var username: UITextField!
     @IBOutlet weak var joinFamilyIDField: UITextField!    // joinFamilyIDField is UID of the document
-
     @IBOutlet weak var newFamilyField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Check if the user is typing
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -50,6 +51,10 @@ class EmailSignUpViewController : UIViewController {
         self.view.addGestureRecognizer(tapGestureBackground)
     }
     
+    /// <#Description#>
+    /// Tap the background stop editing
+    ///
+    /// - Parameter sender: typing
     @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
     {
         self.emailAddress.endEditing(true)
@@ -60,6 +65,10 @@ class EmailSignUpViewController : UIViewController {
         self.newFamilyField.endEditing(true)
     }
     
+    /// <#Description#>
+    /// Show the keyboard when the user is typing
+    ///
+    /// - Parameter notification: notificate when user is typing
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
@@ -74,6 +83,10 @@ class EmailSignUpViewController : UIViewController {
         }
     }
     
+    /// <#Description#>
+    /// Hide the keyboard when user stopping typing
+    ///
+    /// - Parameter notification: notification
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.25, animations: {
@@ -82,11 +95,14 @@ class EmailSignUpViewController : UIViewController {
         }
     }
     
+    /// <#Description#>
+    /// When user touch the create button
+    ///
+    /// - Parameter sender: tap the button
     @IBAction func CreateButtonOnTouch(_ sender: Any) {
         let email: String = emailAddress.text!
         let pw: String = password.text!
         
-         
         // only field filled up, then try authentiate
         if (doesFieldFilledUp()){
             print("if run:::")
@@ -114,7 +130,10 @@ class EmailSignUpViewController : UIViewController {
         }
     }
     
-    // Check is there any empty field when sign in the info
+    /// <#Description#>
+    /// Check is there any empty field when sign in the info
+    ///
+    /// - Returns: Return true for the field is filled up
     func doesFieldFilledUp()->Bool {
         if (username.text!.isEmpty) {
             Util.ShowAlert(title: EmailSignUpViewController.CREATE_USERNAME,
@@ -154,9 +173,14 @@ class EmailSignUpViewController : UIViewController {
         
         return true
     }
-    
-    // Authentiate process is here
-    // note : Firebase authentiate is default set on other thread already
+
+    /// <#Description#>
+    /// Authentiate process is here
+    /// note : Firebase authentiate is default set on other thread already
+    ///
+    /// - Parameters:
+    ///   - email: email that user entered
+    ///   - pw: password that user entered
     func authenticate(email: String, pw: String) {
         // check if join family exists
         Auth.auth().createUser(withEmail: email, password: pw) {
