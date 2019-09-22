@@ -11,6 +11,13 @@ import UIKit
 
 extension UITableView {
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - headerView: 
+    ///   - updateHeaderlayout: <#updateHeaderlayout description#>
+    ///   - headerHeight: <#headerHeight description#>
+    ///   - headerCut: <#headerCut description#>
     func UpdateView(headerView : UIView, updateHeaderlayout : CAShapeLayer, headerHeight : CGFloat, headerCut : CGFloat) {
         self.backgroundColor = UIColor.white
         self.tableHeaderView = nil

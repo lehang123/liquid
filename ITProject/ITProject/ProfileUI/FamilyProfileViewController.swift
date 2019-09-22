@@ -11,6 +11,9 @@ import UIKit
 import FirebaseStorage
 import EnhancedCircleImageView
 
+/// Description
+/// This view controller is mainly to do show all the family information
+/// Also shows the comments or description to the family
 class FamilyProfileViewController: UIViewController, UITextViewDelegate {
 
     // Constants and properties go here

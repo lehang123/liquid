@@ -10,6 +10,8 @@ import Firebase
 import UIKit
 import EnhancedCircleImageView
 
+/// <#Description#>
+/// This view controller is mainly to show all the information that user has signed
 class ProfileViewController: UIViewController {
     
     // Constants and properties go here
@@ -77,6 +79,10 @@ class ProfileViewController: UIViewController {
         self.view.addGestureRecognizer(tapGestureBackground)
     }
     
+    /// <#Description#>
+    /// hide the keyboard
+    ///
+    /// - Parameter sender: tap the background
     @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
     {
         self.name.endEditing(true)
@@ -85,6 +91,10 @@ class ProfileViewController: UIViewController {
         self.genderField.endEditing(true)
     }
     
+    /// <#Description#>
+    /// Show the keyboard
+    ///
+    /// - Parameter notification: notification description
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
@@ -104,6 +114,10 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    /// <#Description#>
+    /// Touch the botton to lead to update photos
+    ///
+    /// - Parameter sender: <#sender description#>
     @IBAction func updateProfileImage(_ sender: Any) {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
