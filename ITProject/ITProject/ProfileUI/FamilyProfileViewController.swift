@@ -12,30 +12,24 @@ import FirebaseStorage
 import EnhancedCircleImageView
 
 class FamilyProfileViewController: UIViewController, UITextViewDelegate {
-    //Mark: Properties
-    
-    private static let TEXT_VIEW_WORD_LIMIT = 150
-    
-    private var imagePicker = UIImagePickerController()
 
-    @IBOutlet weak var familyProfileImageView: EnhancedCircleImageView!
-    
-    @IBOutlet weak var mottoTextView: UITextView!
-    
-    @IBOutlet weak var displayFamilyUID: UILabel!
-    
-    @IBOutlet weak var familyNameField: UITextField!
-    
-    var userFamilyInfo: UserFamilyInfo!
-    
+    // Constants and properties go here
+    private static let TEXT_VIEW_WORD_LIMIT = 150
+    private var imagePicker = UIImagePickerController()
     private var didChangeFamilyInfo:Bool = false
     private var didChangeFamilyProfile:Bool = false
-    
     private var currentFamilyNameField :String?
-     private var currentMotto :String?
-     private var currentPhotoString :String?
+    private var currentMotto :String?
+    private var currentPhotoString :String?
     private var currentPhotoStringExt :String?
+    var userFamilyInfo: UserFamilyInfo!
     
+    @IBOutlet weak var familyProfileImageView: EnhancedCircleImageView!
+    @IBOutlet weak var mottoTextView: UITextView!
+    @IBOutlet weak var displayFamilyUID: UILabel!
+    @IBOutlet weak var familyNameField: UITextField!
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -65,6 +59,8 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
     }
     
     
+    /// <#Description#>
+    /// Setting up the view and make it looks better
     private func setUpView(){
         
         Util.GetImageData(imageUID: userFamilyInfo.familyProfileUID, UIDExtension: userFamilyInfo.familyProfileExtension, completion: {
@@ -96,12 +92,24 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         self.view.addGestureRecognizer(tapGestureBackground)
     }
     
+    
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - textView: The text view containing the changes.
+    ///   - range: The current selection range
+    ///   - text: The text to insert.
+    /// - Returns: true if the old text should be replaced by the new text
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         let numberOfChars = newText.count
         return numberOfChars < FamilyProfileViewController.TEXT_VIEW_WORD_LIMIT;
     }
     
+    /// <#Description#>
+    /// If true, the disappearance of the view is being animated.
+    ///
+    /// - Parameter animated: <#animated description#>
     override func viewWillDisappear(_ animated: Bool) {
         
         if self.isMovingFromParent && didChangeFamilyInfo {
@@ -110,6 +118,8 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    /// <#Description#>
+    /// Save all the changes in the database
     @objc func DoneButtonTapped() {
         // commit change to db
         print("FamilyProfileViewController : done button pressed, commit change to db,then dismiss")
@@ -154,11 +164,16 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
 
       
     }
+    
     @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
     {
         self.mottoTextView.endEditing(true)
     }
     
+    /// <#Description#>
+    /// Show the keyboard when the user is editing
+    ///
+    /// - Parameter notification: notification description
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             
@@ -170,6 +185,10 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    /// <#Description#>
+    /// Hide the keyboard when the user stop editing
+    ///
+    /// - Parameter notification: notification description
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.25, animations: {
@@ -182,7 +201,6 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
-        
         self.present(imagePicker, animated: true, completion:  nil)
     }
     
@@ -191,8 +209,13 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate {
 
 extension FamilyProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
+    /// <#Description#>
+    /// Pick the specific image
+    ///
+    /// - Parameters:
+    ///   - picker: picker description
+    ///   - info: info description
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        // todo : push add/edit photo view
         didChangeFamilyProfile = true
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.familyProfileImageView.image =
@@ -200,16 +223,16 @@ extension FamilyProfileViewController: UIImagePickerControllerDelegate, UINaviga
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.familyProfileImageView.image = originalImage.withRenderingMode(.alwaysOriginal)
         }
-        
-        
         dismiss(animated: true, completion: nil)
     }
     
-    /* delegate function from the UIImagePickerControllerDelegate
-     called when canceled button pressed, get out of photo library
-     */
+
+    /// <#Description#>
+    /// delegate function from the UIImagePickerControllerDelegate
+    /// called when canceled button pressed, get out of photo library
+    ///
+    /// - Parameter picker: picker
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        
         print ("imagePickerController: Did canceled pressed !!")
         picker.dismiss(animated: true, completion: nil)
     }

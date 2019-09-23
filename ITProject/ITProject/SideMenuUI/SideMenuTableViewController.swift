@@ -10,6 +10,7 @@ import UIKit
 import SideMenu
 import Firebase
 
+// User information detail structure
 struct UserInfo {
     var username: String
     var imageUID: String?
@@ -20,12 +21,14 @@ struct UserInfo {
     var userInfoDelegate: UserProfileViewDelegate!
 }
 
+// The gender
 enum Gender : String{
     case Male
     case Female
     case Unknown
 }
 
+// User family information detail structure
 struct UserFamilyInfo {
     var familyUID: String!
     var familyName: String?
@@ -37,6 +40,7 @@ struct UserFamilyInfo {
 
 class SideMenuTableViewController: UITableViewController {
     
+    // Constants and properties go here
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     private static let SHOW_FAMILY_PROFILE_VIEW_SEGUE = "ShowFamilyProfileViewController"
     
@@ -54,11 +58,6 @@ class SideMenuTableViewController: UITableViewController {
             return
         }
         
-        // Set up a cool background image for demo purposes
-//        let imageView = UIImageView(image: #imageLiteral(resourceName: "saturn"))
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-//        tableView.backgroundView = imageView
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,6 +66,12 @@ class SideMenuTableViewController: UITableViewController {
          print("viewWillDisappear: do you get called")
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - tableView: A table-view object requesting the cell.
+    ///   - indexPath: An index path locating a row in tableView.
+    /// - Returns: An object inheriting from UITableViewCell that the table view can use for the specified row.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath) as! UITableViewVibrantCell
         
@@ -78,7 +83,7 @@ class SideMenuTableViewController: UITableViewController {
             cellImg.layer.cornerRadius = 40
             cellImg.layer.masksToBounds=true
             cellImg.contentMode = .scaleAspectFill
-            cellImg.layer.masksToBounds=true
+//            cellImg.layer.masksToBounds=true
             
             if let imageUID = userInformation.imageUID,
                 let imageExtension = userInformation.imageExtension {
@@ -113,6 +118,11 @@ class SideMenuTableViewController: UITableViewController {
     }
     
     // The sign out table view function
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - tableView: A table-view object requesting the cell.
+    ///   - indexPath: An index path locating a row in tableView.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if(indexPath.row == 4)
@@ -142,6 +152,11 @@ class SideMenuTableViewController: UITableViewController {
         }
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - segue: the link to the next vc
+    ///   - sender: sender
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE {
             if let profileVC = segue.destination as? ProfileViewController {
