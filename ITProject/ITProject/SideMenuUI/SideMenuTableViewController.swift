@@ -44,6 +44,8 @@ class SideMenuTableViewController: UITableViewController {
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     private static let SHOW_FAMILY_PROFILE_VIEW_SEGUE = "ShowFamilyProfileViewController"
 
+    private static let SHOW_FAMILY_TABLE_VIEW_SEGUE = "ShowFamilyTableViewController"
+    
     var userInformation: UserInfo!
     var userFamilyInformation: UserFamilyInfo!
 
@@ -134,12 +136,15 @@ class SideMenuTableViewController: UITableViewController {
 
                 })
             }))
-            present(alertController, animated: true, completion: nil)
 
-        } else if indexPath.row == 0 || indexPath.row == 2 {
-            performSegue(withIdentifier: SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE, sender: self)
-        } else if indexPath.row == 1 {
-            performSegue(withIdentifier: SideMenuTableViewController.SHOW_FAMILY_PROFILE_VIEW_SEGUE, sender: self)
+            self.present(alertController, animated: true, completion: nil)
+            
+        }else if(indexPath.row == 0 || indexPath.row == 2){
+            self.performSegue(withIdentifier: SideMenuTableViewController.SHOW_PROFILE_VIEW_SEGUE, sender: self)
+        }else if(indexPath.row == 1){
+            self.performSegue(withIdentifier: SideMenuTableViewController.SHOW_FAMILY_PROFILE_VIEW_SEGUE, sender: self)
+        }else if(indexPath.row == 3){
+            self.performSegue(withIdentifier: SideMenuTableViewController.SHOW_FAMILY_TABLE_VIEW_SEGUE, sender: self)
         }
     }
 

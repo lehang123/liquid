@@ -10,7 +10,9 @@ import Foundation
 import UIKit
 
 class FamilyTableViewMemberCell: UITableViewCell {
-    @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var relationshipLabel: UILabel!
-    @IBOutlet var authLabel: UILabel!
+
+    
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var relationshipLabel: UILabel!
+    @IBOutlet weak var phoneLabel: UILabel!
 }
