@@ -20,7 +20,7 @@ class MainNavigationController: UINavigationController {
 extension UIApplication {
     /// Back to the root controller
     ///
-    /// - Parameter base: base 
+    /// - Parameter base: base
     /// - Returns: return to the topest controller
     class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {

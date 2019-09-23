@@ -324,6 +324,4 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
         present(navController, animated: true, completion: nil)
     }
-
-    
 }
