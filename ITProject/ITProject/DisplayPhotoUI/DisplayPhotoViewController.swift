@@ -89,7 +89,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         // TO DO!!!!!!!!!!!!!!
         // LOAD THE NUMBER OF WATCH AND LIKE HERE
-<<<<<<< HEAD
+
 
 //        if (not watched) {
 //
@@ -97,11 +97,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 //        }
        // cell.likeNumbers.text = "load number here"
         // Store the watch data here
-
-=======
-        // Store the watch data here
         
->>>>>>> 2128c8d713a3a19fd9485e0fe7694c30a619c5db
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
