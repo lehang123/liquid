@@ -12,27 +12,21 @@ class TimelineView: UIView {
 
         //MARK: Public Properties
         
-        /**
-         The events shown in the Timeline
-         */
-        open var timeFrames: [TimeFrame]{
+        /// The events shown in the Timeline
+        open var timelineField: [TimelineField]{
             didSet{
                 setupContent()
             }
         }
         
-        /**
-         The color of the bullets and the lines connecting them.
-         */
+        /// The color of the bullets and the lines connecting them.
         open var lineColor: UIColor = UIColor.lightGray{
             didSet{
                 setupContent()
             }
         }
         
-        /**
-         Configures the date labels in the timeline.
-         */
+        /// Configures the date labels in the timeline.
         open var configureDateLabel: ((UILabel) -> Void) = { label in
             label.font = UIFont(name: "ArialMT", size: 20)
             label.textColor = UIColor(red: 0/255, green: 180/255, blue: 160/255, alpha: 1)
@@ -42,9 +36,7 @@ class TimelineView: UIView {
             }
         }
         
-        /**
-         Configures the date labels in the timeline.
-         */
+        /// Configures the date labels in the timeline.
         open var configureTextLabel: ((UILabel) -> Void) = { label in
             label.font = UIFont(name: "ArialMT", size: 16)
             label.textColor = UIColor(red: 110/255, green: 110/255, blue: 110/255, alpha: 1)
@@ -55,9 +47,7 @@ class TimelineView: UIView {
         }
         
     
-        /**
-         The width and height of the bullets
-         */
+        /// The width and height of the bullets
         open var bulletSize: CGFloat = 18 {
             didSet {
                 setupContent()
@@ -65,85 +55,53 @@ class TimelineView: UIView {
         }
         
         //MARK: Public Methods
-        
-        /**
-         Note that the timeFrames cannot be set by this method. Further setup is required once this initalization occurs.
-         
-         May require more work to allow this to work with restoration.
-         
-         @param coder An unarchiver object.
-         */
-        required public init?(coder aDecoder: NSCoder) {
-            timeFrames = []
-            super.init(coder: aDecoder)
-        }
-        
-        /**
-         Initializes the timeline with all information needed for a complete setup.
-         
-         @param timeFrames The events shown in the Timeline
-         */
-        public init(timeFrames: [TimeFrame]){
-            self.timeFrames = timeFrames
+    
+    
+        /// Initializes the timeline with all information needed for a complete setup.
+        ///
+        /// - Parameter timeFrames: A list of TimeFrame
+        public init(timeFrames: [TimelineField]){
+            self.timelineField = timeFrames
             super.init(frame: CGRect.zero)
             
             translatesAutoresizingMaskIntoConstraints = false
             
             setupContent()
         }
+    
+        /**
+         Note that the timeFrames cannot be set by this method. Further setup is required once this initalization occurs.
+     
+         May require more work to allow this to work with restoration.
+     
+         @param coder An unarchiver object.
+         */
+        required public init?(coder aDecoder: NSCoder) {
+            timelineField = []
+            super.init(coder: aDecoder)
+        }
         
         //MARK: Private Methods
         
-        fileprivate func setupContent(){
+        private func setupContent(){
             for v in subviews{
                 v.removeFromSuperview()
             }
             
-            let guideView = UIView()
-            guideView.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(guideView)
-            addConstraints([
-                NSLayoutConstraint(item: guideView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 24),
-                NSLayoutConstraint(item: guideView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: guideView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: guideView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0)
-                ])
             
-            var viewFromAbove = guideView
+            let viewFromAbove = setupGuideView()
             
-            for (index, element) in timeFrames.enumerated(){
-                let v = blockForTimeFrame(element, isFirst: index == 0, isLast: index == timeFrames.count - 1)
-                addSubview(v)
-                addConstraints([
-                    NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: viewFromAbove, attribute: .bottom, multiplier: 1.0, constant: 0),
-                    NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: viewFromAbove, attribute: .width, multiplier: 1.0, constant: 0),
-                    NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: viewFromAbove, attribute: .leading, multiplier: 1.0, constant: 0)
-                    ])
-                viewFromAbove = v
-            }
-            
-            addConstraint(NSLayoutConstraint(item: viewFromAbove, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0))
+            setupTimeline(viewFromAbove: viewFromAbove)
         }
         
-        fileprivate func bulletView(_ width: CGFloat) -> UIView {
-            var path = UIBezierPath(ovalOfSize: width)
-            let shapeLayer = CAShapeLayer()
-            shapeLayer.fillColor = UIColor.clear.cgColor
-            shapeLayer.strokeColor = lineColor.cgColor
-            shapeLayer.path = path.cgPath
+        private func setupTimelinePoint(_ width: CGFloat) -> UIView {
+            
+            // draw timeline point
+            
+            let shapeLayer = drawCirclePoint(pointWidth: width)
             
             let v = UIView(frame: CGRect(x: 0, y: 0, width: width, height: width))
             
-            let shouldFlip: Bool
-            if #available(iOS 9, *) {
-                shouldFlip = UIView.userInterfaceLayoutDirection(for: v.semanticContentAttribute) == .rightToLeft
-            } else {
-                shouldFlip = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft
-            }
-            
-            if shouldFlip {
-                shapeLayer.transform = CATransform3DTranslate(CATransform3DScale(CATransform3DIdentity, -1, 1, 1), -width, 0, 0)
-            }
             
             v.translatesAutoresizingMaskIntoConstraints = false
             v.addConstraints([
@@ -154,13 +112,13 @@ class TimelineView: UIView {
             return v
         }
         
-        fileprivate func blockForTimeFrame(_ element: TimeFrame, isFirst: Bool = false, isLast: Bool = false) -> UIView {
+        fileprivate func blockForTimeFrame(_ element: TimelineField, isFirst: Bool = false, isLast: Bool = false) -> UIView {
             let v = UIView()
             v.translatesAutoresizingMaskIntoConstraints = false
             v.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: bulletSize))
             
             //bullet
-            let bullet: UIView = bulletView(bulletSize)
+            let bullet: UIView = setupTimelinePoint(bulletSize)
             v.addSubview(bullet)
             v.addConstraints([
                 NSLayoutConstraint(item: bullet, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
@@ -281,7 +239,72 @@ class TimelineView: UIView {
             
             return v
     }
-
+    
+    private func setupGuideView() -> UIView{
+        let guideView = UIView()
+        guideView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(guideView)
+        addConstraints([
+            NSLayoutConstraint(item: guideView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 24),
+            NSLayoutConstraint(item: guideView, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: guideView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: guideView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 0)
+            ])
+        return guideView
+    }
+    
+    private func setupTimeline(viewFromAbove: UIView){
+        var viewFromAbove = viewFromAbove
+        for (index, element) in timelineField.enumerated(){
+            let v = blockForTimeFrame(element, isFirst: index == 0, isLast: index == timelineField.count - 1)
+            addSubview(v)
+            addConstraints([
+                NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: viewFromAbove, attribute: .bottom, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: viewFromAbove, attribute: .width, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: viewFromAbove, attribute: .leading, multiplier: 1.0, constant: 0)
+                ])
+            viewFromAbove = v
+        }
+        
+        addConstraint(NSLayoutConstraint(item: viewFromAbove, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0))
+    }
+    
+     // draw timeline point
+    private func drawCirclePoint(pointWidth : CGFloat) -> CAShapeLayer{
+        let path = UIBezierPath(ovalOfSize: pointWidth)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = lineColor.cgColor
+        shapeLayer.path = path.cgPath
+        
+        return shapeLayer
+    }
+    
+    
+    func setupBulletView(){
+        
+    }
+    
+    func setupLineView(){
+        
+    }
+    
+    func setupDateLabel(){
+        
+    }
+    
+    func setupContentView(){
+        
+    }
+    
+    func setupImage(){
+        
+    }
+    
+    func setupImageView(){
+        
+    }
+    
 }
 
 extension UIBezierPath {
