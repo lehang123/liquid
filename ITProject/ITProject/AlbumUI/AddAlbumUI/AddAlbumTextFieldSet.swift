@@ -8,6 +8,7 @@
 import Foundation
 import SwiftEntryKit
 
+/// Text Field Option in pop up form
 struct TextFieldOptionSet: OptionSet {
     let rawValue: Int
     static let albumName = TextFieldOptionSet(rawValue: 1 << 0)
@@ -15,9 +16,9 @@ struct TextFieldOptionSet: OptionSet {
     static let photoDescription = TextFieldOptionSet(rawValue: 1 << 2)
 }
 
+/// Form color style
 enum FormStyle {
     case light
-    case metallic
     
     var buttonTitle: EKProperty.LabelStyle {
         return .init(
@@ -48,12 +49,22 @@ enum FormStyle {
     }
 }
 
+
 final class AddAlbumUI {
     
+    /// Return the pop up form display mode
     private static var displayMode: EKAttributes.DisplayMode {
         return PopUpFromWindow.displayMode
     }
     
+    /// <#Description#>
+    ///
+    /// - Parameters:
+    ///   - placeholderStyle: the placeholder appear in the albumName textfield
+    ///   - textStyle: the text style include font, color
+    ///   - separatorColor: the separator bottom line color
+    ///   - style: <#style description#>
+    /// - Returns: <#return value description#>
     class func albumName(placeholderStyle: EKProperty.LabelStyle,
                      textStyle: EKProperty.LabelStyle,
                      separatorColor: EKColor,

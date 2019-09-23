@@ -30,14 +30,14 @@ class TimelineViewController: UIViewController {
                 ])
             
             timeline = TimelineView(timeFrames: [
-                TimeFrame(date: "January 1", content: "New Year's Day", image: UIImage(named: "tempProfileImage")),
-                TimeFrame(date: "February 14", content: "The month of love!", image: UIImage(named: "heartIcon")),
-                TimeFrame(date: "March", content: "Comes like a lion, leaves like a lamb",  image: nil),
-                TimeFrame(date: "April 1", content: "Dumb stupid pranks.", image: UIImage(named: "eye")),
-                TimeFrame(date: "No image?", content: "That's right. No image is necessary!"),
-                TimeFrame(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
-                TimeFrame(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
-                TimeFrame(date: "That's it!")
+                TimelineField(date: "January 1", content: "New Year's Day", image: UIImage(named: "tempProfileImage")),
+                TimelineField(date: "February 14", content: "The month of love!", image: UIImage(named: "heartIcon")),
+                TimelineField(date: "March", content: "Comes like a lion, leaves like a lamb",  image: nil),
+                TimelineField(date: "April 1", content: "Dumb stupid pranks.", image: UIImage(named: "eye")),
+                TimelineField(date: "No image?", content: "That's right. No image is necessary!"),
+                TimelineField(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
+                TimelineField(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
+                TimelineField(date: "That's it!")
                 ])
             timeline.bulletSize = 16
             scrollView.addSubview(timeline)
