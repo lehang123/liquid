@@ -8,19 +8,19 @@
 
 import UIKit
 
+import EnhancedCircleImageView
+import Firebase
+import FirebaseStorage
 import SideMenu
 import UPCarouselFlowLayout
-import FirebaseStorage
-import Firebase
-import EnhancedCircleImageView
 
-// Structure
+/// Structure
 struct ModelCollectionFlowLayout {
     var title: String = ""
     var image: UIImage!
 }
 
-// Delegation goes here
+/// Delegation goes here
 protocol FamilyProfileViewDelegate {
     func didUpdateFamilyInfo()
 }
@@ -29,8 +29,7 @@ protocol UserProfileViewDelegate {
     func didUpdateUserInfo()
 }
 
-class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, FamilyProfileViewDelegate, UserProfileViewDelegate  {
-    
+class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, FamilyProfileViewDelegate, UserProfileViewDelegate {
     // Constants and properties go here
     private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
     private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
@@ -42,33 +41,31 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     private var userGender: Gender?
     private var profileURL: String?
     private var profileExtension: String?
-    
-    @IBOutlet weak var familyMotto: UILabel!
-    @IBOutlet weak var profileImg: EnhancedCircleImageView!
-    @IBOutlet weak var profileImgContainer: UIView!
+
+    @IBOutlet var familyMotto: UILabel!
+    @IBOutlet var profileImg: EnhancedCircleImageView!
+    @IBOutlet var profileImgContainer: UIView!
     @IBOutlet var carouselCollectionView: UICollectionView!
- 
-    /// <#Description#>
+
     /// shows side menu bar
     ///
     /// - Parameter sender: touch the side menu bar
-    @IBAction func SideMenuButtonTouched(_ sender: Any) {
-        self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
+    @IBAction func SideMenuButtonTouched(_: Any) {
+        performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
     }
-    
+
     var items = [ModelCollectionFlowLayout]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         print("view did loaded called")
         login()
-        
-        self.navigationController?.navigationBar.items?.forEach{
-            (item) in
+
+        navigationController?.navigationBar.items?.forEach {
+            item in
             item.leftBarButtonItem?.tintColor = UIColor.black
         }
-        
-        
+
         // set Profile Image
         // loading profileImage with shadow
         profileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
@@ -76,116 +73,108 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         profileImg.layer.shadowOffset = CGSize(width: 10, height: 10)
         profileImg.layer.shadowRadius = 1
         profileImg.clipsToBounds = false
-        
-        
+
         // carousel effect
-        self.collectData()
-        self.carouselCollectionView.showsHorizontalScrollIndicator = false
-        carouselCollectionView.register(UINib.init(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
-        
+        collectData()
+        carouselCollectionView.showsHorizontalScrollIndicator = false
+        carouselCollectionView.register(UINib(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
+
         let flowLayout = UPCarouselFlowLayout()
-        flowLayout.itemSize = CGSize(width: (carouselCollectionView.frame.size.width)/2.5, height: carouselCollectionView.frame.size.height)
+        flowLayout.itemSize = CGSize(width: carouselCollectionView.frame.size.width / 2.5, height: carouselCollectionView.frame.size.height)
         flowLayout.scrollDirection = .horizontal
         flowLayout.sideItemScale = 0.8
         flowLayout.sideItemAlpha = 1.0
         flowLayout.spacingMode = .fixed(spacing: 5.0)
         carouselCollectionView.collectionViewLayout = flowLayout
-
     }
-    
-    /// <#Description#>
+
     /// In a storyboard-based application, you will often want to do a little preparation before navigation
     ///
     /// - Parameters:
     ///   - segue: the next vc
-    ///   - sender: <#sender description#>
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    ///   - sender: sender
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         if segue.identifier == FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW {
             if let albumDetailTVC = segue.destination as? AlbumCoverViewController {
                 // todo : pass cache here !!!!
-                print(" FamilyMainPageViewController prepare : pass success !");
-                self.passAlbumsData(to: albumDetailTVC)
-                
+                print(" FamilyMainPageViewController prepare : pass success !")
+                passAlbumsData(to: albumDetailTVC)
             }
-        }
-    else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
-        if let sideMenuNC = segue.destination as? UISideMenuNavigationController {
-            if let sideMenuVC = sideMenuNC.visibleViewController as? SideMenuTableViewController{
-                
+        } else if segue.identifier == FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW {
+            if let sideMenuNC = segue.destination as? UISideMenuNavigationController {
+                if let sideMenuVC = sideMenuNC.visibleViewController as? SideMenuTableViewController {
                     print(" FamilyMainPageViewController prepare : UISideMenuNavigationController !")
-                
-                // pass user info to the current sideMenuVC
+
+                    // pass user info to the current sideMenuVC
                     let currentUser = Auth.auth().currentUser
                     profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
                     profileExtension = currentUser?.photoURL?.pathExtension
-                
+
                     sideMenuVC.userInformation = UserInfo(
-                    username: Auth.auth().currentUser?.displayName ?? "anonymous",
-                    imageUID: profileURL ?? Util.DEFAULT_IMAGE,
-                    imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
-                    phone: currentUser?.phoneNumber ?? "12345678",
-                    gender: self.userGender ?? Gender.Unknown,
-                    familyRelation: self.userFamilyPosition ?? "None",
-                    userInfoDelegate: self)
-                
-                // pass user's family info to the current sideMenuVC
+                        username: Auth.auth().currentUser?.displayName ?? "anonymous",
+                        imageUID: profileURL ?? Util.DEFAULT_IMAGE,
+                        imageExtension: profileExtension ?? Util.EXTENSION_JPEG,
+                        phone: currentUser?.phoneNumber ?? "12345678",
+                        gender: userGender ?? Gender.Unknown,
+                        familyRelation: userFamilyPosition ?? "None",
+                        userInfoDelegate: self
+                    )
+
+                    // pass user's family info to the current sideMenuVC
                     sideMenuVC.userFamilyInformation = UserFamilyInfo(
-                        familyUID: self.familyUID,
-                        familyName: self.familyName,
-                        familyProfileUID: self.familyProfileUID,
-                        familyProfileExtension: self.familyProfileExtension,
-                        familyMottoText: self.familyMotto.text,
+                        familyUID: familyUID,
+                        familyName: familyName,
+                        familyProfileUID: familyProfileUID,
+                        familyProfileExtension: familyProfileExtension,
+                        familyMottoText: familyMotto.text,
                         familyInfoDelegate: self
                     )
                 }
             }
         }
     }
-    
+
     func didUpdateFamilyInfo() {
         // reload Family Info
-        if Auth.auth().currentUser != nil{
-            self.loadFamilyInfoFromServer()
+        if Auth.auth().currentUser != nil {
+            loadFamilyInfoFromServer()
         }
     }
-    
+
     func didUpdateUserInfo() {
         // reload User Info
-        if Auth.auth().currentUser != nil{
-            self.loadUserInfoFromServer()
+        if Auth.auth().currentUser != nil {
+            loadUserInfoFromServer()
         }
     }
-    
-    private func passAlbumsData(to albumDetailTVC: AlbumCoverViewController){
-        //start pulling data from server : albums info
-        CacheHandler.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID) , completion: {
+
+    private func passAlbumsData(to albumDetailTVC: AlbumCoverViewController) {
+        // start pulling data from server : albums info
+        CacheHandler.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID), completion: {
             albumDic, error in
             if let err = error {
                 print("error occurs during passAlbumsData : " + err.localizedDescription)
-            }else{
-                albumDic.forEach({
-                    (arg) in
-                    
+            } else {
+                albumDic.forEach {
+                    arg in
+
                     let (albumName, albumDetails) = arg
                     albumDetailTVC.loadAlbumToList(title: albumName,
-                                                   description:albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
+                                                   description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
                                                    UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
                                                    coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
                                                    coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
                                                    doesReload: true,
                                                    reveseOrder: false)
-                    
-                })
+                }
             }
         })
     }
 
-    
-    /// <#Description#>
     /// Collecting all the data store it
-    func collectData(){
+    func collectData() {
         items = [
             ModelCollectionFlowLayout(title: "Album", image: UIImage(named: "imageIcon")),
             ModelCollectionFlowLayout(title: "settingIcon", image: UIImage(named: "settingIcon")),
@@ -193,45 +182,37 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         ]
     }
 
-    
-    /// <#Description#>
-    ///
     /// - Parameter collectionView: The collection view requesting this information.
     /// - Returns: The number of sections in collectionView.
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in _: UICollectionView) -> Int {
         return 1
     }
-    
-    /// <#Description#>
-    ///
+
     /// - Parameters:
     ///   - collectionView: The collection view requesting this information.
     ///   - section: An index number identifying a section in collectionView.
     /// - Returns: The number of rows in section.
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         return items.count
     }
-    
-    var vc : UIViewController?
 
-    /// <#Description#>
+    var vc: UIViewController?
+
     ///
     /// - Parameters:
     ///   - collectionView: The collection view requesting this information.
     ///   - section: An index number identifying a section in collectionView.
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let funct = items[(indexPath as NSIndexPath).row]
-        
+
         if funct.title == "Album" {
             // shows album covers view controller
             // todo : we send the album covers data through the sender,
             // nil for now as we don't have any data
-            self.performSegue(withIdentifier: FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW, sender: nil)
+            performSegue(withIdentifier: FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW, sender: nil)
         }
     }
-    
-    
-    /// <#Description#>
+
     ///
     /// - Parameters:
     ///   - collectionView: The collection view requesting this information.
@@ -243,123 +224,106 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         cell.labelInf.text = items[indexPath.row].title
         return cell
     }
-    
-    func login(){
+
+    func login() {
         /** @fn addAuthStateDidChangeListener:
          @brief Registers a block as an "auth state did change" listener. To be invoked when:
-         
+
          + The block is registered as a listener,
          + A user with a different UID from the current user has signed in, or
          + The current user has signed out.
-         
+
          @param listener The block to be invoked. The block is always invoked asynchronously on the main
          thread, even for it's initial invocation after having been added as a listener.
-         
+
          @remarks The block is invoked immediately after adding it according to it's standard invocation
          semantics, asynchronously on the main thread. Users should pay special attention to
          making sure the block does not inadvertently retain objects which should not be retained by
          the long-lived block. The block itself will be retained by FIRAuth until it is
          unregistered or until the FIRAuth instance is otherwise deallocated.
-         
+
          @return A handle useful for manually unregistering the block as a listener.
          */
-        Auth.auth().addStateDidChangeListener { (auth, user) in
+        Auth.auth().addStateDidChangeListener { auth, user in
             // when current user is sign out
-            
+
             if auth.currentUser == nil {
                 self.askForLogin()
-            }else{
+            } else {
 //                self.loadName()
-                
+
                 print("ELSE I'm here : " + (user?.email)!)
-                
+
                 self.loadUserAndFamilyDataForServer()
-            
             }
             print("Listener get called ")
         }
     }
-    
-    /// <#Description#>
+
+    ///
     /// Get uers' infomation from server
-    private func loadUserInfoFromServer(){
-        //start pulling data from server : user info
+    private func loadUserInfoFromServer() {
+        // start pulling data from server : user info
         CacheHandler.getInstance().getUserInfo(completion: {
             relation, gender, _, error in
-            
-            if let err = error{
+
+            if let err = error {
                 print("get User Info from server error " + err.localizedDescription)
-            }else {
+            } else {
                 self.userFamilyPosition = relation
                 self.userGender = gender
-                
             }
         })
     }
-    
-    /// <#Description#>
+
     /// Get family's information from server
-    private func loadFamilyInfoFromServer(){
-        //start pulling data from server : family info
+    private func loadFamilyInfoFromServer() {
+        // start pulling data from server : family info
         CacheHandler.getInstance().getFamilyInfo(completion: {
             uid, motto, name, profileUId, profileExtension, error in
-            
+
             if let err = error {
                 print("get family info from server error " + err.localizedDescription)
-            }else {
+            } else {
                 print("get family info from server success : ")
-                
+
                 self.familyUID = uid
                 self.familyMotto.text = motto
                 self.familyName = name
-                
-                if self.familyProfileUID != profileUId{
+
+                if self.familyProfileUID != profileUId {
                     // profileImageChanged, reload stuffs
                     Util.GetImageData(imageUID: profileUId, UIDExtension: profileExtension, completion: {
                         data in
-                        
+
                         if let d = data {
                             self.profileImg.image = UIImage(data: d)
-                        }else{
+                        } else {
                             self.profileImg.image = UIImage(named: Util.DEFAULT_IMAGE)
                         }
                     })
                 }
-                
+
                 self.familyProfileUID = profileUId
                 self.familyProfileExtension = profileExtension
-                
             }
         })
     }
-    
-    /// <#Description#>
+
     /// Get all the user and family data
-    private func loadUserAndFamilyDataForServer(){
+    private func loadUserAndFamilyDataForServer() {
         print("loading user info !!! from login")
         loadFamilyInfoFromServer()
         loadUserInfoFromServer()
     }
-    
-    /// <#Description#>
+
     /// user asked for login
-    private func askForLogin(){
+    private func askForLogin() {
         CacheHandler.getInstance().cleanCache()
         guard let VC1 = UIApplication.getTopViewController()?.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") else { return }
         let navController = UINavigationController(rootViewController: VC1) // Creating a navigation controller with VC1 at the root of the navigation stack.
-        self.present(navController, animated:true, completion: nil)
+        present(navController, animated: true, completion: nil)
     }
+
     
-    func test (){
-//        Util.DeleteFileFromServer(fileName: "8E6A110F-7447-4CC3-B0C8-EB4F726C64EA",
-//                                  fextension: Util.EXTENSION_JPEG)
-        AlbumDBController.getInstance().addPhotoToAlbum(desc : "me me she", ext : ".jpg", albumUID : "0CiJH0s3tWLo2PwCNVYE", mediaPath: "iloveyou", dateCreated : Timestamp(date: Date()));
-        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "hahahah", photoUID: "iloveyou");
-        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "HALO 2 I LOVE YOU ", photoUID: "iloveyou");
-
-        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "PERFECT", photoUID: "iloveyou");
-        AlbumDBController.getInstance().UpdateComments(username: Auth.auth().currentUser!.uid, comment: "HALO 2 I LOVE YOU ", photoUID: "iloveyou");
-    }
 }
-
-

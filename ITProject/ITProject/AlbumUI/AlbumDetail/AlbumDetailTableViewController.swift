@@ -11,12 +11,15 @@ import Photos
 import SwiftEntryKit
 import Firebase
 
+/// UI View Controller for each Album to be displayed
 class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
     
     var albumContents = [PhotoDetail]()
     
+    /// delete message
     private static let DELETE_PHOTO_TEXT = "Delete Photo"
+    /// cancel message
     private static let CANCEL_TEXT = "Cancel"
     
     private(set) var displayPhotoCollectionView:UICollectionView?

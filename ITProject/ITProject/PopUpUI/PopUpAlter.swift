@@ -9,18 +9,18 @@
 import Foundation
 import SwiftEntryKit
 
-
 // MARK: Setup
+
+/// PopUp Message class.
 class PopUpAlter {
-    
     static var displayMode = EKAttributes.DisplayMode.inferred
     private var displayMode: EKAttributes.DisplayMode {
         return PopUpFromWindow.displayMode
     }
-    public static func setupPopupPresets() -> EKAttributes {
-         var attributes: EKAttributes
 
-        
+    public static func setupPopupPresets() -> EKAttributes {
+        var attributes: EKAttributes
+
         // Preset Center Alter
         attributes = EKAttributes.centerFloat
         attributes.hapticFeedbackType = .error
@@ -41,10 +41,10 @@ class PopUpAlter {
             height: .intrinsic
         )
         attributes.statusBar = .dark
-        
+
         attributes.entryBackground = .gradient(
             gradient: .init(
-                colors: [EKColor(rgb: 0xfffbd5), EKColor(rgb: 0xb20a2c)],
+                colors: [EKColor(rgb: 0xFFFBD5), EKColor(rgb: 0xB20A2C)],
                 startPoint: .zero,
                 endPoint: CGPoint(x: 1, y: 1)
             )
@@ -78,21 +78,19 @@ class PopUpAlter {
             )
         )
 
-        
         return attributes
     }
-    
+
     public static func showPopupMessage(attributes: EKAttributes,
-                                  title: String,
-                                  titleColor: EKColor,
-                                  description: String,
-                                  descriptionColor: EKColor,
-                                  buttonTitleColor: EKColor,
-                                  buttonBackgroundColor: EKColor,
-                                  image: UIImage? = nil) {
-        
+                                        title: String,
+                                        titleColor: EKColor,
+                                        description: String,
+                                        descriptionColor: EKColor,
+                                        buttonTitleColor: EKColor,
+                                        buttonBackgroundColor: EKColor,
+                                        image: UIImage? = nil) {
         var themeImage: EKPopUpMessage.ThemeImage?
-        
+
         if let image = image {
             themeImage = EKPopUpMessage.ThemeImage(
                 image: EKProperty.ImageContent(
@@ -139,12 +137,11 @@ class PopUpAlter {
             themeImage: themeImage,
             title: title,
             description: description,
-            button: button) {
-                SwiftEntryKit.dismiss()
+            button: button
+        ) {
+            SwiftEntryKit.dismiss()
         }
         let contentView = EKPopUpMessageView(with: message)
         SwiftEntryKit.display(entry: contentView, using: attributes)
     }
-    
-    
 }

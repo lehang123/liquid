@@ -6,97 +6,89 @@
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
-import UIKit
-import UPCarouselFlowLayout
 import Firebase
 import SwiftEntryKit
 import SwipeCellKit
+import UIKit
+import UPCarouselFlowLayout
 
 class AlbumCoverViewController: UIViewController {
-    
     // Constants and properties go here
     private static let NIB_NAME = "AlbumCollectionViewCell"
     private static let CELL_IDENTIFIER = "AlbumCell"
     private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
     private let EMPTYNAME_DES = "Album name is empty"
 
-    @IBOutlet weak var albumCollectionView: UICollectionView!
-    
+    @IBOutlet var albumCollectionView: UICollectionView!
+
     /// <#Description#>
     /// User need to add the album
     ///
     /// - Parameter sender: the button for creating album
-    @IBAction func AddAlbumPressed(_ sender: Any) {
+    @IBAction func AddAlbumPressed(_: Any) {
         print("AddAlbumPressed : ")
 
-        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
-        
-        let formEle = self.setupFormELement(customFormVC: VC1)
+        let VC1 = storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
+
+        let formEle = setupFormELement(customFormVC: VC1)
         VC1.initFormELement(formEle: formEle)
-        self.present(VC1, animated:true, completion: {
+        present(VC1, animated: true, completion: {
             VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
         })
-
     }
-    
-    
+
     /// <#Description#>
     /// Setting up all infomation signed by user to create the album
     ///
     /// - Parameter customFormVC: customFormVC
     /// - Returns: formElement: formElement with all information
-    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
-        let textFields = AddAlbumUI.fields(by: [.albumName,.albumDescription], style: .light)
+    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement {
+        let textFields = AddAlbumUI.fields(by: [.albumName, .albumDescription], style: .light)
         return .init(formType: .withImageView,
                      titleText: "Add new album",
                      textFields: textFields,
                      uploadTitle: "Upload Thumbnail",
                      cancelButtonText: "Cancel",
                      okButtonText: "Create",
-                     cancelAction:{},
+                     cancelAction: {},
                      okAction: {
-        
-            let albumName = textFields.first!.textContent
-            let albumDesc = textFields.last!.textContent
+                         let albumName = textFields.first!.textContent
+                         let albumDesc = textFields.last!.textContent
 
-            let popattributes = PopUpAlter.setupPopupPresets()
-            if (albumName == "") {
-                self.showPopupMessage(attributes: popattributes, description : self.EMPTYNAME_DES)
-            } else if (self.albumDataList.contains(albumName) ){
-                self.showPopupMessage(attributes: popattributes, description : self.REPEATNAME_DES)
-            }
-            else {
-                // create a album here
-                customFormVC.dismissWithAnimation(){
-                    imageData in
-                    if let imaged = imageData,
-                        let imageUid = Util.GenerateUDID(){
-                        Util.ShowActivityIndicator(withStatus: "Creating album ...")
-                        Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: {url in
-                            Util.DismissActivityIndicator()
-                            if url != nil{
-                                // todo : add the thumbnail is a dummy now, and, update cache
-                                AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-                                    docRef in
-                                    print("showSignupForm : are you here ?")
-                                    self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
-                                })
-                            }
-                            
-                        }, errorHandler: {e in
-                            print("you get error from Thumbnail choose")
-                            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-                        })
-                    }
-                }
-            }
+                         let popattributes = PopUpAlter.setupPopupPresets()
+                         if albumName == "" {
+                             self.showPopupMessage(attributes: popattributes, description: self.EMPTYNAME_DES)
+                         } else if self.albumDataList.contains(albumName) {
+                             self.showPopupMessage(attributes: popattributes, description: self.REPEATNAME_DES)
+                         } else {
+                             // create a album here
+                             customFormVC.dismissWithAnimation {
+                                 imageData in
+                                 if let imaged = imageData,
+                                     let imageUid = Util.GenerateUDID() {
+                                     Util.ShowActivityIndicator(withStatus: "Creating album ...")
+                                     Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: { url in
+                                         Util.DismissActivityIndicator()
+                                         if url != nil {
+                                             // todo : add the thumbnail is a dummy now, and, update cache
+                                             AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG, completion: {
+                                                 docRef in
+                                                 print("showSignupForm : are you here ?")
+                                                 self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
+                                             })
+                                         }
+
+                                     }, errorHandler: { e in
+                                         print("you get error from Thumbnail choose")
+                                         Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                                     })
+                                 }
+                             }
+                         }
         })
-
     }
-    
-    /// <#Description#>
+
     /// Pop up error message
-    ///
     /// - Parameters:
     ///   - attributes: attributes description
     ///   - description: decription about what is wrong
@@ -112,9 +104,8 @@ class AlbumCoverViewController: UIViewController {
                                     buttonBackgroundColor: .white,
                                     image: image)
     }
-    
-    /// <#Description#>
-    ///
+
+    ///loads all the albums into UI
     /// - Parameters:
     ///   - newAlbumTitle: new album title description
     ///   - newAlbumDescrp: new album descrpiton
@@ -124,70 +115,62 @@ class AlbumCoverViewController: UIViewController {
     ///   - doesReload: doesReload
     ///   - reveseOrder: reveseOrder
     func loadAlbumToList(title newAlbumTitle: String,
-                  description newAlbumDescrp: String,
-                  UID: String,
-                  coverImageUID imageUID : String?,
-                  coverImageExtension imageExtension : String?,
-                  doesReload: Bool = true,
-                  reveseOrder: Bool = true){
-        
+                         description newAlbumDescrp: String,
+                         UID: String,
+                         coverImageUID imageUID: String?,
+                         coverImageExtension imageExtension: String?,
+                         doesReload: Bool = true,
+                         reveseOrder: Bool = true) {
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded with title : " + newAlbumTitle +
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
-        
+
         let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension)
-        
-        
+
         albumCollectionView.performBatchUpdates({
             albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reveseOrder)
             let index = albumsList.getIndexForItem(album: newAlbum)
             let indexPath = IndexPath(item: index, section: 0)
             albumCollectionView.insertItems(at: [indexPath])
-            
+
         }, completion: nil)
-        
-        if (doesReload){
-            if let albumCollectionView = self.albumCollectionView{
+
+        if doesReload {
+            if let albumCollectionView = self.albumCollectionView {
                 albumCollectionView.reloadData()
             }
         }
     }
-    
-    
-    //var activeCell = albumCollectionView
-    //activeCell = AlbumCoverViewController.controlView
+
+    // var activeCell = albumCollectionView
+    // activeCell = AlbumCoverViewController.controlView
     private let cellScaling: CGFloat = 0.6
     private let albumsList = AlbumsList()
     private var albumDataList = [String]()
-    
+
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loadAlbumCollectionView()
+        loadAlbumCollectionView()
         //        loadNameData()
-        self.albumCollectionView.reloadData()
-
+        albumCollectionView.reloadData()
     }
-    
-    
-    /// Description
+
     /// Load the album collection view for the vc
-    private func loadAlbumCollectionView(){
-        self.albumCollectionView.showsVerticalScrollIndicator = false
-        
-        albumCollectionView.register(UINib.init(nibName: AlbumCoverViewController.NIB_NAME, bundle: nil), forCellWithReuseIdentifier: AlbumCoverViewController.CELL_IDENTIFIER)
+    private func loadAlbumCollectionView() {
+        albumCollectionView.showsVerticalScrollIndicator = false
+
+        albumCollectionView.register(UINib(nibName: AlbumCoverViewController.NIB_NAME, bundle: nil), forCellWithReuseIdentifier: AlbumCoverViewController.CELL_IDENTIFIER)
         let layout = albumCollectionView!.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.itemSize = CGSize(width: (albumCollectionView.frame.size.width), height: (albumCollectionView.bounds.size.height) / 2.2)
+        layout.itemSize = CGSize(width: albumCollectionView.frame.size.width, height: albumCollectionView.bounds.size.height / 2.2)
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 9, right: 0)
     }
-    
-    
-        //To-do: changed list data structure so it fits for database */
-    /// <#Description#>
+
+    // To-do: changed list data structure so it fits for database */
     /// prepare next view, passing album details to the display album content view
     ///
     /// - Parameters:
@@ -202,12 +185,11 @@ class AlbumCoverViewController: UIViewController {
                 // todo : make album's photo according to the photo UID
                 let albumUID = albumDetailTVC.albumDetail.UID
                 // put it in here : albumDetailTVC.albumContents
-                CacheHandler.getInstance().getAllPhotosInfo(currAlbum: albumUID) { (detail, error) in
+                CacheHandler.getInstance().getAllPhotosInfo(currAlbum: albumUID) { detail, error in
                     if let error = error {
-                        print("error at prepare AlbumCoverViewController" , error)
-                    }
-                    else {
-                        print("albumUID : " ,albumUID, "name: " , albumDetailTVC.albumDetail.title)
+                        print("error at prepare AlbumCoverViewController", error)
+                    } else {
+                        print("albumUID : ", albumUID, "name: ", albumDetailTVC.albumDetail.title)
                         albumDetailTVC.reloadPhoto(newPhotos: detail)
                     }
                 }
@@ -215,105 +197,83 @@ class AlbumCoverViewController: UIViewController {
         }
     }
 
-/** todo : deprecated */
-    private func createAlbumPhotos()->[String]{
-        
+    /** todo : deprecated */
+    private func createAlbumPhotos() -> [String] {
         var photos = [String]()
         photos.append("test-small-size-image")
         photos.append("test-image-one")
         photos.append("test-image-two")
-        
+
         return photos
     }
-    
 }
 
-extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, SwipeCollectionViewCellDelegate{
-    
-    /// <#Description#>
+extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, SwipeCollectionViewCellDelegate {
     ///
     /// - Parameter collectionView: The collection view requesting this information.
     /// - Returns: the number of sections
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in _: UICollectionView) -> Int {
         return 1
     }
-    
-    /// <#Description#>
+
     ///
     /// - Parameters:
     ///   - collectionView: The collection view requesting this information.
     ///   - section: An index number identifying a section in collectionView.
     /// - Returns: The number of rows in section.
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         return albumsList.count()
     }
-    
-    
-    /// <#Description#>
-    ///when album on clicked : open albumDetail controller
-    ///
+
+    /// when album on clicked : open albumDetail controller
     /// - Parameters:
     ///   - collectionView: The collection view object that is notifying you of the selection change.
     ///   - indexPath: The index path of the cell that was selected.
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: Storyboard.showAlbumDetail, sender: indexPath)
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: Storyboard.showAlbumDetail, sender: indexPath)
     }
-    
-    
-    /// <#Description#>
+
     /// called in viewDidLoad
-    ///
     /// - Parameters:
     ///   - collectionView: The collection view object that is notifying you of the selection change.
     ///   - indexPath: The index path of the cell that was selected.
     /// - Returns: A configured cell object.
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlbumCell", for: indexPath) as! AlbumCollectionViewCell
-        
+
         cell.album = albumsList.getAlbum(index: indexPath.item)
         cell.delegate = self
         return cell
-
     }
-    
-    /// <#Description#>
+
     ///
     /// - Parameters:
     ///   - collectionView: The collection view object that is notifying you of the selection change.
     ///   - indexPath: The index path of the cell that was selected.
     ///   - orientation: orientation
     /// - Returns: return value
-    func collectionView(_ collectionView: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    func collectionView(_: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil }
-        
+
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            
+
             self.albumsList.removeAlbum(at: indexPath.row)
             action.fulfill(with: .delete)
-            
         }
-    
+
         return [deleteAction]
     }
-    
-    /// <#Description#>
+
     ///
     /// - Parameters:
     ///   - collectionView: The collection view object that is notifying you of the selection change.
     ///   - indexPath: The index path of the cell that was selected.
     ///   - orientation: orientation
     /// - Returns: return value
-    func collectionView(_ collectionView: UICollectionView, editActionsOptionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+    func collectionView(_: UICollectionView, editActionsOptionsForItemAt _: IndexPath, for _: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = .destructive
         options.transitionStyle = .drag
         return options
     }
-
 }
-
-
-
-
-

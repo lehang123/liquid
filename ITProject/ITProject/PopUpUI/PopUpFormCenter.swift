@@ -9,22 +9,17 @@
 import Foundation
 import SwiftEntryKit
 
+// MARK: Setup
 
-    // MARK: Setup
 class PopUpFromWindow {
-    
     static var displayMode = EKAttributes.DisplayMode.inferred
     private var displayMode: EKAttributes.DisplayMode {
         return PopUpFromWindow.displayMode
     }
-    
-    
-    
+
     public static func setupFormPresets() -> EKAttributes {
         var attributes: EKAttributes
-        
-        
-        
+
         // Preset Center Form
         attributes = .float
         attributes.displayMode = displayMode
@@ -83,13 +78,9 @@ class PopUpFromWindow {
             width: .constant(value: UIScreen.main.minEdge),
             height: .intrinsic
         )
-        
-        
-        return attributes
-        
-        
-    }
 
+        return attributes
+    }
 }
 
 extension UIScreen {
@@ -103,7 +94,3 @@ extension CGRect {
         return min(width, height)
     }
 }
-
-
-    
-

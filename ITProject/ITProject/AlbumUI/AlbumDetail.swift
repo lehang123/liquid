@@ -10,14 +10,13 @@ import Foundation
 
 import UIKit
 
-class AlbumDetail: Equatable
-{
+class AlbumDetail: Equatable {
     static func == (lhs: AlbumDetail, rhs: AlbumDetail) -> Bool {
-        return lhs.UID == rhs.UID 
+        return lhs.UID == rhs.UID
     }
-    
+
     // MARK: - Public API
-    
+
     /* coverImage of ablum */
     //    private var coverImage: UIImage!
     //
@@ -28,26 +27,25 @@ class AlbumDetail: Equatable
     //    public func setCoverImage(image: UIImage){
     //        self.coverImage = image
     //    }
-    
-    
-    /* title of ablum */
+
+    /// title of ablum
     var title = ""
-    
-    /* coverImage extension for ablum */
+
+    /// coverImage extension for ablum
     var coverImageExtension: String!
-    
-    /* coverImage of ablum */
+
+    /// coverImage of album
     var coverImageUID: String!
-    
-    /* description of ablum */
+
+    /// description of album
     var description = ""
-    
-    /* UID of ablum ,private on set*/
+
+    /// UID of album ,private on set
     private(set) var UID = ""
-    
-    /* alubm created date */
+
+    /// album created date
     private var createDate: Date!
-    
+
     /* photos that contained in the album */
 //    private(set) var photos = [PhotoDetail]()
 //
@@ -58,15 +56,18 @@ class AlbumDetail: Equatable
 //    public func removePhoto(photo : PhotoDetail){
 //        photos = photos.filter{$0 != photo}
 //    }
-    
-    init(title: String, description: String, UID : String, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?)
-    {
-        
+
+    /// init Album's info. for the UI to display.
+    /// - Parameter title: title of the album.
+    /// - Parameter description: description of the album/
+    /// - Parameter UID: UID of the album itself.
+    /// - Parameter imageUID: the thumbnail of album.
+    /// - Parameter imageExtension: thumbnail extension  for the album.
+    init(title: String, description: String, UID: String, coverImageUID imageUID: String?, coverImageExtension imageExtension: String?) {
         self.title = title
-        self.coverImageUID = imageUID
-        self.coverImageExtension = imageExtension
+        coverImageUID = imageUID
+        coverImageExtension = imageExtension
         self.description = description
         self.UID = UID
     }
-    
 }

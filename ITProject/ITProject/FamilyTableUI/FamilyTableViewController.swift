@@ -10,34 +10,33 @@ import Foundation
 import UIKit
 
 struct CellData {
-    let position : String?
-    let name : String?
-    let role : String?
+    let position: String?
+    let name: String?
+    let role: String?
 }
-class FamilyTableViewController: UITableViewController{
+
+class FamilyTableViewController: UITableViewController {
 //    private var data = [CellData]();
-    
-    private var headerView : UIView!
-    private var updateHeaderlayout : CAShapeLayer!
-    
-    private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.4
-    private let headerCut : CGFloat = 0
+
+    private var headerView: UIView!
+    private var updateHeaderlayout: CAShapeLayer!
+
+    private let headerHeight: CGFloat = UIScreen.main.bounds.height * 0.4
+    private let headerCut: CGFloat = 0
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.2
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        headerView = self.tableView.tableHeaderView
-        updateHeaderlayout = CAShapeLayer()
-        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
 
-        
+        headerView = tableView.tableHeaderView
+        updateHeaderlayout = CAShapeLayer()
+        tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+
 //        populateData()
 //        self.tableView.register(FamilyCustomCell.self, forCellReuseIdentifier: "custom")
 //        self.tableView.rowHeight = UITableView.automaticDimension
 //        self.tableView.estimatedRowHeight = 400
     }
-    
 
 //    func populateData(){
 //
@@ -62,4 +61,3 @@ class FamilyTableViewController: UITableViewController{
 //        return cell;
 //    }
 }
-

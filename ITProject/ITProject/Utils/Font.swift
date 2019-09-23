@@ -26,7 +26,7 @@ enum Font {
         case condensedBlack = "CondensedBlack"
         case condensedBold = "CondensedBold"
         case boldItalic = "BoldItalic"
-        
+
         func with(size: CGFloat) -> UIFont {
             return UIFont(name: "HelveticaNeue-\(rawValue)", size: size)!
         }
