@@ -8,29 +8,48 @@
 
 import Foundation
 import UIKit
+import EnhancedCircleImageView
 
-struct CellData {
-    let position : String?
+struct FamilyMember :Equatable {
+    
+    static func == (lhs: FamilyMember, rhs: FamilyMember) -> Bool {
+        return lhs.UID == rhs.UID
+    }
+    
+    let UID : String!
+    let phone : String?
     let name : String?
-    let role : String?
+    let relationship : String?
 }
 class FamilyTableViewController: UITableViewController{
 //    private var data = [CellData]();
     
+    private let dummyFamilyMembers = [FamilyMember(UID: Util.GenerateUDID(), phone:        "18006123153", name: "Darth Vader", relationship: "Father"),
+                                      FamilyMember(UID: Util.GenerateUDID(), phone: "2312312", name: "Luke Sky Walker", relationship: "Son")]
+    
+    private var familyMembers = [FamilyMember]()
+    
     private var headerView : UIView!
     private var updateHeaderlayout : CAShapeLayer!
+    
+    @IBOutlet weak var familyPhoto: UIImageView!
     
     private let headerHeight : CGFloat = UIScreen.main.bounds.height * 0.4
     private let headerCut : CGFloat = 0
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.2
-
+    
+    private static let INFO_DESCRIB_CELL = "InfoDescriCell"
+    private static let FAMILY_MEMEBER_CELL = "FamilyMemberCell"
+    private static let INTRODUCTION_ROW = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        familyMembers = dummyFamilyMembers
         
         headerView = self.tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
         self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
-
         
 //        populateData()
 //        self.tableView.register(FamilyCustomCell.self, forCellReuseIdentifier: "custom")
@@ -38,28 +57,28 @@ class FamilyTableViewController: UITableViewController{
 //        self.tableView.estimatedRowHeight = 400
     }
     
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.tableView.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(FamilyTableViewController.HEADER_MIN_HEIGHT))
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return familyMembers.count + FamilyTableViewController.INTRODUCTION_ROW
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.row == 0 {
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.INFO_DESCRIB_CELL)
+            
+            return cell!
+        }else {
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.FAMILY_MEMEBER_CELL) as! FamilyTableViewMemberCell
+            cell.nameLabel.text = familyMembers[indexPath.row-1].name
+            cell.relationshipLabel.text = familyMembers[indexPath.row-1].relationship
+            cell.phoneLabel.text = familyMembers[indexPath.row-1].phone
 
-//    func populateData(){
-//
-//        data = [CellData.init(position: "position ", name : "name" , role  : "role" ),CellData.init(position: "wo jiu jiu ni ", name : "Ivan Wibowo", role  : "can edit" ), CellData.init(position: "wo jiu 22jiu ni ", name : "Maris Stella Angelita GUnadi", role  : "can delete"),CellData.init(position: "wo jiu jiu ni ", name : "Aurelia Griselda Wibowo", role  : "can view")]
-//
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        //no of rows required:
-//        print("DATA COUNT ::: \(data.count)")
-//
-//        return data.count;
-//    }
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = self.tableView.dequeueReusableCell(withIdentifier: "custom") as! FamilyCustomCell
-//
-//        cell.position = data[indexPath.row].position
-//        cell.name = data[indexPath.row].name
-//        cell.role = data[indexPath.row].role
-//        print("RUMMMM")
-//        cell.layoutSubviews()
-//        return cell;
-//    }
+            return cell
+        }
+    }
 }
 
