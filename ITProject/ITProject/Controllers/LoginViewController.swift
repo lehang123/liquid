@@ -10,8 +10,11 @@ import Foundation
 import UIKit
 import Firebase
 
+/// <#Description#>
+/// This view is mainly for user to log in
 class LoginViewController: UIViewController {
     
+    // Constants and properties go here
     private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
     private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
 
@@ -28,12 +31,20 @@ class LoginViewController: UIViewController {
         self.view.addGestureRecognizer(tapGestureBackground)
     }
     
+    /// <#Description#>
+    /// Detect the user tapped on the background
+    ///
+    /// - Parameter sender: <#sender description#>
     @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
     {
         self.ID.endEditing(true)
         self.password.endEditing(true)
     }
     
+    /// <#Description#>
+    /// Show the keyboard to the user
+    ///
+    /// - Parameter notification: notification
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
 
@@ -48,6 +59,10 @@ class LoginViewController: UIViewController {
         }
     }
     
+    /// <#Description#>
+    /// Hide the keyboard
+    ///
+    /// - Parameter notification: notification
     @objc func keyboardWillHide(notification: NSNotification) {
         if self.view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.25, animations: {
@@ -56,6 +71,10 @@ class LoginViewController: UIViewController {
         }
     }
 
+    /// <#Description#>
+    /// When user touched the buttom to log in
+    ///
+    /// - Parameter sender: sender
     @IBAction func LoginButtonOnTouch(_ sender: Any) {
         let account: String = ID.text!
         let pw: String = password.text!
@@ -75,42 +94,6 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    
 
-    
-//    private func getUserInfo(usrResult : AuthDataResult){
-//        let profilePhotoUrl = usrResult.user.photoURL
-//        let username = usrResult.user.displayName
-//
-//    }
-
-    public func tFunction(){
-//        // test for upload file
-//        Util.downloadImage(from:URL(string: "https://cdn.arstechnica.net/wp-content/uploads/2018/06/macOS-Mojave-Dynamic-Wallpaper-transition.jpg")!){
-//            (data, url, error) in
-//            Util.UploadFileToServer(data: data!, metadata: nil, fileFullName: (Util.GenerateUDID() + Util.EXTENSION_JPEG), completion:{(url) in
-//                print ("tFunction : upload file successful, here is the url : ")
-//                print(url!)
-//            })
-//        }
-//        // test for download file
-//        Util.DownloadFileFromServer(fileFullPath: "images/2E61DCE8-B133-4936-BDC7-E90FB4199B21.zip", completion: {(fileUrl) in
-//            print("file download and unzip success :" + fileUrl!.absoluteString)
-//        })
-        
-//        Util.GetDataFromLocalFile(filename: "152B6B38-79F5-45B2-8126-CE9FB9854D8E", fextension: ".jpg")
-    }
-    
-    public func testFunction(){
-        let fileManager = FileManager.default
-        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        do {
-            let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL.appendingPathComponent(Util.IMAGE_FOLDER), includingPropertiesForKeys: nil)
-            // process files
-            print(fileURLs)
-        } catch {
-            print("Error while enumerating files \(documentsURL.path): \(error.localizedDescription)")
-        }
-    }
 }
 

@@ -64,6 +64,7 @@ class RegisterDBController {
             RegisterDBController.USER_DOCUMENT_FIELD_PHONE : "" ,
             RegisterDBController.USER_DOCUMENT_FIELD_GENDER : "" ], collectionName :
             RegisterDBController.USER_COLLECTION_NAME);
+        Util.ChangeUserDisplayName(user: Auth.auth().currentUser!, username: username);
         
     }
     /// <#Description#>
