@@ -47,7 +47,6 @@ class AlbumDBController {
     init() {}
 
     public func UpdateComments(username: String, comment: String, photoUID: String) {
-       
         // USE : [ [  "username" : USERNAME, "message"  : COMMENTS ] ]
         DBController.getInstance()
             .updateArrayField(
@@ -75,8 +74,6 @@ class AlbumDBController {
     public func addNewAlbum(albumName: String, description: String, thumbnail: String,
                             thumbnailExt: String,
                             completion: @escaping (DocumentReference?) -> Void) {
-        
-
         // get currentUser's family
         let user = Auth.auth().currentUser!.uid
         let userDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user)
@@ -87,8 +84,6 @@ class AlbumDBController {
             ) { document, error in
                 if let document = document, document.exists {
                     let familyDocRef: DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
-
-                    
 
                     /* init new album
                      * update: album has reference to family + owner/creator.
@@ -117,7 +112,6 @@ class AlbumDBController {
                                           documentUID: familyDocRef!.documentID,
                                           fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS, appendValue: albumDocumentReference!)
 
-                   
                     completion(albumDocumentReference)
 
                 } else {

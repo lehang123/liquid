@@ -105,7 +105,7 @@ class AlbumCoverViewController: UIViewController {
                                     image: image)
     }
 
-    ///loads all the albums into UI
+    /// loads all the albums into UI
     /// - Parameters:
     ///   - newAlbumTitle: new album title description
     ///   - newAlbumDescrp: new album descrpiton

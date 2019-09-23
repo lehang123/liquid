@@ -83,7 +83,6 @@ class DBController {
         }
     }
 
-
     /// add 1 document to 1 collection with an automatically generated UID,
     /// - Parameters:
     ///    - inputData: the attributes and their values to be added for new document.
@@ -173,6 +172,4 @@ class DBController {
                 }
             }
     }
-
- 
 }
