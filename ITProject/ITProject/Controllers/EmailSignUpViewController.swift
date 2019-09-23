@@ -6,16 +6,15 @@
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
-import Foundation
-import UIKit
 import Firebase
 import FirebaseCore
 import FirebaseFirestore
+import Foundation
+import UIKit
 
 /// <#Description#>
 /// This class is mainly for user log in the app
-class EmailSignUpViewController : UIViewController {
-
+class EmailSignUpViewController: UIViewController {
     // Constants  and properties goes here
     private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
     private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
@@ -32,49 +31,42 @@ class EmailSignUpViewController : UIViewController {
     private static let ACCOUNT_ALREADY_TITLE = "The address  already exists."
     private static let BACK_TO_LOGIN = "Back to login."
     private static let WAITING_AUTHENTICATE = "Creating.."
-    
-    @IBOutlet weak var emailAddress: UITextField!
-    @IBOutlet weak var password: UITextField!
-    @IBOutlet weak var confirmPW: UITextField!
-    @IBOutlet weak var username: UITextField!
-    @IBOutlet weak var joinFamilyIDField: UITextField!    // joinFamilyIDField is UID of the document
-    @IBOutlet weak var newFamilyField: UITextField!
-    
+
+    @IBOutlet var emailAddress: UITextField!
+    @IBOutlet var password: UITextField!
+    @IBOutlet var confirmPW: UITextField!
+    @IBOutlet var username: UITextField!
+    @IBOutlet var joinFamilyIDField: UITextField! // joinFamilyIDField is UID of the document
+    @IBOutlet var newFamilyField: UITextField!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Check if the user is typing
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
-        self.view.addGestureRecognizer(tapGestureBackground)
+
+        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(backgroundTapped(_:)))
+        view.addGestureRecognizer(tapGestureBackground)
     }
-    
-    /// <#Description#>
+
     /// Tap the background stop editing
-    ///
     /// - Parameter sender: typing
-    @objc func backgroundTapped(_ sender: UITapGestureRecognizer)
-    {
-        self.emailAddress.endEditing(true)
-        self.password.endEditing(true)
-        self.confirmPW.endEditing(true)
-        self.username.endEditing(true)
-        self.joinFamilyIDField.endEditing(true)
-        self.newFamilyField.endEditing(true)
+    @objc func backgroundTapped(_: UITapGestureRecognizer) {
+        emailAddress.endEditing(true)
+        password.endEditing(true)
+        confirmPW.endEditing(true)
+        username.endEditing(true)
+        joinFamilyIDField.endEditing(true)
+        newFamilyField.endEditing(true)
     }
-    
-    /// <#Description#>
+
     /// Show the keyboard when the user is typing
-    ///
     /// - Parameter notification: notificate when user is typing
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            
             if newFamilyField.isEditing {
-                
-                if self.view.frame.origin.y == 0 {
+                if view.frame.origin.y == 0 {
                     UIView.animate(withDuration: 0.25, animations: {
                         self.view.frame.origin.y -= keyboardSize.height
                     })
@@ -82,38 +74,34 @@ class EmailSignUpViewController : UIViewController {
             }
         }
     }
-    
-    /// <#Description#>
+
     /// Hide the keyboard when user stopping typing
-    ///
     /// - Parameter notification: notification
-    @objc func keyboardWillHide(notification: NSNotification) {
-        if self.view.frame.origin.y != 0 {
+    @objc func keyboardWillHide(notification _: NSNotification) {
+        if view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.25, animations: {
                 self.view.frame.origin.y = 0
             })
         }
     }
-    
-    /// <#Description#>
+
     /// When user touch the create button
-    ///
     /// - Parameter sender: tap the button
-    @IBAction func CreateButtonOnTouch(_ sender: Any) {
+    @IBAction func CreateButtonOnTouch(_: Any) {
         let email: String = emailAddress.text!
         let pw: String = password.text!
-        
+
         // only field filled up, then try authentiate
-        if (doesFieldFilledUp()){
+        if doesFieldFilledUp() {
             print("if run:::")
-            if (!self.joinFamilyIDField.text!.isEmpty){
+            if !joinFamilyIDField.text!.isEmpty {
                 print("if2 run:::")
                 Util.ShowActivityIndicator(withStatus: EmailSignUpViewController.WAITING_AUTHENTICATE)
-                //check if family exists
-                DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.joinFamilyIDField.text!){
-                    (document, error) in
+                // check if family exists
+                DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: joinFamilyIDField.text!) {
+                    document, _ in
                     if let document = document, document.exists {
-                        //let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                        // let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                         self.authenticate(email: email, pw: pw)
                     } else {
                         Util.DismissActivityIndicator()
@@ -123,61 +111,52 @@ class EmailSignUpViewController : UIViewController {
                                        on: self)
                     }
                 }
-            }
-            else{
-                self.authenticate(email: email, pw: pw)
+            } else {
+                authenticate(email: email, pw: pw)
             }
         }
     }
-    
-    /// <#Description#>
+
     /// Check is there any empty field when sign in the info
-    ///
     /// - Returns: Return true for the field is filled up
-    func doesFieldFilledUp()->Bool {
-        if (username.text!.isEmpty) {
+    func doesFieldFilledUp() -> Bool {
+        if username.text!.isEmpty {
             Util.ShowAlert(title: EmailSignUpViewController.CREATE_USERNAME,
-                  message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                  action_title: Util.BUTTON_DISMISS,
-                  on: self)
+                           message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
             return false
-        }
-        else if (joinFamilyIDField.text!.isEmpty && newFamilyField.text!.isEmpty) {
+        } else if joinFamilyIDField.text!.isEmpty, newFamilyField.text!.isEmpty {
             Util.ShowAlert(title: EmailSignUpViewController.CREATE_FAMILY,
-                  message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                  action_title: Util.BUTTON_DISMISS,
-                  on: self)
+                           message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
             return false
-        }
-        else if ((!joinFamilyIDField.text!.isEmpty) && (!newFamilyField.text!.isEmpty)){
+        } else if !joinFamilyIDField.text!.isEmpty, !newFamilyField.text!.isEmpty {
             Util.ShowAlert(title: EmailSignUpViewController.FAMILY_FIELD,
                            message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
                            action_title: Util.BUTTON_DISMISS,
                            on: self)
             return false
-        }
-        else if (password.text! != confirmPW.text!) {
+        } else if password.text! != confirmPW.text! {
             Util.ShowAlert(title: EmailSignUpViewController.CONFIRMED_INCORRECT_WRONG,
-                  message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                  action_title: Util.BUTTON_DISMISS,
-                  on: self)
+                           message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
             return false
-        }
-        else if (password.text!.count < 8) {
+        } else if password.text!.count < 8 {
             Util.ShowAlert(title: EmailSignUpViewController.PASSWORD_LENGTH_NOT_ENOUGH,
-                  message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
-                  action_title: Util.BUTTON_DISMISS,
-                  on: self)
+                           message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
             return false
         }
-        
+
         return true
     }
 
-    /// <#Description#>
     /// Authentiate process is here
     /// note : Firebase authentiate is default set on other thread already
-    ///
     /// - Parameters:
     ///   - email: email that user entered
     ///   - pw: password that user entered
@@ -186,45 +165,42 @@ class EmailSignUpViewController : UIViewController {
         Auth.auth().createUser(withEmail: email, password: pw) {
             authResult, error in
             Util.DismissActivityIndicator()
-            
+
             if error != nil {
                 // fail
                 Util.ShowAlert(title: error!.localizedDescription,
                                message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
                                action_title: Util.BUTTON_DISMISS,
                                on: self)
-            }else{
+            } else {
                 // success
                 // Show the users that the account has been sucessfully created
-                
+
                 Util.ShowAlert(title: EmailSignUpViewController.CREATE_CORRECT,
-                               message:EmailSignUpViewController.CREATE_CORRECT_MESSAGE,
+                               message: EmailSignUpViewController.CREATE_CORRECT_MESSAGE,
                                action_title: EmailSignUpViewController.BACK_TO_LOGIN,
-                               on: self){self.navigationController?.popViewController(animated: true)}
-                
-                //TODO: add user information to database
+                               on: self) { self.navigationController?.popViewController(animated: true) }
 
-                var familyUID:DocumentReference;
-                if (!self.newFamilyField.text!.isEmpty) {
+                // TODO: add user information to database
 
-                    //create a family:
-                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.newFamilyField.text!, userUID: authResult!.user.uid);
+                var familyUID: DocumentReference
+                if !self.newFamilyField.text!.isEmpty {
+                    // create a family:
+                    familyUID = RegisterDBController.getInstance().AddNewFamily(familyName: self.newFamilyField.text!, userUID: authResult!.user.uid)
 
-                    //add a user: todo: can remove this from db(optional)
-                    RegisterDBController.getInstance().AddUser(familyUID: familyUID.documentID, userUID: authResult!.user.uid, username: self.username.text!);
+                    // add a user: todo: can remove this from db(optional)
+                    RegisterDBController.getInstance().AddUser(familyUID: familyUID.documentID, userUID: authResult!.user.uid, username: self.username.text!)
                     // add username in auth, add in database can be remove
                     Util.ChangeUserDisplayName(user: authResult!.user, username: self.username.text!)
-                    
-                }else if(!self.joinFamilyIDField.text!.isEmpty) {
 
-                    //create a user:
-                    RegisterDBController.getInstance().AddUser( familyUID : self.joinFamilyIDField.text! ,userUID: authResult!.user.uid, username: self.username.text!);
-                    
-                    //join a family:
-                    RegisterDBController.getInstance().AddUserToExistingFamily(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid);
-                }              
+                } else if !self.joinFamilyIDField.text!.isEmpty {
+                    // create a user:
+                    RegisterDBController.getInstance().AddUser(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid, username: self.username.text!)
+
+                    // join a family:
+                    RegisterDBController.getInstance().AddUserToExistingFamily(familyUID: self.joinFamilyIDField.text!, userUID: authResult!.user.uid)
+                }
             }
         }
     }
 }
-

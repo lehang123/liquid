@@ -9,12 +9,9 @@
 import Foundation
 import UIKit
 
-/// <#Description#>
 /// This is just for showing individual setting table view controller details
 class IndividualSettingTableViewController: UITableViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
-

@@ -9,42 +9,35 @@
 import Foundation
 import UIKit
 
+/// Lists each album to UI.
 class AlbumsList {
+    private var currentAlbums: [AlbumDetail] = []
 
-    
-    private var currentAlbums:[AlbumDetail] = []
-    
-    lazy private var tempImages :[UIImage] = makeRandomList()
-    
-    func makeRandomList () -> [UIImage]{
+    private lazy var tempImages: [UIImage] = makeRandomList()
+
+    func makeRandomList() -> [UIImage] {
         var item1Images = [UIImage]()
-        for i in (1...4).map( {_ in Int.random(in: 0...4)} ) {
+        for i in (1 ... 4).map({ _ in Int.random(in: 0 ... 4) }) {
             print("AlbumList.makeRandomList ::: ", i)
             item1Images.append(UIImage(named: "item\(i)")!)
         }
-        
-        return item1Images
-        
-    }
-    
 
-    
-    public func fetchAlbumArray() -> [AlbumDetail]
-    {
+        return item1Images
+    }
+
+    public func fetchAlbumArray() -> [AlbumDetail] {
         return currentAlbums
     }
-    
-    public func addNewAlbum(title: String, description: String, UID : String, photos : [String]?, coverImageUID imageUID : String?, coverImageExtension imageExtension : String?, addToHead:Bool = true){
-        
+
+    public func addNewAlbum(title: String, description: String, UID: String, photos _: [String]?, coverImageUID imageUID: String?, coverImageExtension imageExtension: String?, addToHead _: Bool = true) {
         let album = AlbumDetail(title: title,
-                               description: description,
-                               UID:UID,
-                               coverImageUID: imageUID,
-                               coverImageExtension: imageExtension)
-        
-        
+                                description: description,
+                                UID: UID,
+                                coverImageUID: imageUID,
+                                coverImageExtension: imageExtension)
+
         addNewAlbum(newAlbum: album, addToHead: true)
-        
+
 //        if !currentAlbums.contains(album){
 //
 //            if addToHead {
@@ -54,21 +47,17 @@ class AlbumsList {
 //            }
 //        }
     }
-    
-    public func addNewAlbum(newAlbum: AlbumDetail, addToHead:Bool = true){
 
-        if !currentAlbums.contains(newAlbum){
-            
+    public func addNewAlbum(newAlbum: AlbumDetail, addToHead: Bool = true) {
+        if !currentAlbums.contains(newAlbum) {
             if addToHead {
                 currentAlbums.insert(newAlbum, at: 0)
-            }else{
+            } else {
                 currentAlbums.append(newAlbum)
             }
         }
-        
     }
-    
-    
+
 //    public func addNewAlbum(title newAlbumTitle: String, imageName newAlbumImage : String) {
 //        currentAlbums.append(AlbumDetail(title: newAlbumTitle, featuredImage: UIImage(named: newAlbumImage)!))
 //    }
@@ -78,25 +67,26 @@ class AlbumsList {
 //            currentAlbums.append(AlbumDetail(title: newAlbumTitle, featuredImage: UIImage(data: imageData)!))
 //        }
 //    }
-    
-    public func getIndexForItem(album: AlbumDetail)-> Int{
+
+    public func getIndexForItem(album: AlbumDetail) -> Int {
         return currentAlbums.firstIndex(of: album)!
     }
-    
-    
+
+    /// deletes an album from UI.
+    /// - Parameter albumToDelete: album to be deleted
     public func removeAlbum(albumToDelete: AlbumDetail) {
         currentAlbums.remove(at: currentAlbums.firstIndex(of: albumToDelete)!)
     }
-    
+
     public func removeAlbum(at: Int) {
         currentAlbums.remove(at: at)
     }
-    
-    public func getAlbum(index : Int)->AlbumDetail{
+
+    public func getAlbum(index: Int) -> AlbumDetail {
         return currentAlbums[index]
     }
-    
-    public func count()->Int{
+
+    public func count() -> Int {
         return currentAlbums.count
     }
 }

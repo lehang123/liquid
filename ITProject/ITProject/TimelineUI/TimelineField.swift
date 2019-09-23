@@ -8,20 +8,18 @@
 
 import Foundation
 import UIKit
-public struct TimelineField{
-    
-    // The date that the event occured.
+public struct TimelineField {
+    /// The date that the event occured.
     let date: String
-    
-    // A description of the event.
+
+    /// A description of the event.
     let content: String?
-    
-    // An optional image to show with the text and the date in the timeline.
+
+    /// An optional image to show with the text and the date in the timeline.
     let image: UIImage?
-    
-    //
+
     let imageTapped: ((UIImage) -> Void)?
-    
+
     public init(date: String, content: String? = nil, image: UIImage? = nil, imageTapped: ((UIImage) -> Void)? = nil) {
         self.date = date
         self.content = content

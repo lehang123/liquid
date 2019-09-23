@@ -10,9 +10,6 @@ import UIKit
 
 class AlbumDetailPhotoTableViewCell: UITableViewCell {
     
-    
     @IBOutlet weak var photoCollectionView: UICollectionView!
     
-
-
 }
