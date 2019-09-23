@@ -836,11 +836,12 @@
                     <connections>
                         <segue destination="J1w-0v-fpW" kind="show" identifier="ShowProfileViewController" id="omL-cp-BQo"/>
                         <segue destination="eBw-8f-een" kind="show" identifier="ShowFamilyProfileViewController" id="fg6-8Q-TrY"/>
+                        <segue destination="fa7-QP-3pz" kind="show" identifier="ShowFamilyTableViewController" id="QZd-Q9-CSY"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kyz-ob-OnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3908" y="133"/>
+            <point key="canvasLocation" x="3911" y="133"/>
         </scene>
         <!--Individual Setting Table View Controller-->
         <scene sceneID="acx-R3-M0u">
@@ -1558,7 +1559,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jsO-uh-FiK">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item4" translatesAutoresizingMaskIntoConstraints="NO" id="jsO-uh-FiK" userLabel="Display Family Photo">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 </imageView>
                             </subviews>
@@ -1571,27 +1572,27 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Rkf-Pe-zWT" userLabel="Show Info Cell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="InfoDescriCell" id="Rkf-Pe-zWT" userLabel="Show Info Cell">
                                 <rect key="frame" x="0.0" y="72" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rkf-Pe-zWT" id="gCJ-IP-VAP">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ib-IV-ssG">
-                                            <rect key="frame" x="26" y="11" width="45" height="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Member" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ib-IV-ssG">
+                                            <rect key="frame" x="26" y="11" width="64" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relationship" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DG-kG-aX3">
-                                            <rect key="frame" x="131" y="0.0" width="93.5" height="43.5"/>
+                                            <rect key="frame" x="120" y="0.0" width="93.5" height="43.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-dS-B8g">
-                                            <rect key="frame" x="258" y="11" width="36" height="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-dS-B8g">
+                                            <rect key="frame" x="245" y="11" width="49" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1600,7 +1601,7 @@
                                     <constraints>
                                         <constraint firstItem="2ib-IV-ssG" firstAttribute="leading" secondItem="gCJ-IP-VAP" secondAttribute="leadingMargin" constant="10" id="1Hh-RY-XL9"/>
                                         <constraint firstItem="2ib-IV-ssG" firstAttribute="top" secondItem="gCJ-IP-VAP" secondAttribute="topMargin" id="74x-Cg-Xom"/>
-                                        <constraint firstItem="7DG-kG-aX3" firstAttribute="leading" secondItem="2ib-IV-ssG" secondAttribute="trailing" constant="60" id="8Hn-vk-s60"/>
+                                        <constraint firstItem="7DG-kG-aX3" firstAttribute="leading" secondItem="2ib-IV-ssG" secondAttribute="trailing" constant="30" id="8Hn-vk-s60"/>
                                         <constraint firstItem="7DG-kG-aX3" firstAttribute="top" secondItem="gCJ-IP-VAP" secondAttribute="top" id="Lx8-Hc-e4z"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="IVa-dS-B8g" secondAttribute="bottom" id="OAm-Vm-I4L"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="2ib-IV-ssG" secondAttribute="bottom" id="Q54-N7-Chh"/>
@@ -1611,7 +1612,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="1QS-js-vUd" userLabel="Family Member Cell" customClass="FamilyTableViewMemberCell" customModule="ITProject" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FamilyMemberCell" id="1QS-js-vUd" userLabel="Family Member Cell" customClass="FamilyTableViewMemberCell" customModule="ITProject" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="116" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1QS-js-vUd" id="OPD-ye-xh3">
@@ -1625,12 +1626,12 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwi-yV-YNb" userLabel="Relationship Label">
-                                            <rect key="frame" x="128" y="0.0" width="42" height="43.5"/>
+                                            <rect key="frame" x="98" y="0.0" width="42" height="43.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTz-Em-m5t" userLabel="Auth Label">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTz-Em-m5t" userLabel="Phone Label">
                                             <rect key="frame" x="252" y="11" width="42" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -1642,17 +1643,17 @@
                                         <constraint firstItem="3ZR-iy-06U" firstAttribute="top" secondItem="OPD-ye-xh3" secondAttribute="topMargin" id="DpH-St-aHl"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="LTz-Em-m5t" secondAttribute="trailing" constant="10" id="G5Q-kv-Vdk"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="3ZR-iy-06U" secondAttribute="bottom" id="Q0G-Rw-mFt"/>
-                                        <constraint firstItem="LTz-Em-m5t" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Jwi-yV-YNb" secondAttribute="trailing" constant="8" symbolic="YES" id="bDw-Ce-Qv6"/>
+                                        <constraint firstItem="LTz-Em-m5t" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Jwi-yV-YNb" secondAttribute="trailing" constant="20" id="bDw-Ce-Qv6"/>
                                         <constraint firstAttribute="bottom" secondItem="Jwi-yV-YNb" secondAttribute="bottom" id="dEK-SI-Blz"/>
                                         <constraint firstItem="Jwi-yV-YNb" firstAttribute="top" secondItem="OPD-ye-xh3" secondAttribute="top" id="gP5-up-gY3"/>
                                         <constraint firstItem="3ZR-iy-06U" firstAttribute="leading" secondItem="OPD-ye-xh3" secondAttribute="leadingMargin" constant="10" id="o9z-nc-c6b"/>
-                                        <constraint firstItem="Jwi-yV-YNb" firstAttribute="leading" secondItem="3ZR-iy-06U" secondAttribute="trailing" constant="60" id="rsQ-6l-ed2"/>
+                                        <constraint firstItem="Jwi-yV-YNb" firstAttribute="leading" secondItem="3ZR-iy-06U" secondAttribute="trailing" constant="30" id="rsQ-6l-ed2"/>
                                         <constraint firstItem="LTz-Em-m5t" firstAttribute="top" secondItem="OPD-ye-xh3" secondAttribute="topMargin" id="y4L-iZ-dRN"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="authLabel" destination="LTz-Em-m5t" id="ArZ-q8-tZR"/>
                                     <outlet property="nameLabel" destination="3ZR-iy-06U" id="YRT-XG-Gx5"/>
+                                    <outlet property="phoneLabel" destination="LTz-Em-m5t" id="ArZ-q8-tZR"/>
                                     <outlet property="relationshipLabel" destination="Jwi-yV-YNb" id="PjQ-Oc-lcG"/>
                                 </connections>
                             </tableViewCell>
@@ -1662,10 +1663,13 @@
                             <outlet property="delegate" destination="fa7-QP-3pz" id="4NO-Cl-Ild"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="familyPhoto" destination="jsO-uh-FiK" id="hOJ-cN-c1Q"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m7E-MW-MQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4556.25" y="931.69014084507046"/>
+            <point key="canvasLocation" x="4785" y="980"/>
         </scene>
     </scenes>
     <resources>
@@ -1676,6 +1680,7 @@
         <image name="familyBackgroundImage" width="750" height="1334"/>
         <image name="heartIcon" width="128" height="128.5"/>
         <image name="item0" width="414" height="736"/>
+        <image name="item4" width="2560" height="1600"/>
         <image name="logoutIcon" width="100" height="100"/>
         <image name="menuIcon" width="22" height="22"/>
         <image name="settingIcon" width="108" height="110"/>

@@ -14,5 +14,5 @@ class FamilyTableViewMemberCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var relationshipLabel: UILabel!
-    @IBOutlet weak var authLabel: UILabel!
+    @IBOutlet weak var phoneLabel: UILabel!
 }
