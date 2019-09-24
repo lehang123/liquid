@@ -51,20 +51,20 @@ enum FormStyle {
 
 
 final class AddAlbumUI {
-    
+    static var displayMode = EKAttributes.DisplayMode.inferred
     /// Return the pop up form display mode
-    private static var displayMode: EKAttributes.DisplayMode {
-        return PopUpFromWindow.displayMode
+    private var displayMode: EKAttributes.DisplayMode {
+        return AddAlbumUI.displayMode
     }
     
-    /// <#Description#>
+    /// initial album name textField
     ///
     /// - Parameters:
     ///   - placeholderStyle: the placeholder appear in the albumName textfield
     ///   - textStyle: the text style include font, color
     ///   - separatorColor: the separator bottom line color
-    ///   - style: <#style description#>
-    /// - Returns: <#return value description#>
+    ///   - style: textFields style
+    /// - Returns: text field content
     class func albumName(placeholderStyle: EKProperty.LabelStyle,
                      textStyle: EKProperty.LabelStyle,
                      separatorColor: EKColor,
@@ -83,6 +83,14 @@ final class AddAlbumUI {
                      accessibilityIdentifier: "albumNameTextField")
     }
     
+    /// initial album description textField
+    ///
+    /// - Parameters:
+    ///   - placeholderStyle: the placeholder appear in the albumDescription textfield
+    ///   - textStyle: the text style include font, color
+    ///   - separatorColor: the separator bottom line color
+    ///   - style: textFields style
+    /// - Returns: text field content
     class func albumDescription(placeholderStyle: EKProperty.LabelStyle,
                          textStyle: EKProperty.LabelStyle,
                          separatorColor: EKColor,
@@ -101,6 +109,14 @@ final class AddAlbumUI {
                      accessibilityIdentifier: "albumDescriptionTextField")
     }
     
+    /// initial photo description textField
+    ///
+    /// - Parameters:
+    ///   - placeholderStyle: the placeholder appear in the photoDescription textfield
+    ///   - textStyle: the text style include font, color
+    ///   - separatorColor: the separator bottom line color
+    ///   - style: textFields style
+    /// - Returns: text field content
     class func photoDescription(placeholderStyle: EKProperty.LabelStyle,
                                 textStyle: EKProperty.LabelStyle,
                                 separatorColor: EKColor,
@@ -121,6 +137,9 @@ final class AddAlbumUI {
     
 
     
+    /// initial textField
+    /// - Parameter set: text field options
+    /// - Parameter style: text field style
     class func fields(by set: TextFieldOptionSet,
                       style: FormStyle) -> [CustomTextFieldContent] {
         var array: [CustomTextFieldContent] = []

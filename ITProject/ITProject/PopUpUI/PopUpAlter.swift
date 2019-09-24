@@ -15,9 +15,10 @@ import SwiftEntryKit
 class PopUpAlter {
     static var displayMode = EKAttributes.DisplayMode.inferred
     private var displayMode: EKAttributes.DisplayMode {
-        return PopUpFromWindow.displayMode
+        return PopUpAlter.displayMode
     }
-
+    
+    /// set up attributes for center pop up alter
     public static func setupPopupPresets() -> EKAttributes {
         var attributes: EKAttributes
 
@@ -41,7 +42,7 @@ class PopUpAlter {
             height: .intrinsic
         )
         attributes.statusBar = .dark
-
+        
         attributes.entryBackground = .gradient(
             gradient: .init(
                 colors: [EKColor(rgb: 0xFFFBD5), EKColor(rgb: 0xB20A2C)],
@@ -80,7 +81,16 @@ class PopUpAlter {
 
         return attributes
     }
-
+    
+    /// initial the pop up message information
+    /// - Parameter attributes: all attributes information for a pop up alter
+    /// - Parameter title: alter title
+    /// - Parameter titleColor: color for alter title
+    /// - Parameter description: alter description
+    /// - Parameter descriptionColor: color for description color
+    /// - Parameter buttonTitleColor: color for dismiss button title
+    /// - Parameter buttonBackgroundColor: color for dismiss button background
+    /// - Parameter image: image can show in the alter, if needed. (default is nil)
     public static func showPopupMessage(attributes: EKAttributes,
                                         title: String,
                                         titleColor: EKColor,

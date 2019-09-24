@@ -6,6 +6,8 @@
 //  Created by Erya Wen on 2019/9/9.
 //  Copyright © 2019 liquid. All rights reserved.
 //
+//  SwiftEntryKit (Created by Daniel Huri on 5/16/18.) Extension
+//  EKTextField+validation
 
 import UIKit
 import SwiftEntryKit

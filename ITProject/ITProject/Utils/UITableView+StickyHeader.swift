@@ -10,13 +10,12 @@ import Foundation
 import UIKit
 
 extension UITableView {
-    /// <#Description#>
-    ///
+    /// update the header view
     /// - Parameters:
-    ///   - headerView:
+    ///   - headerView: header of a table view
     ///   - updateHeaderlayout: <#updateHeaderlayout description#>
-    ///   - headerHeight: <#headerHeight description#>
-    ///   - headerCut: <#headerCut description#>
+    ///   - headerHeight: height for header
+    ///   - headerCut: height for the cut appeared in the header
     func UpdateView(headerView: UIView, updateHeaderlayout: CAShapeLayer, headerHeight: CGFloat, headerCut: CGFloat) {
         backgroundColor = UIColor.white
         tableHeaderView = nil
@@ -37,7 +36,13 @@ extension UITableView {
                      headerHeight: headerHeight,
                      headerCut: headerCut)
     }
-
+    
+    /// set up new header view
+    /// - Parameter headerView: header of a table view
+    /// - Parameter updateHeaderlayout: update header layout
+    /// - Parameter headerHeight: height for header
+    /// - Parameter headerCut: height for the cut appeadered in the header
+    /// - Parameter headerStopAt: <#headerStopAt description#>
     func Setupnewview(headerView: UIView, updateHeaderlayout: CAShapeLayer, headerHeight: CGFloat, headerCut: CGFloat, headerStopAt: CGFloat = 0) {
         let newheight = headerHeight - headerCut / 2
         var headerframe = CGRect(x: 0, y: -newheight, width: bounds.width, height: headerHeight)
