@@ -43,8 +43,14 @@ class SideMenuTableViewController: UITableViewController {
     // Constants and properties go here
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     private static let SHOW_FAMILY_PROFILE_VIEW_SEGUE = "ShowFamilyProfileViewController"
-
     private static let SHOW_FAMILY_TABLE_VIEW_SEGUE = "ShowFamilyTableViewController"
+    
+    private static let PERSONAL_PROFILE_CELL = 0
+    private static let PERSONAL_SETTING_CELL = 2
+    private static let FAMILY_SETTING_CELL = 1
+    private static let FAMILY_TREE_CELL = 3
+    
+
 
     var userInformation: UserInfo!
     var userFamilyInformation: UserFamilyInfo!
@@ -147,7 +153,7 @@ class SideMenuTableViewController: UITableViewController {
             performSegue(withIdentifier: SideMenuTableViewController.SHOW_FAMILY_TABLE_VIEW_SEGUE, sender: self)
         }
     }
-
+    
     /// prepare for next view : showing profile / family profile.
     /// - Parameters:
     ///   - segue: the link to the next vc

@@ -7,8 +7,7 @@
 //
 //  Extension of EKTextField added validation
 //  SwiftEntryKit (Created by Daniel Huri on 5/16/18.)
-//
-//
+
 
 import Foundation
 import UIKit
@@ -25,7 +24,7 @@ final public class CustomTextField: UIView {
     private let textField = UITextField()
     private let separatorView = UIView()
     
-    
+    /// text in the text field
     public var text: String {
         set {
             textField.text = newValue
@@ -37,6 +36,8 @@ final public class CustomTextField: UIView {
     
     // MARK: - Setup
     
+    /// initial text field
+    /// - Parameter content: text field content
     public init(with content: CustomTextFieldContent) {
         self.content = content
         super.init(frame: UIScreen.main.bounds)
@@ -46,10 +47,12 @@ final public class CustomTextField: UIView {
         textField.accessibilityIdentifier = content.accessibilityIdentifier
     }
     
+    /// initial fails
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// set up image view in a text field layout
     private func setupImageView() {
         addSubview(imageView)
         imageView.contentMode = .center
@@ -62,6 +65,7 @@ final public class CustomTextField: UIView {
         )
     }
     
+    /// set up text field inner layout
     private func setupTextField() {
         addSubview(textField)
         textField.textFieldContent = content
@@ -72,6 +76,7 @@ final public class CustomTextField: UIView {
         
     }
     
+    /// set up text field separator layout
     private func setupSeparatorView() {
         addSubview(separatorView)
         separatorView.layout(.top, to: .bottom, of: textField)
@@ -84,10 +89,14 @@ final public class CustomTextField: UIView {
         )
     }
     
+    /// set up first responder
     public func makeFirstResponder() {
         textField.becomeFirstResponder()
     }
     
+    
+    /// set up text field color
+    /// - Parameter previousTraitCollection: previous trait collection
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         separatorView.backgroundColor = content.bottomBorderColor(for: traitCollection)
         imageView.tintColor = content.tintColor(for: traitCollection)

@@ -14,7 +14,8 @@ class CarouselEffectCollectionViewCell: UICollectionViewCell {
     @IBOutlet var labelInf: UILabel!
 
     static let identifier = "CarouselCollectionViewCell"
-
+    
+    /// initial the collection view cell with carousel effect
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 

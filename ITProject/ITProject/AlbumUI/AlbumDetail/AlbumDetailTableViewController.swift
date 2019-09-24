@@ -21,7 +21,7 @@ class AlbumDetailTableViewController: UITableViewController {
     private static let DELETE_PHOTO_TEXT = "Delete Photo"
     /// cancel message
     private static let CANCEL_TEXT = "Cancel"
-    
+
     private(set) var displayPhotoCollectionView:UICollectionView?
     
     private static let SHOW_PHOTO_DETAIL_SEGUE = "ShowPhotoDetail"

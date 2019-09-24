@@ -9,8 +9,10 @@
 import UIKit
 
 class AlbumDetailPhotoCollectionViewCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var photoImageView: UIImageView!
+    
+    /// album detail photo 
     var image: UIImage! {
         didSet {
             self.photoImageView.image = image

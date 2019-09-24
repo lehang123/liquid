@@ -40,10 +40,12 @@ class AlbumCoverViewController: UIViewController {
     /// <#Description#>
     /// Setting up all infomation signed by user to create the album
     ///
-    /// - Parameter customFormVC: customFormVC
+    /// - Parameter customFormVC: custom Form View Controller
     /// - Returns: formElement: formElement with all information
     private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement {
+        // initial all text fields needed by creating album form
         let textFields = AddAlbumUI.fields(by: [.albumName, .albumDescription], style: .light)
+        
         return .init(formType: .withImageView,
                      titleText: "Add new album",
                      textFields: textFields,
@@ -52,13 +54,16 @@ class AlbumCoverViewController: UIViewController {
                      okButtonText: "Create",
                      cancelAction: {},
                      okAction: {
+                        // get text filled in album name and description text fields
                          let albumName = textFields.first!.textContent
                          let albumDesc = textFields.last!.textContent
-
+                        // prepare atrributes for pop up alter
                          let popattributes = PopUpAlter.setupPopupPresets()
                          if albumName == "" {
+                            // alter if the album name is empty
                              self.showPopupMessage(attributes: popattributes, description: self.EMPTYNAME_DES)
                          } else if self.albumDataList.contains(albumName) {
+                            // alter if the album name repeated
                              self.showPopupMessage(attributes: popattributes, description: self.REPEATNAME_DES)
                          } else {
                              // create a album here
