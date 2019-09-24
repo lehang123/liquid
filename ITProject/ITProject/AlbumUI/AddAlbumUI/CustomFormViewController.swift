@@ -6,8 +6,7 @@
 //  Created by Erya Wen on 2019/9/9.
 //  Copyright © 2019 liquid. All rights reserved.
 //
-//  SwiftEntryKit (Created by Daniel Huri on 5/16/18.) Extension
-//  EKTextField+validation
+
 
 import UIKit
 import SwiftEntryKit
@@ -17,7 +16,6 @@ class CustomFormViewController: UIViewController {
 
     private var contentv : CustomFormView!
 
-    
     // imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
     private(set) var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
@@ -37,7 +35,7 @@ class CustomFormViewController: UIViewController {
 
     private func setView(){
 
-        self.contentv = showSignupForm(formEle: self.formEle, style: .light)
+        self.contentv = showPopUpForm(formEle: self.formEle, style: .light)
 
         self.view.addSubview(contentv)
 
@@ -55,8 +53,13 @@ class CustomFormViewController: UIViewController {
     
 
 
-    // Sign up form
-    private func showSignupForm(formEle: FormElement,style: FormStyle) -> CustomFormView {
+    /// Sign up form
+    ///
+    /// - Parameter formEle: form element
+    /// - Parameter style: form style
+    private func showPopUpForm(formEle: FormElement,
+                                style: FormStyle) -> CustomFormView {
+        // set up title style
         let titleStyle = EKProperty.LabelStyle(
             font: MainFont.light.with(size: 14),
             color: style.textColor,
@@ -66,10 +69,11 @@ class CustomFormViewController: UIViewController {
             text: formEle.titleText,
             style: titleStyle
         )
-    
+        
+        // set up textFields
         let textFields = formEle.textFields
         
-       
+       // set up button font
         let buttonFont = MainFont.medium.with(size: 16)
         
         // ok button setting
@@ -113,7 +117,7 @@ class CustomFormViewController: UIViewController {
             cancelAction?()
         }
         
-        // Generate the content
+        // Generate the button content
         let buttonsBarContent = EKProperty.ButtonBarContent(
             with: closeButton, okButton,
             separatorColor: Color.Gray.light,
@@ -123,6 +127,7 @@ class CustomFormViewController: UIViewController {
         
         switch formEle.formType {
         case .withImageView:
+            // form type with image view and upload file
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
@@ -133,7 +138,9 @@ class CustomFormViewController: UIViewController {
             )
             contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
              return contentView
+            
         case .withoutImageView:
+            // form type with upload file, without image file
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
@@ -142,7 +149,9 @@ class CustomFormViewController: UIViewController {
                 uploadString: formEle.uploadTitle
             )
             return contentView
+            
         case .defaultForm:
+            // form type with text fields only
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
@@ -155,6 +164,7 @@ class CustomFormViewController: UIViewController {
        
     }
     
+    /// upload the file action
     @objc private func uploadAction() {
         print("addPhotosTapped : Tapped")
         // pop gallery here
@@ -165,6 +175,8 @@ class CustomFormViewController: UIViewController {
         self.present(imagePicker, animated: true, completion:  nil)
     }
     
+    /// dismiss pop up form action
+    /// - Parameter completion: completion action
     public func dismissWithAnimation(completion: @escaping ((Data?) -> Void) = {_ in }){
         UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
@@ -181,7 +193,11 @@ class CustomFormViewController: UIViewController {
 
 extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
-    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    /// image picker from photo gallery
+    /// - Parameter picker: image picker controller
+    /// - Parameter info: <#info description#>
+    internal func imagePickerController(_ picker: UIImagePickerController,
+                                        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // todo : push add/edit photo view
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             self.albumThumbnailImage =
@@ -220,6 +236,9 @@ extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigatio
     /* delegate function from the UIImagePickerControllerDelegate
      called when canceled button pressed, get out of photo library
      */
+    
+    /// cancel image picker controller
+    /// - Parameter picker: image picker controller
     internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
         print ("imagePickerController: Did canceled pressed !!")

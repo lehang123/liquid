@@ -190,7 +190,7 @@ class AlbumDetailTableViewController: UITableViewController {
     
     // MARK: - Table view data source
 
-    /// Description
+    /// set number of table view cell
     ///
     /// - Parameters:
     ///   - tableView: the tableView
@@ -219,12 +219,12 @@ class AlbumDetailTableViewController: UITableViewController {
 
     
 
-    /// <#Description#>
+    /// set table view cell
     ///
     /// - Parameters:
-    ///   - tableView: <#tableView description#>
-    ///   - indexPath: <#indexPath description#>
-    /// - Returns: <#return value description#>
+    ///   - tableView: table view
+    ///   - indexPath: indexPath
+    /// - Returns: table view cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         if indexPath.row == 0 {
@@ -267,12 +267,12 @@ class AlbumDetailTableViewController: UITableViewController {
     }
     
 
-    /// <#Description#>
+    /// set table view delegate and dataSource
     ///
     /// - Parameters:
-    ///   - tableView: <#tableView description#>
-    ///   - cell: <#cell description#>
-    ///   - indexPath: <#indexPath description#>
+    ///   - tableView: table view
+    ///   - cell: table cell
+    ///   - indexPath: indexPath
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
         if indexPath.row == 1 {
@@ -287,12 +287,12 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 
 
-    /// <#Description#>
+    /// set table view cell height
     ///
     /// - Parameters:
-    ///   - tableView: <#tableView description#>
-    ///   - indexPath: <#indexPath description#>
-    /// - Returns: <#return value description#>
+    ///   - tableView: table view
+    ///   - indexPath: indexPath
+    /// - Returns: cell height
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) ->CGFloat {
         if indexPath.row == 1 {
             return self.tableView.bounds.height
@@ -302,6 +302,7 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -328,9 +329,7 @@ extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINav
 }
 
 
-// TODO: finish collection view controller
-// MARK : UICollectionViewDataSource
-
+// MARK: -  UICollectionViewDataSource
 extension AlbumDetailTableViewController: UICollectionViewDataSource
     {
         func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -364,6 +363,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             viewPhoto(photoDetail: photo)
         }
     }
+
 
 // MARK: - <#UICollectionViewDelegate, UICollectionViewDelegateFlowLayout#>
 extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
