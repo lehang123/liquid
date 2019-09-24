@@ -66,6 +66,8 @@ class AlbumDetailTableViewController: UITableViewController {
         self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
     }
     
+    /// reload the album's photos when there is a big change
+    /// - Parameter newPhotos: newPhotos
     func reloadPhoto(newPhotos: [PhotoDetail]){
         self.displayPhotoCollectionView?.performBatchUpdates({
             var indexPaths = [IndexPath]()
@@ -90,12 +92,14 @@ class AlbumDetailTableViewController: UITableViewController {
         }, completion: nil)
     }
     
-    func updatePhoto(newPhotos: PhotoDetail){
-        if !albumContents.contains(newPhotos){
+    /// called when new photo get added in and update UI
+    /// - Parameter newPhotos: the new photo
+    func updatePhoto(newPhoto: PhotoDetail){
+        if !albumContents.contains(newPhoto){
             self.displayPhotoCollectionView?.performBatchUpdates({
-                albumContents.append(newPhotos)
+                albumContents.append(newPhoto)
                 
-                if let index = self.albumContents.firstIndex(of: newPhotos){
+                if let index = self.albumContents.firstIndex(of: newPhoto){
                     let indexPath = IndexPath(item: index, section: 0)
                     self.displayPhotoCollectionView?.insertItems(at: [indexPath])
                 }
@@ -105,6 +109,7 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 
     
+    /// add photo button get tapped, pop up add photo form
     @objc private  func addPhotosTapped(){
         print("addPhotosTapped : Tapped")
         // pop gallery here
@@ -122,7 +127,9 @@ class AlbumDetailTableViewController: UITableViewController {
         })
     }
     
-
+    
+    /// set up form to ask user to choose an new photo to add
+    /// - Parameter customFormVC: the view controller that the form attached to
     private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
         let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
         
@@ -149,7 +156,7 @@ class AlbumDetailTableViewController: UITableViewController {
                                         if url != nil{
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
                                             
-                                                self.updatePhoto(newPhotos: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: 0, comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: 0, comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
                             })
@@ -158,27 +165,18 @@ class AlbumDetailTableViewController: UITableViewController {
             }
         })
     }
-//            ,
-//
-//                     errorHandler: { e in
-//                        print("you get error from Thumbnail choose")
-//                        Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-//        }
-//        )
-    
-//    func viewPhoto(photoDetail: PhotoDetail) {
-//
-//        self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
-//    }
-//
-//    }
 
-    /*view photo detail, present on display photo view controller */
+
+    /// view photo detail, present on display photo view controller
+    /// - Parameter photoDetail: the photo that user wants to see
     func viewPhoto(photoDetail: PhotoDetail) {
         
         self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
     }
     
+    /// prepare for transition for view
+    /// - Parameter segue: the segue that triggered
+    /// - Parameter sender: the sender
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
@@ -195,9 +193,9 @@ class AlbumDetailTableViewController: UITableViewController {
     /// Description
     ///
     /// - Parameters:
-    ///   - tableView: <#tableView description#>
-    ///   - section: section description
-    /// - Returns: return value description
+    ///   - tableView: the tableView
+    ///   - section: the section
+    ///   - Returns: the number of row that in the section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        
             // 0 - Album Description
@@ -206,10 +204,15 @@ class AlbumDetailTableViewController: UITableViewController {
         
     }
     
+    /// when touches
+    /// - Parameter touches: the touches
+    /// - Parameter event: how the touch
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.tableView.decelerationRate = UIScrollView.DecelerationRate.fast
     }
     
+    /// when scrollview scroll
+    /// - Parameter scrollView: the scrollView
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.tableView.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
     }
