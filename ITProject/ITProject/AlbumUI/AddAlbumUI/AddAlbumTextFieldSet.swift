@@ -5,6 +5,7 @@
 //  Created by Erya Wen on 2019/8/23.
 //  Copyright © 2019 liquid. All rights reserved.
 //
+
 import Foundation
 import SwiftEntryKit
 
@@ -57,6 +58,7 @@ final class AddAlbumUI {
         return AddAlbumUI.displayMode
     }
     
+    // MARK: - Setup each textField
     /// initial album name textField
     ///
     /// - Parameters:
@@ -136,7 +138,7 @@ final class AddAlbumUI {
     }
     
 
-    
+    // MARK: - Setup textField content
     /// initial textField
     /// - Parameter set: text field options
     /// - Parameter style: text field style

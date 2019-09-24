@@ -38,6 +38,17 @@ public struct CustomTextFieldContent {
             return contentWrapper.text
         }
     }
+    
+    /// initial text field content
+    /// - Parameter keyboardType: keyboard type
+    /// - Parameter placeholder: placeholder
+    /// - Parameter tintColor: placeholder tint color
+    /// - Parameter displayMode: textfield display style
+    /// - Parameter textStyle: text style
+    /// - Parameter isSecure: if it is secure
+    /// - Parameter leadingImage: textfield image
+    /// - Parameter bottomBorderColor: bottom border color
+    /// - Parameter accessibilityIdentifier: accessibility identifier
     public init(keyboardType: UIKeyboardType = .default,
                 placeholder: EKProperty.LabelContent,
                 tintColor: EKColor? = nil,
@@ -58,10 +69,14 @@ public struct CustomTextFieldContent {
         self.accessibilityIdentifier = accessibilityIdentifier
     }
     
+    /// get tint color
+    /// - Parameter traitCollection: trait collection
     public func tintColor(for traitCollection: UITraitCollection) -> UIColor? {
         return tintColor?.color(for: traitCollection, mode: displayMode)
     }
     
+    /// bottom border color
+    /// - Parameter traitCollection: trait collection
     public func bottomBorderColor(for traitCollection: UITraitCollection) -> UIColor? {
         return bottomBorderColor.color(for: traitCollection, mode: displayMode)
     }
