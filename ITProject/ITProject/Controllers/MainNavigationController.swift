@@ -10,28 +10,35 @@ import Firebase
 import Foundation
 import UIKit
 
-class MainNavigationController: UINavigationController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
+class MainNavigationController: UINavigationController
+{
+	override func viewDidLoad()
+	{
+		super.viewDidLoad()
+		// Do any additional setup after loading the view.
+	}
 }
 
-extension UIApplication {
-    /// Back to the root controller
-    ///
-    /// - Parameter base: base
-    /// - Returns: return to the topest controller
-    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-
-        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
-            return getTopViewController(base: selected)
-
-        } else if let presented = base?.presentedViewController {
-            return getTopViewController(base: presented)
-        }
-        return base
-    }
+extension UIApplication
+{
+	/// Back to the root controller
+	///
+	/// - Parameter base: base
+	/// - Returns: return to the topest controller
+	class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController?
+	{
+		if let nav = base as? UINavigationController
+		{
+			return self.getTopViewController(base: nav.visibleViewController)
+		}
+		else if let tab = base as? UITabBarController, let selected = tab.selectedViewController
+		{
+			return self.getTopViewController(base: selected)
+		}
+		else if let presented = base?.presentedViewController
+		{
+			return self.getTopViewController(base: presented)
+		}
+		return base
+	}
 }

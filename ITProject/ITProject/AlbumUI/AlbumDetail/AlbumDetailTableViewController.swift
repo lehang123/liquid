@@ -33,7 +33,7 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerHeight : CGFloat = 300
     private let headerCut : CGFloat = 80
     
-    // imagePicker that to open photos library
+    /// imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
     
     /// Description
@@ -63,7 +63,8 @@ class AlbumDetailTableViewController: UITableViewController {
         
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
-        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout:
+            updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
     }
     
     func reloadPhoto(newPhotos: [PhotoDetail]){
@@ -173,7 +174,7 @@ class AlbumDetailTableViewController: UITableViewController {
 //
 //    }
 
-    /*view photo detail, present on display photo view controller */
+    ///view photo detail, present on display photo view controller
     func viewPhoto(photoDetail: PhotoDetail) {
         
         self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
@@ -184,7 +185,6 @@ class AlbumDetailTableViewController: UITableViewController {
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! PhotoDetail
                 photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
-                
 
             }
         }
@@ -241,7 +241,6 @@ class AlbumDetailTableViewController: UITableViewController {
     }
     
     /// long pressed : used on imageView, when pressed, tried delete
-    ///
     /// - Parameter sender: senderGesture, attached on image
     @objc func longPressed(sender: UILongPressGestureRecognizer)
     {
@@ -362,7 +361,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
         }
     }
 
-// MARK: - <#UICollectionViewDelegate, UICollectionViewDelegateFlowLayout#>
+// MARK: - UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
 extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
     {
         func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize

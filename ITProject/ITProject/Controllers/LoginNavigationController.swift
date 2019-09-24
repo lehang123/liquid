@@ -10,9 +10,11 @@ import Foundation
 import UIKit
 
 /// Login navigation controller
-class LoginNavigationController: UINavigationController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-    }
+class LoginNavigationController: UINavigationController
+{
+	override func viewDidLoad()
+	{
+		super.viewDidLoad()
+		// Do any additional setup after loading the view.
+	}
 }
