@@ -57,23 +57,23 @@ class ProfileViewController: UIViewController
 				print("get image fails : loading data to image")
 				self.profilePicture.image = #imageLiteral(resourceName: "item4")
 			}
+            //set UI layout:
 			self.profilePicture.layer.shadowColor = UIColor.selfcGrey.cgColor
 			self.profilePicture.layer.shadowOpacity = 0.7
 			self.profilePicture.layer.shadowOffset = CGSize(width: 10, height: 10)
 			self.profilePicture.layer.shadowRadius = 1
 			self.profilePicture.clipsToBounds = false
 		})
-
+        
+        //set default values to UI :
 		self.name.text = self.userInformation.username
 		self.relationship.text = self.userInformation.familyRelation
 		self.phoneField.text = self.userInformation.phone
 		self.genderField.text = self.userInformation.gender?.rawValue
-
 		self.currentRelationship = self.userInformation.familyRelation
 		self.currentGender = self.genderField.text
-
 		self.didChangeUserInfo = false
-
+        
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 

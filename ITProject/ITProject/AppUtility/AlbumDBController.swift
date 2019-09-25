@@ -177,7 +177,8 @@ class AlbumDBController
 	{
 		/* init new media
 		 * update: now has Date Created + reference to its own album
-		 * update: COmment is in : Array of [String (username) : String (comment)] format */
+		 * update: Comment is in : Array of [username : value, message : value ]
+         * update : like is now an Array of userDocumentReference. */
 		let albumDocRef: DocumentReference = DBController
 			.getInstance()
 			.getDocumentReference(
@@ -190,7 +191,7 @@ class AlbumDBController
 				documentUID: mediaPath,
 				inputData: [
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: 0,
-					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: 0,
+					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: ext,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: desc,
