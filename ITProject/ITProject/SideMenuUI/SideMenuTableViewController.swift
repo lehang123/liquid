@@ -11,31 +11,34 @@ import SideMenu
 import UIKit
 
 /// User information detail structure
-struct UserInfo {
-    var username: String
-    var imageUID: String?
-    var imageExtension: String?
-    var phone: String?
-    var gender: Gender?
-    var familyRelation: String?
-    var userInfoDelegate: UserProfileViewDelegate!
+struct UserInfo
+{
+	var username: String
+	var imageUID: String?
+	var imageExtension: String?
+	var phone: String?
+	var gender: Gender?
+	var familyRelation: String?
+	var userInfoDelegate: UserProfileViewDelegate!
 }
 
 /// The gender's possible values
-enum Gender: String {
-    case Male
-    case Female
-    case Unknown
+enum Gender: String
+{
+	case Male
+	case Female
+	case Unknown
 }
 
 /// User family information detail structure
-struct UserFamilyInfo {
-    var familyUID: String!
-    var familyName: String?
-    var familyProfileUID: String?
-    var familyProfileExtension: String?
-    var familyMottoText: String?
-    var familyInfoDelegate: FamilyProfileViewDelegate!
+struct UserFamilyInfo
+{
+	var familyUID: String!
+	var familyName: String?
+	var familyProfileUID: String?
+	var familyProfileExtension: String?
+	var familyMottoText: String?
+	var familyInfoDelegate: FamilyProfileViewDelegate!
 }
 
 ///  Side Menu UI's View Controller.

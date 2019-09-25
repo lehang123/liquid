@@ -12,73 +12,85 @@ import UIKit
 
 /// <#Description#>
 /// This view is mainly for user to log in
-class LoginViewController: UIViewController {
-    // Constants and properties go here
-    private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
-    private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
+class LoginViewController: UIViewController
+{
+	// Constants and properties go here
+	private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
+	private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
 
-    @IBOutlet var ID: UITextField!
-    @IBOutlet var password: UITextField!
+	@IBOutlet var ID: UITextField!
+	@IBOutlet var password: UITextField!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+	override func viewDidLoad()
+	{
+		super.viewDidLoad()
+		// Do any additional setup after loading the view.
+		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
-        let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(backgroundTapped(_:)))
-        view.addGestureRecognizer(tapGestureBackground)
-    }
+		let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
+		view.addGestureRecognizer(tapGestureBackground)
+	}
 
-    /// Detect the user tapped on the background
-    /// - Parameter sender: sender
-    @objc func backgroundTapped(_: UITapGestureRecognizer) {
-        ID.endEditing(true)
-        password.endEditing(true)
-    }
+	/// Detect the user tapped on the background
+	/// - Parameter sender: sender
+	@objc func backgroundTapped(_: UITapGestureRecognizer)
+	{
+		self.ID.endEditing(true)
+		self.password.endEditing(true)
+	}
 
-    /// Show the keyboard to the user
-    /// - Parameter notification: notification
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if password.isEditing {
-                if view.frame.origin.y == 0 {
-                    UIView.animate(withDuration: 0.25, animations: {
-                        self.view.frame.origin.y -= keyboardSize.height
-                    })
-                }
-            }
-        }
-    }
+	/// Show the keyboard to the user
+	/// - Parameter notification: notification
+	@objc func keyboardWillShow(notification: NSNotification)
+	{
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+		{
+			if self.password.isEditing
+			{
+				if view.frame.origin.y == 0 {
+					UIView.animate(withDuration: 0.25, animations: {
+						self.view.frame.origin.y -= keyboardSize.height
+					})
+				}
+			}
+		}
+	}
 
-    /// Hide the keyboard
-    /// - Parameter notification: notification
-    @objc func keyboardWillHide(notification _: NSNotification) {
-        if view.frame.origin.y != 0 {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.view.frame.origin.y = 0
-            })
-        }
-    }
+	/// Hide the keyboard
+	/// - Parameter notification: notification
+	@objc func keyboardWillHide(notification _: NSNotification)
+	{
+		if view.frame.origin.y != 0 {
+			UIView.animate(withDuration: 0.25, animations: {
+				self.view.frame.origin.y = 0
+			})
+		}
+	}
 
-    /// When user touched the buttom to log in
-    /// - Parameter sender: sender
-    @IBAction func LoginButtonOnTouch(_: Any) {
-        let account: String = ID.text!
-        let pw: String = password.text!
-        Util.ShowActivityIndicator(withStatus: "login...")
-        Auth.auth().signIn(withEmail: account, password: pw) { [weak self] _, error in
-            if error != nil {
-                Util.DismissActivityIndicator()
-                let alertController = UIAlertController(title: LoginViewController.ACCOUNT_INCORRECT_TITLE, message:
-                    LoginViewController.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
-                self?.present(alertController, animated: true, completion: nil)
-            } else {
-                Util.DismissActivityIndicator()
+	/// When user touched the buttom to log in
+	/// - Parameter sender: sender
+	@IBAction func LoginButtonOnTouch(_: Any)
+	{
+		let account: String = self.ID.text!
+		let pw: String = self.password.text!
+		Util.ShowActivityIndicator(withStatus: "login...")
+		Auth.auth().signIn(withEmail: account, password: pw)
+		{ [weak self] _, error in
+			if error != nil
+			{
+				Util.DismissActivityIndicator()
+				let alertController = UIAlertController(title: LoginViewController.ACCOUNT_INCORRECT_TITLE, message:
+					LoginViewController.ACCOUNT_INCORRECT_MESSAGE, preferredStyle: .alert)
+				alertController.addAction(UIAlertAction(title: Util.BUTTON_DISMISS, style: .default))
+				self?.present(alertController, animated: true, completion: nil)
+			}
+			else
+			{
+				Util.DismissActivityIndicator()
 
-                self?.dismiss(animated: true, completion: nil)
-            }
-        }
-    }
+				self?.dismiss(animated: true, completion: nil)
+			}
+		}
+	}
 }

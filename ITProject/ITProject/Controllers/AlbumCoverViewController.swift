@@ -263,6 +263,10 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
 
             self.albumsList.removeAlbum(at: indexPath.row)
+            // TO DO
+            // Delete action here
+            
+            
             action.fulfill(with: .delete)
         }
 
