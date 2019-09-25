@@ -16,14 +16,12 @@ class AlbumCoverViewController: UIViewController {
     // Constants and properties go here
     private static let NIB_NAME = "AlbumCollectionViewCell"
     private static let CELL_IDENTIFIER = "AlbumCell"
-    private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
-    private let EMPTYNAME_DES = "Album name is empty"
+    private let NO_REPEAT_MESSAGE = "Album name already exist. Try give a unique name"
+    private let NON_EMPTY_MESSAGE = "Album name is empty"
 
     @IBOutlet var albumCollectionView: UICollectionView!
 
-    /// <#Description#>
     /// User need to add the album
-    ///
     /// - Parameter sender: the button for creating album
     @IBAction func AddAlbumPressed(_: Any) {
         print("AddAlbumPressed : ")
@@ -39,7 +37,6 @@ class AlbumCoverViewController: UIViewController {
 
     /// <#Description#>
     /// Setting up all infomation signed by user to create the album
-    ///
     /// - Parameter customFormVC: custom Form View Controller
     /// - Returns: formElement: formElement with all information
     private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement {
@@ -61,10 +58,10 @@ class AlbumCoverViewController: UIViewController {
                          let popattributes = PopUpAlter.setupPopupPresets()
                          if albumName == "" {
                             // alter if the album name is empty
-                             self.showPopupMessage(attributes: popattributes, description: self.EMPTYNAME_DES)
+                             self.showPopupMessage(attributes: popattributes, description: self.NON_EMPTY_MESSAGE)
                          } else if self.albumDataList.contains(albumName) {
                             // alter if the album name repeated
-                             self.showPopupMessage(attributes: popattributes, description: self.REPEATNAME_DES)
+                             self.showPopupMessage(attributes: popattributes, description: self.NO_REPEAT_MESSAGE)
                          } else {
                              // create a album here
                              customFormVC.dismissWithAnimation {
@@ -117,24 +114,24 @@ class AlbumCoverViewController: UIViewController {
     ///   - UID: user id
     ///   - imageUID: imageUID
     ///   - imageExtension: imageExtension
-    ///   - doesReload: doesReload
-    ///   - reveseOrder: reveseOrder
+    ///   - doesReload: indicates if we have to reload UI ( default : true)
+    ///   - reverseOrder: indicates insertion to UI in reversed order ( default : true)
     func loadAlbumToList(title newAlbumTitle: String,
                          description newAlbumDescrp: String,
                          UID: String,
                          coverImageUID imageUID: String?,
                          coverImageExtension imageExtension: String?,
                          doesReload: Bool = true,
-                         reveseOrder: Bool = true) {
+                         reverseOrder: Bool = true) {
         // todo : this is just a dummy
         print("loadAlbumToList : album is loaded with title : " + newAlbumTitle +
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
-
+        
         let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension)
-
+        
         albumCollectionView.performBatchUpdates({
-            albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reveseOrder)
+            albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reverseOrder)
             let index = albumsList.getIndexForItem(album: newAlbum)
             let indexPath = IndexPath(item: index, section: 0)
             albumCollectionView.insertItems(at: [indexPath])
@@ -165,7 +162,7 @@ class AlbumCoverViewController: UIViewController {
         albumCollectionView.reloadData()
     }
 
-    /// Load the album collection view for the vc
+    /// Loads the album collection view for the vc
     private func loadAlbumCollectionView() {
         albumCollectionView.showsVerticalScrollIndicator = false
 
@@ -175,7 +172,7 @@ class AlbumCoverViewController: UIViewController {
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 9, right: 0)
     }
 
-    // To-do: changed list data structure so it fits for database */
+    // To-do: changed list data structure so it fits for database
     /// prepare next view, passing album details to the display album content view
     ///
     /// - Parameters:
@@ -258,13 +255,17 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
     ///   - orientation: orientation
     /// - Returns: return value
     func collectionView(_: UICollectionView, editActionsForItemAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        
         guard orientation == .right else { return nil }
-
+        
+        //detects deletion from swiping gesture:
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-
+            // commits delete action to DB:
+            let currAlbum: AlbumDetail = self.albumsList.getAlbum(index: indexPath.row)
+            AlbumDBController.getInstance().deleteAlbum(albumUID: currAlbum.UID)
+            
+            //remove from UI:
             self.albumsList.removeAlbum(at: indexPath.row)
-            // TO DO
-            // Delete action here
             
             
             action.fulfill(with: .delete)

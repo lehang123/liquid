@@ -157,7 +157,7 @@ class AlbumDetailTableViewController: UITableViewController {
                                         if url != nil{
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
                                             
-                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: 0, comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
                             })

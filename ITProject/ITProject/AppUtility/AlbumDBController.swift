@@ -312,88 +312,47 @@ class AlbumDBController
 	/// - Parameters:
 	///   - albumUID: album's UID to be deleted.
 
-	public func deleteAlbum(albumUID: String)
-	{
-		let albumDocumentReference: DocumentReference = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID)
-		// get all media files:
-		DBController
-			.getInstance()
-			.getDB()
-			.collection(AlbumDBController.MEDIA_COLLECTION_NAME)
-			.whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM,
-			            isEqualTo: albumDocumentReference as Any)
-			.getDocuments
-		{ querySnapshot, _ in
-			querySnapshot?
-				.documents
-				//then, for each file::
-				.forEach
-			{ doc in
-				//                //delete from storage:
-				//            Util.DeleteFileFromServer(
-				//            fileName: doc.documentID,
-				//            fextension: doc.data()[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as! String);
-				// delete from db:
-				DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: doc.documentID, collectionName: AlbumDBController.MEDIA_COLLECTION_NAME)
-				print("delted photo: \(doc.data())")
-			}
-			DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID, completion: { document, _ in
-				// delete album thumbnail from storage, if there's any:
+    public func deleteAlbum(albumUID: String)
+    {
+        let albumDocumentReference: DocumentReference = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID)
+        // get all media files:
+        DBController
+            .getInstance()
+            .getDB()
+            .collection(AlbumDBController.MEDIA_COLLECTION_NAME)
+            .whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM,
+                        isEqualTo: albumDocumentReference as Any)
+            .getDocuments
+        { querySnapshot, _ in
+            querySnapshot?
+                .documents
+                //then, for each file::
+                .forEach
+            { doc in
+                //delete from storage:
+                Util.DeleteFileFromServer(
+                            fileName: doc.documentID,
+                            fextension: doc.data()[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as! String);
+                // delete from db:
+                DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: doc.documentID, collectionName: AlbumDBController.MEDIA_COLLECTION_NAME)
+                print("deelted photo: \(doc.data())")
+            }
+            // delete album thumbnail from storage, if there's any:
+            DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID, completion: { document, _ in
 
-				if document!.data()?[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] != nil
-				{
-					print("deleting thumbnail..")
+                if document!.data()?[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] != nil
+                {
+                    print("deleting thumbnail..")
 
-					Util.DeleteFileFromServer(fileName: document!.data()![AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String,
-					                          fextension: document!.data()![AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String)
-				}
+                    Util.DeleteFileFromServer(fileName: document!.data()![AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String,
+                                              fextension: document!.data()![AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String)
+                }
 
-			})
-			// delete album from db:
-			DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: albumUID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME)
-		}
+            })
+            // delete album from db:
+            DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: albumUID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME)
+        }
 
-		//        from storage: TODO: remove all photo files (related to the album) from storage:
-//
-		//        //get all media file paths:
-		//        DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID) { (document, error) in
-//
-		//            if let document = document, document.exists {
-		//                let mediaPaths:  NSArray = document.get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIA) as! NSArray ;
-//
-//
-		//                let x: DocumentReference;
-//
-//
-		//                //delete in DB:
-		//                mediaPaths.forEach({ (media) in
-		//                    DBController
-		//                        .getInstance()
-		//                        .deleteWholeDocumentfromCollection(
-		//                            documentUID: media as! String,
-		//                            collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
-		//                });
-//
-		//                //delete in storage:
-//
-		////                DBController.getInstance()
-		////                    .deleteWholeDocumentfromCollection(
-		////                        documentUID: albumUID,
-		////                        collectionName: AlbumDBController.ALBUM_COLLECTION_NAME);
-		////
-//
-//
-//
-
-//
-		//            } else {
-		//                print("ERROR at deleteAlbum::: ERROR RETRIEVING DOCUMENT: "+error!.localizedDescription)
-		//            }
-//
-		//        print("run:::: ")
-		//        }
-//
-//
-		//    }
-	}
+        
+    }
 }

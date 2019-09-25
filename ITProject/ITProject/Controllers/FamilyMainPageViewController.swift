@@ -190,7 +190,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					                               coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
 					                               coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
 					                               doesReload: true,
-					                               reveseOrder: false)
+                                                   reverseOrder: false)
 				}
 			}
 		})
