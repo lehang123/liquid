@@ -13,6 +13,7 @@ import Firebase
 import FirebaseStorage
 import SideMenu
 import UPCarouselFlowLayout
+import CoreLocation
 
 /// Structure
 struct ModelCollectionFlowLayout {
@@ -58,6 +59,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         print("view did loaded called")
         login()
 
