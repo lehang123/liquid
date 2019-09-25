@@ -5,6 +5,9 @@
 //  Created by Erya Wen on 2019/9/9.
 //  Copyright © 2019 liquid. All rights reserved.
 //
+//  SwiftEntryKit (Created by Daniel Huri on 5/16/18.) Extension
+//  EKFormMessageView+validation+uploadFile
+
 
 import UIKit
 import SwiftEntryKit
@@ -33,6 +36,12 @@ class CustomFormView: UIView {
     
     // MARK: Setup
     
+    /// initial default type form
+    /// - Parameter title: form title
+    /// - Parameter textFieldsContent: form textFields
+    /// - Parameter buttonContent: button content
+    /// - Parameter withUploadFile: if it required upload file field (default is false)
+    /// - Parameter uploadString: upload field title
     public init(with title: EKProperty.LabelContent,
                 textFieldsContent: [CustomTextFieldContent],
                 buttonContent: EKProperty.ButtonBarContent,
@@ -54,6 +63,13 @@ class CustomFormView: UIView {
             priority: .defaultHigh)
     }
     
+    /// initial form with upload image content
+    /// - Parameter title: form title
+    /// - Parameter textFieldsContent: form textFields
+    /// - Parameter buttonContent: button content
+    /// - Parameter imageViewContent: image view content
+    /// - Parameter withUploadFile: if it required upload file field (default is false)
+    /// - Parameter uploadString: upload field title
     public init(with title: EKProperty.LabelContent,
                 textFieldsContent: [CustomTextFieldContent],
                 buttonContent: EKProperty.ButtonBarContent,
@@ -79,40 +95,12 @@ class CustomFormView: UIView {
     }
     
     
-    
+    /// initial fails
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupTextFields(with textFieldsContent: [CustomTextFieldContent]) {
-        var textFieldIndex = 0
-        textFieldViews = textFieldsContent.map { content -> CustomTextField in
-            let textField = CustomTextField(with: content)
-            scrollView.addSubview(textField)
-            textField.tag = textFieldIndex
-            textFieldIndex += 1
-            return textField
-        }
-        if(imageViewContent != nil) {
-        textFieldViews.first!.layout(.top, to: .bottom, of: imageView, offset: 20)
-        } else {
-            textFieldViews.first!.layout(.top, to: .bottom, of: titleLabel, offset: 20)
-        }
-        
-        textFieldViews.spread(.vertically, offset: 5)
-        textFieldViews.layoutToSuperview(axis: .horizontally)
-    }
-    
-    // Setup tap gesture
-    private func setupTapGestureRecognizer() {
-        let tapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(tapGestureRecognized)
-        )
-        tapGestureRecognizer.numberOfTapsRequired = 1
-        addGestureRecognizer(tapGestureRecognizer)
-    }
-    
+    /// set up scroll view
     private func setupScrollView() {
         addSubview(scrollView)
         scrollView.layoutToSuperview(axis: .horizontally, offset: 20)
@@ -120,6 +108,16 @@ class CustomFormView: UIView {
         scrollView.layoutToSuperview(.width, .height, offset: -scrollViewVerticalOffset * 2)
     }
     
+    /// set up form title layout
+    private func setupTitleLabel() {
+        scrollView.addSubview(titleLabel)
+        titleLabel.layoutToSuperview(.top, .width)
+        titleLabel.layoutToSuperview(axis: .horizontally)
+        titleLabel.forceContentWrap(.vertically)
+        titleLabel.content = titleContent
+    }
+    
+    /// set up image view content layout
     private func setupImageView(){
         scrollView.addSubview(imageView)
         imageView.layout(.top, to: .bottom, of: titleLabel, offset: 20)
@@ -135,14 +133,30 @@ class CustomFormView: UIView {
         
     }
     
-    private func setupTitleLabel() {
-        scrollView.addSubview(titleLabel)
-        titleLabel.layoutToSuperview(.top, .width)
-        titleLabel.layoutToSuperview(axis: .horizontally)
-        titleLabel.forceContentWrap(.vertically)
-        titleLabel.content = titleContent
-    }
+    /// set up text fields layout
+     /// - Parameter textFieldsContent: form textFields content
+     private func setupTextFields(with textFieldsContent: [CustomTextFieldContent]) {
+         var textFieldIndex = 0
+         textFieldViews = textFieldsContent.map { content -> CustomTextField in
+             let textField = CustomTextField(with: content)
+             scrollView.addSubview(textField)
+             textField.tag = textFieldIndex
+             textFieldIndex += 1
+             return textField
+         }
+         if(imageViewContent != nil) {
+         textFieldViews.first!.layout(.top, to: .bottom, of: imageView, offset: 20)
+         } else {
+             textFieldViews.first!.layout(.top, to: .bottom, of: titleLabel, offset: 20)
+         }
+         
+         textFieldViews.spread(.vertically, offset: 5)
+         textFieldViews.layoutToSuperview(axis: .horizontally)
+     }
     
+    
+    /// set up upload field layout
+    /// - Parameter uploadTitle: upload field string
     private func setupUploadView(uploadTitle: String) {
         if(withUploadFile){
             scrollView.addSubview(uploadButtonContent)
@@ -164,7 +178,7 @@ class CustomFormView: UIView {
             uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
             uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
             
-            // TODO: fix width and height (now hard code)
+            
             let buttonWidth = scrollView.frame.width - 115
             let bound = CGRect(x: 0,y: 0, width: buttonWidth, height: buttonWidth * 0.2)
             
@@ -175,6 +189,8 @@ class CustomFormView: UIView {
         }
     }
     
+    /// set up button layout
+    /// - Parameter buttonsBarContent: button bar content
     private func setupButton(with buttonsBarContent: EKProperty.ButtonBarContent) {
         var buttonsBarContent = buttonsBarContent
        
@@ -203,6 +219,7 @@ class CustomFormView: UIView {
         buttonBarView.layer.cornerRadius = 5
     }
     
+    /// get the text from the textFields in the for
     private func extractTextFieldsContent() {
         for (content, textField) in zip(textFieldsContent, textFieldViews) {
             content.contentWrapper.text = textField.text
@@ -210,11 +227,14 @@ class CustomFormView: UIView {
     }
     
     
-    /** Makes a specific text field the first responder */
+    /// Makes a specific text field the first responder
+    /// - Parameter with textFieldIndex : textField inex
     public func becomeFirstResponder(with textFieldIndex: Int) {
         textFieldViews[textFieldIndex].makeFirstResponder()
     }
     
+    /// change the title color
+    /// - Parameter previousTraitCollection: previous trait collection
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         titleLabel.textColor = titleContent.style.color(for: traitCollection)
     }
@@ -246,6 +266,16 @@ class CustomFormView: UIView {
     
     public func getPreViewImage()->Data{
         return (self.imageView.image?.jpegData(compressionQuality: 1.0))!
+    }
+    
+    // Setup tap gesture
+    private func setupTapGestureRecognizer() {
+        let tapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapGestureRecognized)
+        )
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
 }

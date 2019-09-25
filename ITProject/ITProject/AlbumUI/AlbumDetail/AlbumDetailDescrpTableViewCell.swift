@@ -13,12 +13,15 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
    
     @IBOutlet weak var descpDetail: UILabel!
     @IBOutlet weak var descpTitle: UILabel!
+    
+    /// reset the album detail if anything changed
     var descrp: AlbumDetail! {
         didSet {
             self.updateUI()
         }
     }
     
+    /// update album detail information
     func updateUI()
     {
         descpTitle.text = "Description"

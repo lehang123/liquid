@@ -12,88 +12,94 @@ import SwiftEntryKit
 // MARK: Setup
 
 /// PopUp Message class.
-class PopUpAlter
-{
-	static var displayMode = EKAttributes.DisplayMode.inferred
-	private var displayMode: EKAttributes.DisplayMode
-	{
-		return PopUpFromWindow.displayMode
-	}
+class PopUpAlter {
+    static var displayMode = EKAttributes.DisplayMode.inferred
+    private var displayMode: EKAttributes.DisplayMode {
+        return PopUpAlter.displayMode
+    }
+    
+    /// set up attributes for center pop up alter
+    public static func setupPopupPresets() -> EKAttributes {
+        var attributes: EKAttributes
 
-	public static func setupPopupPresets() -> EKAttributes
-	{
-		var attributes: EKAttributes
+        // Preset Center Alter
+        attributes = EKAttributes.centerFloat
+        attributes.hapticFeedbackType = .error
+        attributes.displayDuration = .infinity
+        attributes.screenInteraction = .dismiss
+        attributes.entryInteraction = .absorbTouches
+        attributes.scroll = .enabled(
+            swipeable: true,
+            pullbackAnimation: .jolt
+        )
+        attributes.roundCorners = .all(radius: 8)
+        attributes.positionConstraints.size = .init(
+            width: .offset(value: 20),
+            height: .intrinsic
+        )
+        attributes.positionConstraints.maxSize = .init(
+            width: .constant(value: UIScreen.main.minEdge),
+            height: .intrinsic
+        )
+        attributes.statusBar = .dark
+        
+        attributes.entryBackground = .gradient(
+            gradient: .init(
+                colors: [EKColor(rgb: 0xFFFBD5), EKColor(rgb: 0xB20A2C)],
+                startPoint: .zero,
+                endPoint: CGPoint(x: 1, y: 1)
+            )
+        )
+        attributes.screenBackground = .color(color: .dimmedDarkBackground)
+        attributes.shadow = .active(
+            with: .init(
+                color: .black,
+                opacity: 0.3,
+                radius: 8
+            )
+        )
+        attributes.entranceAnimation = .init(
+            translate: .init(
+                duration: 0.7,
+                spring: .init(damping: 0.7, initialVelocity: 0)
+            ),
+            scale: .init(
+                from: 0.7,
+                to: 1,
+                duration: 0.4,
+                spring: .init(damping: 1, initialVelocity: 0)
+            )
+        )
+        attributes.exitAnimation = .init(
+            translate: .init(duration: 0.2)
+        )
+        attributes.popBehavior = .animated(
+            animation: .init(
+                translate: .init(duration: 0.35)
+            )
+        )
 
-		// Preset Center Alter
-		attributes = EKAttributes.centerFloat
-		attributes.hapticFeedbackType = .error
-		attributes.displayDuration = .infinity
-		attributes.screenInteraction = .dismiss
-		attributes.entryInteraction = .absorbTouches
-		attributes.scroll = .enabled(
-			swipeable: true,
-			pullbackAnimation: .jolt
-		)
-		attributes.roundCorners = .all(radius: 8)
-		attributes.positionConstraints.size = .init(
-			width: .offset(value: 20),
-			height: .intrinsic
-		)
-		attributes.positionConstraints.maxSize = .init(
-			width: .constant(value: UIScreen.main.minEdge),
-			height: .intrinsic
-		)
-		attributes.statusBar = .dark
-
-		attributes.entryBackground = .gradient(
-			gradient: .init(
-				colors: [EKColor(rgb: 0xFFFBD5), EKColor(rgb: 0xB20A2C)],
-				startPoint: .zero,
-				endPoint: CGPoint(x: 1, y: 1)
-			)
-		)
-		attributes.screenBackground = .color(color: .dimmedDarkBackground)
-		attributes.shadow = .active(
-			with: .init(
-				color: .black,
-				opacity: 0.3,
-				radius: 8
-			)
-		)
-		attributes.entranceAnimation = .init(
-			translate: .init(
-				duration: 0.7,
-				spring: .init(damping: 0.7, initialVelocity: 0)
-			),
-			scale: .init(
-				from: 0.7,
-				to: 1,
-				duration: 0.4,
-				spring: .init(damping: 1, initialVelocity: 0)
-			)
-		)
-		attributes.exitAnimation = .init(
-			translate: .init(duration: 0.2)
-		)
-		attributes.popBehavior = .animated(
-			animation: .init(
-				translate: .init(duration: 0.35)
-			)
-		)
-
-		return attributes
-	}
-
-	public static func showPopupMessage(attributes: EKAttributes,
-	                                    title: String,
-	                                    titleColor: EKColor,
-	                                    description: String,
-	                                    descriptionColor: EKColor,
-	                                    buttonTitleColor: EKColor,
-	                                    buttonBackgroundColor: EKColor,
-	                                    image: UIImage? = nil)
-	{
-		var themeImage: EKPopUpMessage.ThemeImage?
+        return attributes
+    }
+    
+    /// initial the pop up message information
+    /// - Parameter attributes: all attributes information for a pop up alter
+    /// - Parameter title: alter title
+    /// - Parameter titleColor: color for alter title
+    /// - Parameter description: alter description
+    /// - Parameter descriptionColor: color for description color
+    /// - Parameter buttonTitleColor: color for dismiss button title
+    /// - Parameter buttonBackgroundColor: color for dismiss button background
+    /// - Parameter image: image can show in the alter, if needed. (default is nil)
+    public static func showPopupMessage(attributes: EKAttributes,
+                                        title: String,
+                                        titleColor: EKColor,
+                                        description: String,
+                                        descriptionColor: EKColor,
+                                        buttonTitleColor: EKColor,
+                                        buttonBackgroundColor: EKColor,
+                                        image: UIImage? = nil) {
+        var themeImage: EKPopUpMessage.ThemeImage?
 
 		if let image = image
 		{

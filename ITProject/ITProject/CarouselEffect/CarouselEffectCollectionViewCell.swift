@@ -14,11 +14,11 @@ class CarouselEffectCollectionViewCell: UICollectionViewCell
 	@IBOutlet var iconImage: UIImageView!
 	@IBOutlet var labelInf: UILabel!
 
-	static let identifier = "CarouselCollectionViewCell"
-
-	required init?(coder aDecoder: NSCoder)
-	{
-		super.init(coder: aDecoder)
+    static let identifier = "CarouselCollectionViewCell"
+    
+    /// initial the collection view cell with carousel effect
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
 
 		layer.cornerRadius = 10.0
 	}
