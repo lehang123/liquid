@@ -12,13 +12,14 @@ import UIKit
 
 // todo : make the scorll back to the top while click on the header
 class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate {
+    
+    // Constants and properties go here
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
-
+    private static let descriptionTableViewCell = "DescriptionCell"
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
     private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
     private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
-
     private static let LIKE_WATACHED_CELL_LENGTH = 1
     //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
 
@@ -54,7 +55,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     private var headerView: UIView!
     private var updateHeaderlayout: CAShapeLayer!
-
     private let headerHeight: CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut: CGFloat = 0
     private var cell0Info: LikeWatchedBookmarkCell!
@@ -62,16 +62,14 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     //    private var tableView_cell_length = 0
 
     @IBOutlet var displayPhotoImageView: UIImageView!
-
     @IBOutlet var cmmentText: UITextField!
-
     @IBOutlet var tableView: UITableView!
 
     override func viewDidLoad() {
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
 
-        // makeDummyCommentSource(num: 20)
+        makeDummyCommentSource(num: 20)
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -223,7 +221,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         print("numberOfRowsInSection : how often do you called ?")
         // return the number of rows
-        return commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+        return commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH + 1
     }
 
     // To do for gillbert
@@ -265,7 +263,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     /* the row only get call when it's visible on the screeen in order to save memory */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 { // like, watched cell. always there
-            let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
+            let cell0 = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
 
             // add like button animation
             cell0.likeButton.setSelected(selected: true, animated: false)
@@ -286,17 +284,23 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell0.watchedNumbers.text = String(photoDetail.getWatch())
 
             return cell0
+        } else if (indexPath.row == 1) {
+            
+            let cell1 = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
+            cell1.setDescriptionLabel(decription: "TRY HERE")
+            cell1.selectionStyle = UITableViewCell.SelectionStyle.none
+            return cell1
+            
         } else {
             // create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
+            let cell2 = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
+            cell2.setUsernameLabel(username: commentsSource[indexPath.row - 2].username)
+            cell2.setCommentLabel(comment: commentsSource[indexPath.row - 2].comment)
 
-            let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
-            cell1.setUsernameLabel(username: commentsSource[indexPath.row - 1].username)
-            cell1.setCommentLabel(comment: commentsSource[indexPath.row - 1].comment)
+            cell2.selectionStyle = UITableViewCell.SelectionStyle.none
 
-            cell1.selectionStyle = UITableViewCell.SelectionStyle.none
-
-            return cell1
+            return cell2
         }
     }
 
