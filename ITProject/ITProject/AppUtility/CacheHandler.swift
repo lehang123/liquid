@@ -208,7 +208,7 @@ class CacheHandler: NSObject
 					currComments.forEach
 					{ commentRow in
 						parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String, message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
-						print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
+//						print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
 					}
 
 					// parse all data:
