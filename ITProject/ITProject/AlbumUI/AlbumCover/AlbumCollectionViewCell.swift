@@ -14,16 +14,18 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var albumTitleLabel: UILabel!
     @IBOutlet weak var backgroundMask: UIView!
-
+    
+    /// reset the album detail if anything changed
     var album: AlbumDetail? {
         didSet {
             self.updateUI()
         }
     }
-
+    
+    /// update album detail information
     private func updateUI()
     {
-         self.createAlbumLayout()
+         self.setupAlbumLayout()
         if let album = album {
             
             Util.GetImageData(imageUID: album.coverImageUID,
@@ -31,7 +33,6 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
                                 data in
                                 self.backgroundImageView.image = UIImage(data: data!)
                                 self.albumTitleLabel.text = album.title
-//                                self.createAlbumLayout()
                     
             })
             
@@ -41,9 +42,9 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
             backgroundMask.backgroundColor = nil
         }
     }
-    
-    private func createAlbumLayout(){
-        
+     
+    /// set up album layout in albumCollectionView
+    private func setupAlbumLayout(){
         
         backgroundMask.layer.cornerRadius = 15.0
         backgroundMask.layer.masksToBounds = true
@@ -62,17 +63,10 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
         deleteButton.layer.masksToBounds = true
         
         deleteButton.addTarget(self, action: #selector(deleteSelf), for: .touchUpInside)
-//        self.revealView = deleteButton
     }
     
     @objc func deleteSelf() {
-//        self.hideRevealView(withAnimated: true)
         print("custom revealView delete")
-        
-//        if removeAlbumDelegate != nil {
-//            removeAlbumDelegate.removeAlbum(albumToDelete: self.albumDetail)
-//        }
-        
     }
     
     override func layoutSubviews() {

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 public struct FormElement{
+    /// form type option
     public enum FormType {
         case withImageView
         case withoutImageView
@@ -18,27 +19,40 @@ public struct FormElement{
     
     public typealias Action = () -> Void
     
-    /** title Text String */
+    /// form title
     public let titleText: String
 
-    /** okButton Text String **/
+    /// form textFields
     public let textFields: [CustomTextFieldContent]
     
+    /// upload field title
     public var uploadTitle: String
     
-    /** okButton Text String **/
+    /// ok button title
     public let okButtonText: String
 
-    /** okButton Text String **/
+    /// cancel button title
     public let cancelButtonText: String
     
+    /// ok button action
     public var okAction: Action?
     
+    /// cancel button action
     public var cancelAction: Action? = nil
     
+    /// form type
     public let formType: FormType
     
-
+    
+    /// initial form element
+    /// - Parameter formType: form type
+    /// - Parameter titleText: form title
+    /// - Parameter textFields: form textFields
+    /// - Parameter uploadTitle: upload field title
+    /// - Parameter cancelButtonText: cancel button title
+    /// - Parameter okButtonText: ok button title
+    /// - Parameter cancelAction: cancel button action
+    /// - Parameter okAction: ok button action
     public init(formType: FormType,
                 titleText: String,
                 textFields: [CustomTextFieldContent],
