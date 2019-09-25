@@ -21,6 +21,7 @@ struct ActionSheetDetail{
 
 /// <#Description#>
 /// This is file which share the common constants or functions to the whole project
+
 class Util {
     // Constants and properties go here
     public static let BUTTON_DISMISS = "dismiss"

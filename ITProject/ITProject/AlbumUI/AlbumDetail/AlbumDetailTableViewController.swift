@@ -37,10 +37,12 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerHeight : CGFloat = 300
     private let headerCut : CGFloat = 80
     
+
     private let locationManager = CLLocationManager()
     
     // imagePicker that to open photos library
-//    private var imagePicker = UIImagePickerController()
+    // private var imagePicker = UIImagePickerController()
+
     
     /// Description
     struct Storyboard {
@@ -74,7 +76,8 @@ class AlbumDetailTableViewController: UITableViewController {
         
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
-        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout:
+            updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
     }
     
     /// reload the album's photos when there is a big change
@@ -203,7 +206,7 @@ class AlbumDetailTableViewController: UITableViewController {
                                         if url != nil{
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
                                             
-                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: 0, comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
                             })
@@ -229,6 +232,7 @@ class AlbumDetailTableViewController: UITableViewController {
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! PhotoDetail
                 photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
+
             }
         }
     }
@@ -289,7 +293,6 @@ class AlbumDetailTableViewController: UITableViewController {
     }
     
     /// long pressed : used on imageView, when pressed, tried delete
-    ///
     /// - Parameter sender: senderGesture, attached on image
     @objc func longPressed(sender: UILongPressGestureRecognizer)
     {
