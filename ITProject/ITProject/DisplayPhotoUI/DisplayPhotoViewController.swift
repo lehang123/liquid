@@ -21,8 +21,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
     private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
     private static let LIKE_WATACHED_CELL_LENGTH = 1
-    //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
-
+    
     private struct CommentCellStruct {
         var comment = String()
         var username = String()
