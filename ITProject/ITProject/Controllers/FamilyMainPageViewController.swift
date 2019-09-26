@@ -13,6 +13,7 @@ import Firebase
 import FirebaseStorage
 import SideMenu
 import UPCarouselFlowLayout
+import CoreLocation
 
 /// Structure
 struct ModelCollectionFlowLayout
