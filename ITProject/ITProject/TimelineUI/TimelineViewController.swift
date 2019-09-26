@@ -36,7 +36,7 @@ class TimelineViewController: UIViewController {
             TimelineField(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
             TimelineField(date: "That's it!"),
         ])
-        timeline.bulletSize = 16
+        timeline.timelinePointRadius = 16
         scrollView.addSubview(timeline)
         scrollView.addConstraints([
             NSLayoutConstraint(item: timeline, attribute: .leading, relatedBy: .equal, toItem: scrollView, attribute: .leading, multiplier: 1.0, constant: 0),

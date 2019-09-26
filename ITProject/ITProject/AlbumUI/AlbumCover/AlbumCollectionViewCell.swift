@@ -58,10 +58,10 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
         deleteButton.setTitle("delete", for: .normal)
         deleteButton.setTitleColor(UIColor.white, for: .normal)
         deleteButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        
+
         deleteButton.layer.cornerRadius = 15.0
         deleteButton.layer.masksToBounds = true
-        
+ 
         deleteButton.addTarget(self, action: #selector(deleteSelf), for: .touchUpInside)
     }
     

@@ -19,6 +19,7 @@ class AlbumCoverViewController: UIViewController {
     private let REPEATNAME_DES = "Album name already exist. Try give a unique name"
     private let EMPTYNAME_DES = "Album name is empty"
 
+
     @IBOutlet var albumCollectionView: UICollectionView!
 
     /// <#Description#>
@@ -279,6 +280,7 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         var options = SwipeOptions()
         options.expansionStyle = .destructive
         options.transitionStyle = .drag
+       
         return options
     }
 }
