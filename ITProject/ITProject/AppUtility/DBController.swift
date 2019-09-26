@@ -221,11 +221,11 @@ class DBController
 		{ err in
 			if let err = err
 			{
-				print("\(collectionName) ::: Error updating document with array field: \(err)")
+				print("\(collectionName) ::: Error deleting value of a document with array field: \(err)")
 			}
 			else
 			{
-				print("\(collectionName) ::: Document  \(documentUID) with array field \(fieldName) successfully removed")
+				print("\(collectionName) ::: Document  \(documentUID) with array field \(fieldName) successfully removed an element from it!")
 			}
 		}
 	}
