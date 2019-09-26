@@ -191,7 +191,6 @@ class AlbumDetailTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     /// set number of table view cell
-    ///
     /// - Parameters:
     ///   - tableView: the tableView
     ///   - section: the section
@@ -220,7 +219,6 @@ class AlbumDetailTableViewController: UITableViewController {
     
 
     /// set table view cell
-    ///
     /// - Parameters:
     ///   - tableView: table view
     ///   - indexPath: indexPath
@@ -267,7 +265,6 @@ class AlbumDetailTableViewController: UITableViewController {
     
 
     /// set table view delegate and dataSource
-    ///
     /// - Parameters:
     ///   - tableView: table view
     ///   - cell: table cell
@@ -287,7 +284,6 @@ class AlbumDetailTableViewController: UITableViewController {
 
 
     /// set table view cell height
-    ///
     /// - Parameters:
     ///   - tableView: table view
     ///   - indexPath: indexPath
