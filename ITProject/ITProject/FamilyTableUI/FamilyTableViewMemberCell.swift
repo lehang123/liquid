@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 
-class FamilyTableViewMemberCell: UITableViewCell {
-    @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var relationshipLabel: UILabel!
-    @IBOutlet var phoneLabel: UILabel!
+class FamilyTableViewMemberCell: UITableViewCell
+{
+	@IBOutlet var nameLabel: UILabel!
+	@IBOutlet var relationshipLabel: UILabel!
+	@IBOutlet var phoneLabel: UILabel!
 }

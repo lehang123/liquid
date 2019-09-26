@@ -101,57 +101,59 @@ class PopUpAlter {
                                         image: UIImage? = nil) {
         var themeImage: EKPopUpMessage.ThemeImage?
 
-        if let image = image {
-            themeImage = EKPopUpMessage.ThemeImage(
-                image: EKProperty.ImageContent(
-                    image: image,
-                    displayMode: displayMode,
-                    size: CGSize(width: 60, height: 60),
-                    tint: titleColor,
-                    contentMode: .scaleAspectFit
-                )
-            )
-        }
-        let title = EKProperty.LabelContent(
-            text: title,
-            style: .init(
-                font: MainFont.medium.with(size: 24),
-                color: titleColor,
-                alignment: .center,
-                displayMode: displayMode
-            )
-        )
-        let description = EKProperty.LabelContent(
-            text: description,
-            style: .init(
-                font: MainFont.light.with(size: 16),
-                color: descriptionColor,
-                alignment: .center,
-                displayMode: displayMode
-            )
-        )
-        let button = EKProperty.ButtonContent(
-            label: .init(
-                text: "Got it!",
-                style: .init(
-                    font: MainFont.bold.with(size: 16),
-                    color: buttonTitleColor,
-                    displayMode: displayMode
-                )
-            ),
-            backgroundColor: buttonBackgroundColor,
-            highlightedBackgroundColor: buttonTitleColor.with(alpha: 0.05),
-            displayMode: displayMode
-        )
-        let message = EKPopUpMessage(
-            themeImage: themeImage,
-            title: title,
-            description: description,
-            button: button
-        ) {
-            SwiftEntryKit.dismiss()
-        }
-        let contentView = EKPopUpMessageView(with: message)
-        SwiftEntryKit.display(entry: contentView, using: attributes)
-    }
+		if let image = image
+		{
+			themeImage = EKPopUpMessage.ThemeImage(
+				image: EKProperty.ImageContent(
+					image: image,
+					displayMode: self.displayMode,
+					size: CGSize(width: 60, height: 60),
+					tint: titleColor,
+					contentMode: .scaleAspectFit
+				)
+			)
+		}
+		let title = EKProperty.LabelContent(
+			text: title,
+			style: .init(
+				font: MainFont.medium.with(size: 24),
+				color: titleColor,
+				alignment: .center,
+				displayMode: self.displayMode
+			)
+		)
+		let description = EKProperty.LabelContent(
+			text: description,
+			style: .init(
+				font: MainFont.light.with(size: 16),
+				color: descriptionColor,
+				alignment: .center,
+				displayMode: self.displayMode
+			)
+		)
+		let button = EKProperty.ButtonContent(
+			label: .init(
+				text: "Got it!",
+				style: .init(
+					font: MainFont.bold.with(size: 16),
+					color: buttonTitleColor,
+					displayMode: self.displayMode
+				)
+			),
+			backgroundColor: buttonBackgroundColor,
+			highlightedBackgroundColor: buttonTitleColor.with(alpha: 0.05),
+			displayMode: self.displayMode
+		)
+		let message = EKPopUpMessage(
+			themeImage: themeImage,
+			title: title,
+			description: description,
+			button: button
+		)
+		{
+			SwiftEntryKit.dismiss()
+		}
+		let contentView = EKPopUpMessageView(with: message)
+		SwiftEntryKit.display(entry: contentView, using: attributes)
+	}
 }

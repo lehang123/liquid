@@ -9,15 +9,17 @@
 import Foundation
 import UIKit
 
-extension UIButton {
-    func createDashedLine(bound: CGRect, color: UIColor, strokeLength: NSNumber, gapLength: NSNumber, width: CGFloat) {
-        let pathlayer = CAShapeLayer()
-        let bounds = bound
-        pathlayer.path = UIBezierPath(roundedRect: bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
-        pathlayer.strokeColor = color.cgColor
-        pathlayer.fillColor = UIColor.clear.cgColor
-        pathlayer.lineDashPattern = [strokeLength, gapLength]
-        pathlayer.lineWidth = width
-        layer.addSublayer(pathlayer)
-    }
+extension UIButton
+{
+	func createDashedLine(bound: CGRect, color: UIColor, strokeLength: NSNumber, gapLength: NSNumber, width: CGFloat)
+	{
+		let pathlayer = CAShapeLayer()
+		let bounds = bound
+		pathlayer.path = UIBezierPath(roundedRect: bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 10, height: 10)).cgPath
+		pathlayer.strokeColor = color.cgColor
+		pathlayer.fillColor = UIColor.clear.cgColor
+		pathlayer.lineDashPattern = [strokeLength, gapLength]
+		pathlayer.lineWidth = width
+		layer.addSublayer(pathlayer)
+	}
 }

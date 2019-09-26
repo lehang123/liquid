@@ -8,10 +8,11 @@
 
 import UIKit
 
-class CarouselEffectCollectionViewCell: UICollectionViewCell {
-    // @IBOutlet weak var mainView: UIView!
-    @IBOutlet var iconImage: UIImageView!
-    @IBOutlet var labelInf: UILabel!
+class CarouselEffectCollectionViewCell: UICollectionViewCell
+{
+	// @IBOutlet weak var mainView: UIView!
+	@IBOutlet var iconImage: UIImageView!
+	@IBOutlet var labelInf: UILabel!
 
     static let identifier = "CarouselCollectionViewCell"
     
@@ -19,6 +20,6 @@ class CarouselEffectCollectionViewCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        layer.cornerRadius = 10.0
-    }
+		layer.cornerRadius = 10.0
+	}
 }

@@ -18,7 +18,11 @@ class AlbumDetailTableViewController: UITableViewController {
     var albumContents = [PhotoDetail]()
     
     /// delete message
-    private static let DELETE_PHOTO_TEXT = "Delete Photo"
+    private static let DELETE_PHOTO_TEXT = "Delete photo"
+    /// select from album message
+    private static let SELECT_FROM_ALBUM_TEXT = "Select from album"
+    /// select from album message
+    private static let TAKE_PHOTO_TEXT = "Take photo"
     /// cancel message
     private static let CANCEL_TEXT = "Cancel"
 
@@ -33,8 +37,12 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerHeight : CGFloat = 300
     private let headerCut : CGFloat = 80
     
+
+    private let locationManager = CLLocationManager()
+    
     // imagePicker that to open photos library
-    private var imagePicker = UIImagePickerController()
+    // private var imagePicker = UIImagePickerController()
+
     
     /// Description
     struct Storyboard {
@@ -49,6 +57,11 @@ class AlbumDetailTableViewController: UITableViewController {
 
         self.clearsSelectionOnViewWillAppear = false
         Util.CheckPhotoAcessPermission()
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        
+        
         let addPhotos = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhotosTapped))
         self.navigationItem.rightBarButtonItem = addPhotos
 
@@ -63,7 +76,8 @@ class AlbumDetailTableViewController: UITableViewController {
         
         headerView = tableView.tableHeaderView
         updateHeaderlayout = CAShapeLayer()
-        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        self.tableView.UpdateView(headerView: headerView, updateHeaderlayout:
+            updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
     }
     
     /// reload the album's photos when there is a big change
@@ -112,19 +126,55 @@ class AlbumDetailTableViewController: UITableViewController {
     /// add photo button get tapped, pop up add photo form
     @objc private  func addPhotosTapped(){
         print("addPhotosTapped : Tapped")
-        // pop gallery here
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.allowsEditing = true
         
-        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
-        
-        let formEle = self.setupFormELement(customFormVC: VC1)
-        VC1.initFormELement(formEle: formEle)
-        self.present(VC1, animated:true, completion: {
-            VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+        // todo : here !!!! to change the tap to action sheet bottom
+        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.SELECT_FROM_ALBUM_TEXT, style: .default, action: {
+            action in
+            
+            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
 
-        })
+            let formEle = self.setupFormELement(customFormVC: VC1)
+            VC1.initFormELement(formEle: formEle)
+            self.present(VC1, animated:true, completion: {
+                VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+            })
+            
+        }), ActionSheetDetail(title: AlbumDetailTableViewController.TAKE_PHOTO_TEXT, style: .default, action: {
+            action in
+            
+            print("open take photo view")
+        }),  ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: nil)]
+        Util.ShowBottomAlertView(on: self, with: actions)
+        
+        
+    }
+    
+    func retriveCurrentLocation(){
+        let status = CLLocationManager.authorizationStatus()
+
+        if(status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()){
+            // show alert to user telling them they need to allow location data to use some feature of your app
+            print("retriveCurrentLocation : rejected")
+            return
+        }
+
+        // if haven't show location permission dialog before, show it to user
+        if(status == .notDetermined){
+            locationManager.requestWhenInUseAuthorization()
+
+            // if you want the app to retrieve location data even in background, use requestAlwaysAuthorization
+             locationManager.requestAlwaysAuthorization()
+            return
+        }
+        
+        // at this point the authorization status is authorized
+        // request location data once
+        locationManager.requestLocation()
+      
+        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
+        locationManager.startUpdatingLocation()
+        
+        
     }
     
     
@@ -156,7 +206,8 @@ class AlbumDetailTableViewController: UITableViewController {
                                         if url != nil{
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
                                             
-                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: 0, comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
                             })
@@ -182,7 +233,6 @@ class AlbumDetailTableViewController: UITableViewController {
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! PhotoDetail
                 photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
-                
 
             }
         }
@@ -191,7 +241,6 @@ class AlbumDetailTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     /// set number of table view cell
-    ///
     /// - Parameters:
     ///   - tableView: the tableView
     ///   - section: the section
@@ -220,7 +269,6 @@ class AlbumDetailTableViewController: UITableViewController {
     
 
     /// set table view cell
-    ///
     /// - Parameters:
     ///   - tableView: table view
     ///   - indexPath: indexPath
@@ -244,31 +292,20 @@ class AlbumDetailTableViewController: UITableViewController {
     }
     
     /// long pressed : used on imageView, when pressed, tried delete
-    ///
     /// - Parameter sender: senderGesture, attached on image
     @objc func longPressed(sender: UILongPressGestureRecognizer)
     {
-        // Create you actionsheet - preferredStyle: .actionSheet
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let deleteAction = UIAlertAction(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive) { (action) in
+        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive, action: { (action) in
             print("didPress block")
-        }
-
-        let cancelAction = UIAlertAction(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel) { (action) in
+        }), ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: { (action) in
             print("didPress cancel")
-        }
-
-        // Add the actions to your actionSheet
-        actionSheet.addAction(deleteAction)
-        actionSheet.addAction(cancelAction)
-        // Present the controller
-        self.present(actionSheet, animated: true, completion: nil)
+        }) ]
+        Util.ShowBottomAlertView(on: self, with: actions)
+        
     }
     
 
     /// set table view delegate and dataSource
-    ///
     /// - Parameters:
     ///   - tableView: table view
     ///   - cell: table cell
@@ -288,7 +325,6 @@ class AlbumDetailTableViewController: UITableViewController {
 
 
     /// set table view cell height
-    ///
     /// - Parameters:
     ///   - tableView: table view
     ///   - indexPath: indexPath
@@ -303,30 +339,30 @@ class AlbumDetailTableViewController: UITableViewController {
 }
 
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
-extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    
-    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        guard let image = info[.editedImage] as? UIImage else {
-            print("there is no edited Image ")
-            return
-        }
-        
-        print ("imagePickerController: Did picked pressed !!")
-        picker.dismiss(animated: true, completion: nil)
-        
-        // todo : push add/edit photo view
-    }
-    
-    /* delegate function from the UIImagePickerControllerDelegate
-     called when canceled button pressed, get out of photo library
-     */
-    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        
-        print ("imagePickerController: Did canceled pressed !!")
-        picker.dismiss(animated: true, completion: nil)
-    }
-    
-}
+//extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+//
+//    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        guard let image = info[.editedImage] as? UIImage else {
+//            print("there is no edited Image ")
+//            return
+//        }
+//
+//        print ("imagePickerController: Did picked pressed !!")
+//        picker.dismiss(animated: true, completion: nil)
+//
+//        // todo : push add/edit photo view
+//    }
+//
+//    /* delegate function from the UIImagePickerControllerDelegate
+//     called when canceled button pressed, get out of photo library
+//     */
+//    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//
+//        print ("imagePickerController: Did canceled pressed !!")
+//        picker.dismiss(animated: true, completion: nil)
+//    }
+//
+//}
 
 
 // MARK: -  UICollectionViewDataSource
@@ -376,5 +412,57 @@ extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectio
             let itemWidth = (collectionView.bounds.width - 5.0) / 2.0
             return CGSize(width: itemWidth, height: itemWidth)
         }
+}
+
+extension AlbumDetailTableViewController: CLLocationManagerDelegate {
+    // handle delegate methods of location manager here
+    
+    // called when the authorization status is changed for the core location permission
+   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+           print("location manager authorization status changed")
+           
+           switch status {
+           case .authorizedAlways:
+               print("user allow app to get location data when app is active or in background")
+           case .authorizedWhenInUse:
+               print("user allow app to get location data only when app is active")
+           case .denied:
+               print("user tap 'disallow' on the permission dialog, cant get location data")
+           case .restricted:
+               print("parental control setting disallow location data")
+           case .notDetermined:
+               print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
+           @unknown default:
+            print("locationManager : error ")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+           // .requestLocation will only pass one location to the locations array
+           // hence we can access it by taking the first element of the array
+        if let location = locations.first {
+            print("locationManager didUpdateLocations : \(location.coordinate.latitude)")
+            print("locationManager didUpdateLocations : \(location.coordinate.longitude)")
+            
+            let geocoder = CLGeocoder()
+                    
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(location,
+                        completionHandler: { (placemarks, error) in
+                if error == nil {
+                    let firstLocation = placemarks?[0]
+                    
+                    // todo : get erc Library now, depends on your simulator location
+                    print("prase location with country : \(firstLocation?.country ?? "unknown country")" )
+                    print("prase location with locality : \(firstLocation?.locality ?? "unknown city")" )
+                    print("prase location with name : \(firstLocation?.name ?? "unknown name")" )
+                }
+            })
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("locationManager didFailWithError : " + error.localizedDescription)
+    }
 }
 

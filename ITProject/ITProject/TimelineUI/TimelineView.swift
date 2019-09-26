@@ -288,46 +288,58 @@ class TimelineView: UIView {
     func setupImage() {}
 
     func setupImageView() {}
+
 }
 
-extension UIBezierPath {
-    convenience init(ovalOfSize width: CGFloat) {
-        self.init(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: width)))
-    }
+extension UIBezierPath
+{
+	convenience init(ovalOfSize width: CGFloat)
+	{
+		self.init(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: width)))
+	}
 }
 
 private typealias UIButtonTargetClosure = () -> Void
 
-private class ClosureWrapper: NSObject {
-    let closure: UIButtonTargetClosure
-    init(_ closure: @escaping UIButtonTargetClosure) {
-        self.closure = closure
-    }
+private class ClosureWrapper: NSObject
+{
+	let closure: UIButtonTargetClosure
+	init(_ closure: @escaping UIButtonTargetClosure)
+	{
+		self.closure = closure
+	}
 }
 
-private extension UIButton {
-    private struct AssociatedKeys {
-        static var targetClosure = "targetClosure"
-    }
+private extension UIButton
+{
+	private struct AssociatedKeys
+	{
+		static var targetClosure = "targetClosure"
+	}
 
-    private var targetClosure: UIButtonTargetClosure? {
-        get {
-            guard let closureWrapper = objc_getAssociatedObject(self, &AssociatedKeys.targetClosure) as? ClosureWrapper else { return nil }
-            return closureWrapper.closure
-        }
-        set(newValue) {
-            guard let newValue = newValue else { return }
-            objc_setAssociatedObject(self, &AssociatedKeys.targetClosure, ClosureWrapper(newValue), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
+	private var targetClosure: UIButtonTargetClosure?
+	{
+		get
+		{
+			guard let closureWrapper = objc_getAssociatedObject(self, &AssociatedKeys.targetClosure) as? ClosureWrapper else { return nil }
+			return closureWrapper.closure
+		}
+		set(newValue)
+		{
+			guard let newValue = newValue else { return }
+			objc_setAssociatedObject(self, &AssociatedKeys.targetClosure, ClosureWrapper(newValue), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		}
+	}
 
-    func addTargetClosure(closure: @escaping UIButtonTargetClosure) {
-        targetClosure = closure
-        addTarget(self, action: #selector(UIButton.closureAction), for: .touchUpInside)
-    }
+	func addTargetClosure(closure: @escaping UIButtonTargetClosure)
+	{
+		self.targetClosure = closure
+		addTarget(self, action: #selector(UIButton.closureAction), for: .touchUpInside)
+	}
 
-    @objc func closureAction() {
-        guard let targetClosure = targetClosure else { return }
-        targetClosure()
-    }
+	@objc func closureAction()
+	{
+		guard let targetClosure = targetClosure else { return }
+		targetClosure()
+	}
 }
