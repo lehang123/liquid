@@ -25,14 +25,14 @@ class RegisterDBController
 	public static let USER_DOCUMENT_FIELD_POSITION = "position"
 	/// user's gender
 	public static let USER_DOCUMENT_FIELD_GENDER = "gender"
-	/// user's phone #
+	/// user's phone number
 	public static let USER_DOCUMENT_FIELD_PHONE = "phone"
 
 	/* constant for FAMILIES collections */
 	public static let FAMILY_COLLECTION_NAME = "families"
-	/// the members
+	/// the family's name
 	public static let FAMILY_DOCUMENT_FIELD_NAME = "name"
-	/// the members
+	/// the members of the family
 	public static let FAMILY_DOCUMENT_FIELD_MEMBERS = "family_members"
 	/// paths to album
 	public static let FAMILY_DOCUMENT_FIELD_ALBUM_PATHS = "album_paths"
@@ -108,6 +108,7 @@ class RegisterDBController
 		{ err in
 			if let err = err
 			{
+               
 				print("Error updating document: \(err)")
 			}
 			else

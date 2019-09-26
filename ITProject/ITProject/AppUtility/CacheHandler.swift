@@ -48,9 +48,9 @@ class CacheHandler: NSObject
 		print("setCache::: caching : \(obj) with key : \(forKey) succeeded.")
 	}
 
-	/// gets an object from cache by its key.
-	/// - Parameter forKey: key of the object
-	/// - Returns: the object associated with the key given
+    /// gets an object from cache by its key.
+    /// - Parameter forKey: key of the object
+    /// - Returns: the object associated with the key given
 	public func getCache(forKey: String) -> Data?
 	{
 		if let data = self.dataCache.object(forKey: forKey as NSString)
@@ -220,6 +220,54 @@ class CacheHandler: NSObject
 		}
 	}
 
+    public func getFamilyMembersInfo (completion: @escaping (_ familyMember: [FamilyMember], _ error: Error?) -> Void = { _, _ in }){
+        // get current user Document Ref:
+        let user = Auth.auth().currentUser!.uid
+        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user) { (docSnapshot, error) in
+            if let error = error {
+                print("error at getFamilyMembersInfo:::" , error)
+            }else{
+                let famDocRef:DocumentReference = docSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY)  as! DocumentReference
+                
+                famDocRef.getDocument { (familyDocSnapshot, error) in
+                    if let error = error{
+                        print("error at getFamilyMembersInfo:::" , error)
+                    }
+                    else{
+                        let familyMemberReferences : [DocumentReference] = familyDocSnapshot?.get(RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS) as! [DocumentReference]
+                        
+                        var familyMembers : [ FamilyMember ] = [ FamilyMember ]()
+                        //todo : properly store phone #  so we can retrieve properly too. OR change it to something else.
+                        familyMemberReferences.forEach { (memberDocumentReference) in
+                            memberDocumentReference.getDocument { (memberDocSnapshot, error) in
+                                if let error = error{
+                                    print("error in getFamilyMembersInfo::: " , error )
+                                }
+                                else{
+                                    familyMembers.append(FamilyMember(
+                                            
+                                            UID: memberDocSnapshot?.documentID,
+                                        phone: "2222",
+                                        name: memberDocSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
+                                        relationship: memberDocSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as! String
+                                        ))
+                                }
+                                
+                            
+                                
+                                
+                                
+                            }
+                        }
+                        
+                        //pass on the values:
+                        completion(familyMembers,error)
+                    }
+                }
+            
+            }
+        }
+    }
 	/// gets the user's family info.
 	/// - Returns:  completion : the relevant family's details to be retrieved.
 	public func getFamilyInfo(completion: @escaping (_ UID: String?, _ Motto: String?, _ Name: String?, _ profileUID: String?, _ profileExtension: String?, _ error: Error?) -> Void = { _, _, _, _, _, _ in })
@@ -254,8 +302,10 @@ class CacheHandler: NSObject
 					let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT] as? String
 
 					completion(doc.documentID, motto, name, profile, profileExt, error)
+                    //we know that the user only related to 1 family, so break afterwards:
+                    break;
 				}
 			}
 		}
-	}
-}
+	
+    }}
