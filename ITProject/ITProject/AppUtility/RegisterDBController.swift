@@ -11,7 +11,6 @@ import FirebaseCore
 import FirebaseFirestore
 import Foundation
 
-/// <#Description#>
 /// a class to handle adding new user and joining family in DB with singleton pattern.
 class RegisterDBController
 {
