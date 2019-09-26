@@ -9,7 +9,8 @@
 import UIKit
 
 class TimelineView: UIView {
-    // MARK: Public Properties
+    
+    // MARK:- Public Properties
 
     /// The events shown in the Timeline
     open var timelineField: [TimelineField] {
@@ -46,13 +47,16 @@ class TimelineView: UIView {
     }
 
     /// The width and height of the bullets
-    open var bulletSize: CGFloat = 18 {
+    open var timelinePointRadius: CGFloat = 18 {
         didSet {
             setupContent()
         }
     }
+    
+    // MARK:- Private Properties
+    private var blcokView = UIView()
 
-    // MARK: Public Methods
+    // MARK:- Public Methods
 
     /// Initializes the timeline with all information needed for a complete setup.
     ///
@@ -66,19 +70,12 @@ class TimelineView: UIView {
         setupContent()
     }
 
-    /**
-     Note that the timeFrames cannot be set by this method. Further setup is required once this initalization occurs.
-
-     May require more work to allow this to work with restoration.
-
-     @param coder An unarchiver object.
-     */
     public required init?(coder aDecoder: NSCoder) {
         timelineField = []
         super.init(coder: aDecoder)
     }
 
-    // MARK: Private Methods
+    // MARK:- Private Methods
 
     private func setupContent() {
         for v in subviews {
@@ -93,7 +90,7 @@ class TimelineView: UIView {
     private func setupTimelinePoint(_ width: CGFloat) -> UIView {
         // draw timeline point
 
-        let shapeLayer = drawCirclePoint(pointWidth: width)
+        let shapeLayer = drawCirclePoint(pointRadius: width)
 
         let v = UIView(frame: CGRect(x: 0, y: 0, width: width, height: width))
 
@@ -106,17 +103,19 @@ class TimelineView: UIView {
         return v
     }
 
-    fileprivate func blockForTimeFrame(_ element: TimelineField, isFirst: Bool = false, isLast: Bool = false) -> UIView {
+    fileprivate func blockForTimeFrame(_ element: TimelineField,
+                                       isFirst: Bool = false,
+                                       isLast: Bool = false) -> UIView {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: bulletSize))
+        v.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: timelinePointRadius))
 
         // bullet
-        let bullet: UIView = setupTimelinePoint(bulletSize)
-        v.addSubview(bullet)
+        let timelinePoint: UIView = setupTimelinePoint(timelinePointRadius)
+        v.addSubview(timelinePoint)
         v.addConstraints([
-            NSLayoutConstraint(item: bullet, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: bullet, attribute: .leading, relatedBy: .equal, toItem: v, attribute: .leading, multiplier: 1.0, constant: 8),
+            NSLayoutConstraint(item: timelinePoint, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: timelinePoint, attribute: .leading, relatedBy: .equal, toItem: v, attribute: .leading, multiplier: 1.0, constant: 8),
         ])
 
         //top line, if necessary
@@ -129,8 +128,8 @@ class TimelineView: UIView {
             v.addConstraints([
                 NSLayoutConstraint(item: topLine, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1),
                 NSLayoutConstraint(item: topLine, attribute: .top, relatedBy: .equal, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: topLine, attribute: .bottom, relatedBy: .equal, toItem: bullet, attribute: .top, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: topLine, attribute: .centerX, relatedBy: .equal, toItem: bullet, attribute: .centerX, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: topLine, attribute: .bottom, relatedBy: .equal, toItem: timelinePoint, attribute: .top, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: topLine, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0),
             ])
         }
 
@@ -143,9 +142,9 @@ class TimelineView: UIView {
         v.addSubview(dateLabel)
         v.addConstraints([
             NSLayoutConstraint(item: dateLabel, attribute: .top, relatedBy: .equal, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: dateLabel, attribute: .leading, relatedBy: .equal, toItem: bullet, attribute: .trailing, multiplier: 1.0, constant: 8),
+            NSLayoutConstraint(item: dateLabel, attribute: .leading, relatedBy: .equal, toItem: timelinePoint, attribute: .trailing, multiplier: 1.0, constant: 8),
             NSLayoutConstraint(item: dateLabel, attribute: .trailing, relatedBy: .equal, toItem: v, attribute: .trailing, multiplier: 1.0, constant: -16),
-            NSLayoutConstraint(item: dateLabel, attribute: .centerY, relatedBy: .equal, toItem: bullet, attribute: .centerY, multiplier: 1.0, constant: 1),
+            NSLayoutConstraint(item: dateLabel, attribute: .centerY, relatedBy: .equal, toItem: timelinePoint, attribute: .centerY, multiplier: 1.0, constant: 1),
         ])
         dateLabel.textAlignment = .natural
 
@@ -219,20 +218,21 @@ class TimelineView: UIView {
         sendSubviewToBack(line)
         v.addConstraints([
             NSLayoutConstraint(item: line, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1),
-            NSLayoutConstraint(item: line, attribute: .top, relatedBy: .equal, toItem: bullet, attribute: .bottom, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: line, attribute: .top, relatedBy: .equal, toItem: timelinePoint, attribute: .bottom, multiplier: 1.0, constant: 0),
         ])
         if isLast {
             let extraSpace: CGFloat = 2000
             v.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: v, attribute: .height, multiplier: 1.0, constant: extraSpace))
         } else {
-            v.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: v, attribute: .height, multiplier: 1.0, constant: -bulletSize))
+            v.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: v, attribute: .height, multiplier: 1.0, constant: -timelinePointRadius))
         }
 
-        v.addConstraint(NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: bullet, attribute: .centerX, multiplier: 1.0, constant: 0))
+        v.addConstraint(NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0))
 
         return v
     }
-
+    
+    // MARK:- Set Up
     private func setupGuideView() -> UIView {
         let guideView = UIView()
         guideView.translatesAutoresizingMaskIntoConstraints = false
@@ -263,8 +263,10 @@ class TimelineView: UIView {
     }
 
     // draw timeline point
-    private func drawCirclePoint(pointWidth: CGFloat) -> CAShapeLayer {
-        let path = UIBezierPath(ovalOfSize: pointWidth)
+    ///
+    /// - Parameter pointWidth: timeline point width
+    private func drawCirclePoint(pointRadius: CGFloat) -> CAShapeLayer {
+        let path = UIBezierPath(ovalOfSize: pointRadius)
         let shapeLayer = CAShapeLayer()
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = lineColor.cgColor
@@ -273,7 +275,9 @@ class TimelineView: UIView {
         return shapeLayer
     }
 
-    func setupBulletView() {}
+    func setupBulletView() {
+        
+    }
 
     func setupLineView() {}
 

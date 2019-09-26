@@ -18,11 +18,12 @@ class CustomFormView: UIView {
     
     private let scrollViewVerticalOffset: CGFloat = 20
     
-    // MARK: Props
+    // MARK:- Props
     
     private let titleLabel = UILabel()
     private let scrollView = UIScrollView()
     private var imageView = UIImageView()
+    private(set) var audioButton = UIButton()
     private let textFieldsContent: [CustomTextFieldContent]
     private var textFieldViews: [CustomTextField] = []
     private var buttonBarView: EKButtonBarView!
@@ -84,6 +85,7 @@ class CustomFormView: UIView {
         setupScrollView()
         setupTitleLabel()
         setupImageView()
+        setupAudioButton()
         setupTextFields(with: textFieldsContent)
         setupUploadView(uploadTitle: uploadString ?? "")
         setupButton(with: buttonContent)
@@ -99,6 +101,8 @@ class CustomFormView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK:- Set Up
     
     /// set up scroll view
     private func setupScrollView() {
@@ -129,9 +133,35 @@ class CustomFormView: UIView {
         // to-do: fix height
         imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 0.5).isActive = true
         imageView.image = imageViewContent
+        imageView.addSubview(audioButton)
+        
         self.layoutIfNeeded()
         
     }
+    
+    private func setupAudioButton(){
+        audioButton.layoutToSuperview(.centerX)
+        audioButton.layoutToSuperview(.centerY, offset: self.imageView.bounds.height * 0.4)
+        audioButton.layoutToSuperview(.width, ratio: 0.2)
+
+        audioButton.layer.cornerRadius = 5
+        
+        audioButton.backgroundColor = UIColor.selfcOrg
+        audioButton.setTitle("audio", for: .normal)
+        audioButton.setImage(UIImage(named: "uploadIcon"), for: .normal)
+
+
+        audioButton.setTitleColor(.gray, for: .normal)
+        audioButton.setTitleColor(UIColor.black, for: .highlighted)
+        
+        
+        
+        
+        self.layoutIfNeeded()
+        
+    }
+    
+
     
     /// set up text fields layout
      /// - Parameter textFieldsContent: form textFields content
@@ -173,7 +203,7 @@ class CustomFormView: UIView {
 
             uploadButtonContent.setTitleColor(.gray, for: .normal)
             uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
-            uploadButtonContent.setImage(#imageLiteral(resourceName: "uploadIcon"), for: .normal)
+            
             
             uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
             uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)

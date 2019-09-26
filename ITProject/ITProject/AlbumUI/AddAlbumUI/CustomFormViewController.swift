@@ -137,6 +137,9 @@ class CustomFormViewController: UIViewController {
                 uploadString: formEle.uploadTitle
             )
             contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
+            
+            contentView.audioButton.addTarget(self, action: #selector(audioAction), for: .touchUpInside)
+            
              return contentView
             
         case .withoutImageView:
@@ -148,6 +151,7 @@ class CustomFormViewController: UIViewController {
                 withUploadFile: true,
                 uploadString: formEle.uploadTitle
             )
+            contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
             return contentView
             
         case .defaultForm:
@@ -173,6 +177,10 @@ class CustomFormViewController: UIViewController {
         imagePicker.allowsEditing = true
         
         self.present(imagePicker, animated: true, completion:  nil)
+    }
+    
+    @objc private func audioAction() {
+        print("audioButton Touched : Touched")
     }
     
     /// dismiss pop up form action
