@@ -13,8 +13,15 @@ import Photos
 import SVProgressHUD
 import Zip
 
+struct ActionSheetDetail{
+    let title:String!
+    let style:UIAlertAction.Style!
+    let action:((UIAlertAction) -> Void)?
+}
+
 /// <#Description#>
 /// This is file which share the common constants or functions to the whole project
+
 class Util {
     // Constants and properties go here
     public static let BUTTON_DISMISS = "dismiss"
@@ -718,6 +725,26 @@ class Util {
         @unknown default:
             print("checkPermission: fatal error.")
         }
+    }
+    
+    public static func ShowBottomAlertView(on view: UIViewController, with buttons: [ActionSheetDetail], completion: (() -> Void)? = nil){
+        // Create you actionsheet - preferredStyle: .actionSheet
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        buttons.forEach({
+            button in
+            
+            let action = UIAlertAction(title: button.title, style: button.style) { (action) in
+                if let actionFunction = button.action {
+                    actionFunction(action)
+                }
+            }
+                
+            actionSheet.addAction(action)
+        })
+
+        // Present the controller
+        view.present(actionSheet, animated: true, completion: nil)
     }
 
     public static func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {

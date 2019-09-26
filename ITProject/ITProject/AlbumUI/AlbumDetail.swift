@@ -10,64 +10,67 @@ import Foundation
 
 import UIKit
 
-class AlbumDetail: Equatable {
-    static func == (lhs: AlbumDetail, rhs: AlbumDetail) -> Bool {
-        return lhs.UID == rhs.UID
-    }
+class AlbumDetail: Equatable
+{
+	static func == (lhs: AlbumDetail, rhs: AlbumDetail) -> Bool
+	{
+		return lhs.UID == rhs.UID
+	}
 
-    // MARK: - Public API
+	// MARK: - Public API
 
-    /* coverImage of ablum */
-    //    private var coverImage: UIImage!
-    //
-    //    public func getCoverImage() -> UIImage{
-    //        return self.coverImage
-    //    }
-    //
-    //    public func setCoverImage(image: UIImage){
-    //        self.coverImage = image
-    //    }
+	/* coverImage of ablum */
+	//    private var coverImage: UIImage!
+	//
+	//    public func getCoverImage() -> UIImage{
+	//        return self.coverImage
+	//    }
+	//
+	//    public func setCoverImage(image: UIImage){
+	//        self.coverImage = image
+	//    }
 
-    /// title of ablum
-    var title = ""
+	/// title of ablum
+	var title = ""
 
-    /// coverImage extension for ablum
-    var coverImageExtension: String!
+	/// coverImage extension for ablum
+	var coverImageExtension: String!
 
-    /// coverImage of album
-    var coverImageUID: String!
+	/// coverImage of album
+	var coverImageUID: String!
 
-    /// description of album
-    var description = ""
+	/// description of album
+	var description = ""
 
-    /// UID of album ,private on set
-    private(set) var UID = ""
+	/// UID of album ,private on set
+	private(set) var UID = ""
 
-    /// album created date
-    private var createDate: Date!
+	/// album created date
+	private var createDate: Date!
 
-    /* photos that contained in the album */
-//    private(set) var photos = [PhotoDetail]()
+	/* photos that contained in the album */
+	//    private(set) var photos = [PhotoDetail]()
 //
-//    public func addPhoto(photo : PhotoDetail){
-//        photos.append(photo)
-//    }
+	//    public func addPhoto(photo : PhotoDetail){
+	//        photos.append(photo)
+	//    }
 //
-//    public func removePhoto(photo : PhotoDetail){
-//        photos = photos.filter{$0 != photo}
-//    }
+	//    public func removePhoto(photo : PhotoDetail){
+	//        photos = photos.filter{$0 != photo}
+	//    }
 
-    /// init Album's info. for the UI to display.
-    /// - Parameter title: title of the album.
-    /// - Parameter description: description of the album/
-    /// - Parameter UID: UID of the album itself.
-    /// - Parameter imageUID: the thumbnail of album.
-    /// - Parameter imageExtension: thumbnail extension  for the album.
-    init(title: String, description: String, UID: String, coverImageUID imageUID: String?, coverImageExtension imageExtension: String?) {
-        self.title = title
-        coverImageUID = imageUID
-        coverImageExtension = imageExtension
-        self.description = description
-        self.UID = UID
-    }
+	/// init Album's info. for the UI to display.
+	/// - Parameter title: title of the album.
+	/// - Parameter description: description of the album/
+	/// - Parameter UID: UID of the album itself.
+	/// - Parameter imageUID: the thumbnail of album.
+	/// - Parameter imageExtension: thumbnail extension  for the album.
+	init(title: String, description: String, UID: String, coverImageUID imageUID: String?, coverImageExtension imageExtension: String?)
+	{
+		self.title = title
+		self.coverImageUID = imageUID
+		self.coverImageExtension = imageExtension
+		self.description = description
+		self.UID = UID
+	}
 }

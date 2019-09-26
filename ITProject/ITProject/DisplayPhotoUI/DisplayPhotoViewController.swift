@@ -11,23 +11,27 @@ import Firebase
 import UIKit
 
 // todo : make the scorll back to the top while click on the header
-class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate {
+class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate
+{
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
 
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
     private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
     private static let COMMENT_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
+    /// like & watch cell always at index 0
+    private static let LIKE_WATCH_CELL = 0
 
     private static let LIKE_WATACHED_CELL_LENGTH = 1
     //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
 
-    private struct CommentCellStruct {
+    private struct CommentCellStruct
+    {
         var comment = String()
         var username = String()
     }
 
-    /* source is the total number of comments */
+    /// source is the total number of comments
     private var commentsSource = [CommentCellStruct]()
     /* list is the total number of comments to display */
     //    private var commentCellsList = [CommentCellStruct]()
@@ -36,15 +40,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private var photoUID: String!
     private var photoDetail: PhotoDetail!
 
-    public func setPhotoDetailData(photoDetail: PhotoDetail) {
+    public func setPhotoDetailData(photoDetail: PhotoDetail)
+    {
         self.photoDetail = photoDetail
-        fillCommentSource()
+        self.fillCommentSource()
     }
 
-    public func fillCommentSource() {
-        let currSrc: [PhotoDetail.comment]? = photoDetail.getComments()
+    public func fillCommentSource()
+    {
+        let currSrc: [PhotoDetail.comment]? = self.photoDetail.getComments()
 
-        currSrc?.forEach { item in
+        currSrc?.forEach
+        { item in
             commentsSource.append(DisplayPhotoViewController.CommentCellStruct(
                 comment: item.message ?? "",
                 username: item.username ?? ""
@@ -67,25 +74,22 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     @IBOutlet var tableView: UITableView!
 
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
 
         // makeDummyCommentSource(num: 20)
 
-        tableView.delegate = self
-        tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
 
-        tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        cmmentText.delegate = self
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        self.cmmentText.delegate = self
 
         // TO DO!!!!!!!!!!!!!!
         // LOAD THE NUMBER OF WATCH AND LIKE HERE
 
-//        if (not watched) {
-//
-//            cell.watchedNumbers.text = String(((Int((cell.watchedNumbers.text!))!) + 1))
-//        }
         // cell.likeNumbers.text = "load number here"
         // Store the watch data here
 
@@ -95,7 +99,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //        initCommentCellsList()
-        setUpTableViewHeader()
+        self.setUpTableViewHeader()
 
         // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
 
@@ -105,23 +109,28 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         //            hasHiddenCells = true
         //        }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    func textFieldShouldEndEditing(_: UITextField) -> Bool {
+    func textFieldShouldEndEditing(_: UITextField) -> Bool
+    {
         print("textFieldShouldEndEditing : aaa")
         return true
     }
 
-    func textFieldShouldReturn(_: UITextField) -> Bool {
+    func textFieldShouldReturn(_: UITextField) -> Bool
+    {
         print("textFieldShouldReturn : aaa")
         return true
     }
 
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if cmmentText.isEditing {
+    @objc func keyboardWillShow(notification: NSNotification)
+    {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+        {
+            if self.cmmentText.isEditing
+            {
                 if view.frame.origin.y == 0 {
                     UIView.animate(withDuration: 0.25, animations: {
                         self.view.frame.origin.y -= keyboardSize.height
@@ -131,7 +140,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
 
-    @objc func keyboardWillHide(notification _: NSNotification) {
+    @objc func keyboardWillHide(notification _: NSNotification)
+    {
         if view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.25, animations: {
                 self.view.frame.origin.y = 0
@@ -140,17 +150,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     }
 
     // Enter comment here
-    @IBAction func EnterComment(_: Any) {
-        cmmentText.endEditing(true)
+    @IBAction func EnterComment(_: Any)
+    {
+        self.cmmentText.endEditing(true)
 
         let username = Auth.auth().currentUser?.displayName ?? "UNKNOW GUY"
-        if cmmentText.text!.count != 0 {
-            storeCommentToServer(username: username, comment: cmmentText.text!, photoUID: photoDetail.getUID())
-            cmmentText.text = ""
+        if self.cmmentText.text!.count != 0 {
+            self.storeCommentToServer(username: username, comment: self.cmmentText.text!, photoUID: self.photoDetail.getUID())
+            self.cmmentText.text = ""
         }
         // todo : pull latest comment from the server, and update comment source
 
-        updateCommentSource()
+        self.updateCommentSource()
 
         //        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
         //            if let error = error {
@@ -169,7 +180,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         //        }
     }
 
-    private func updateCommentSource() {
+    private func updateCommentSource()
+    {
         // pull new comment from the server
 
         var indexPaths = [IndexPath]()
@@ -177,122 +189,136 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         tableView.beginUpdates()
 
         //        print("COUNT IS: " ,commentsSource.count)
-        indexPaths.append(IndexPath(row: commentsSource.count, section: 0))
+        indexPaths.append(IndexPath(row: self.commentsSource.count, section: 0))
 
-        tableView.insertRows(at: indexPaths, with: .top)
-        tableView.endUpdates()
-        tableView.scrollToRow(at: IndexPath(row: commentsSource.count, section: 0), at: .bottom, animated: true)
-        tableView.reloadData()
+        self.tableView.insertRows(at: indexPaths, with: .top)
+        self.tableView.endUpdates()
+        self.tableView.scrollToRow(at: IndexPath(row: self.commentsSource.count, section: 0), at: .bottom, animated: true)
+        self.tableView.reloadData()
     }
 
     // ASSUME : YOU NOT GONNA NEED TO RETRIEVE THESE AGAIN RELATIVE TO CERTAIN USER:
-    private func storeCommentToServer(username: String, comment: String, photoUID: String) {
+    private func storeCommentToServer(username: String, comment: String, photoUID: String)
+    {
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, photoUID: photoUID)
-        commentsSource.append(DisplayPhotoViewController.CommentCellStruct(comment: comment, username: username))
+        self.commentsSource.append(DisplayPhotoViewController.CommentCellStruct(comment: comment, username: username))
     }
 
-    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+    @objc func imageTapped(_ sender: UITapGestureRecognizer)
+    {
         let imageView = sender.view as! UIImageView
         let controller = storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
         controller.selectedImage = imageView.image
         present(controller, animated: true)
     }
 
-    @objc func scrollBackToTop(sender: UITapGestureRecognizer) {
+    @objc func scrollBackToTop(sender: UITapGestureRecognizer)
+    {
         // make sure sender is not nil
         guard sender.view != nil else { return }
-        if sender.state == .ended { // when touches end, scroll to top
+        if sender.state == .ended
+        { // when touches end, scroll to top
             let topIndex = IndexPath(row: 0, section: 0)
             tableView.scrollToRow(at: topIndex, at: .top, animated: true)
-            cmmentText.endEditing(true)
+            self.cmmentText.endEditing(true)
         }
     }
 
-    func scrollViewDidScroll(_: UIScrollView) {
-        tableView.Setupnewview(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
+    func scrollViewDidScroll(_: UIScrollView)
+    {
+        self.tableView.Setupnewview(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
     }
 
     // MARK: - Table view data source
 
     // todo: only one for now, afterward, there is a way to expand a comment
-    func numberOfSections(in _: UITableView) -> Int {
+    func numberOfSections(in _: UITableView) -> Int
+    {
         // return the number of sections
         return 1
     }
 
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int
+    {
         print("numberOfRowsInSection : how often do you called ?")
         // return the number of rows
-        return commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+        return self.commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
     }
 
-    // To do for gillbert
-    @objc func liketapFunction(sender _: UITapGestureRecognizer) {
-        print("like tap working")
-        // sender.
-        // cell.likeNumbers.text = cell.likeNumbers!.text!
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell) as! LikeWatchedBookmarkCell
-
-        // To do
-        // Store the number of likes here and check if this photo has been watched or liked by current user
-        // if (not watched)
-        cell.likeNumbers.text = String((Int(cell.likeNumbers.text!)!) + 1)
-        // else (watched)
-        cell.likeNumbers.text = String((Int(cell.likeNumbers.text!)!) - 1)
-        //
-    }
+    
 
     // To do
     // Need to create another ui for store bookmark photo
-    @objc func bookmarktapFunction(sender _: UITapGestureRecognizer) {
+    @objc func bookmarktapFunction(sender _: UITapGestureRecognizer)
+    {
         print("book mark tap working")
     }
+    
 
-    func faveButton(_: FaveButton, didSelected selected: Bool) {
-        if selected {
-            cell0Info.likeNumbers.text = "1"
+    func faveButton(_: FaveButton, didSelected selected: Bool)
+    {
+            print("faveButton  working")
+        if (selected){
+            photoDetail.upLikes()
+            cell0Info.likeNumbers.text = String(photoDetail.getLikesCounter())
+        }
+        else{
+            photoDetail.DownLikes()
+            cell0Info.likeNumbers.text = String(photoDetail.getLikesCounter())
 
-        } else {
-            cell0Info.likeNumbers.text = "0"
         }
     }
 
-    func getCellInfo(cell: LikeWatchedBookmarkCell) {
-        cell0Info = cell
+    func getCellInfo(cell: LikeWatchedBookmarkCell)
+    {
+        self.cell0Info = cell
     }
 
     /* the row only get call when it's visible on the screeen in order to save memory */
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 { // like, watched cell. always there
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        // manage like &  watched cell
+        if indexPath.row == DisplayPhotoViewController.LIKE_WATCH_CELL {
+            
+            //set cell0 reference to like and watched cell
             let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
 
-            // add like button animation
-            cell0.likeButton.setSelected(selected: true, animated: false)
+            // TODO: CHECK IF LIKED ALREADY IN THE PAST OR NOT
+            if  photoDetail.hasLiked(){
+                cell0.likeButton.setSelected(selected: true, animated: false)
 
-            cell0.likeButton.setSelected(selected: false, animated: false)
+            }
+            else{
+                cell0.likeButton.setSelected(selected: false, animated: false)
+
+            }
+
             cell0.likeButton.delegate = self
-            getCellInfo(cell: cell0)
+            self.getCellInfo(cell: cell0)
 
-            let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(bookmarktapFunction(sender:)))
+            let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(self.bookmarktapFunction(sender:)))
             cell0.Bookmark.isUserInteractionEnabled = true
             cell0.Bookmark.addGestureRecognizer(bookmarktap)
 
             cell0.selectionStyle = UITableViewCell.SelectionStyle.none
 
-            // TO DO GILLBERT
-            // LOAD THE likeNumbers and watched numbers
-            cell0.likeNumbers.text = String(photoDetail.getLikes())
-            cell0.watchedNumbers.text = String(photoDetail.getWatch())
+            // load the likeNumbers and watched numbers
+            cell0.likeNumbers.text = String(self.photoDetail.getLikesCounter())
+
+            self.photoDetail.upWatch()
+
+            cell0.watchedNumbers.text = String(self.photoDetail.getWatch())
 
             return cell0
-        } else {
+        }
+        else
+        {
             // create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
 
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
-            cell1.setUsernameLabel(username: commentsSource[indexPath.row - 1].username)
-            cell1.setCommentLabel(comment: commentsSource[indexPath.row - 1].comment)
+            cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 1].username)
+            cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 1].comment)
 
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
 
@@ -303,7 +329,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     /*
      disable expansion
      */
-    func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
+    func tableView(_: UITableView, didSelectRowAt _: IndexPath)
+    {
         //        if (indexPath.row == 0) {
         //            let headerCell =  tableView.cellForRow(at: indexPath)
         //
@@ -371,42 +398,48 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     //        }
     //    }
 
-    func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
-        } else {
+        }
+        else
+        {
             return UITableView.automaticDimension
         }
     }
 
-    private func makeDummyCommentSource(num: Int) {
-        for i in 1 ... num {
+    private func makeDummyCommentSource(num: Int)
+    {
+        for i in 1 ... num
+        {
             var commentCell = CommentCellStruct()
             commentCell.comment = "mkk" + String(i)
             commentCell.username = "username" + String(i)
-            commentsSource.append(commentCell)
+            self.commentsSource.append(commentCell)
         }
     }
 
-    /* the header that shows to image */
-    private func setUpTableViewHeader() {
+    /// the header that shows to image
+    private func setUpTableViewHeader()
+    {
         /* test on read file for local file */
-        Util.GetImageData(imageUID: photoDetail.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
+        Util.GetImageData(imageUID: self.photoDetail.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
             data in
             self.displayPhotoImageView.image = UIImage(data: data!)
         })
-        headerView = tableView.tableHeaderView
-        updateHeaderlayout = CAShapeLayer()
+        self.headerView = self.tableView.tableHeaderView
+        self.updateHeaderlayout = CAShapeLayer()
 
-        tableView.UpdateView(headerView: headerView, updateHeaderlayout: updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        self.tableView.UpdateView(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut)
 
-        let headerViewGesture = UITapGestureRecognizer(target: self, action: #selector(scrollBackToTop))
-        let zoomInGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        let headerViewGesture = UITapGestureRecognizer(target: self, action: #selector(self.scrollBackToTop))
+        let zoomInGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
         zoomInGesture.numberOfTapsRequired = 2
 
         /* note: GestureRecognizer will be disable while tableview is scrolling */
-        headerView.addGestureRecognizer(headerViewGesture)
-        displayPhotoImageView.addGestureRecognizer(zoomInGesture)
+        self.headerView.addGestureRecognizer(headerViewGesture)
+        self.displayPhotoImageView.addGestureRecognizer(zoomInGesture)
     }
 
     //    private func initCommentCellsList(){
@@ -440,7 +473,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     //    }
 
     // Override to support conditional editing of the table view.
-    func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
+    func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool
+    {
         // Return false if you do not want the specified item to be editable.
         return true
     }
