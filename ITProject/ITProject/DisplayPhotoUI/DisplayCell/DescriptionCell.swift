@@ -15,14 +15,18 @@ class DescriptionCell: UITableViewCell {
     private static let USERNAME_ERROR = "Error reading username"
     
 
-    @IBOutlet weak var decriptionDetail: UILabel!
+    @IBOutlet weak var descriptionDetail: UILabel!
     
-    public func setDescriptionLabel(decription: String){
-        decriptionDetail.text = decription
+    public func setDescriptionLabel(description: String){
+        if (description.isEmpty) {
+            descriptionDetail.text = "No description yest"
+        } else {
+            descriptionDetail.text = description
+        }
     }
     
     public func getDescriptionDLabel()->String{
-        return decriptionDetail!.text ?? DescriptionCell.COMMENT_ERROR
+        return descriptionDetail!.text ?? DescriptionCell.COMMENT_ERROR
     }
     
 }
