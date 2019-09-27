@@ -1283,7 +1283,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="250.5" y="18" width="54.500000000000028" height="54.500000000000028"/>
+                                                    <rect key="frame" x="250.5" y="18" width="54.5" height="54.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="4Lz-go-1pw" secondAttribute="height" multiplier="1:1" id="31c-Vc-8vs"/>
                                                     </constraints>
@@ -1343,14 +1343,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJs-fk-Py6">
-                                                    <rect key="frame" x="15" y="37" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jqK-gg-Jxl">
-                                                    <rect key="frame" x="15" y="37" width="42" height="21"/>
+                                                    <rect key="frame" x="15" y="44" width="42" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -1358,15 +1351,18 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="pyL-NH-BeJ" firstAttribute="top" secondItem="XRE-LR-wZm" secondAttribute="top" constant="11" id="Krg-ho-VI7"/>
                                                 <constraint firstItem="pyL-NH-BeJ" firstAttribute="leading" secondItem="XRE-LR-wZm" secondAttribute="leading" id="SY5-Gg-6ul"/>
                                                 <constraint firstItem="pyL-NH-BeJ" firstAttribute="height" secondItem="XRE-LR-wZm" secondAttribute="height" multiplier="0.3" id="hUX-8H-F2m"/>
                                                 <constraint firstAttribute="trailing" secondItem="pyL-NH-BeJ" secondAttribute="trailing" id="hW0-UJ-mZi"/>
+                                                <constraint firstItem="pyL-NH-BeJ" firstAttribute="top" secondItem="XRE-LR-wZm" secondAttribute="topMargin" id="t06-bJ-uV1"/>
                                                 <constraint firstItem="pyL-NH-BeJ" firstAttribute="width" secondItem="XRE-LR-wZm" secondAttribute="width" multiplier="0.3" id="ymv-Kk-DF5"/>
                                             </constraints>
+                                            <connections>
+                                                <outlet property="backgroundView" destination="nCG-eE-6IP" id="Xu5-9q-P8P"/>
+                                            </connections>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="decriptionDetail" destination="jqK-gg-Jxl" id="PsN-jo-wfy"/>
+                                            <outlet property="descriptionDetail" destination="qJs-fk-Py6" id="OHr-Xx-GGp"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" id="pkt-eV-5dR" userLabel="CommentCell" customClass="CommentCell" customModule="ITProject" customModuleProvider="target">
