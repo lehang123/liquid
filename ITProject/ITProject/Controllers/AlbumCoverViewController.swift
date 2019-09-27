@@ -260,6 +260,9 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         guard orientation == .right else { return nil }
         
         //detects deletion from swiping gesture:
+        
+        
+        
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // commits delete action to DB:
             let currAlbum: AlbumDetail = self.albumsList.getAlbum(index: indexPath.row)
@@ -267,9 +270,8 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
             
             //remove from UI:
             self.albumsList.removeAlbum(at: indexPath.row)
-            
-            
             action.fulfill(with: .delete)
+            
         }
 
         return [deleteAction]
