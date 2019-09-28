@@ -53,8 +53,6 @@ class TimelineView: UIView {
         }
     }
     
-    // MARK:- Private Properties
-    private var blcokView = UIView()
 
     // MARK:- Public Methods
 
@@ -92,147 +90,71 @@ class TimelineView: UIView {
 
         let shapeLayer = drawCirclePoint(pointRadius: width)
 
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: width, height: width))
+        let timePointView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: width))
 
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.addConstraints([
-            NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: width),
-            NSLayoutConstraint(item: v, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: width),
+        timePointView.translatesAutoresizingMaskIntoConstraints = false
+        timePointView.addConstraints([
+            NSLayoutConstraint(item: timePointView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: width),
+            NSLayoutConstraint(item: timePointView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: width),
         ])
-        v.layer.addSublayer(shapeLayer)
-        return v
+        timePointView.layer.addSublayer(shapeLayer)
+        return timePointView
     }
 
     fileprivate func blockForTimeFrame(_ element: TimelineField,
                                        isFirst: Bool = false,
                                        isLast: Bool = false) -> UIView {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.addConstraint(NSLayoutConstraint(item: v, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: timelinePointRadius))
+        let blockView = UIView()
+        blockView.translatesAutoresizingMaskIntoConstraints = false
+        blockView.addConstraint(NSLayoutConstraint(item: blockView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: timelinePointRadius))
 
         // bullet
-        let timelinePoint: UIView = setupTimelinePoint(timelinePointRadius)
-        v.addSubview(timelinePoint)
-        v.addConstraints([
-            NSLayoutConstraint(item: timelinePoint, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: timelinePoint, attribute: .leading, relatedBy: .equal, toItem: v, attribute: .leading, multiplier: 1.0, constant: 8),
-        ])
+        let timelinePoint = setupTimePointInBlockView(blockView: blockView)
 
         //top line, if necessary
         if !isFirst {
-            let topLine = UIView()
-            topLine.translatesAutoresizingMaskIntoConstraints = false
-            topLine.backgroundColor = lineColor
-            v.addSubview(topLine)
-            sendSubviewToBack(topLine)
-            v.addConstraints([
-                NSLayoutConstraint(item: topLine, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1),
-                NSLayoutConstraint(item: topLine, attribute: .top, relatedBy: .equal, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: topLine, attribute: .bottom, relatedBy: .equal, toItem: timelinePoint, attribute: .top, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: topLine, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0),
-            ])
+            setupTopLineView(blockView: blockView, timelinePoint: timelinePoint)
         }
+        
+        
+        // date label
+        let dateLabel = setupDateLabel(blockView: blockView, timelinePoint: timelinePoint, element: element)
 
-        let dateLabel = UILabel()
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        dateLabel.text = element.date
-        dateLabel.numberOfLines = 1
-        configureDateLabel(dateLabel)
-        v.addSubview(dateLabel)
-        v.addConstraints([
-            NSLayoutConstraint(item: dateLabel, attribute: .top, relatedBy: .equal, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: dateLabel, attribute: .leading, relatedBy: .equal, toItem: timelinePoint, attribute: .trailing, multiplier: 1.0, constant: 8),
-            NSLayoutConstraint(item: dateLabel, attribute: .trailing, relatedBy: .equal, toItem: v, attribute: .trailing, multiplier: 1.0, constant: -16),
-            NSLayoutConstraint(item: dateLabel, attribute: .centerY, relatedBy: .equal, toItem: timelinePoint, attribute: .centerY, multiplier: 1.0, constant: 1),
-        ])
-        dateLabel.textAlignment = .natural
-
+        // lastView
         var lastView: UIView = dateLabel
-
         if let content = element.content {
-            let textLabel = UILabel()
-            textLabel.translatesAutoresizingMaskIntoConstraints = false
-            textLabel.text = content
-            textLabel.numberOfLines = 0
-            configureTextLabel(textLabel)
-            v.addSubview(textLabel)
-            v.addConstraints([
-                NSLayoutConstraint(item: textLabel, attribute: .trailing, relatedBy: .equal, toItem: dateLabel, attribute: .trailing, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: textLabel, attribute: .top, relatedBy: .equal, toItem: dateLabel, attribute: .bottom, multiplier: 1.0, constant: 6),
-                NSLayoutConstraint(item: textLabel, attribute: .leading, relatedBy: .equal, toItem: dateLabel, attribute: .leading, multiplier: 1.0, constant: 0),
-            ])
-            textLabel.textAlignment = .natural
+            let textLabel = setupTextContentView(blockView: blockView, dateLabel: dateLabel, content: content)
             lastView = textLabel
         }
-
-        // image
+        
+        // imageContent
         if let image = element.image {
-            let backgroundViewForImage = UIView()
-            backgroundViewForImage.translatesAutoresizingMaskIntoConstraints = false
-            backgroundViewForImage.backgroundColor = UIColor.black
-            backgroundViewForImage.layer.cornerRadius = 10
-            v.addSubview(backgroundViewForImage)
-            v.addConstraints([
-                NSLayoutConstraint(item: backgroundViewForImage, attribute: .trailing, relatedBy: .equal, toItem: dateLabel, attribute: .trailing, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: backgroundViewForImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 130),
-                NSLayoutConstraint(item: backgroundViewForImage, attribute: .top, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1.0, constant: 10),
-                NSLayoutConstraint(item: backgroundViewForImage, attribute: .bottom, relatedBy: .equal, toItem: v, attribute: .bottom, multiplier: 1.0, constant: -10),
-                NSLayoutConstraint(item: backgroundViewForImage, attribute: .leading, relatedBy: .equal, toItem: dateLabel, attribute: .leading, multiplier: 1.0, constant: 0),
-            ])
+            let backgroundViewForImage = setupBackgroundImageView(blockView: blockView, lastView: lastView, dateLabel: dateLabel)
 
-            let imageView = UIImageView(image: image)
-            imageView.layer.cornerRadius = 10
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.contentMode = UIView.ContentMode.scaleAspectFit
-            v.addSubview(imageView)
-            v.addConstraints([
-                NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .left, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: imageView, attribute: .right, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .right, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .top, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .bottom, multiplier: 1.0, constant: 0),
-            ])
+            setupImageContentView(blockView: blockView, backgroundViewForImage: backgroundViewForImage, image: image)
 
-            let button = UIButton(type: .custom)
-            button.translatesAutoresizingMaskIntoConstraints = false
-            button.backgroundColor = UIColor.clear
-            button.addTargetClosure {
-                element.imageTapped?(image)
-            }
-            v.addSubview(button)
-            v.addConstraints([
-                NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: v, attribute: .width, multiplier: 1.0, constant: -60),
-                NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 130),
-                NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: v, attribute: .top, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: button, attribute: .leading, relatedBy: .equal, toItem: v, attribute: .leading, multiplier: 1.0, constant: 40),
-            ])
+            setupButton(blockView: blockView, element: element, image: image)
+            
         } else {
-            v.addConstraint(NSLayoutConstraint(item: lastView, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: v, attribute: .bottom, multiplier: 1.0, constant: -20))
+            blockView.addConstraint(NSLayoutConstraint(item: lastView, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: blockView, attribute: .bottom, multiplier: 1.0, constant: -20))
         }
 
         // draw the bottom line between the bullets
-        let line = UIView()
-        line.translatesAutoresizingMaskIntoConstraints = false
-        line.backgroundColor = lineColor
-        v.addSubview(line)
-        sendSubviewToBack(line)
-        v.addConstraints([
-            NSLayoutConstraint(item: line, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1),
-            NSLayoutConstraint(item: line, attribute: .top, relatedBy: .equal, toItem: timelinePoint, attribute: .bottom, multiplier: 1.0, constant: 0),
-        ])
+        let line = setupTimelineBottom(blockView: blockView, timelinePoint: timelinePoint)
+        
         if isLast {
             let extraSpace: CGFloat = 2000
-            v.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: v, attribute: .height, multiplier: 1.0, constant: extraSpace))
+            blockView.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: blockView, attribute: .height, multiplier: 1.0, constant: extraSpace))
         } else {
-            v.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: v, attribute: .height, multiplier: 1.0, constant: -timelinePointRadius))
+            blockView.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: blockView, attribute: .height, multiplier: 1.0, constant: -timelinePointRadius))
         }
 
-        v.addConstraint(NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0))
+        blockView.addConstraint(NSLayoutConstraint(item: line, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0))
 
-        return v
+        return blockView
     }
     
-    // MARK:- Set Up
+    // MARK:- Set Up Detail
     private func setupGuideView() -> UIView {
         let guideView = UIView()
         guideView.translatesAutoresizingMaskIntoConstraints = false
@@ -275,19 +197,142 @@ class TimelineView: UIView {
         return shapeLayer
     }
 
-    func setupBulletView() {
+    func setupTimePointInBlockView(blockView : UIView) -> UIView {
+        let timelinePoint: UIView = setupTimelinePoint(timelinePointRadius)
         
+        blockView.addSubview(timelinePoint)
+        blockView.addConstraints([
+            NSLayoutConstraint(item: timelinePoint, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: blockView, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: timelinePoint, attribute: .leading, relatedBy: .equal, toItem: blockView, attribute: .leading, multiplier: 1.0, constant: 8),
+        ])
+        return timelinePoint
     }
 
-    func setupLineView() {}
+    func setupTopLineView(blockView : UIView, timelinePoint: UIView) {
+        let topLine = UIView()
+        topLine.translatesAutoresizingMaskIntoConstraints = false
+        topLine.backgroundColor = lineColor
+        blockView.addSubview(topLine)
+        sendSubviewToBack(topLine)
+        blockView.addConstraints([
+            NSLayoutConstraint(item: topLine, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1),
+            NSLayoutConstraint(item: topLine, attribute: .top, relatedBy: .equal, toItem: blockView, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: topLine, attribute: .bottom, relatedBy: .equal, toItem: timelinePoint, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: topLine, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0),
+        ])
+    }
 
-    func setupDateLabel() {}
+    func setupDateLabel(blockView: UIView,
+                        timelinePoint: UIView,
+                        element: TimelineField) -> UILabel{
+        
+        let dateLabel = UILabel()
+        
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
 
-    func setupContentView() {}
+        dateLabel.text = element.date
+        dateLabel.numberOfLines = 1
+        configureDateLabel(dateLabel)
+        blockView.addSubview(dateLabel)
+        blockView.addConstraints([
+            NSLayoutConstraint(item: dateLabel, attribute: .top, relatedBy: .equal, toItem: blockView, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: dateLabel, attribute: .leading, relatedBy: .equal, toItem: timelinePoint, attribute: .trailing, multiplier: 1.0, constant: 8),
+            NSLayoutConstraint(item: dateLabel, attribute: .trailing, relatedBy: .equal, toItem: blockView, attribute: .trailing, multiplier: 1.0, constant: -16),
+            NSLayoutConstraint(item: dateLabel, attribute: .centerY, relatedBy: .equal, toItem: timelinePoint, attribute: .centerY, multiplier: 1.0, constant: 1),
+        ])
+        dateLabel.textAlignment = .natural
+        
+        return dateLabel
+    }
 
-    func setupImage() {}
+    func setupTextContentView(blockView : UIView,
+                              dateLabel : UILabel,
+                              content : String) -> UILabel{
+        
+        let textLabel = UILabel()
+        
+       textLabel.translatesAutoresizingMaskIntoConstraints = false
+       textLabel.text = content
+       textLabel.numberOfLines = 0
+       configureTextLabel(textLabel)
+       blockView.addSubview(textLabel)
+       blockView.addConstraints([
+           NSLayoutConstraint(item: textLabel, attribute: .trailing, relatedBy: .equal, toItem: dateLabel, attribute: .trailing, multiplier: 1.0, constant: 0),
+           NSLayoutConstraint(item: textLabel, attribute: .top, relatedBy: .equal, toItem: dateLabel, attribute: .bottom, multiplier: 1.0, constant: 6),
+           NSLayoutConstraint(item: textLabel, attribute: .leading, relatedBy: .equal, toItem: dateLabel, attribute: .leading, multiplier: 1.0, constant: 0),
+       ])
+        textLabel.textAlignment = .natural
+        
+        return textLabel
+    }
 
-    func setupImageView() {}
+    func setupBackgroundImageView(blockView: UIView,
+                                  lastView: UIView,
+                                  dateLabel: UILabel) -> UIView{
+        let backgroundViewForImage = UIView()
+        backgroundViewForImage.translatesAutoresizingMaskIntoConstraints = false
+        backgroundViewForImage.backgroundColor = UIColor.black
+        backgroundViewForImage.layer.cornerRadius = 10
+        blockView.addSubview(backgroundViewForImage)
+        blockView.addConstraints([
+            NSLayoutConstraint(item: backgroundViewForImage, attribute: .trailing, relatedBy: .equal, toItem: dateLabel, attribute: .trailing, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: backgroundViewForImage, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 130),
+            NSLayoutConstraint(item: backgroundViewForImage, attribute: .top, relatedBy: .equal, toItem: lastView, attribute: .bottom, multiplier: 1.0, constant: 10),
+            NSLayoutConstraint(item: backgroundViewForImage, attribute: .bottom, relatedBy: .equal, toItem: blockView, attribute: .bottom, multiplier: 1.0, constant: -10),
+            NSLayoutConstraint(item: backgroundViewForImage, attribute: .leading, relatedBy: .equal, toItem: dateLabel, attribute: .leading, multiplier: 1.0, constant: 0),
+        ])
+        
+        return backgroundViewForImage
+    }
+
+    func setupImageContentView(blockView: UIView,
+                               backgroundViewForImage: UIView,
+                               image: UIImage){
+        let imageView = UIImageView(image: image)
+                   imageView.layer.cornerRadius = 10
+                   imageView.translatesAutoresizingMaskIntoConstraints = false
+                   imageView.contentMode = UIView.ContentMode.scaleAspectFit
+                   blockView.addSubview(imageView)
+                   blockView.addConstraints([
+                       NSLayoutConstraint(item: imageView, attribute: .left, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .left, multiplier: 1.0, constant: 0),
+                       NSLayoutConstraint(item: imageView, attribute: .right, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .right, multiplier: 1.0, constant: 0),
+                       NSLayoutConstraint(item: imageView, attribute: .top, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .top, multiplier: 1.0, constant: 0),
+                       NSLayoutConstraint(item: imageView, attribute: .bottom, relatedBy: .equal, toItem: backgroundViewForImage, attribute: .bottom, multiplier: 1.0, constant: 0),
+                   ])
+
+    }
+    
+    private func setupButton(blockView: UIView,
+                             element: TimelineField,
+                             image: UIImage){
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.clear
+        button.addTargetClosure {
+            element.imageTapped?(image)
+        }
+        blockView.addSubview(button)
+        blockView.addConstraints([
+            NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: blockView, attribute: .width, multiplier: 1.0, constant: -60),
+            NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 130),
+            NSLayoutConstraint(item: button, attribute: .top, relatedBy: .equal, toItem: blockView, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: button, attribute: .leading, relatedBy: .equal, toItem: blockView, attribute: .leading, multiplier: 1.0, constant: 40),
+        ])
+    }
+    
+    private func setupTimelineBottom(blockView: UIView,
+                                     timelinePoint: UIView) -> UIView{
+        let line = UIView()
+        line.translatesAutoresizingMaskIntoConstraints = false
+        line.backgroundColor = lineColor
+        blockView.addSubview(line)
+        sendSubviewToBack(line)
+        blockView.addConstraints([
+            NSLayoutConstraint(item: line, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 1),
+            NSLayoutConstraint(item: line, attribute: .top, relatedBy: .equal, toItem: timelinePoint, attribute: .bottom, multiplier: 1.0, constant: 0),
+        ])
+        return line
+    }
 
 }
 
