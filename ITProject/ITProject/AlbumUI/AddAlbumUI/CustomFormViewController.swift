@@ -10,9 +10,9 @@
 
 import UIKit
 import SwiftEntryKit
+import AVFoundation
 
-class CustomFormViewController: UIViewController {
-
+class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
 
     private var contentv : CustomFormView!
 
@@ -22,15 +22,17 @@ class CustomFormViewController: UIViewController {
     private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
 
+    
     public func initFormELement(formEle: FormElement){
         self.formEle = formEle
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setView()
+        
     }
+
 
 
     private func setView(){

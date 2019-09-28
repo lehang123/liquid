@@ -12,24 +12,23 @@
 import UIKit
 import SwiftEntryKit
 import Foundation
+import AVFoundation
 
 class CustomFormView: UIView {
     
     
     private let scrollViewVerticalOffset: CGFloat = 20
-    
-    // MARK:- Props
-    
     private let titleLabel = UILabel()
     private let scrollView = UIScrollView()
     private var imageView = UIImageView()
-    private(set) var audioButton = UIButton()
     private let textFieldsContent: [CustomTextFieldContent]
     private var textFieldViews: [CustomTextField] = []
     private var buttonBarView: EKButtonBarView!
     private var imageViewContent: UIImage?
     private(set) var uploadButtonContent = UIButton()
     private var withUploadFile = false
+    private(set) var audioButton = UIButton()
+
     
 //    private var imagePicker = UIImagePickerController()
     
@@ -240,7 +239,7 @@ class CustomFormView: UIView {
         }
         buttonsBarContent.content[1] = extractcontent
         
-            buttonBarView = EKButtonBarView(with: buttonsBarContent)
+        buttonBarView = EKButtonBarView(with: buttonsBarContent)
         buttonBarView.clipsToBounds = true
         scrollView.addSubview(buttonBarView)
         buttonBarView.expand()
