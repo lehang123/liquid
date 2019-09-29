@@ -72,7 +72,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     @IBOutlet var displayPhotoImageView: UIImageView!
 
     @IBOutlet var cmmentText: UITextField!
-
+    @IBOutlet var sendButton: UIButton!
     @IBOutlet var tableView: UITableView!
 
     override func viewDidLoad()
@@ -88,6 +88,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         self.tableView.rowHeight = UITableView.automaticDimension
         self.cmmentText.delegate = self
+        self.sendButton.isUserInteractionEnabled = false
 
         // TO DO!!!!!!!!!!!!!!
         // LOAD THE NUMBER OF WATCH AND LIKE HERE
@@ -150,6 +151,23 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             })
         }
     }
+    
+    /// Disabled the send action if the comment textField is empty
+    /// - Parameter textField: comment textField
+    /// - Parameter range: character range
+    /// - Parameter string: comment
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = (cmmentText.text! as NSString).replacingCharacters(in: range, with: string)
+        if text.isEmpty {
+            sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
+         sendButton.isEnabled = false
+        } else {
+            sendButton.isUserInteractionEnabled = true
+         sendButton.isEnabled = true
+         sendButton.setImage(UIImage(named: "ableSendIcon"), for: .normal)
+        }
+         return true
+    }
 
     // Enter comment here
     @IBAction func EnterComment(_: Any)
@@ -164,7 +182,11 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         // todo : pull latest comment from the server, and update comment source
 
         self.updateCommentSource()
-
+        
+        // disable the button after sending the comment
+         sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
+        sendButton.isUserInteractionEnabled = false
+        
         //        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
         //            if let error = error {
         //                print("Error in EnterComment: \(error)")
