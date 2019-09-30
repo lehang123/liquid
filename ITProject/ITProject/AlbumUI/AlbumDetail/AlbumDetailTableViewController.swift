@@ -83,19 +83,26 @@ class AlbumDetailTableViewController: UITableViewController {
     /// reload the album's photos when there is a big change
     /// - Parameter newPhotos: newPhotos
     func reloadPhoto(newPhotos: [PhotoDetail]){
+        //self.albumContents = newPhotos;
+
         self.displayPhotoCollectionView?.performBatchUpdates({
             var indexPaths = [IndexPath]()
+            print("the length of album  in reloadPhoto is ::: " , self.albumContents.count)
+            print("the length of newPhotos  in reloadPhoto is ::: " , newPhotos.count)
+
+//            print(self.albumContents[0])
             //make sure it's clear
-            if self.albumContents.count > 0{
-                for i in 0...self.albumContents.count - 1 {
-                    indexPaths.append(IndexPath(item: i, section: 0))
-                }
-                self.albumContents.removeAll()
-                self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
-                indexPaths.removeAll()
-            }
+//            if self.albumContents.count > 0{
+//                for i in 0...self.albumContents.count - 1 {
+//                    indexPaths.append(IndexPath(item: i, section: 0))
+//                }
+//                self.albumContents.removeAll()
+//                self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
+//                indexPaths.removeAll()
+//            }
             
-            if (newPhotos.count - 1 > 0) {
+            
+            if (newPhotos.count  > 0) {
                 for i in 0...newPhotos.count - 1 {
                     self.albumContents.append(newPhotos[i])
                     // first one for description
@@ -204,6 +211,7 @@ class AlbumDetailTableViewController: UITableViewController {
                                     Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
                                         Util.DismissActivityIndicator()
                                         if url != nil{
+                                           //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
                                             
                                                 self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
