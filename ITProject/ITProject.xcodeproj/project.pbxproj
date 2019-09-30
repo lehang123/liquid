@@ -14,6 +14,7 @@
 		0DC1BCAC230AB314006968DF /* CacheHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1BCAB230AB314006968DF /* CacheHandler.swift */; };
 		520667F322FAEEAE002C61B6 /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */; };
 		5206680E23042F85002C61B6 /* IndividualSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5206680D23042F85002C61B6 /* IndividualSettingTableViewController.swift */; };
+		5262AE37233E0805007CA116 /* testAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5262AE36233E0805007CA116 /* testAudio.swift */; };
 		526A4549233B0DC400ADEE66 /* DescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 526A4548233B0DC400ADEE66 /* DescriptionCell.swift */; };
 		52AC3B262327790E0046CD97 /* ShowDetailPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AC3B252327790E0046CD97 /* ShowDetailPhotoViewController.swift */; };
 		52BBFA572306D5CB00495E66 /* ChangePWViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BBFA562306D5CB00495E66 /* ChangePWViewController.swift */; };
@@ -59,6 +60,9 @@
 		8446C081230F8AD9000ABCD7 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C080230F8AD9000ABCD7 /* CommentCell.swift */; };
 		8446C0892321EA0A000ABCD7 /* PhotoDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C0882321EA0A000ABCD7 /* PhotoDetail.swift */; };
 		84ACE91B232CA41300E08756 /* UITableView+StickyHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */; };
+		84DF66AD233DC40B0080F6E0 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DF66AC233DC40B0080F6E0 /* DynamicHeightCollectionView.swift */; };
+		84DF66AF233DC66C0080F6E0 /* CreateAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DF66AE233DC66C0080F6E0 /* CreateAlbumViewController.swift */; };
+		84DF66B2233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DF66B1233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift */; };
 		84E9BA4622F941F4003EA693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E9BA4522F941F4003EA693 /* AppDelegate.swift */; };
 		84E9BA4822F941F4003EA693 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E9BA4722F941F4003EA693 /* LoginViewController.swift */; };
 		84E9BA4B22F941F4003EA693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E9BA4922F941F4003EA693 /* Main.storyboard */; };
@@ -89,6 +93,7 @@
 		520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignUpViewController.swift; sourceTree = "<group>"; };
 		5206680922FBB5EC002C61B6 /* ITProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ITProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5206680D23042F85002C61B6 /* IndividualSettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualSettingTableViewController.swift; sourceTree = "<group>"; };
+		5262AE36233E0805007CA116 /* testAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testAudio.swift; sourceTree = "<group>"; };
 		526A4548233B0DC400ADEE66 /* DescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionCell.swift; sourceTree = "<group>"; };
 		52AC3B252327790E0046CD97 /* ShowDetailPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailPhotoViewController.swift; sourceTree = "<group>"; };
 		52BBFA562306D5CB00495E66 /* ChangePWViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePWViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +139,9 @@
 		8446C080230F8AD9000ABCD7 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		8446C0882321EA0A000ABCD7 /* PhotoDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetail.swift; sourceTree = "<group>"; };
 		84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+StickyHeader.swift"; sourceTree = "<group>"; };
+		84DF66AC233DC40B0080F6E0 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
+		84DF66AE233DC66C0080F6E0 /* CreateAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlbumViewController.swift; sourceTree = "<group>"; };
+		84DF66B1233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		84E9BA4522F941F4003EA693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84E9BA4722F941F4003EA693 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		84E9BA4A22F941F4003EA693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -218,6 +226,7 @@
 		6C57C8F1230FD6D2001D65EF /* AddAlbumUI */ = {
 			isa = PBXGroup;
 			children = (
+				84DF66B0233DC8D60080F6E0 /* AddAlbumVC */,
 				6C57C8F2230FD78D001D65EF /* AddAlbumTextFieldSet.swift */,
 				6C2A06EE2325F29A0060D7BA /* CustomFormView.swift */,
 				6C2A06FF2326945E0060D7BA /* CustomTextField.swift */,
@@ -239,7 +248,7 @@
 		6C57C8F9230FDF6A001D65EF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				6C5B8E442339C4220017B99C /* New Group */,
+				84DF66AC233DC40B0080F6E0 /* DynamicHeightCollectionView.swift */,
 				6C57C8F7230FDF52001D65EF /* UIColor+EKColor.swift */,
 				6C57C8FA230FE0C4001D65EF /* Font.swift */,
 				6C2A06F423260F030060D7BA /* UILabel+extension.swift */,
@@ -248,13 +257,6 @@
 				84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		6C5B8E442339C4220017B99C /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		6CABC7E12306DADF00D2AFBC /* AlbumCover */ = {
@@ -287,6 +289,7 @@
 				6C234F922305055B001561CA /* AlbumCoverViewController.swift */,
 				52BBFA562306D5CB00495E66 /* ChangePWViewController.swift */,
 				0D71EF0423222BCA00E4F7F7 /* FamilyCustomCell.swift */,
+				5262AE36233E0805007CA116 /* testAudio.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -321,6 +324,15 @@
 				526A4548233B0DC400ADEE66 /* DescriptionCell.swift */,
 			);
 			path = DisplayCell;
+			sourceTree = "<group>";
+		};
+		84DF66B0233DC8D60080F6E0 /* AddAlbumVC */ = {
+			isa = PBXGroup;
+			children = (
+				84DF66AE233DC66C0080F6E0 /* CreateAlbumViewController.swift */,
+				84DF66B1233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift */,
+			);
+			path = AddAlbumVC;
 			sourceTree = "<group>";
 		};
 		84E9BA3922F941F4003EA693 = {
@@ -516,6 +528,7 @@
 				5206680E23042F85002C61B6 /* IndividualSettingTableViewController.swift in Sources */,
 				8446C075230E4DEA000ABCD7 /* DisplayPhotoViewController.swift in Sources */,
 				520667F322FAEEAE002C61B6 /* EmailSignUpViewController.swift in Sources */,
+				5262AE37233E0805007CA116 /* testAudio.swift in Sources */,
 				8446C081230F8AD9000ABCD7 /* CommentCell.swift in Sources */,
 				6C0151D12300473700FEF794 /* SideMenuTableViewController.swift in Sources */,
 				6C234F932305055B001561CA /* AlbumCoverViewController.swift in Sources */,
@@ -533,6 +546,7 @@
 				8423A6FB22FE94720049B656 /* LoginNavigationController.swift in Sources */,
 				0D71EF032322247800E4F7F7 /* FamilyTableViewController.swift in Sources */,
 				6C2A06F523260F030060D7BA /* UILabel+extension.swift in Sources */,
+				84DF66B2233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift in Sources */,
 				84E9BA4822F941F4003EA693 /* LoginViewController.swift in Sources */,
 				6C3ECB9E22FC61FF003C89DB /* FamilyMainPageViewController.swift in Sources */,
 				526A4549233B0DC400ADEE66 /* DescriptionCell.swift in Sources */,
@@ -543,6 +557,7 @@
 				6C57C8FE2314AC19001D65EF /* PopUpAlter.swift in Sources */,
 				84ACE91B232CA41300E08756 /* UITableView+StickyHeader.swift in Sources */,
 				6C19AB8823347D630044EF30 /* TimelineField.swift in Sources */,
+				84DF66AD233DC40B0080F6E0 /* DynamicHeightCollectionView.swift in Sources */,
 				6C19AB8B233494610044EF30 /* TimelineView.swift in Sources */,
 				6C0DC6C82333474E005953DD /* AlbumCollectionViewCell.swift in Sources */,
 				52BBFA572306D5CB00495E66 /* ChangePWViewController.swift in Sources */,
@@ -552,6 +567,7 @@
 				6C1D3373232B7BA500169D3C /* FormElement.swift in Sources */,
 				6C2A06FE2326932C0060D7BA /* CustomTextFieldContent.swift in Sources */,
 				6C19AB8D23349E1A0044EF30 /* TimelineViewController.swift in Sources */,
+				84DF66AF233DC66C0080F6E0 /* CreateAlbumViewController.swift in Sources */,
 				8446C077230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift in Sources */,
 				84E9BA4622F941F4003EA693 /* AppDelegate.swift in Sources */,
 				6CABC7DE2306C99800D2AFBC /* AlbumDBController.swift in Sources */,
@@ -637,9 +653,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -694,9 +708,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -715,6 +727,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ITProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -736,6 +749,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ITProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

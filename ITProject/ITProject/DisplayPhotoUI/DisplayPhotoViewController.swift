@@ -15,6 +15,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 {
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
+    private static let descriptionTableViewCell = "DescriptionCell"
 
     private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.4
     private static let LIKES_ROW_HEIGHT = UIScreen.main.bounds.height * 0.05
@@ -85,6 +86,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.dataSource = self
 
         self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        self.tableView.rowHeight = UITableView.automaticDimension
         self.cmmentText.delegate = self
 
         // TO DO!!!!!!!!!!!!!!
@@ -197,7 +199,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.reloadData()
     }
 
-    // ASSUME : YOU NOT GONNA NEED TO RETRIEVE THESE AGAIN RELATIVE TO CERTAIN USER:
     private func storeCommentToServer(username: String, comment: String, photoUID: String)
     {
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, photoUID: photoUID)
@@ -311,8 +312,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
             return cell0
         }
-        else
-        {
+        else if (indexPath.row == 1) {
+            
+            let descriptionCell = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
+            descriptionCell.setDescriptionLabel(description: "TRY HERE wo cao ni ma bi de ri ni ma de xian ren abnban jian zhi jiu shi shabi yige woc ao niaw jdoaiwjd iojwaio joiaj oijwo ijaowij oiawj oiajw ioaj iojawoijaw")
+            descriptionCell.selectionStyle = UITableViewCell.SelectionStyle.none
+            return descriptionCell
+
+        }
+        else {
             // create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
 
@@ -326,85 +334,14 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
 
-    /*
-     disable expansion
-     */
-    func tableView(_: UITableView, didSelectRowAt _: IndexPath)
-    {
-        //        if (indexPath.row == 0) {
-        //            let headerCell =  tableView.cellForRow(at: indexPath)
-        //
-        //
-        //        }
-
-        //        if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
-        //            let selectedCell =
-        //                tableView.cellForRow(at: indexPath)as! ExpandCell
-        //
-        //            if selectedCell.cellState == ExpandCell.Work.Expand{
-        //                // start expand here, expand at most 5 at a time, until source end
-        //                expandTableView(selectedCell: selectedCell)
-        //            }else if selectedCell.cellState == ExpandCell.Work.Collapse{
-        //                // start collapse here, collapse all the way back to max_init_cells
-        //                collapseTableView(selectedCell: selectedCell, tableView: tableView )
-        //            }
-        //        }
-    }
-
-    //    private func collapseTableView(selectedCell: ExpandCell, tableView: UITableView){
-    //        let numOfRow = tableView.numberOfRows(inSection: 0)
-    //        var indexPaths = [IndexPath]()
-    //        let start = DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH+1
-    //        let end  = numOfRow-2
-    //        var a = 0
-    //
-    //        for i in start...end{
-    //            a+=1
-    //            print("removing : " + String(i))
-    //            let indexPath = IndexPath(row: i, section: 0)
-    //            indexPaths.append(indexPath)
-    //        }
-    //
-    //        removeLastCommentCellsFromList(numOfCells: end-start+1)
-    //
-    //        tableView.beginUpdates()
-    //        tableView.deleteRows(at: indexPaths, with: .automatic)
-    //        tableView.endUpdates()
-    //
-    //        selectedCell.setLogoExpand()
-    //    }
-
-    //    private func expandTableView(selectedCell: ExpandCell){
-    //        var indexPaths = [IndexPath]()
-    //        for _ in 1...DisplayPhotoViewController.MAXIMUM_EXPAND_LENGTH{
-    //            if commentsSource.count<=(commentCellsList.count){
-    //                print("no more source")
-    //                selectedCell.setLogoCollapse()
-    //                break
-    //            }
-    //            print("didSelectRowAt : " + "at " + String((commentCellsList.count)))
-    //            addCommentCellToList( commentStruct: commentsSource[(commentCellsList.count)])
-    //            let indexPath = IndexPath(row: tableView_cell_length-1, section: 0)
-    //            indexPaths.append(indexPath)
-    //        }
-    //
-    //        tableView.beginUpdates()
-    //        tableView.insertRows(at: indexPaths, with: .automatic)
-    //        tableView.endUpdates()
-    //
-    //        if commentsSource.count<=(commentCellsList.count){
-    //            print("no more source")
-    //            selectedCell.setLogoCollapse()
-    //        }
-    //    }
-
     func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
+        } else if indexPath.row == 1 {
+            return DisplayPhotoViewController.LIKES_ROW_HEIGHT*2
         }
-        else
-        {
+        else {
             return UITableView.automaticDimension
         }
     }
@@ -441,6 +378,78 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.headerView.addGestureRecognizer(headerViewGesture)
         self.displayPhotoImageView.addGestureRecognizer(zoomInGesture)
     }
+    
+    /*
+     disable expansion
+     */
+    func tableView(_: UITableView, didSelectRowAt _: IndexPath)
+    {
+        //        if (indexPath.row == 0) {
+        //            let headerCell =  tableView.cellForRow(at: indexPath)
+        //
+        //
+        //        }
+        
+        //        if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
+        //            let selectedCell =
+        //                tableView.cellForRow(at: indexPath)as! ExpandCell
+        //
+        //            if selectedCell.cellState == ExpandCell.Work.Expand{
+        //                // start expand here, expand at most 5 at a time, until source end
+        //                expandTableView(selectedCell: selectedCell)
+        //            }else if selectedCell.cellState == ExpandCell.Work.Collapse{
+        //                // start collapse here, collapse all the way back to max_init_cells
+        //                collapseTableView(selectedCell: selectedCell, tableView: tableView )
+        //            }
+        //        }
+    }
+    
+    //    private func collapseTableView(selectedCell: ExpandCell, tableView: UITableView){
+    //        let numOfRow = tableView.numberOfRows(inSection: 0)
+    //        var indexPaths = [IndexPath]()
+    //        let start = DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH+1
+    //        let end  = numOfRow-2
+    //        var a = 0
+    //
+    //        for i in start...end{
+    //            a+=1
+    //            print("removing : " + String(i))
+    //            let indexPath = IndexPath(row: i, section: 0)
+    //            indexPaths.append(indexPath)
+    //        }
+    //
+    //        removeLastCommentCellsFromList(numOfCells: end-start+1)
+    //
+    //        tableView.beginUpdates()
+    //        tableView.deleteRows(at: indexPaths, with: .automatic)
+    //        tableView.endUpdates()
+    //
+    //        selectedCell.setLogoExpand()
+    //    }
+    
+    //    private func expandTableView(selectedCell: ExpandCell){
+    //        var indexPaths = [IndexPath]()
+    //        for _ in 1...DisplayPhotoViewController.MAXIMUM_EXPAND_LENGTH{
+    //            if commentsSource.count<=(commentCellsList.count){
+    //                print("no more source")
+    //                selectedCell.setLogoCollapse()
+    //                break
+    //            }
+    //            print("didSelectRowAt : " + "at " + String((commentCellsList.count)))
+    //            addCommentCellToList( commentStruct: commentsSource[(commentCellsList.count)])
+    //            let indexPath = IndexPath(row: tableView_cell_length-1, section: 0)
+    //            indexPaths.append(indexPath)
+    //        }
+    //
+    //        tableView.beginUpdates()
+    //        tableView.insertRows(at: indexPaths, with: .automatic)
+    //        tableView.endUpdates()
+    //
+    //        if commentsSource.count<=(commentCellsList.count){
+    //            print("no more source")
+    //            selectedCell.setLogoCollapse()
+    //        }
+    //    }
 
     //    private func initCommentCellsList(){
     //

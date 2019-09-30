@@ -38,6 +38,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	// Constants and properties go here
 	private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
 	private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
+    private static let SHOW_TIMELINE_VIEW = "ShowTimeline"
+    
 	private var familyUID: String!
 	private var familyName: String?
 	private var familyProfileUID: String?
@@ -202,7 +204,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	{
 		self.items = [
 			ModelCollectionFlowLayout(title: "Album", image: UIImage(named: "imageIcon")),
-			ModelCollectionFlowLayout(title: "settingIcon", image: UIImage(named: "settingIcon")),
+			ModelCollectionFlowLayout(title: "Timeline", image: UIImage(named: "settingIcon")),
 			ModelCollectionFlowLayout(title: "imageIcon", image: UIImage(named: "imageIcon")),
 		]
 	}
@@ -240,6 +242,14 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 			// nil for now as we don't have any data
 			performSegue(withIdentifier: FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW, sender: nil)
 		}
+        
+        if funct.title == "Timeline"
+        {
+            // shows album covers view controller
+            // todo : we send the album covers data through the sender,
+            // nil for now as we don't have any data
+            performSegue(withIdentifier: FamilyMainPageViewController.SHOW_TIMELINE_VIEW, sender: nil)
+        }
 	}
 
 	///

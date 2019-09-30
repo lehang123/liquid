@@ -19,6 +19,7 @@ class AlbumCoverViewController: UIViewController {
     private let NO_REPEAT_MESSAGE = "Album name already exist. Try give a unique name"
     private let NON_EMPTY_MESSAGE = "Album name is empty"
 
+
     @IBOutlet var albumCollectionView: UICollectionView!
 
     /// User need to add the album
@@ -191,8 +192,10 @@ class AlbumCoverViewController: UIViewController {
                     if let error = error {
                         print("error at prepare AlbumCoverViewController", error)
                     } else {
-                        print("albumUID : ", albumUID, "name: ", albumDetailTVC.albumDetail.title)
+                        print("AlbumCoverViewC.prepare:::",detail.count)
+                        print("AlbumCoverViewC CALL ")
                         albumDetailTVC.reloadPhoto(newPhotos: detail)
+                        
                     }
                 }
             }
@@ -259,17 +262,30 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         guard orientation == .right else { return nil }
         
         //detects deletion from swiping gesture:
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { deleteAction, indexPath in
             // commits delete action to DB:
+
+//            let alertController = UIAlertController(title: "Alert title", message: "Message to display", preferredStyle: .alert)
+//
+//            // Create OK button
+//            let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
+//                print("Ok button tapped");
+//            }
+//            alertController.addAction(OKAction)
+//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action:UIAlertAction!) in
+//                print("Cancel button tapped");
+//            }
+//            alertController.addAction(cancelAction)
+//            self.present(alertController, animated: true, completion:nil)
             let currAlbum: AlbumDetail = self.albumsList.getAlbum(index: indexPath.row)
             AlbumDBController.getInstance().deleteAlbum(albumUID: currAlbum.UID)
-            
+
             //remove from UI:
             self.albumsList.removeAlbum(at: indexPath.row)
-            
-            
-            action.fulfill(with: .delete)
+            deleteAction.fulfill(with: .delete)
         }
+
 
         return [deleteAction]
     }
@@ -284,6 +300,7 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         var options = SwipeOptions()
         options.expansionStyle = .destructive
         options.transitionStyle = .drag
+       
         return options
     }
 }

@@ -10,9 +10,9 @@
 
 import UIKit
 import SwiftEntryKit
+import AVFoundation
 
-class CustomFormViewController: UIViewController {
-
+class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
 
     private var contentv : CustomFormView!
 
@@ -22,15 +22,17 @@ class CustomFormViewController: UIViewController {
     private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
 
+    
     public func initFormELement(formEle: FormElement){
         self.formEle = formEle
-        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setView()
+        
     }
+
 
 
     private func setView(){
@@ -137,6 +139,9 @@ class CustomFormViewController: UIViewController {
                 uploadString: formEle.uploadTitle
             )
             contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
+            
+            contentView.audioButton.addTarget(self, action: #selector(audioAction), for: .touchUpInside)
+            
              return contentView
             
         case .withoutImageView:
@@ -148,6 +153,7 @@ class CustomFormViewController: UIViewController {
                 withUploadFile: true,
                 uploadString: formEle.uploadTitle
             )
+            contentView.uploadButtonContent.addTarget(self, action: #selector(uploadAction), for: .touchUpInside)
             return contentView
             
         case .defaultForm:
@@ -173,6 +179,13 @@ class CustomFormViewController: UIViewController {
         imagePicker.allowsEditing = true
         
         self.present(imagePicker, animated: true, completion:  nil)
+    }
+    
+    // TODO :- ChengHong add your audio action here
+    @objc private func audioAction() {
+        print("audioButton Touched : Touched")
+        
+        
     }
     
     /// dismiss pop up form action
