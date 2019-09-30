@@ -83,7 +83,7 @@ class CreateAlbumViewController: UIViewController {
         super.viewDidLoad()
         addPhotosCollectionView.delegate = self
         addPhotosCollectionView.dataSource = self
-        
+        self.hideKeyboardWhenTappedAround()
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
 //        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width/3, height: UIScreen.main.bounds.width/3)
@@ -91,6 +91,7 @@ class CreateAlbumViewController: UIViewController {
         layout.minimumLineSpacing = 5
         addPhotosCollectionView.collectionViewLayout = layout
         
+        albumNameTextField.delegate = self
         
         let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
         thumbnailContentView.addGestureRecognizer(thumbnailTapped)
@@ -104,6 +105,20 @@ class CreateAlbumViewController: UIViewController {
         imagePicker.allowsEditing = true
                
         self.present(imagePicker, animated: true, completion:  nil)
+    }
+}
+
+extension CreateAlbumViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn : get called")
+        // end editing when user hit return
+        textField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldEndEditing : get called")
+        return true
     }
 }
 
@@ -344,3 +359,5 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
     }
 
 }
+
+
