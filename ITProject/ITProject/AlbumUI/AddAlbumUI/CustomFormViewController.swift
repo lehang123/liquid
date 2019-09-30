@@ -222,26 +222,6 @@ extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigatio
         if let im = self.albumThumbnailImage{
             self.contentv.updatePreView(image: im)
         }
-        
-        
-//        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
-//        let imageString = Util.GenerateUDID()!
-        
-//        self.contentv.updatePreView(imageUID: self.albumThumbnailString, imageExtension: Util.EXTENSION_JPEG)
-        
-//        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-//
-//            if url != nil{
-//                self.albumThumbnailString = imageString
-//                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
-//                // todo: update image from database
-//                self.contentv.updatePreView(imageUID: self.albumThumbnailString, imageExtension: Util.EXTENSION_JPEG)
-//            }
-//
-//        }, errorHandler: {e in
-//            print("you get error from Thumbnail choose")
-//            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-//        })
 
         dismiss(animated: true, completion: nil)
     }

@@ -280,7 +280,7 @@ class AlbumDBController
 	/// - Parameters:
 	///   - mediaPath: media's file path to be removed form album.
 	///   - albumUID: the albumUID that the media belongs to.
-	public func deleteMediaFromAlbum(mediaPath: String, albumUID: String)
+    public func deleteMediaFromAlbum(mediaPath: String, albumUID: String, ext : String)
 	{
 		// get all photos attached to this album:
 
@@ -293,12 +293,10 @@ class AlbumDBController
 				removeValue: mediaPath
 			)
 
-		// TODO: remove photo file from storage:
-		DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: mediaPath)
-		{ document, _ in
-			let ext: String = document?.get(AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION) as! String
-			Util.DeleteFileFromServer(fileName: mediaPath, fextension: ext)
-		}
+		// remove photo file from storage
+		
+        Util.DeleteFileFromServer(fileName: mediaPath, fextension: ext)
+		
 
 		// delete media document from media collection:
 		DBController.getInstance()

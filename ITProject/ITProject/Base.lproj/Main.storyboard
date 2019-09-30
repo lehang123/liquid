@@ -648,16 +648,32 @@
             </objects>
             <point key="canvasLocation" x="1989.375" y="809.15492957746483"/>
         </scene>
-        <!--Create Album View Controller-->
+        <!--Create Album Navigation Controller-->
+        <scene sceneID="Mot-H7-NVK">
+            <objects>
+                <navigationController id="z6A-qe-Ex8" userLabel="Create Album Navigation Controller" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="v43-jb-Q6m">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Zri-AL-l0K" kind="relationship" relationship="rootViewController" id="c3b-Il-bkj"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vjG-q0-uxl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="769" y="-1237"/>
+        </scene>
+        <!--CreateAlbum-->
         <scene sceneID="EIV-Je-tFA">
             <objects>
-                <viewController id="Zri-AL-l0K" customClass="CreateAlbumViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreateAlbumViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Zri-AL-l0K" customClass="CreateAlbumViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Poa-B0-LPk">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIC-2o-sTD">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="591"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2t-wS-yFr" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="676"/>
@@ -803,16 +819,29 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="RJ8-En-vYf"/>
                     </view>
+                    <navigationItem key="navigationItem" title="CreateAlbum" id="XId-cD-tzz">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="ABJ-z1-c7D">
+                            <connections>
+                                <action selector="cancelTapped:" destination="Zri-AL-l0K" id="EEv-5R-Ufi"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="UOj-YF-Vdc">
+                            <connections>
+                                <action selector="createTapped:" destination="Zri-AL-l0K" id="L2s-y6-xiv"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="addPhotosCollectionView" destination="1Xm-Bl-9Ey" id="dHa-Gl-j5I"/>
                         <outlet property="albumDescriptionTextView" destination="sz9-SQ-zeX" id="4pp-Fa-om6"/>
                         <outlet property="albumNameTextField" destination="40K-Hb-HNN" id="Zwu-BY-oeo"/>
+                        <outlet property="thumbnailContentView" destination="GAv-a3-X3O" id="xBb-qg-dpz"/>
                         <outlet property="thumbnailImageView" destination="2Bt-0z-Kmq" id="k03-oK-EXW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8VQ-8N-yav" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1987.5" y="1566.5492957746478"/>
+            <point key="canvasLocation" x="1761" y="-1407"/>
         </scene>
         <!--Side Menu Table View Controller-->
         <scene sceneID="h6m-9z-lZ6">
@@ -1041,6 +1070,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kyz-ob-OnI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3911" y="133"/>
+        </scene>
+        <!--Individual Setting Table View Controller-->
+        <scene sceneID="acx-R3-M0u">
+            <objects>
+                <tableViewController id="1za-bV-T0Z" customClass="IndividualSettingTableViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Hss-Ts-J48">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <sections>
+                            <tableViewSection id="6FH-Zn-7yv">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="60" id="xFa-e1-wKP">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xFa-e1-wKP" id="cs2-9P-epa">
+                                            <rect key="frame" x="0.0" y="0.0" width="292.5" height="60"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3e-ui-O1B">
+                                                    <rect key="frame" x="77.5" y="19.5" width="138" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="A3e-ui-O1B" firstAttribute="centerX" secondItem="cs2-9P-epa" secondAttribute="centerX" id="I36-4V-t2Y"/>
+                                                <constraint firstItem="A3e-ui-O1B" firstAttribute="centerY" secondItem="cs2-9P-epa" secondAttribute="centerY" id="Pe5-X1-deE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration">
+                                            <accessibilityTraits key="traits" startsMediaSession="YES"/>
+                                        </accessibility>
+                                        <connections>
+                                            <segue destination="s6D-b7-KSr" kind="show" id="MAc-qw-pwl"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="1za-bV-T0Z" id="aYf-NH-RQC"/>
+                            <outlet property="delegate" destination="1za-bV-T0Z" id="TpB-ob-tpL"/>
+                        </connections>
+                    </tableView>
+                    <size key="freeformSize" width="320" height="568"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kfA-TP-qNn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5790" y="137"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="stf-yr-PMm">
@@ -1292,6 +1372,7 @@
                     <connections>
                         <outlet property="albumCollectionView" destination="ZIf-3q-smk" id="6fa-WC-DLM"/>
                         <segue destination="5C4-fU-O7R" kind="show" identifier="ShowAlbumDetail" id="PuC-1c-kap"/>
+                        <segue destination="z6A-qe-Ex8" kind="presentation" identifier="PresentCreateAlbumVC" id="Geg-wu-Scd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kj7-l3-eNR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1311,7 +1392,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="item0" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqV-Dy-g6C">
-                                    <rect key="frame" x="0.0" y="-158" width="375" height="736"/>
+                                    <rect key="frame" x="0.0" y="-526" width="375" height="1472"/>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </imageView>
                             </subviews>
@@ -1443,7 +1524,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sdC-j0-sVZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1633" y="-649"/>
+            <point key="canvasLocation" x="860" y="-308"/>
         </scene>
         <!--Delegate-->
         <scene sceneID="8jZ-8q-mBh">
@@ -1773,8 +1854,8 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-dS-B8g">
-                                            <rect key="frame" x="300" y="11" width="49" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date of Birth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-dS-B8g">
+                                            <rect key="frame" x="252" y="11" width="97" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1834,8 +1915,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="dateOfBirthLabel" destination="LTz-Em-m5t" id="ArZ-q8-tZR"/>
                                     <outlet property="nameLabel" destination="3ZR-iy-06U" id="YRT-XG-Gx5"/>
-                                    <outlet property="phoneLabel" destination="LTz-Em-m5t" id="ArZ-q8-tZR"/>
                                     <outlet property="relationshipLabel" destination="Jwi-yV-YNb" id="PjQ-Oc-lcG"/>
                                 </connections>
                             </tableViewCell>
@@ -1869,4 +1950,7 @@
         <image name="menuIcon" width="22" height="22"/>
         <image name="settingIcon" width="108" height="110"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="MAc-qw-pwl"/>
+    </inferredMetricsTieBreakers>
 </document>
