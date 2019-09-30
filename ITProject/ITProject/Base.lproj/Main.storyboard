@@ -1869,11 +1869,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTz-Em-m5t" userLabel="Phone Label">
-<<<<<<< HEAD
-                                            <rect key="frame" x="252" y="11" width="42" height="21.5"/>
-=======
                                             <rect key="frame" x="307" y="11" width="42" height="21"/>
->>>>>>> c85b8c8b97500dac5a40266afb81d752d90c8880
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
