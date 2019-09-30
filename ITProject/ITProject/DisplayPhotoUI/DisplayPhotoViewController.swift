@@ -306,7 +306,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             //set cell0 reference to like and watched cell
             let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
 
-            // TODO: CHECK IF LIKED ALREADY IN THE PAST OR NOT
+            // if already liked previously, turn on the heart:
             if  photoDetail.hasLiked(){
                 cell0.likeButton.setSelected(selected: true, animated: false)
 
