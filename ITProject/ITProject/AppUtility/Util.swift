@@ -26,9 +26,14 @@ class Util {
     // Constants and properties go here
     public static let BUTTON_DISMISS = "dismiss"
     public static let EXTENSION_JPEG = "jpg"
+    public static let EXTENSION_M4A = "m4a"
+    public static let EXTENSION_MP4 = "mp4"
+    public static let EXTENSION_M4V = "m4v"
     public static let EXTENSION_PNG = "png"
     public static let EXTENSION_ZIP = "zip"
     public static let IMAGE_FOLDER = "images"
+    public static let VIDEO_FOLDER = "videos"
+    public static let AUDIO_FOLDER = "audios"
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
     public static let DEFAULT_IMAGE = "defaultImage"
@@ -41,6 +46,8 @@ class Util {
     public static func PrepareDocumentFolder() {
         DispatchQueue(label: "working_queue", qos: .userInitiated).async {
             CreateImageFolder()
+            CreateAudioFolder()
+            CreateVideoFolder()
             CreateTmpFolder()
         }
     }
@@ -511,8 +518,20 @@ class Util {
             fextension == ("." + EXTENSION_JPEG) ||
             fextension == EXTENSION_PNG ||
             fextension == ("." + EXTENSION_PNG) {
+            
             return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
+        }else if fextension == EXTENSION_MP4 ||
+            fextension == ("." + EXTENSION_MP4) ||
+            fextension == EXTENSION_M4V ||
+            fextension == ("." + EXTENSION_M4V) {
+            
+            return withPathSlash ? (VIDEO_FOLDER + "/") : VIDEO_FOLDER
+        }else if fextension == EXTENSION_M4A ||
+            fextension == ("." + EXTENSION_M4A) {
+            
+            return withPathSlash ? (AUDIO_FOLDER + "/") : AUDIO_FOLDER
         }
+        
         return nil
     }
 
@@ -540,6 +559,14 @@ class Util {
     public static func GetImageDirectory() -> URL {
         return GetDocumentsDirectory().appendingPathComponent(IMAGE_FOLDER, isDirectory: true)
     }
+    
+    public static func GetVideoDirectory() -> URL {
+        return GetDocumentsDirectory().appendingPathComponent(VIDEO_FOLDER, isDirectory: true)
+    }
+    
+    public static func GetAudioDirectory() -> URL {
+        return GetDocumentsDirectory().appendingPathComponent(AUDIO_FOLDER, isDirectory: true)
+    }
 
     public static func GetTmpDirectory() -> URL {
         return GetDocumentsDirectory().appendingPathComponent(TMP_FOLDER, isDirectory: true)
@@ -566,6 +593,18 @@ class Util {
     /// Create the image folder for later use
     public static func CreateImageFolder() {
         let dataPath = GetDocumentsDirectory().appendingPathComponent(IMAGE_FOLDER, isDirectory: true)
+        CreateFolderInDocuments(folderURL: dataPath)
+    }
+    
+    /// Create the Video folder for later use
+    public static func CreateVideoFolder() {
+        let dataPath = GetDocumentsDirectory().appendingPathComponent(VIDEO_FOLDER, isDirectory: true)
+        CreateFolderInDocuments(folderURL: dataPath)
+    }
+    
+    /// Create the Audio folder for later use
+    public static func CreateAudioFolder() {
+        let dataPath = GetDocumentsDirectory().appendingPathComponent(AUDIO_FOLDER, isDirectory: true)
         CreateFolderInDocuments(folderURL: dataPath)
     }
 

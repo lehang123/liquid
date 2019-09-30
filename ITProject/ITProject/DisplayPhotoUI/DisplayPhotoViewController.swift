@@ -39,9 +39,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     //    private var hasHiddenCells = false
 
     private var photoUID: String!
-    private var photoDetail: PhotoDetail!
+    private var photoDetail: MediaDetail!
 
-    public func setPhotoDetailData(photoDetail: PhotoDetail)
+    public func setPhotoDetailData(photoDetail: MediaDetail)
     {
         self.photoDetail = photoDetail
         self.fillCommentSource()
@@ -49,7 +49,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     public func fillCommentSource()
     {
-        let currSrc: [PhotoDetail.comment]? = self.photoDetail.getComments()
+        let currSrc: [MediaDetail.comment]? = self.photoDetail.getComments()
 
         currSrc?.forEach
         { item in

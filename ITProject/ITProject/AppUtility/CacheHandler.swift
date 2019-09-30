@@ -176,10 +176,10 @@ class CacheHandler: NSObject
 	/// <#Description#> get all Photos from database.
 	/// - Parameter currAlbum: get all photos from  curAlbum's
 	/// - Parameter completion: completion description
-	public func getAllPhotosInfo(currAlbum: String, completion: @escaping (_ allMedias: [PhotoDetail], _ error: Error?) -> Void = { _, _ in })
+	public func getAllPhotosInfo(currAlbum: String, completion: @escaping (_ allMedias: [MediaDetail], _ error: Error?) -> Void = { _, _ in })
 	{
         
-		var allMedias: [PhotoDetail] = [PhotoDetail]()
+		var allMedias: [MediaDetail] = [MediaDetail]()
 		let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: currAlbum)
 
 		print("getting currAlbumRef : " + currAlbumRef.documentID)
@@ -203,16 +203,16 @@ class CacheHandler: NSObject
 					// process comments
 					let currComments: [[String: Any]] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [[String: Any]]
 
-					var parsedComments: [PhotoDetail.comment] = [PhotoDetail.comment]()
+					var parsedComments: [MediaDetail.comment] = [MediaDetail.comment]()
                     //for each comment array, parse them:
 					currComments.forEach
 					{ commentRow in
-						parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String, message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
+						parsedComments.append(MediaDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String, message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
 //						print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
 					}
 
 					// parse all data:
-                    allMedias.append(PhotoDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as! Int))
+                    allMedias.append(MediaDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as! Int))
 				}
                 //pass data thru:
 				completion(allMedias, error)

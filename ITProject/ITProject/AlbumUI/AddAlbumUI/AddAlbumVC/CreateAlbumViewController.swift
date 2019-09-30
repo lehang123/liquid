@@ -8,6 +8,9 @@
 
 import Foundation
 import UIKit
+import Gallery
+import AVFoundation
+import AVKit
 
 class CreateAlbumViewController: UIViewController {
     
@@ -16,9 +19,17 @@ class CreateAlbumViewController: UIViewController {
     @IBOutlet weak var albumDescriptionTextView: UITextView!
     @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
     
-    var dummyPhotos = ["1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3", "1", "2", "3"]
+    private static let  ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH = 1
+    
+    var medias = [MediaDetail]()
+    
+    private var gallery:GalleryController!
+    
+    let editor: VideoEditing = VideoEditor()
     
     @IBAction func showLocationTapped(_ sender: Any) {
+        print(" show location touched ")
+
     }
     
     override func viewDidLoad()
@@ -28,12 +39,117 @@ class CreateAlbumViewController: UIViewController {
         addPhotosCollectionView.dataSource = self
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-       layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 10, right: 20)
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width/4, height: UIScreen.main.bounds.width/4)
-       layout.minimumInteritemSpacing = 5
-       layout.minimumLineSpacing = 5
-       addPhotosCollectionView.collectionViewLayout = layout
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width/3, height: UIScreen.main.bounds.width/3)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 5
+        addPhotosCollectionView.collectionViewLayout = layout
         
+    }
+    
+    
+}
+
+extension CreateAlbumViewController: GalleryControllerDelegate{
+    func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+        
+        Image.resolve(images: images, completion: {
+            uiImages in
+            print("galleryController : didSelectImages with length : " + String(uiImages.count))
+            // prase each every uiImageTo Media Detail
+            
+            uiImages.forEach({
+                uiImage in
+                
+                let mediaDetail = MediaDetail(title: "Unknown", description: "None for now", UID: Util.GenerateUDID(), likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0)
+                mediaDetail.cache = uiImage?.jpegData(compressionQuality: 1.0)
+                
+                self.addPhotosCollectionView.performBatchUpdates({
+                    self.medias.append(mediaDetail)
+                    let index = self.medias.count // the lastestUpdate
+                    let indexPath = IndexPath(item: index, section: 0)
+                    self.addPhotosCollectionView.insertItems(at: [indexPath])
+                }, completion: nil)
+
+            })
+
+            controller.dismiss(animated: true, completion: nil)
+            self.gallery = nil
+        })
+        
+    }
+    
+    func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
+        
+        controller.dismiss(animated: true, completion: nil)
+        gallery = nil
+        Util.ShowActivityIndicator(withStatus: "Editing video")
+        
+        
+        editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
+            DispatchQueue.main.async {
+                Util.DismissActivityIndicator()
+            }
+            if let tempPath = tempPath {
+                
+                 // temp Path : file:///Users/gonglehan/Library/Developer/CoreSimulator/Devices/68051ACC-8546-4EA1-8DCE-E20B7A4A93F0/data/Containers/Data/Application/75585C1C-A744-4A1C-B25F-C332DF2CEE75/tmp/547CF4AA-3AE9-451A-BA68-16756C89606A.mp4
+               
+                
+                let shortPath = tempPath.lastPathComponent as NSString
+                let onPath = tempPath.deletingLastPathComponent().absoluteString
+                let fileExt = shortPath.pathExtension
+                let filename = shortPath.deletingPathExtension
+                
+                
+                print("onPath : " + onPath)
+                print("pathExt : " + fileExt)
+                print("path : " + filename)
+                
+                Util.ZipFile(from: onPath as NSString, to: Util.GetFolderByExtension(fextension: fileExt, withPathSlash: false)! as NSString, fileName: filename, fextension: "." + fileExt, deleteAfterFinish: true)
+                
+                
+                
+                let media = MediaDetail(title: "a video", description: "this is a video", UID: filename, likes: [], comments: nil, ext: fileExt, watch: 0)
+                
+                var doesThumbnailMade = false
+                video.fetchThumbnail(completion: {
+                    thumbnailImage in
+                    
+                    if !doesThumbnailMade{
+                        
+                        doesThumbnailMade = true
+                           
+                        media.cache = thumbnailImage?.jpegData(compressionQuality: 1.0)
+                        media.thumbnailUID = Util.GenerateUDID()
+                        media.thumbnailExt = Util.EXTENSION_JPEG
+                        
+                        self.addPhotosCollectionView.performBatchUpdates({
+                           self.medias.append(media)
+                           let index = self.medias.count // the lastestUpdate
+                           let indexPath = IndexPath(item: index, section: 0)
+                           self.addPhotosCollectionView.insertItems(at: [indexPath])
+                        }, completion: nil)
+                    }
+
+                })
+            
+
+              // if you want to play the video
+//                  let controller = AVPlayerViewController()
+//
+//                  controller.player = AVPlayer(url: tempPath)
+//                  self.present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+      
+    }
+    
+    func galleryControllerDidCancel(_ controller: GalleryController) {
+        print("galleryController : galleryControllerDidCancel")
+        controller.dismiss(animated: true, completion: nil)
     }
     
     
@@ -54,7 +170,7 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
     ///   - section: An index number identifying a section in collectionView.
     /// - Returns: The number of rows in section.
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return dummyPhotos.count
+        return medias.count + CreateAlbumViewController.ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH
     }
 
     /// when album on clicked : open albumDetail controller
@@ -64,6 +180,38 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
+    
+    @objc func addPhotoTapped(sender _: UITapGestureRecognizer){
+        gallery = GalleryController()
+        gallery.delegate = self
+        Config.tabsToShow = [.imageTab, .videoTab]
+        present(gallery, animated: true, completion: nil)
+    }
+    
+    @objc func photoTapped(_ sender: UITapGestureRecognizer){
+        Util.ShowBottomAlertView(on: self, with: [ActionSheetDetail(title: "Delete photo", style: .destructive, action: {
+            action in
+            print("delete stuffs")
+            let cellTapped = sender.view as! AddPhotoCollectionViewCell
+            
+            self.addPhotosCollectionView.performBatchUpdates({
+                
+                let theIndex = self.medias.firstIndex(where: {
+                    media in
+                    return media.UID == cellTapped.UID
+                })
+                self.medias.remove(at: theIndex!)
+                let indexPath = IndexPath(item: theIndex!+1, section: 0)
+                self.addPhotosCollectionView.deleteItems(at: [indexPath])
+                
+            }, completion: nil)
+            
+            
+        }), ActionSheetDetail(title: "Cancel", style: .cancel, action: {
+            action in
+            print("cancel")
+        })])
+    }
 
     /// called in viewDidLoad
     /// - Parameters:
@@ -71,9 +219,27 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
     ///   - indexPath: The index path of the cell that was selected.
     /// - Returns: A configured cell object.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("how much time did you get called ")
+        
+//        print("collectionView how much time did you get called ")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCollectionVewCell", for: indexPath) as! AddPhotoCollectionViewCell
-        cell.TheImageView.image = #imageLiteral(resourceName: "item4")
+        
+        if indexPath.item == 0 {
+            cell.TheImageView.image = #imageLiteral(resourceName: "add")
+            
+            let tapped = UITapGestureRecognizer(target: self, action: #selector(self.addPhotoTapped(sender:)))
+            cell.addGestureRecognizer(tapped)
+        }else {
+            
+            cell.UID = medias[indexPath.item-1].UID
+            if (indexPath.item)<=medias.count { // make sure not out of bound
+                cell.TheImageView.image = UIImage(data: medias[indexPath.item-1].cache)
+            }
+            
+            // tap to delete photo
+            let tapped = UITapGestureRecognizer(target: self, action: #selector(self.photoTapped))
+            cell.addGestureRecognizer(tapped)
+        }
+        
         return cell
     }
 
