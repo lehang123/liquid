@@ -12,14 +12,12 @@
 import UIKit
 import SwiftEntryKit
 import Foundation
+import AVFoundation
 
 class CustomFormView: UIView {
     
     
     private let scrollViewVerticalOffset: CGFloat = 20
-    
-    // MARK: Props
-    
     private let titleLabel = UILabel()
     private let scrollView = UIScrollView()
     private var imageView = UIImageView()
@@ -29,6 +27,8 @@ class CustomFormView: UIView {
     private var imageViewContent: UIImage?
     private(set) var uploadButtonContent = UIButton()
     private var withUploadFile = false
+    private(set) var audioButton = UIButton()
+
     
 //    private var imagePicker = UIImagePickerController()
     
@@ -84,6 +84,7 @@ class CustomFormView: UIView {
         setupScrollView()
         setupTitleLabel()
         setupImageView()
+        setupAudioButton()
         setupTextFields(with: textFieldsContent)
         setupUploadView(uploadTitle: uploadString ?? "")
         setupButton(with: buttonContent)
@@ -99,6 +100,8 @@ class CustomFormView: UIView {
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK:- Set Up
     
     /// set up scroll view
     private func setupScrollView() {
@@ -129,9 +132,43 @@ class CustomFormView: UIView {
         // to-do: fix height
         imageView.heightAnchor.constraint(equalTo: self.imageView.widthAnchor, multiplier: 0.5).isActive = true
         imageView.image = imageViewContent
+        
         self.layoutIfNeeded()
         
     }
+    
+    private func setupAudioButton(){
+        scrollView.addSubview(audioButton)
+        audioButton.layoutToSuperview(.centerX)
+        audioButton.layout(.top, to: .bottom, of: uploadButtonContent, offset: 20)
+        audioButton.layoutToSuperview(.width, offset: -40)
+        audioButton.heightAnchor.constraint(equalTo: self.audioButton.widthAnchor, multiplier: 0.2).isActive = true
+        uploadButtonContent.layer.cornerRadius = 5
+        
+        audioButton.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
+        audioButton.setTitle("Audio Test", for: .normal)
+        audioButton.setImage(UIImage(named: "uploadIcon"), for: .normal)
+
+
+        audioButton.setTitleColor(.gray, for: .normal)
+        audioButton.setTitleColor(UIColor.black, for: .highlighted)
+        
+        
+        audioButton.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
+        audioButton.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
+        
+        
+        let buttonWidth = scrollView.frame.width - 115
+        let bound = CGRect(x: 0,y: 0, width: buttonWidth, height: buttonWidth * 0.2)
+        
+        audioButton.createDashedLine(bound: bound, color: .selfcOrg, strokeLength: 8, gapLength: 6, width: 2)
+        
+        
+        self.layoutIfNeeded()
+        
+    }
+    
+
     
     /// set up text fields layout
      /// - Parameter textFieldsContent: form textFields content
@@ -173,7 +210,7 @@ class CustomFormView: UIView {
 
             uploadButtonContent.setTitleColor(.gray, for: .normal)
             uploadButtonContent.setTitleColor(UIColor.black, for: .highlighted)
-            uploadButtonContent.setImage(#imageLiteral(resourceName: "uploadIcon"), for: .normal)
+            
             
             uploadButtonContent.imageEdgeInsets = UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 34)
             uploadButtonContent.titleEdgeInsets = UIEdgeInsets(top: 6,left: 20,bottom: 6,right: 14)
@@ -202,13 +239,14 @@ class CustomFormView: UIView {
         }
         buttonsBarContent.content[1] = extractcontent
         
-            buttonBarView = EKButtonBarView(with: buttonsBarContent)
+        buttonBarView = EKButtonBarView(with: buttonsBarContent)
         buttonBarView.clipsToBounds = true
         scrollView.addSubview(buttonBarView)
         buttonBarView.expand()
         
         if(withUploadFile) {
-            buttonBarView.layout(.top, to: .bottom, of: uploadButtonContent, offset: 20)
+            //buttonBarView.layout(.top, to: .bottom, of: uploadButtonContent, offset: 20)
+            buttonBarView.layout(.top, to: .bottom, of: audioButton, offset: 20)
         } else {
             buttonBarView.layout(.top, to: .bottom, of: textFieldViews.last!, offset: 20)
         }
