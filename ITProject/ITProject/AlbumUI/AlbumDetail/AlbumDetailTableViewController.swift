@@ -15,7 +15,7 @@ import Firebase
 class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
     
-    var albumContents = [PhotoDetail]()
+    var albumContents = [MediaDetail]()
     
     /// delete message
     private static let DELETE_PHOTO_TEXT = "Delete photo"
@@ -82,7 +82,7 @@ class AlbumDetailTableViewController: UITableViewController {
     
     /// reload the album's photos when there is a big change
     /// - Parameter newPhotos: newPhotos
-    func reloadPhoto(newPhotos: [PhotoDetail]){
+    func reloadPhoto(newPhotos: [MediaDetail]){
         self.displayPhotoCollectionView?.performBatchUpdates({
             var indexPaths = [IndexPath]()
             //make sure it's clear
@@ -108,7 +108,7 @@ class AlbumDetailTableViewController: UITableViewController {
     
     /// called when new photo get added in and update UI
     /// - Parameter newPhotos: the new photo
-    func updatePhoto(newPhoto: PhotoDetail){
+    func updatePhoto(newPhoto: MediaDetail){
         if !albumContents.contains(newPhoto){
             self.displayPhotoCollectionView?.performBatchUpdates({
                 albumContents.append(newPhoto)
@@ -206,7 +206,7 @@ class AlbumDetailTableViewController: UITableViewController {
                                         if url != nil{
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
                                             
-                                                self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                self.updatePhoto(newPhoto: MediaDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
                                                 // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
@@ -220,7 +220,7 @@ class AlbumDetailTableViewController: UITableViewController {
 
     /// view photo detail, present on display photo view controller
     /// - Parameter photoDetail: the photo that user wants to see
-    func viewPhoto(photoDetail: PhotoDetail) {
+    func viewPhoto(photoDetail: MediaDetail) {
         
         self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
     }
@@ -231,7 +231,7 @@ class AlbumDetailTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
-                let photoDetail = sender as! PhotoDetail
+                let photoDetail = sender as! MediaDetail
                 photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
 
             }

@@ -1,5 +1,5 @@
 //
-//  PhotoDetail.swift
+//  MeidaDetail.swift
 //  ITProject
 //
 //  Created by Gong Lehan on 6/9/19.
@@ -12,7 +12,7 @@ import UIKit
 import Firebase
 
 /// Manages each photo's attributes and interactions for the UI.
-class PhotoDetail: Equatable
+class MediaDetail: Equatable
 {
 	public struct comment: Equatable
 	{
@@ -116,12 +116,14 @@ class PhotoDetail: Equatable
             let idx : Int = self.likes!.firstIndex(of: currentUserReference)!
             self.likes!.remove(at: idx)
         }
-        
-        
-    
 	}
+    
+    var cache: Data!
+    
+    var thumbnailUID:String!
+    var thumbnailExt:String!
 
-	/// photo's comment
+	/// media's comment
 	private var comments: [comment]!
 
 	public func getComments() -> [comment]!
@@ -144,7 +146,7 @@ class PhotoDetail: Equatable
 		self.comments = self.comments.filter { $0 != comment }
 	}
 
-	static func == (lhs: PhotoDetail, rhs: PhotoDetail) -> Bool
+	static func == (lhs: MediaDetail, rhs: MediaDetail) -> Bool
 	{
 		return lhs.UID == rhs.UID
 	}

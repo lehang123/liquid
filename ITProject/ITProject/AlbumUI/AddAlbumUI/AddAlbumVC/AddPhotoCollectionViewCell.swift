@@ -11,5 +11,6 @@ import UIKit
 
 class AddPhotoCollectionViewCell: UICollectionViewCell{
     
+    var UID: String!
     @IBOutlet weak var TheImageView: UIImageView!
 }
