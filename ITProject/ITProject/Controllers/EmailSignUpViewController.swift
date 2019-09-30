@@ -121,7 +121,7 @@ class EmailSignUpViewController: UIViewController
 					}
 					else
 					{
-                        print(e)
+//                        print(e)
                         print("else run:::")
                         print("couldn't find:"+self.joinFamilyIDField.text! )
 						Util.DismissActivityIndicator()

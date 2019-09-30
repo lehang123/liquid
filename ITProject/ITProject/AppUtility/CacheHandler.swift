@@ -92,7 +92,7 @@ class CacheHandler: NSObject
 			userDocument, error in
 			if let userDocument = userDocument, userDocument.exists
 			{
-				var data: [String: Any] = userDocument.data()!
+                let data: [String: Any] = userDocument.data()!
 
 				let gender = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
 

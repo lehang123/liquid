@@ -117,7 +117,7 @@ class FamilyTableViewController: UITableViewController
 			cell.nameLabel.text = self.familyMembers[indexPath.row - 1].name
 			cell.relationshipLabel.text =  rel
             cell.dateOfBirthLabel.text = self.familyMembers[indexPath.row - 1].dateOfBirth?.description ?? "Not Available"
-            print("values of relationship ", self.familyMembers[indexPath.row - 1].relationship)
+//            print("values of relationship ", self.familyMembers[indexPath.row - 1].relationship)
             
 			return cell
 		}

@@ -431,7 +431,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
                 print("confirmed deleting photo")
                 let photoView: AlbumDetailPhotoCollectionViewCell = sender.view as! AlbumDetailPhotoCollectionViewCell
                 //remove at DB:
-                print("ext is : ", self.albumContents[photoView.indexInView].ext)
+//                print("ext is : ", self.albumContents[photoView.indexInView].ext)
 
                 AlbumDBController.getInstance().deleteMediaFromAlbum(mediaPath: self.albumContents[photoView.indexInView].UID, albumUID: self.albumDetail.UID , ext: self.albumContents[photoView.indexInView].ext)
 
