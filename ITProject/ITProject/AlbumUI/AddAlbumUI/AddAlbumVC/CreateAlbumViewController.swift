@@ -12,20 +12,66 @@ import Gallery
 import AVFoundation
 import AVKit
 
+
+// extension for string to remove whiteSpace
+extension String {
+    func removingWhitespaces() -> String {
+        return components(separatedBy: .whitespaces).joined()
+    }
+}
+
 class CreateAlbumViewController: UIViewController {
+    
+    private static let ALBUM_NAME_EMPTY_ALERT_MESSAGE = "album name cannot be empty"
+    private static let ALBUM_NAME_EMPTY_ALERT_TITLE = "empty album name"
+    private static let ALBUM_NAME_REPEAT_ALERT_MESSAGE = "album name already exist"
+    private static let ALBUM_NAME_REPEAT_ALERT_TITLE = "repeat album name"
+    private static let OK_ACTION = "Ok"
     
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var albumNameTextField: UITextField!
     @IBOutlet weak var albumDescriptionTextView: UITextView!
     @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
     
+    @IBOutlet weak var thumbnailContentView: UIView!
+    
+    var delegate: CreateAlbumViewControllerDelegate!
+
     private static let  ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH = 1
     
     var medias = [MediaDetail]()
     
     private var gallery:GalleryController!
     
-    let editor: VideoEditing = VideoEditor()
+    private let editor: VideoEditing = VideoEditor()
+    // imagePicker that to open photos library
+    private var imagePicker:UIImagePickerController!
+    
+    
+    @IBAction func createTapped(_ sender: Any) {
+        
+        // create new album like the old day
+        let nameField = albumNameTextField.text!
+    
+        if nameField.removingWhitespaces() == ""{
+            Util.ShowAlert(title: CreateAlbumViewController.ALBUM_NAME_EMPTY_ALERT_TITLE, message: CreateAlbumViewController.ALBUM_NAME_EMPTY_ALERT_MESSAGE, action_title: CreateAlbumViewController.OK_ACTION, on: self)
+        }else if delegate.checkForRepeatName(album: nameField) {
+            Util.ShowAlert(title: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateAlbumViewController.OK_ACTION, on: self)
+        }else {// pass name check start creating album
+            dismiss(animated: true, completion: {
+                
+                self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text)
+            
+            })
+        }
+        
+    }
+    
+    @IBAction func cancelTapped(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
     
     @IBAction func showLocationTapped(_ sender: Any) {
         print(" show location touched ")
@@ -45,14 +91,65 @@ class CreateAlbumViewController: UIViewController {
         layout.minimumLineSpacing = 5
         addPhotosCollectionView.collectionViewLayout = layout
         
+        
+        let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
+        thumbnailContentView.addGestureRecognizer(thumbnailTapped)
     }
     
+    @objc func addThumbnailTapped(sender _: UITapGestureRecognizer){
+        print("addThumbnailTapped : tapped")
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+               
+        self.present(imagePicker, animated: true, completion:  nil)
+    }
+}
+
+// we use imagePicker to choose ablum thumb nail since there is only one image allowed
+extension CreateAlbumViewController:UIImagePickerControllerDelegate
+        ,UINavigationControllerDelegate{
+
+        /// image picker from photo gallery
+        /// - Parameter picker: image picker controller
+        /// - Parameter info: info
+    internal func imagePickerController(_ picker: UIImagePickerController,
+                                        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        
+        var thumbnailImage:UIImage!
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            thumbnailImage =
+            editedImage.withRenderingMode(.alwaysOriginal)
+        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            thumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
+        }
+        
+        if let im = thumbnailImage{
+            self.thumbnailImageView.image = im
+        }
+
+        dismiss(animated: true, completion: nil)
+    }
     
+    /* delegate function from the UIImagePickerControllerDelegate
+     called when canceled button pressed, get out of photo library
+     */
+    
+    /// cancel image picker controller
+    /// - Parameter picker: image picker controller
+    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController){
+        
+        print ("imagePickerController: Did canceled pressed !!")
+        picker.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension CreateAlbumViewController: GalleryControllerDelegate{
+    
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
-        
+        // todo : need to make sure is thumbnail selecting photo or the photo
         Image.resolve(images: images, completion: {
             uiImages in
             print("galleryController : didSelectImages with length : " + String(uiImages.count))
@@ -79,6 +176,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
         
     }
     
+    // when get video
     func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
         
         controller.dismiss(animated: true, completion: nil)
@@ -120,7 +218,9 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                         doesThumbnailMade = true
                            
                         media.cache = thumbnailImage?.jpegData(compressionQuality: 1.0)
-                        media.thumbnailUID = Util.GenerateUDID()
+                        
+                        
+                        media.thumbnailUID = filename
                         media.thumbnailExt = Util.EXTENSION_JPEG
                         
                         self.addPhotosCollectionView.performBatchUpdates({

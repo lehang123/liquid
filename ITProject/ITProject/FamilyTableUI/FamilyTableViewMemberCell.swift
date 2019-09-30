@@ -13,5 +13,5 @@ class FamilyTableViewMemberCell: UITableViewCell
 {
 	@IBOutlet var nameLabel: UILabel!
 	@IBOutlet var relationshipLabel: UILabel!
-	@IBOutlet var phoneLabel: UILabel!
+	@IBOutlet var dateOfBirthLabel: UILabel!
 }

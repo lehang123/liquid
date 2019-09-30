@@ -12,6 +12,49 @@ import SwipeCellKit
 import UIKit
 import UPCarouselFlowLayout
 
+
+protocol CreateAlbumViewControllerDelegate {
+    func checkForRepeatName(album name: String)->Bool
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String)
+}
+
+extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
+    
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String) {
+        Util.ShowActivityIndicator(withStatus: "Creating Album...")
+        let imageUid = Util.GenerateUDID()
+        Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!, metadata: nil, fileName: imageUid!, fextension: Util.EXTENSION_JPEG, completion: { url in
+            Util.DismissActivityIndicator()
+            if url != nil {
+                
+                // add album to db
+                AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDescription, thumbnail: imageUid!, thumbnailExt: Util.EXTENSION_JPEG, completion: {
+                    docRef in
+                    
+                    self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
+                })
+                
+                // todo : now expcet album itself, it also upload the image that already choosen.
+                // todo : create another field for db to record location
+            }
+
+        }, errorHandler: { e in
+            print("you get error from Thumbnail choose")
+            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+        })
+
+        
+    }
+    
+    func checkForRepeatName(album name: String)->Bool {
+        
+        return albumsList.fetchAlbumArray().contains(where: {
+            album in
+            return album.title == name
+        })
+    }
+}
+
 class AlbumCoverViewController: UIViewController {
     // Constants and properties go here
     private static let NIB_NAME = "AlbumCollectionViewCell"
@@ -27,13 +70,29 @@ class AlbumCoverViewController: UIViewController {
     @IBAction func AddAlbumPressed(_: Any) {
         print("AddAlbumPressed : ")
 
-        let VC1 = storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
+        // todo : delete this, keep only new version when done
+        
+        let actions = [ActionSheetDetail(title: "old version", style: .default, action: {
+            action in
+            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
 
-        let formEle = setupFormELement(customFormVC: VC1)
-        VC1.initFormELement(formEle: formEle)
-        present(VC1, animated: true, completion: {
-            VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-        })
+            let formEle = self.setupFormELement(customFormVC: VC1)
+                    VC1.initFormELement(formEle: formEle)
+            self.present(VC1, animated: true, completion: {
+                        VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+                    })
+        }), ActionSheetDetail(title: "new version", style: .default, action: {
+            action in
+            
+            self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
+            
+        }), ActionSheetDetail(title: "Cancel", style: .cancel, action: {
+            action in
+            
+        })]
+        
+        Util.ShowBottomAlertView(on: self, with: actions)
+        
     }
 
     /// <#Description#>
@@ -76,7 +135,7 @@ class AlbumCoverViewController: UIViewController {
                                              // todo : add the thumbnail is a dummy now, and, update cache
                                              AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG, completion: {
                                                  docRef in
-                                                 print("showSignupForm : are you here ?")
+                                                 
                                                  self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
                                              })
                                          }
@@ -110,7 +169,7 @@ class AlbumCoverViewController: UIViewController {
 
     /// loads all the albums into UI
     /// - Parameters:
-    ///   - newAlbumTitle: new album title description
+    ///   - newAlbumTitle: new album title
     ///   - newAlbumDescrp: new album descrpiton
     ///   - UID: user id
     ///   - imageUID: imageUID
@@ -154,6 +213,7 @@ class AlbumCoverViewController: UIViewController {
 
     struct Storyboard {
         static let showAlbumDetail = "ShowAlbumDetail"
+        static let presentCreateAlbumVC = "PresentCreateAlbumVC"
     }
 
     override func viewDidLoad() {
@@ -192,11 +252,25 @@ class AlbumCoverViewController: UIViewController {
                     if let error = error {
                         print("error at prepare AlbumCoverViewController", error)
                     } else {
-                        print("albumUID : ", albumUID, "name: ", albumDetailTVC.albumDetail.title)
+                        print("AlbumCoverViewC.prepare:::",detail.count)
+                        print("AlbumCoverViewC CALL ")
                         albumDetailTVC.reloadPhoto(newPhotos: detail)
+                        
                     }
                 }
             }
+        }else if segue.identifier == Storyboard.presentCreateAlbumVC{
+            // Get the presented navigationController and the editViewController it contains
+                  let navigationController = segue.destination as! UINavigationController
+                  let createAlbumViewController = navigationController.topViewController as! CreateAlbumViewController
+                  
+                  // this is how you solve the iOS 13 drop down problem
+                  // Set the editViewController to be the delegate of the presentationController for this presentation,
+                  // so that editViewController can respond to attempted dismissals
+//                  navigationController.presentationController?.delegate = createAlbumViewController
+                  
+                  // Set ourself as the delegate of editViewController, so we can respond to editViewController cancelling or finishing
+                  createAlbumViewController.delegate = self
         }
     }
 

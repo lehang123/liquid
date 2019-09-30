@@ -39,8 +39,8 @@ class AlbumsList {
                                 coverImageExtension: imageExtension)
 
         addNewAlbum(newAlbum: album, addToHead: true)
+
     }
-    
     /// add new album
     /// - Parameter newAlbum: album detail information
     /// - Parameter addToHead: if the album wanted added at first

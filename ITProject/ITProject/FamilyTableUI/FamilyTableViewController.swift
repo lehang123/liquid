@@ -18,7 +18,7 @@ struct FamilyMember: Equatable
 	}
 
 	let UID: String!
-	let phone: String?
+	let dateOfBirth: Date?
 	let name: String?
 	let relationship: String?
 }
@@ -27,8 +27,8 @@ class FamilyTableViewController: UITableViewController
 {
 	//    private var data = [CellData]();
 
-	private let dummyFamilyMembers = [FamilyMember(UID: Util.GenerateUDID(), phone: "18006123153", name: "Darth Vader", relationship: "Father"),
-	                                  FamilyMember(UID: Util.GenerateUDID(), phone: "2312312", name: "Luke Sky Walker", relationship: "Son")]
+//	private let dummyFamilyMembers = [FamilyMember(UID: Util.GenerateUDID(), phone: "18006123153", name: "Darth Vader", relationship: "Father"),
+//	                                  FamilyMember(UID: Util.GenerateUDID(), phone: "2312312", name: "Luke Sky Walker", relationship: "Son")]
 
 	private var familyMembers = [FamilyMember]()
 
@@ -41,25 +41,54 @@ class FamilyTableViewController: UITableViewController
 	private let headerCut: CGFloat = 0
 	private static let HEADER_MIN_HEIGHT = UIScreen.main.bounds.height * 0.2
 
-	private static let INFO_DESCRIB_CELL = "InfoDescriCell"
-	private static let FAMILY_MEMEBER_CELL = "FamilyMemberCell"
+	private static let INFO_DESCRIPTION_CELL = "InfoDescriCell"
+	private static let FAMILY_MEMBER_CELL = "FamilyMemberCell"
 	private static let INTRODUCTION_ROW = 1
 
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
+        self.headerView = self.tableView.tableHeaderView
+        self.updateHeaderlayout = CAShapeLayer()
+        self.tableView.UpdateView(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut)
+       // self.populateData()
+        Util.ShowActivityIndicator()
 
-		self.familyMembers = self.dummyFamilyMembers
+        CacheHandler.getInstance().getFamilyMembersInfo { (familyMembers, error) in
+            if let error = error {
+                print("error in populateData::: ", error )
+                Util.DismissActivityIndicator()
+            }else{
+                self.familyMembers = familyMembers
+                print(familyMembers.count)
+                print("populateData  runs")
+                Util.DismissActivityIndicator()
 
-		self.headerView = self.tableView.tableHeaderView
-		self.updateHeaderlayout = CAShapeLayer()
-		self.tableView.UpdateView(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut)
+                self.tableView.reloadData()
+                
+
+            }
+        }
+		
 
 		//        populateData()
 		//        self.tableView.register(FamilyCustomCell.self, forCellReuseIdentifier: "custom")
 		//        self.tableView.rowHeight = UITableView.automaticDimension
 		//        self.tableView.estimatedRowHeight = 400
-	}
+    }
+    /// Populates the data for family table with FamilyMembers data type.
+    private func populateData(){
+        CacheHandler.getInstance().getFamilyMembersInfo { (familyMembers, error) in
+            if let error = error {
+                print("error in populateData::: ", error )
+            }else{
+                self.familyMembers = familyMembers
+                print(familyMembers.count)
+                print("populateData  runs")
+                
+            }
+        }
+    }
 
 	override func scrollViewDidScroll(_: UIScrollView)
 	{
@@ -74,17 +103,22 @@ class FamilyTableViewController: UITableViewController
 	override func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
 	{
 		if indexPath.row == 0 {
-			let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.INFO_DESCRIB_CELL)
+			let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.INFO_DESCRIPTION_CELL)
 
 			return cell!
 		}
 		else
 		{
-			let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.FAMILY_MEMEBER_CELL) as! FamilyTableViewMemberCell
+            var rel :String?  = self.familyMembers[indexPath.row - 1].relationship
+            if (rel?.isEmpty ??  false){
+                rel = "Not Available"
+            }
+			let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.FAMILY_MEMBER_CELL) as! FamilyTableViewMemberCell
 			cell.nameLabel.text = self.familyMembers[indexPath.row - 1].name
-			cell.relationshipLabel.text = self.familyMembers[indexPath.row - 1].relationship
-			cell.phoneLabel.text = self.familyMembers[indexPath.row - 1].phone
-
+			cell.relationshipLabel.text =  rel
+            cell.dateOfBirthLabel.text = self.familyMembers[indexPath.row - 1].dateOfBirth?.description ?? "Not Available"
+//            print("values of relationship ", self.familyMembers[indexPath.row - 1].relationship)
+            
 			return cell
 		}
 	}
