@@ -26,6 +26,7 @@ class RegisterDBController
 	public static let USER_DOCUMENT_FIELD_GENDER = "gender"
 	/// user's phone number
 	public static let USER_DOCUMENT_FIELD_PHONE = "phone"
+    public static let USER_DOCUMENT_FIELD_DATE_OF_BIRTH = "date_of_birth"
 
 	/* constant for FAMILIES collections */
 	public static let FAMILY_COLLECTION_NAME = "families"
@@ -40,7 +41,7 @@ class RegisterDBController
 	/// paths to family profile pict
 	public static let FAMILY_DOCUMENT_FIELD_THUMBNAIL = "profile_picture"
 	public static let FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT = "profile_picture_ext"
-
+    
 	private static var single: RegisterDBController!
 
 	init() {}
@@ -63,12 +64,13 @@ class RegisterDBController
 	///   - username: the username of user.
 	public func AddUser(familyUID: String, userUID: String, username: String)
 	{
+        //TODO: change DATE_OF_BIRTH to something else
 		let familyDocumentReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: familyUID)
 		DBController.getInstance().addDocumentToCollectionWithUID(documentUID: userUID, inputData: [
 			RegisterDBController.USER_DOCUMENT_FIELD_NAME: username,
 			RegisterDBController.USER_DOCUMENT_FIELD_FAMILY: familyDocumentReference,
 			RegisterDBController.USER_DOCUMENT_FIELD_POSITION: "",
-			RegisterDBController.USER_DOCUMENT_FIELD_PHONE: "",
+            RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH: Timestamp(date: Date()),
 			RegisterDBController.USER_DOCUMENT_FIELD_GENDER: "",
 		], collectionName:
 		RegisterDBController.USER_COLLECTION_NAME)

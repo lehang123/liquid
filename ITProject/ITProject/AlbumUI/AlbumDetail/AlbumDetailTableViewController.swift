@@ -104,6 +104,7 @@ class AlbumDetailTableViewController: UITableViewController {
             
             if (newPhotos.count  > 0) {
                 for i in 0...newPhotos.count - 1 {
+                    
                     self.albumContents.append(newPhotos[i])
                     // first one for description
                     indexPaths.append(IndexPath(item: i, section: 0))
@@ -133,25 +134,32 @@ class AlbumDetailTableViewController: UITableViewController {
     /// add photo button get tapped, pop up add photo form
     @objc private  func addPhotosTapped(){
         print("addPhotosTapped : Tapped")
-        
-        // todo : here !!!! to change the tap to action sheet bottom
-        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.SELECT_FROM_ALBUM_TEXT, style: .default, action: {
-            action in
-            
-            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
+        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
 
-            let formEle = self.setupFormELement(customFormVC: VC1)
-            VC1.initFormELement(formEle: formEle)
-            self.present(VC1, animated:true, completion: {
-                VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-            })
-            
-        }), ActionSheetDetail(title: AlbumDetailTableViewController.TAKE_PHOTO_TEXT, style: .default, action: {
-            action in
-            
-            print("open take photo view")
-        }),  ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: nil)]
-        Util.ShowBottomAlertView(on: self, with: actions)
+           let formEle = self.setupFormELement(customFormVC: VC1)
+           VC1.initFormELement(formEle: formEle)
+           self.present(VC1, animated:true, completion: {
+               VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+           })
+        // todo : here !!!! to change the tap to action sheet bottom
+//        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.SELECT_FROM_ALBUM_TEXT, style: .default, action: {
+//            action in
+//            print("im run")
+//
+//            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
+//
+//            let formEle = self.setupFormELement(customFormVC: VC1)
+//            VC1.initFormELement(formEle: formEle)
+//            self.present(VC1, animated:true, completion: {
+//                VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+//            })
+//
+//        }), ActionSheetDetail(title: AlbumDetailTableViewController.TAKE_PHOTO_TEXT, style: .default, action: {
+//            action in
+//
+//            print("open take photo view")
+//        }),  ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: nil)]
+//        Util.ShowBottomAlertView(on: self, with: actions)
         
         
     }
@@ -199,7 +207,7 @@ class AlbumDetailTableViewController: UITableViewController {
                      cancelAction:{},
                      okAction: {
                         /* todo : number of watch and like should be added
-                        */
+                        *   done*/
 
                         customFormVC.dismissWithAnimation(){
                                 imageData in
@@ -283,34 +291,46 @@ class AlbumDetailTableViewController: UITableViewController {
     /// - Returns: table view cell
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
+        
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailDescrpCell, for: indexPath) as! AlbumDetailDescrpTableViewCell
             cell.descrp = albumDetail
             cell.selectionStyle = .none
             print("AlbumDetailTableViewController.tableView.cell :::", cell)
-            return cell
+            return cell;
+            
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoTableViewCell
-            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
             
-            cell.addGestureRecognizer(longPressRecognizer)
-
+//            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+//
+//            cell.addGestureRecognizer(longPressRecognizer)
             return cell
+            
         }
-    }
-    
-    /// long pressed : used on imageView, when pressed, tried delete
-    /// - Parameter sender: senderGesture, attached on image
-    @objc func longPressed(sender: UILongPressGestureRecognizer)
-    {
-        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive, action: { (action) in
-            print("didPress block")
-        }), ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: { (action) in
-            print("didPress cancel")
-        }) ]
-        Util.ShowBottomAlertView(on: self, with: actions)
         
     }
+    
+//    /// long pressed : used on imageView, when pressed, tried delete
+//    /// - Parameter sender: senderGesture, attached on image
+//    @objc func longPressed(sender: UILongPressGestureRecognizer)
+//    {
+//        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive, action: { (action) in
+//            print("confirmed deleting photo")
+//
+//            let photo = sender as! AlbumDetailPhotoTableViewCell
+////            DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: String, collectionName: <#T##String#>)
+////            print(sender)
+//        print(action)
+//
+//        }), ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: { (action) in
+//            print("cancelled deleting photo")
+//            print(sender)
+//
+//        }) ]
+//        Util.ShowBottomAlertView(on: self, with: actions)
+//
+//    }
     
 
     /// set table view delegate and dataSource
@@ -387,7 +407,10 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
             let photo = albumContents[indexPath.item]
-
+            cell.indexInView = indexPath.item
+            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
+            
+            cell.addGestureRecognizer(longPressRecognizer)
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
             /* load image with the cell is visible */
@@ -399,6 +422,33 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             })
             
             return cell
+        }
+     /// long pressed : used on imageView, when pressed, tried delete
+        /// - Parameter sender: senderGesture, attached on image
+        @objc func longPressed(sender: UILongPressGestureRecognizer)
+        {
+            let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive, action: { (action) in
+                print("confirmed deleting photo")
+                let photoView: AlbumDetailPhotoCollectionViewCell = sender.view as! AlbumDetailPhotoCollectionViewCell
+                //remove at DB:
+                print("ext is : ", self.albumContents[photoView.indexInView].ext)
+
+                AlbumDBController.getInstance().deleteMediaFromAlbum(mediaPath: self.albumContents[photoView.indexInView].UID, albumUID: self.albumDetail.UID , ext: self.albumContents[photoView.indexInView].ext)
+
+                //TODO: remove at frontend:
+                //since we want to change to a new view, I'll just wait to do it there:D
+                
+                
+    //            DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: String, collectionName: <#T##String#>)
+    //            print(sender)
+
+            }), ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: { (action) in
+                print("cancelled deleting photo")
+                
+
+            }) ]
+            Util.ShowBottomAlertView(on: self, with: actions)
+            
         }
     
         /* called when collectionview on touched, go view photos */

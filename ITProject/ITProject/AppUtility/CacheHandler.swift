@@ -229,46 +229,31 @@ class CacheHandler: NSObject
             if let error = error {
                 print("error at getFamilyMembersInfo:::" , error)
             }else{
+                //get family doc ref:
                 let famDocRef:DocumentReference = docSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY)  as! DocumentReference
-                
-                famDocRef.getDocument { (familyDocSnapshot, error) in
-                    if let error = error{
+               //query for all members in fam:
+                DBController.getInstance().getDB().collection(RegisterDBController.USER_COLLECTION_NAME).whereField(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY, isEqualTo: famDocRef).getDocuments { (querySnapshot, error) in
+                    if let error = error {
                         print("error at getFamilyMembersInfo:::" , error)
-                    }
-                    else{
-                        let familyMemberReferences : [DocumentReference] = familyDocSnapshot?.get(RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS) as! [DocumentReference]
+                    }else{
+                        var familyMembers : [FamilyMember] =  [FamilyMember]();
+                        let familyMembersRef : [ QueryDocumentSnapshot] = querySnapshot!.documents
+                        //PARSE DATA:
+                        familyMembersRef.forEach({ (queryDocumentSnapshot) in
+                            let data : QueryDocumentSnapshot = queryDocumentSnapshot;
+                            familyMembers.append(
+                                FamilyMember(UID: data.documentID, dateOfBirth: data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Date, name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String, relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
+                            )
+                        })
+                        completion(familyMembers, error);
                         
-                        var familyMembers : [ FamilyMember ] = [ FamilyMember ]()
-                        //todo : properly store phone #  so we can retrieve properly too. OR change it to something else.
-                        familyMemberReferences.forEach { (memberDocumentReference) in
-                            memberDocumentReference.getDocument { (memberDocSnapshot, error) in
-                                if let error = error{
-                                    print("error in getFamilyMembersInfo::: " , error )
-                                }
-                                else{
-                                    familyMembers.append(FamilyMember(
-                                            
-                                            UID: memberDocSnapshot?.documentID,
-                                        phone: "2222",
-                                        name: memberDocSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
-                                        relationship: memberDocSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as! String
-                                        ))
-                                }
-                                
-                            
-                                
-                                
-                                
-                            }
-                        }
-                        
-                        //pass on the values:
-                        completion(familyMembers,error)
+
                     }
                 }
-            
             }
+            
         }
+        
     }
 	/// gets the user's family info.
 	/// - Returns:  completion : the relevant family's details to be retrieved.

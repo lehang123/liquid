@@ -111,14 +111,19 @@ class EmailSignUpViewController: UIViewController
 				// check if family exists
 				DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.joinFamilyIDField.text!)
 				{
-					document, _ in
+					document, e in
 					if let document = document, document.exists
 					{
+                        print("if3 run:::")
+
 						// let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
 						self.authenticate(email: email, pw: pw)
 					}
 					else
 					{
+                        print(e)
+                        print("else run:::")
+                        print("couldn't find:"+self.joinFamilyIDField.text! )
 						Util.DismissActivityIndicator()
 						Util.ShowAlert(title: EmailSignUpViewController.JOIN_FAMILY_NOT_EXIST,
 						               message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
