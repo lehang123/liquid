@@ -22,6 +22,7 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     private(set) var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
     private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
+    private let randomUDID = Util.GenerateUDID()!
     
     var audioRecorder: AVAudioRecorder!
     var isAudioRecordingGranted: Bool!
@@ -117,18 +118,13 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
     
-        func getDocumentsDirectory() -> URL
-        {
-            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            let documentsDirectory = paths[0]
-            return documentsDirectory
-        }
+
         
         func getFileUrl() -> URL
         {
-    //        let filename = "myRecording.m4a"
-    //        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
-            let filePath = NSURL(fileURLWithPath: "/Users/gilbert/Desktop/TESTING1.m4a")
+
+            let filename = URL(string: randomUDID)!.appendingPathExtension(Util.EXTENSION_M4A)
+            let filePath = Util.GetAudioDirectory().appendingPathComponent(filename.absoluteString)
             return filePath as URL
         }
     

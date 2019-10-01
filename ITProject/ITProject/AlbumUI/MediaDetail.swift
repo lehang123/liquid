@@ -124,6 +124,8 @@ class MediaDetail: Equatable
     
     var cache: Data!
     
+    var audioDescriptionUID: String!
+    var audioDescriptionExt: String!
     var thumbnailUID:String!
     var thumbnailExt:String!
 
