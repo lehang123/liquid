@@ -234,7 +234,7 @@ class AlbumDetailTableViewController: UITableViewController {
         if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! MediaDetail
-                photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
+                photoDetailTVC.setMediaDetailData(mediaDetail: photoDetail)
 
             }
         }
