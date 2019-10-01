@@ -284,11 +284,14 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             mediaDetail.ext.contains(Util.EXTENSION_MP4){
             
             let controller = AVPlayerViewController()
-            
+            print("IMAGE TAPPED IM RUNNING")
             Util.GetLocalFileURL(by: mediaDetail.UID, type: .video){
                 url in
+                print("GET LOCAL URL",   URL(fileURLWithPath: url!.absoluteString) )
+                
                 DispatchQueue.main.async {
-                    controller.player = AVPlayer(url: url!)
+                    
+                    controller.player = AVPlayer(url:  URL(fileURLWithPath: url!.absoluteString))
                     self.present(controller, animated: true, completion: nil)
                 }
             }

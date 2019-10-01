@@ -159,17 +159,26 @@ class AlbumDBController
                     if item.getExtension().contains(Util.EXTENSION_M4V) ||
                         item.getExtension().contains(Util.EXTENSION_MP4){
                         
-                        let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + item.getExtension()
+                        let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + Util.EXTENSION_ZIP
                         
-
-                        Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: Util.EXTENSION_JPEG)
+                        print("video path is: ",videoPath)
+ 
+                        //upload vid thumbnail:
+                        Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: Util.EXTENSION_JPEG, completion: {
+                            url in
+                            print("COMPLETION 1")
+                            //upload video itself:
+                            print("UPLOAD THUMBNAIL SUCCEED")
+                            Util.ReadFileFromDocumentDirectory(fileName: videoPath){
+                                data in
+                                print("read finish and there is data")
+                                Util.UploadZipFileToServer(data: data, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
+                            }
+                        })
                         
-                        Util.ReadFileFromDocumentDirectory(fileName: videoPath){
-                            data in
-                            
-                            Util.UploadFileToServer(data: data, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
-                        }
-                    }else {// image, do as usual
+                        
+                    }else {
+                        // upload image:
                         Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
                     }
                     

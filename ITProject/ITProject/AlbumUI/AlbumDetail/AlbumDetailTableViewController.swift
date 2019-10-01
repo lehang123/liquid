@@ -96,6 +96,7 @@ class AlbumDetailTableViewController: UITableViewController {
                     self.albumContents.append(newPhotos[i])
                     // first one for description
                     indexPaths.append(IndexPath(item: i, section: 0))
+                    print("RUN reloadPhoto")
                 }
             }
             self.displayPhotoCollectionView?.insertItems(at: indexPaths)
@@ -400,12 +401,25 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             print("AlbumDetailTableViewController : displaying thumbnail : " + photo.getUID())
             
             /* load image with the cell is visible */
-            Util.GetImageData(imageUID: photo.getUID(), UIDExtension: photo.ext, completion: {
-                data in
-                if data != nil{
-                    cell.image = UIImage(data: data!)
-                }
-            })
+            if photo.getExtension().contains(Util.EXTENSION_M4V) ||
+                photo.getExtension().contains(Util.EXTENSION_MP4){
+                print("VIDEO THUMBNAIL GET")
+                Util.GetImageData(imageUID: photo.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
+                    data in
+                    if data != nil{
+                        cell.image = UIImage(data: data!)
+                    }
+                })
+            }else{
+                print("PHOTO GET")
+                Util.GetImageData(imageUID: photo.getUID(), UIDExtension: photo.ext, completion: {
+                    data in
+                    if data != nil{
+                        cell.image = UIImage(data: data!)
+                    }
+                })
+            }
+            
             
             return cell
         }
