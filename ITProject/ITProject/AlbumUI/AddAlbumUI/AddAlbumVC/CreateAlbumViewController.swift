@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 import Gallery
-import AVFoundation
-import AVKit
+//import AVFoundation
+//import AVKit
 
 
 // extension for string to remove whiteSpace
@@ -252,10 +252,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
             
 
               // if you want to play the video
-//                  let controller = AVPlayerViewController()
-//
-//                  controller.player = AVPlayer(url: tempPath)
-//                  self.present(controller, animated: true, completion: nil)
+
             }
         }
     }

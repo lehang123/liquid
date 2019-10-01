@@ -21,8 +21,8 @@ class testAudio: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegat
     var isAudioRecordingGranted: Bool!
     var isRecording = false
     var audioPlayer : AVAudioPlayer!
-    var meterTimer:Timer!
     var isPlaying = false
+    var meterTimer:Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
