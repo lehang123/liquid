@@ -168,6 +168,89 @@ class Util {
             print("GetImageData fails: empty Image URL")
         }
     }
+    enum FileType {
+        case video
+        case audio
+    }
+    
+    public static func GetLocalFileURL(by UID: String, type fileType: FileType,  completion: @escaping (URL?) -> Void = { _ in }){
+        // looking for oringinal file from video folder first
+        let m4vPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4V)!
+        print("GetLocalFileURL : the m4v path : " + m4vPath)
+        let mp4Path = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_MP4)!
+        print("GetLocalFileURL : the mp4 path : " + mp4Path)
+        let m4aPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4A)!
+        print("GetLocalFileURL : the mp4 path : " + mp4Path)
+        
+        
+        
+        switch fileType {
+        case .video:
+            
+            let pathWithNoExtension = URL(string: m4vPath)?.deletingPathExtension()
+            let zipPath = pathWithNoExtension?.appendingPathExtension(Util.EXTENSION_ZIP)
+            print("GetLocalFileURL : the video zip path : " + zipPath!.absoluteString)
+            
+            if DoesFileExist(fullPath: m4vPath){
+                // m4v found, completion
+                completion(URL(string: m4vPath))
+            }else if DoesFileExist(fullPath: mp4Path){
+                // mp4 found, completion
+                completion(URL(string: mp4Path))
+            }else if DoesFileExist(fullPath: zipPath!.absoluteString) {
+                // unzip file and then give url
+                let folderPath = pathWithNoExtension?.deletingLastPathComponent().absoluteString
+                 print("GetLocalFileURL : the video folderPath : " + folderPath!)
+                
+                let zipfilePath =
+                    pathWithNoExtension?.lastPathComponent
+                print("GetLocalFileURL : the video folderPath : " + zipfilePath!)
+                
+                Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath!, deleteAfterFinish: true){
+                    url in
+                    completion(url)
+                }
+            }else{ // not in local, try fecth from sever
+                let fileFullPath = VIDEO_FOLDER + "/" + zipPath!.lastPathComponent
+                Util.DownloadFileFromServer(fileFullPath: fileFullPath, completion: {
+                    url in
+                    
+                    completion(url)
+                })
+            }
+        case .audio:
+            
+            let pathWithNoExtension = URL(string: m4aPath)?.deletingPathExtension()
+            let zipPath = pathWithNoExtension?.appendingPathExtension(Util.EXTENSION_ZIP)
+            print("GetLocalFileURL : the audio zip path : " + zipPath!.absoluteString)
+            
+            if DoesFileExist(fullPath: m4aPath){
+               // m4v found, completion
+               completion(URL(string: m4aPath))
+            }else if DoesFileExist(fullPath: zipPath!.absoluteString) {
+               // unzip file and then give url
+               let folderPath = pathWithNoExtension?.deletingLastPathComponent().absoluteString
+                print("GetLocalFileURL : the audio folderPath : " + folderPath!)
+               
+               let zipfilePath =
+                   pathWithNoExtension?.lastPathComponent
+               print("GetLocalFileURL : the audio folderPath : " + zipfilePath!)
+               
+               Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath!, deleteAfterFinish: true){
+                   url in
+                   completion(url)
+               }
+            }else {
+                
+                let fileFullPath = AUDIO_FOLDER + "/" + zipPath!.lastPathComponent
+                Util.DownloadFileFromServer(fileFullPath: fileFullPath, completion: {
+                    url in
+                    
+                    completion(url)
+                })
+            }
+        }
+    }
 
     /// <#Description#>
     /// Get the image from server
@@ -434,6 +517,16 @@ class Util {
                 print("WriteFileToDocumentDirectory : " + error.localizedDescription)
             }
         }
+    }
+    
+    public static func GetLocalFileFullPath(filename: String, fextension: String)->String!{
+        let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)!
+        let fileDocumentFullPath = GetDocumentsDirectory().appendingPathComponent(folderPath, isDirectory: true).absoluteString as NSString
+        let filenameWithExtension = URL(string: filename)?.appendingPathExtension(fextension).absoluteString
+
+        let fileFullPath = fileDocumentFullPath.appendingPathComponent(filenameWithExtension!)
+        
+        return fileFullPath
     }
 
     /// <#Description#>

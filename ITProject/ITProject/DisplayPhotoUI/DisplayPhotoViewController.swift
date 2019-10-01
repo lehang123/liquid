@@ -9,6 +9,8 @@
 import FaveButton
 import Firebase
 import UIKit
+import AVFoundation
+import AVKit
 
 // todo : make the scorll back to the top while click on the header
 class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate
@@ -38,18 +40,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     //    private var commentCellsList = [CommentCellStruct]()
     //    private var hasHiddenCells = false
 
-    private var photoUID: String!
-    private var photoDetail: MediaDetail!
+    private var mediaUID: String!
+    private var mediaDetail: MediaDetail!
 
-    public func setPhotoDetailData(photoDetail: MediaDetail)
+    public func setMediaDetailData(mediaDetail: MediaDetail)
     {
-        self.photoDetail = photoDetail
+        self.mediaDetail = mediaDetail
         self.fillCommentSource()
     }
 
     public func fillCommentSource()
     {
-        let currSrc: [MediaDetail.comment]? = self.photoDetail.getComments()
+        let currSrc: [MediaDetail.comment]? = self.mediaDetail.getComments()
 
         currSrc?.forEach
         { item in
@@ -176,7 +178,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         let username = Auth.auth().currentUser?.displayName ?? "UNKNOW GUY"
         if self.cmmentText.text!.count != 0 {
-            self.storeCommentToServer(username: username, comment: self.cmmentText.text!, photoUID: self.photoDetail.getUID())
+            self.storeCommentToServer(username: username, comment: self.cmmentText.text!, photoUID: self.mediaDetail.getUID())
             self.cmmentText.text = ""
         }
         // todo : pull latest comment from the server, and update comment source
@@ -229,10 +231,30 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     @objc func imageTapped(_ sender: UITapGestureRecognizer)
     {
-        let imageView = sender.view as! UIImageView
-        let controller = storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
-        controller.selectedImage = imageView.image
-        present(controller, animated: true)
+        // todo : play video if it's a video
+        
+        if mediaDetail.ext.contains(Util.EXTENSION_JPEG)  ||
+            mediaDetail.ext.contains(Util.EXTENSION_PNG){
+            
+            let imageView = sender.view as! UIImageView
+                  let controller = storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
+                  controller.selectedImage = imageView.image
+                  present(controller, animated: true)
+            
+        }else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
+            mediaDetail.ext.contains(Util.EXTENSION_MP4){
+            
+            let controller = AVPlayerViewController()
+            
+            Util.GetLocalFileURL(by: mediaDetail.UID, type: .video){
+                url in
+                DispatchQueue.main.async {
+                    controller.player = AVPlayer(url: url!)
+                    self.present(controller, animated: true, completion: nil)
+                }
+            }
+        }
+      
     }
 
     @objc func scrollBackToTop(sender: UITapGestureRecognizer)
@@ -282,12 +304,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     {
             print("faveButton  working")
         if (selected){
-            photoDetail.upLikes()
-            cell0Info.likeNumbers.text = String(photoDetail.getLikesCounter())
+            mediaDetail.upLikes()
+            cell0Info.likeNumbers.text = String(mediaDetail.getLikesCounter())
         }
         else{
-            photoDetail.DownLikes()
-            cell0Info.likeNumbers.text = String(photoDetail.getLikesCounter())
+            mediaDetail.DownLikes()
+            cell0Info.likeNumbers.text = String(mediaDetail.getLikesCounter())
 
         }
     }
@@ -307,7 +329,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let cell0 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.likeWatchedBookmarkTableViewCell, for: indexPath) as! LikeWatchedBookmarkCell
 
             // if already liked previously, turn on the heart:
-            if  photoDetail.hasLiked(){
+            if  mediaDetail.hasLiked(){
                 cell0.likeButton.setSelected(selected: true, animated: false)
 
             }
@@ -326,11 +348,11 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell0.selectionStyle = UITableViewCell.SelectionStyle.none
 
             // load the likeNumbers and watched numbers
-            cell0.likeNumbers.text = String(self.photoDetail.getLikesCounter())
+            cell0.likeNumbers.text = String(self.mediaDetail.getLikesCounter())
 
-            self.photoDetail.upWatch()
+            self.mediaDetail.upWatch()
 
-            cell0.watchedNumbers.text = String(self.photoDetail.getWatch())
+            cell0.watchedNumbers.text = String(self.mediaDetail.getWatch())
 
             return cell0
         }
@@ -383,7 +405,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private func setUpTableViewHeader()
     {
         /* test on read file for local file */
-        Util.GetImageData(imageUID: self.photoDetail.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
+        Util.GetImageData(imageUID: self.mediaDetail.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
             data in
             self.displayPhotoImageView.image = UIImage(data: data!)
         })
@@ -401,107 +423,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.displayPhotoImageView.addGestureRecognizer(zoomInGesture)
     }
     
-    /*
-     disable expansion
-     */
-    func tableView(_: UITableView, didSelectRowAt _: IndexPath)
-    {
-        //        if (indexPath.row == 0) {
-        //            let headerCell =  tableView.cellForRow(at: indexPath)
-        //
-        //
-        //        }
-        
-        //        if (tableView.cellForRow(at: indexPath)?.isKind(of: ExpandCell.self))!{
-        //            let selectedCell =
-        //                tableView.cellForRow(at: indexPath)as! ExpandCell
-        //
-        //            if selectedCell.cellState == ExpandCell.Work.Expand{
-        //                // start expand here, expand at most 5 at a time, until source end
-        //                expandTableView(selectedCell: selectedCell)
-        //            }else if selectedCell.cellState == ExpandCell.Work.Collapse{
-        //                // start collapse here, collapse all the way back to max_init_cells
-        //                collapseTableView(selectedCell: selectedCell, tableView: tableView )
-        //            }
-        //        }
-    }
-    
-    //    private func collapseTableView(selectedCell: ExpandCell, tableView: UITableView){
-    //        let numOfRow = tableView.numberOfRows(inSection: 0)
-    //        var indexPaths = [IndexPath]()
-    //        let start = DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH+1
-    //        let end  = numOfRow-2
-    //        var a = 0
-    //
-    //        for i in start...end{
-    //            a+=1
-    //            print("removing : " + String(i))
-    //            let indexPath = IndexPath(row: i, section: 0)
-    //            indexPaths.append(indexPath)
-    //        }
-    //
-    //        removeLastCommentCellsFromList(numOfCells: end-start+1)
-    //
-    //        tableView.beginUpdates()
-    //        tableView.deleteRows(at: indexPaths, with: .automatic)
-    //        tableView.endUpdates()
-    //
-    //        selectedCell.setLogoExpand()
-    //    }
-    
-    //    private func expandTableView(selectedCell: ExpandCell){
-    //        var indexPaths = [IndexPath]()
-    //        for _ in 1...DisplayPhotoViewController.MAXIMUM_EXPAND_LENGTH{
-    //            if commentsSource.count<=(commentCellsList.count){
-    //                print("no more source")
-    //                selectedCell.setLogoCollapse()
-    //                break
-    //            }
-    //            print("didSelectRowAt : " + "at " + String((commentCellsList.count)))
-    //            addCommentCellToList( commentStruct: commentsSource[(commentCellsList.count)])
-    //            let indexPath = IndexPath(row: tableView_cell_length-1, section: 0)
-    //            indexPaths.append(indexPath)
-    //        }
-    //
-    //        tableView.beginUpdates()
-    //        tableView.insertRows(at: indexPaths, with: .automatic)
-    //        tableView.endUpdates()
-    //
-    //        if commentsSource.count<=(commentCellsList.count){
-    //            print("no more source")
-    //            selectedCell.setLogoCollapse()
-    //        }
-    //    }
 
-    //    private func initCommentCellsList(){
-    //
-    //        // load at most 5 comments from caches
-    //        if (commentsSource.count != 0) {
-    //            for i in 1...min(DisplayPhotoViewController.MAXIMUM_INIT_LIST_LENGTH, commentsSource.count) {
-    //                addCommentCellToList( commentStruct: commentsSource[i-1])
-    //            }
-    //        }
-    //    }
-
-    //    private func addCommentCellToList(commentStruct: CommentCellStruct){
-    //        commentCellsList.append(commentStruct)
-    //        // tableView_cell_length = 1 + commentCellsList.count
-    //        tableView_cell_length = commentCellsList.count
-    //    }
-    //
-    //    private func addCommentCellToList(username: String, comment: String){
-    //        var commentCell = CommentCellStruct()
-    //        commentCell.comment = comment
-    //        commentCell.username = username
-    //        commentCellsList.append(commentCell)
-    //        // tableView_cell_length = 1 + commentCellsList.count
-    //        tableView_cell_length = commentCellsList.count
-    //    }
-    //
-    //    private func removeLastCommentCellsFromList(numOfCells : Int){
-    //        commentCellsList.removeLast(numOfCells)
-    //        tableView_cell_length = tableView_cell_length - numOfCells
-    //    }
 
     // Override to support conditional editing of the table view.
     func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool
