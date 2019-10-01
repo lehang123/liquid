@@ -96,14 +96,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         self.setUpTableViewHeader()
 
-        // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
-
-        // current cell doesn't show all the comments
-        //        if (commentsSource.count > commentCellsList.count){
-        //            print("there is more source")
-        //            hasHiddenCells = true
-        //        }
-
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -142,18 +134,15 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-        func getDocumentsDirectory() -> URL
-        {
-            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            let documentsDirectory = paths[0]
-            return documentsDirectory
-        }
         
+        // TO DO :: Get the file url from database. gILLBERTTTTTTTTT
         func getFileUrl() -> URL
         {
     //        let filename = "myRecording.m4a"
     //        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
             let filePath = NSURL(fileURLWithPath: "/Users/zhuchenghong/Desktop/TESTING1.m4a")
+            
+            
             return filePath as URL
         }
     

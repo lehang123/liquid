@@ -207,6 +207,9 @@ class AlbumDetailTableViewController: UITableViewController {
                                         if url != nil{
                                            //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
                                             AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
+                                                
+                                                // To do for gillbert
+                                                // UPloading audio to database
                                             
                                                 self.updatePhoto(newPhoto: MediaDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
                                                 // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
