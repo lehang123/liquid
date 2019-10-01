@@ -108,43 +108,30 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
          }
          else
          {
-             if FileManager.default.fileExists(atPath: getFileUrl().path)
-             {
-                 prepare_play()
-                 audioPlayer.play()
-                 isPlaying = true
-             }
-             else
-             {
-                 Util.ShowAlert(title: "Error", message: "Audio file is missing.", action_title: "OK", on: self)
-             }
+            Util.GetLocalFileURL(by: mediaDetail.audioDescriptionUID, type: .audio){
+                url in
+                self.prepare_play(url: url!)
+            }
+           
          }
     }
     
-    func prepare_play()
+    func prepare_play(url: URL)
     {
         do
         {
-            audioPlayer = try AVAudioPlayer(contentsOf: getFileUrl())
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer.delegate = self
             audioPlayer.prepareToPlay()
+            audioPlayer.play()
+            isPlaying = true
         }
         catch{
             print("Error")
         }
     }
     
-        
-        // TO DO :: Get the file url from database. GILLBERTTTTTTTTT
-        func getFileUrl() -> URL
-        {
-    //        let filename = "myRecording.m4a"
-    //        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
-            let filePath = NSURL(fileURLWithPath: "/Users/zhuchenghong/Desktop/TESTING1.m4a")
-            
-            
-            return filePath as URL
-        }
+    
     
     func textFieldShouldEndEditing(_: UITextField) -> Bool
     {
