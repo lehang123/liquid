@@ -90,7 +90,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 		self.carouselCollectionView.register(UINib(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
 
 		let flowLayout = UPCarouselFlowLayout()
-		flowLayout.itemSize = CGSize(width: self.carouselCollectionView.frame.size.width / 2.5, height: self.carouselCollectionView.frame.size.height)
+        // TODO:- FIX THE WIDTH AND HEIGHT BUG
+        flowLayout.itemSize = CGSize(width: 320 / 2.5, height: 187.5)
+        print("height ::: ", self.carouselCollectionView.frame.size.height)
 		flowLayout.scrollDirection = .horizontal
 		flowLayout.sideItemScale = 0.8
 		flowLayout.sideItemAlpha = 1.0
