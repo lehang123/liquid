@@ -28,13 +28,13 @@ class ProfileViewController: UIViewController
 	@IBOutlet var profilePicture: EnhancedCircleImageView!
 	@IBOutlet var name: UITextField!
 	@IBOutlet var relationship: UITextField!
-	@IBOutlet var genderField: UITextField!
+	@IBOutlet var dobField: UITextField!
 	@IBOutlet var phoneField: UITextField!
 
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-
+        self.hideKeyboardWhenTappedAround()
 		// Set right bar button as Done to store any changes that user made
 		let rightButtonItem = UIBarButtonItem(
 			title: "Done",
@@ -69,27 +69,19 @@ class ProfileViewController: UIViewController
 		self.name.text = self.userInformation.username
 		self.relationship.text = self.userInformation.familyRelation
 		self.phoneField.text = self.userInformation.phone
-		self.genderField.text = self.userInformation.gender?.rawValue
+		self.dobField.text = self.userInformation.gender?.rawValue
 		self.currentRelationship = self.userInformation.familyRelation
-		self.currentGender = self.genderField.text
+		self.currentGender = self.dobField.text
 		self.didChangeUserInfo = false
         
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.name.delegate = self
+        self.relationship.delegate = self
+        self.phoneField.delegate = self
+        self.dobField.delegate = self
 
-		// but to stop editing when the user taps anywhere on the view, add this gesture recogniser
-		let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
-		view.addGestureRecognizer(tapGestureBackground)
-	}
-
-	/// hide the keyboard
-	/// - Parameter sender: tap the background
-	@objc func backgroundTapped(_: UITapGestureRecognizer)
-	{
-		self.name.endEditing(true)
-		self.relationship.endEditing(true)
-		self.phoneField.endEditing(true)
-		self.genderField.endEditing(true)
 	}
 
 	/// Show the keyboard
@@ -156,11 +148,12 @@ class ProfileViewController: UIViewController
 			DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
 			self.currentRelationship = self.relationship.text
 		}
-		if self.currentGender != self.genderField.text
+		if self.currentGender != self.dobField.text
 		{
+            // TO DO here changed to dobfield
 			self.didChangeUserInfo = true
-			DBController.getInstance().updateSpecificField(newValue: self.genderField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-			self.currentGender = self.genderField.text
+			DBController.getInstance().updateSpecificField(newValue: self.dobField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+			self.currentGender = self.dobField.text
 		}
 
 		if self.didChangeUserProfile
@@ -191,6 +184,20 @@ class ProfileViewController: UIViewController
 	{
 		dismiss(animated: true, completion: nil)
 	}
+}
+
+extension ProfileViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn : get called")
+        // end editing when user hit return
+        textField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldEndEditing : get called")
+        return true
+    }
 }
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
