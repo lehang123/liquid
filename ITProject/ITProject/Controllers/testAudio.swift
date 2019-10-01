@@ -6,140 +6,6 @@
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
-//import Foundation
-//import UIKit
-//import SwiftEntryKit
-//import AVFoundation
-//
-//class testAudioVC: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
-//
-//
-//    @IBOutlet weak var record: UIButton!
-//    @IBOutlet weak var play: UIButton!
-//    var soundRecorder: AVAudioRecorder!
-//    var soundPlayer:AVAudioPlayer!
-//    let fileName = "demo.caf"
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        // Setting up for audio
-//        setupRecorder()
-//    }
-//
-//    func getDocumentsDirectory() -> URL {
-//        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-//        return paths[0]
-//    }
-//
-////    func getFileURL() -> NSURL {
-////        //let path = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-////        let path = getDocumentsDirectory().appendingPathComponent(fileName)
-////        let filePath = NSURL(fileURLWithPath: path)
-////        return filePath
-////    }
-//
-//    func preparePlayer() {
-//        var error: NSError?
-//
-//        do {
-//            soundPlayer = try AVAudioPlayer(contentsOf: getDocumentsDirectory().appendingPathComponent(fileName))
-//        } catch let error1 as NSError {
-//            error = error1
-//            soundPlayer = nil
-//        }
-//
-//        if let err = error {
-//            print("AVAudioPlayer error: \(err.localizedDescription)")
-//        } else {
-//            print ("prepareTopay")
-//            soundPlayer.delegate = self
-//            soundPlayer.prepareToPlay()
-//            soundPlayer.volume = 10.0
-//        }
-//    }
-//
-//    // MARK:- AVAudioPlayer delegate methods
-//
-//    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-//        record.isEnabled = true
-//        play.setTitle("Play", for: [])
-//    }
-//
-//    private func audioPlayerDecodeErrorDidOccur(player: AVAudioPlayer, error: NSError?) {
-//        print("Error while playing audio \(error!.localizedDescription)")
-//    }
-//
-//    // MARK:- AVAudioRecorder delegate methods
-//
-//    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-//        play.isEnabled = true
-//        record.setTitle("Record", for: [])
-//    }
-//
-//    private func audioRecorderEncodeErrorDidOccur(recorder: AVAudioRecorder, error: NSError?) {
-//        print("Error while recording audio \(error!.localizedDescription)")
-//    }
-//
-//    // MARK:- didReceiveMemoryWarning
-//
-//    override func didReceiveMemoryWarning() {
-//        super.didReceiveMemoryWarning()
-//    }
-//
-//    @IBAction func recordSound(_ sender: Any) {
-//        if ((sender as AnyObject).titleLabel?.text == "Record"){
-//            soundRecorder.record()
-//            (sender as AnyObject).setTitle("Stop", for: [])
-//            play.isEnabled = false
-//        } else {
-//            soundRecorder.stop()
-//            (sender as AnyObject).setTitle("Record", for: [])
-//        }
-//    }
-//
-//
-//    @IBAction func playSound(_ sender: Any) {
-//        if ((sender as AnyObject).titleLabel?.text == "Play"){
-//            record.isEnabled = false
-//            (sender as AnyObject).setTitle("Stop", for: [])
-//            preparePlayer()
-//            soundPlayer.play()
-//            print ("play sound")
-//        } else {
-//            soundPlayer.stop()
-//            print ("stop sound")
-//            (sender as AnyObject).setTitle("Play", for: [])
-//        }
-//    }
-//
-//    func setupRecorder() {
-//
-//        //set the settings for recorder
-//        let recordSettings = [AVSampleRateKey : NSNumber(value: Float(44100.0)),
-//                              AVFormatIDKey : NSNumber(value: Int32(kAudioFormatAppleLossless)),
-//                              AVNumberOfChannelsKey : NSNumber(value: 2),
-//                              AVEncoderAudioQualityKey : NSNumber(value: Int32(AVAudioQuality.max.rawValue))];
-//
-//        var error: NSError?
-//
-//        do {
-//            //  soundRecorder = try AVAudioRecorder(URL: getFileURL(), settings: recordSettings as [NSObject : AnyObject])
-//            soundRecorder =  try AVAudioRecorder(url: getDocumentsDirectory().appendingPathComponent(fileName), settings: recordSettings)
-//        } catch let error1 as NSError {
-//            error = error1
-//            soundRecorder = nil
-//        }
-//
-//        if let err = error {
-//            print("AVAudioRecorder error: \(err.localizedDescription)")
-//        } else {
-//            soundRecorder.delegate = self
-//            soundRecorder.prepareToRecord()
-//        }
-//    }
-//}
-//
-
 import UIKit
 import Foundation
 import AVFoundation
@@ -152,10 +18,10 @@ class testAudio: UIViewController, AVAudioRecorderDelegate, AVAudioPlayerDelegat
     @IBOutlet weak var play_btn_ref: UIButton!
     
     var audioRecorder: AVAudioRecorder!
-    var audioPlayer : AVAudioPlayer!
-    var meterTimer:Timer!
     var isAudioRecordingGranted: Bool!
     var isRecording = false
+    var audioPlayer : AVAudioPlayer!
+    var meterTimer:Timer!
     var isPlaying = false
     
     override func viewDidLoad() {
