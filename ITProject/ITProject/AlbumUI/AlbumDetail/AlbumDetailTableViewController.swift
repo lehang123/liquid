@@ -61,11 +61,11 @@ class AlbumDetailTableViewController: UITableViewController {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
+        self.navigationItem.title = albumDetail.title
         
         let addPhotos = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhotosTapped))
         self.navigationItem.rightBarButtonItem = addPhotos
 
-//        title = albumd.name
         Util.GetImageData(imageUID: albumDetail.coverImageUID, UIDExtension: albumDetail.coverImageExtension, completion: {
             data in
             self.albumCoverImageView.image = UIImage(data: data!)
@@ -212,7 +212,7 @@ class AlbumDetailTableViewController: UITableViewController {
                                                 // To do for gillbert
                                                 // UPloading audio to database
                                             
-                                                self.updatePhoto(newPhoto: MediaDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
+                                                self.updatePhoto(newPhoto: MediaDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: []))
                                                 // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
