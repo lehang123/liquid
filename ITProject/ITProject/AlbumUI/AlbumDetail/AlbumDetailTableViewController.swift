@@ -61,11 +61,11 @@ class AlbumDetailTableViewController: UITableViewController {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
+        self.navigationItem.title = albumDetail.title
         
         let addPhotos = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPhotosTapped))
         self.navigationItem.rightBarButtonItem = addPhotos
 
-//        title = albumd.name
         Util.GetImageData(imageUID: albumDetail.coverImageUID, UIDExtension: albumDetail.coverImageExtension, completion: {
             data in
             self.albumCoverImageView.image = UIImage(data: data!)

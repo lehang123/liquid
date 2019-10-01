@@ -25,7 +25,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     /// update album detail information
     func updateUI()
     {
-        descpTitle.text = descrp.title
+        descpTitle.text = "Description: "
         descpDetail.text = descrp.description
     }
 
