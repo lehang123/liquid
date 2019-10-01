@@ -72,13 +72,27 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
     var audioPlayer : AVAudioPlayer!
     var isPlaying = false
+    var isShowRecord = false
+    
+    @IBOutlet var tableView: UITableView!
 
     @IBOutlet var displayPhotoImageView: UIImageView!
 
     @IBOutlet var cmmentText: UITextField!
     @IBOutlet var sendButton: UIButton!
-    @IBOutlet var tableView: UITableView!
 
+    @IBOutlet var showRecordKeyboard: UIButton!
+    @IBOutlet var recordButton: UIButton!{
+        didSet{
+        
+        recordButton.layer.borderColor = UIColor(rgb: 0xC2C3C7).cgColor
+        recordButton.layer.borderWidth = 0.5
+        recordButton.layer.cornerRadius = 5.0
+        recordButton.layer.masksToBounds = true
+        recordButton.isHidden = true
+        }
+    }
+    
     override func viewDidLoad()
     {
         print("DisplayPhotoViewController : view did loaded ")
@@ -93,13 +107,36 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.rowHeight = UITableView.automaticDimension
         self.cmmentText.delegate = self
         self.sendButton.isUserInteractionEnabled = false
+        self.showRecordKeyboard.setImage(UIImage(named: "voiceInputIcon"), for: .normal)
 
         self.setUpTableViewHeader()
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-
+    
+    
+    /// switch between the typeing comment and recording mode when tap the icon
+    /// - Parameter sender: tap the icon
+    @IBAction func showRecording(_ sender: Any) {
+        if(!isShowRecord){
+            // Recording mode
+            self.cmmentText.resignFirstResponder()
+            self.cmmentText.isHidden = true
+            
+            self.recordButton.isHidden = false
+            self.showRecordKeyboard.setImage(UIImage(named: "keyboardViewIcon"), for: .normal)
+            self.isShowRecord = true
+            
+        } else {
+            // TextField mode
+            self.cmmentText.isHidden = false
+            self.recordButton.isHidden = true
+            self.showRecordKeyboard.setImage(UIImage(named: "voiceInputIcon"), for: .normal)
+            self.isShowRecord = false
+        }
+    }
+    
     @IBAction func playAudio(_ sender: Any) {
         if(isPlaying)
          {
