@@ -135,7 +135,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     }
     
         
-        // TO DO :: Get the file url from database. gILLBERTTTTTTTTT
+        // TO DO :: Get the file url from database. GILLBERTTTTTTTTT
         func getFileUrl() -> URL
         {
     //        let filename = "myRecording.m4a"
