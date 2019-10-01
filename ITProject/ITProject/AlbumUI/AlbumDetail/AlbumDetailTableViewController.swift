@@ -90,7 +90,6 @@ class AlbumDetailTableViewController: UITableViewController {
             print("the length of album  in reloadPhoto is ::: " , self.albumContents.count)
             print("the length of newPhotos  in reloadPhoto is ::: " , newPhotos.count)
             
-            
             if (newPhotos.count  > 0) {
                 for i in 0...newPhotos.count - 1 {
                     
@@ -195,8 +194,6 @@ class AlbumDetailTableViewController: UITableViewController {
                      okButtonText: "Create",
                      cancelAction:{},
                      okAction: {
-                        /* todo : number of watch and like should be added
-                        *   done*/
 
                         customFormVC.dismissWithAnimation(){
                                 imageData in

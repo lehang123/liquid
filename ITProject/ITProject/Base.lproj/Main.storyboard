@@ -841,7 +841,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8VQ-8N-yav" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1761" y="-1407"/>
+            <point key="canvasLocation" x="1760.8" y="-1407.3463268365817"/>
         </scene>
         <!--Side Menu Table View Controller-->
         <scene sceneID="h6m-9z-lZ6">
@@ -1197,8 +1197,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOp-IL-JPD">
-                                <rect key="frame" x="30" y="525" width="57" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DOB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOp-IL-JPD">
+                                <rect key="frame" x="30" y="525" width="35.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1247,7 +1247,7 @@
                     <navigationItem key="navigationItem" id="Rkv-PJ-DIR"/>
                     <size key="freeformSize" width="320" height="700"/>
                     <connections>
-                        <outlet property="genderField" destination="feK-TA-bjA" id="iKv-Hm-OU6"/>
+                        <outlet property="dobField" destination="feK-TA-bjA" id="O2e-Sg-Ukf"/>
                         <outlet property="name" destination="q3p-uK-JX8" id="cyD-yg-LMH"/>
                         <outlet property="phoneField" destination="nAu-rN-acr" id="vgE-3p-jPB"/>
                         <outlet property="profilePicture" destination="WYE-xT-Ke1" id="oiT-gW-UK9"/>
@@ -1576,7 +1576,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="305.5" y="18" width="54.500000000000028" height="55.000000000000028"/>
+                                                    <rect key="frame" x="305.5" y="18" width="54.5" height="55"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="4Lz-go-1pw" secondAttribute="height" multiplier="1:1" id="31c-Vc-8vs"/>
                                                     </constraints>
@@ -1642,6 +1642,14 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9YX-3Q-gbg">
+                                                    <rect key="frame" x="164" y="8" width="46" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <connections>
+                                                        <action selector="playAudio:" destination="zQN-g9-n7S" eventType="touchUpInside" id="KUd-tB-COl"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="pyL-NH-BeJ" firstAttribute="leading" secondItem="XRE-LR-wZm" secondAttribute="leading" id="SY5-Gg-6ul"/>
@@ -1659,20 +1667,20 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" id="pkt-eV-5dR" userLabel="CommentCell" customClass="CommentCell" customModule="ITProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="413" width="375" height="24.5"/>
+                                        <rect key="frame" x="0.0" y="413" width="375" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pkt-eV-5dR" id="eBh-Fg-Gld">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="24.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="25"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APr-WB-ZZb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="112.5" height="22"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="112.5" height="22.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="let's talk about it" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AsR-br-2L7" userLabel="Comment">
-                                                    <rect key="frame" x="112.5" y="0.0" width="133" height="24.5"/>
+                                                    <rect key="frame" x="112.5" y="0.0" width="133" height="25"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1711,7 +1719,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="328" y="17" width="27" height="22"/>
+                                        <rect key="frame" x="328" y="6" width="27" height="44"/>
                                         <state key="normal" image="disableSendIcon"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
@@ -1951,6 +1959,6 @@
         <image name="settingIcon" width="108" height="110"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MAc-qw-pwl"/>
+        <segue reference="JlC-27-WbR"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -11,9 +11,10 @@ import Firebase
 import UIKit
 import AVFoundation
 import AVKit
+import Foundation
 
 // todo : make the scorll back to the top while click on the header
-class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate
+class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate, AVAudioPlayerDelegate
 {
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
@@ -68,8 +69,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private let headerHeight: CGFloat = UIScreen.main.bounds.height * 0.6
     private let headerCut: CGFloat = 0
     private var cell0Info: LikeWatchedBookmarkCell!
-
-    //    private var tableView_cell_length = 0
+    
+    var audioPlayer : AVAudioPlayer!
+    var isPlaying = false
 
     @IBOutlet var displayPhotoImageView: UIImageView!
 
@@ -92,18 +94,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.cmmentText.delegate = self
         self.sendButton.isUserInteractionEnabled = false
 
-        // TO DO!!!!!!!!!!!!!!
-        // LOAD THE NUMBER OF WATCH AND LIKE HERE
-
-        // cell.likeNumbers.text = "load number here"
-        // Store the watch data here
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        //        initCommentCellsList()
         self.setUpTableViewHeader()
 
         // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
@@ -118,6 +108,55 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    @IBAction func playAudio(_ sender: Any) {
+        if(isPlaying)
+         {
+             audioPlayer.stop()
+             isPlaying = false
+         }
+         else
+         {
+             if FileManager.default.fileExists(atPath: getFileUrl().path)
+             {
+                 prepare_play()
+                 audioPlayer.play()
+                 isPlaying = true
+             }
+             else
+             {
+                 Util.ShowAlert(title: "Error", message: "Audio file is missing.", action_title: "OK", on: self)
+             }
+         }
+    }
+    
+    func prepare_play()
+    {
+        do
+        {
+            audioPlayer = try AVAudioPlayer(contentsOf: getFileUrl())
+            audioPlayer.delegate = self
+            audioPlayer.prepareToPlay()
+        }
+        catch{
+            print("Error")
+        }
+    }
+    
+        func getDocumentsDirectory() -> URL
+        {
+            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            let documentsDirectory = paths[0]
+            return documentsDirectory
+        }
+        
+        func getFileUrl() -> URL
+        {
+    //        let filename = "myRecording.m4a"
+    //        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
+            let filePath = NSURL(fileURLWithPath: "/Users/zhuchenghong/Desktop/TESTING1.m4a")
+            return filePath as URL
+        }
+    
     func textFieldShouldEndEditing(_: UITextField) -> Bool
     {
         print("textFieldShouldEndEditing : aaa")
