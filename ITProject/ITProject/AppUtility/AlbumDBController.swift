@@ -15,41 +15,64 @@ import Firebase
 class AlbumDBController
 {
 	private static var single: AlbumDBController!
-	/* constant for ALBUMS collections */
+	/// constant for ALBUMS collections
 	public static let ALBUM_COLLECTION_NAME = "albums"
+    /// album's name
+	public static let ALBUM_DOCUMENT_FIELD_NAME = "name"
+    /// album's description
+	public static let ALBUM_DOCUMENT_FIELD_DESCRIPTION = "description"
 
-	public static let ALBUM_DOCUMENT_FIELD_NAME = "name" // album's name
-	public static let ALBUM_DOCUMENT_FIELD_DESCRIPTION = "description" // album's description
-
-	public static let ALBUM_DOCUMENT_FIELD_MEDIAS = "media_file_paths" // the media files associated
-	public static let ALBUM_DOCUMENT_FIELD_FAMILY = "family_path" // the families associated in album
-	public static let ALBUM_DOCUMENT_FIELD_OWNER = "owner_path" // the owner associated in album
-	public static let ALBUM_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the album's created date
-	public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL = "thumbnail" // album's photo thumbnail
-	public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION = "thumbnail_extension" // album's photo thumbnail's extension
+    /// the families associated in album
+	public static let ALBUM_DOCUMENT_FIELD_FAMILY = "family_path"
+    /// the owner associated in album
+	public static let ALBUM_DOCUMENT_FIELD_OWNER = "owner_path"
+    /// the album's created date
+	public static let ALBUM_DOCUMENT_FIELD_CREATED_DATE = "date_created"
+    /// album's photo thumbnail
+	public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL = "thumbnail"
+    /// album's photo thumbnail's extension
+	public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION = "thumbnail_extension"
+    
 
 	/* constant for MEDIA collections */
 	public static let MEDIA_COLLECTION_NAME = "media"
-	public static let MEDIA_DOCUMENT_FIELD_WATCH = "watch" // # of watches
-	public static let MEDIA_DOCUMENT_FIELD_LIKES = "likes" // # of likes
-	public static let MEDIA_DOCUMENT_FIELD_COMMENTS = "comments" // comments field
-	public static let MEDIA_DOCUMENT_FIELD_DESCRIPTION = "description" // description field
-	public static let MEDIA_DOCUMENT_FIELD_EXTENSION = "extension" // file extension field
-	public static let MEDIA_DOCUMENT_FIELD_CREATED_DATE = "date_created" // the media's created date
-	public static let MEDIA_DOCUMENT_FIELD_ALBUM = "album_path" // reference back to album field
+    /// # of watches
+	public static let MEDIA_DOCUMENT_FIELD_WATCH = "watch"
+    /// # of likes
+	public static let MEDIA_DOCUMENT_FIELD_LIKES = "likes"
+    /// comments field
+	public static let MEDIA_DOCUMENT_FIELD_COMMENTS = "comments"
+    /// description field
+	public static let MEDIA_DOCUMENT_FIELD_DESCRIPTION = "description"
+    /// file extension field
+	public static let MEDIA_DOCUMENT_FIELD_EXTENSION = "extension"
+    /// the media's created date
+	public static let MEDIA_DOCUMENT_FIELD_CREATED_DATE = "date_created"
+    /// reference back to album field
+	public static let MEDIA_DOCUMENT_FIELD_ALBUM = "album_path"
+    //added: audio and location
+    ///audio directory
+    public static let MEDIA_DOCUMENT_FIELD_AUDIO = "audio"
+    ///location directory
+    public static let MEDIA_DOCUMENT_FIELD_LOCATION = "location"
 
-	// comments array of maps:
-	public static let COMMENTS_USERNAME = "username" // reference back to album field
-	public static let COMMENTS_MESSAGE = "message" // reference back to album field
+    /// comments is an array of maps. this refers to the user attribute of the map.
+	public static let COMMENTS_USERNAME = "username"
+    /// comments is an array of maps. this refers to the message attribute of the map.
+	public static let COMMENTS_MESSAGE = "message"
 
-	// doc ID field:
+	/// doument ID of the album / media:
 	public static let DOCUMENTID = "documentID"
 
 	init() {}
 
 	public func UpdateComments(username: String, comment: String, photoUID: String)
 	{
-		// USE : [ [  "username" : USERNAME, "message"  : COMMENTS ] ]
+		/* comment structure : [
+         * [  "username" : USERNAME,
+         * "message"  : COMMENTS ]
+         * ]*/
+        
 		DBController.getInstance()
 			.updateArrayField(
 				collectionName: AlbumDBController.MEDIA_COLLECTION_NAME,
@@ -76,8 +99,8 @@ class AlbumDBController
 	///   - description: album's short description.
 	///   - completion: gives the album's DocumentReference.
 	public func addNewAlbum(albumName: String, description: String, thumbnail: String,
-	                        thumbnailExt: String,
-	                        completion: @escaping (DocumentReference?) -> Void)
+                            thumbnailExt: String, mediaWithin : [MediaDetail],
+    completion: @escaping (_ album: (DocumentReference?), _ error: Error?) -> Void = { _, _ in })
 	{
 		// get currentUser's family
 		let user = Auth.auth().currentUser!.uid
@@ -92,34 +115,93 @@ class AlbumDBController
 			{
 				let familyDocRef: DocumentReference? = document.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY) as! DocumentReference?
 
-				/* init new album
-				 * update: album has reference to family + owner/creator.
-				 * update: album has photo thumbnail + date created is stored.
+			
 
-				 */
+				
+                
+                //ASSUME: DATE CREATED OF EACH PHOTO IS TODAY.
+                
+                let batch = DBController.getInstance().getDB().batch()
+                
+            /* init new album
+                     * update: album has reference to family + owner/creator.
+                     * update: album has photo thumbnail + date created is stored.
+                     * update: now we use batch for potentially
+                     *         adding photos directly to album.
+                     */
+                let albumDocumentReference = DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).document()
+                
+                batch.setData([
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME: albumName,
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: description,
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY: familyDocRef!,
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER: userDocumentReference,
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: thumbnail,
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: Timestamp(date: Date()),
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: thumbnailExt,
+                ], forDocument: albumDocumentReference)
+                
+                
+                
+                /*create new docs for each media included:
+                //try to move it down after batch.commit():
+                 update: watch,comments,and likes now in arrays!
+                 */
+                mediaWithin.forEach { (item) in
+                    
+                    batch.setData([
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: item.getExtension(),
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: item.getDescription() ?? "",
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM:  albumDocumentReference,
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE: Timestamp(date: Date())
+                    ], forDocument: DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).document(item.getUID()))
+                    
+                    if item.getExtension().contains(Util.EXTENSION_M4V) ||
+                        item.getExtension().contains(Util.EXTENSION_MP4){
+                        
+                        let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + Util.EXTENSION_ZIP
+                        
+                        print("video path is: ",videoPath)
+ 
+                        //upload vid thumbnail:
+                        Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: Util.EXTENSION_JPEG, completion: {
+                            url in
+                            print("COMPLETION 1")
+                            //upload video itself:
+                            print("UPLOAD THUMBNAIL SUCCEED")
+                            Util.ReadFileFromDocumentDirectory(fileName: videoPath){
+                                data in
+                                print("read finish and there is data")
+                                Util.UploadZipFileToServer(data: data, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
+                            }
+                        })
+                        
+                        
+                    }else {
+                        // upload image:
+                        Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
+                    }
+                    
+                }
+                
+                //update to family:
+                
+                batch.updateData([ RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS: FieldValue.arrayUnion([albumDocumentReference])], forDocument: familyDocRef!)
+                
+                //commit the actions altogether:
+                batch.commit() {error  in
+                    if let error = error {
+                        completion(nil,error)
 
-				let albumDocumentReference: DocumentReference? = DBController.getInstance()
-					.addDocumentToCollection(
-						inputData: [
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME: albumName,
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS: [],
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: description,
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY: familyDocRef!,
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER: userDocumentReference,
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: thumbnail,
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: Timestamp(date: Date()),
-							AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: thumbnailExt,
-						],
-						collectionName: AlbumDBController.ALBUM_COLLECTION_NAME
-					)
+                    } else {
+                        completion(albumDocumentReference,error)
+                    }
+                }
+                
 
-				/* add album to family */
-				DBController.getInstance()
-					.updateArrayField(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME,
-					                  documentUID: familyDocRef!.documentID,
-					                  fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS, appendValue: albumDocumentReference!)
-
-				completion(albumDocumentReference)
 			}
 			else
 			{
@@ -178,7 +260,8 @@ class AlbumDBController
 		/* init new media
 		 * update: now has Date Created + reference to its own album
 		 * update: Comment is in : Array of [username : value, message : value ]
-         * update : like is now an Array of userDocumentReference. */
+         * update : like is now an Array of userDocumentReference.
+         * update: the watch is now an []. each user can contribute to only 1 watch count.*/
 		let albumDocRef: DocumentReference = DBController
 			.getInstance()
 			.getDocumentReference(
@@ -190,7 +273,7 @@ class AlbumDBController
 			.addDocumentToCollectionWithUID(
 				documentUID: mediaPath,
 				inputData: [
-					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: 0,
+					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: ext,
@@ -201,43 +284,12 @@ class AlbumDBController
 				collectionName: AlbumDBController.MEDIA_COLLECTION_NAME
 			)
 
-		/* add path to album */
-		DBController.getInstance()
-			.updateArrayField(
-				collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
-				documentUID: albumUID,
-				fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS,
-				appendValue: mediaPath
-			)
+		
 	}
 
-	/// gets all media file paths from an album.
-	/// - Parameters:
-	///   - albumUID: album's UID to be retrieved
-	///   - completion: gives all the media file paths  of the album.
-	public func getPhotosFromAlbum(albumUID: String, completion: @escaping ([String]) -> Void)
-	{
-		DBController.getInstance()
-			.getDocumentFromCollection(
-				collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
-				documentUID: albumUID
-			)
-		{ document, error in
-			if let document = document, document.exists
-			{
-				// get all media file paths:
-				let mediaFilePaths: [String] = document
-					.get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS) as! [String]
-				print("MediaFilePaths at getPhotosFromAlbum::: \(mediaFilePaths)")
 
-				completion(mediaFilePaths)
-			}
-			else
-			{
-				print("ERROR at getPhotosFromAlbum::: ERROR RETRIEVING DOCUMENT: " + error!.localizedDescription)
-			}
-		}
-	}
+                    
+                    
 
 	/// gets all album listeners for certain user's family.
 	/// useful for getting notified for updates / deletions / additions to albums.
@@ -280,25 +332,15 @@ class AlbumDBController
 	/// - Parameters:
 	///   - mediaPath: media's file path to be removed form album.
 	///   - albumUID: the albumUID that the media belongs to.
-	public func deleteMediaFromAlbum(mediaPath: String, albumUID: String)
+    public func deleteMediaFromAlbum(mediaPath: String, albumUID: String, ext : String)
 	{
 		// get all photos attached to this album:
 
-		// remove reference from album:
-		DBController.getInstance()
-			.removeArrayField(
-				collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
-				documentUID: albumUID,
-				fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS,
-				removeValue: mediaPath
-			)
 
-		// TODO: remove photo file from storage:
-		DBController.getInstance().getDocumentFromCollection(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: mediaPath)
-		{ document, _ in
-			let ext: String = document?.get(AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION) as! String
-			Util.DeleteFileFromServer(fileName: mediaPath, fextension: ext)
-		}
+		// remove photo file from storage
+		
+        Util.DeleteFileFromServer(fileName: mediaPath, fextension: ext)
+		
 
 		// delete media document from media collection:
 		DBController.getInstance()
@@ -314,6 +356,7 @@ class AlbumDBController
 
     public func deleteAlbum(albumUID: String)
     {
+        
         let albumDocumentReference: DocumentReference = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: albumUID)
         // get all media files:
         DBController

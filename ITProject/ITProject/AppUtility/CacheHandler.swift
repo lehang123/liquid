@@ -48,9 +48,9 @@ class CacheHandler: NSObject
 		print("setCache::: caching : \(obj) with key : \(forKey) succeeded.")
 	}
 
-	/// gets an object from cache by its key.
-	/// - Parameter forKey: key of the object
-	/// - Returns: the object associated with the key given
+    /// gets an object from cache by its key.
+    /// - Parameter forKey: key of the object
+    /// - Returns: the object associated with the key given
 	public func getCache(forKey: String) -> Data?
 	{
 		if let data = self.dataCache.object(forKey: forKey as NSString)
@@ -92,7 +92,7 @@ class CacheHandler: NSObject
 			userDocument, error in
 			if let userDocument = userDocument, userDocument.exists
 			{
-				var data: [String: Any] = userDocument.data()!
+                let data: [String: Any] = userDocument.data()!
 
 				let gender = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
 
@@ -141,12 +141,13 @@ class CacheHandler: NSObject
 					albums[albumName] = [
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER: owner?.documentID as Any,
-						AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as Any,
+//						AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
 						AlbumDBController.DOCUMENTID: document.documentID,
 					]
+                    
 				}
 
 				sortedAlbums = albums.sorted(by: { (first, second) -> Bool in
@@ -176,10 +177,10 @@ class CacheHandler: NSObject
 	/// <#Description#> get all Photos from database.
 	/// - Parameter currAlbum: get all photos from  curAlbum's
 	/// - Parameter completion: completion description
-	public func getAllPhotosInfo(currAlbum: String, completion: @escaping (_ allMedias: [PhotoDetail], _ error: Error?) -> Void = { _, _ in })
+	public func getAllPhotosInfo(currAlbum: String, completion: @escaping (_ allMedias: [MediaDetail], _ error: Error?) -> Void = { _, _ in })
 	{
         
-		var allMedias: [PhotoDetail] = [PhotoDetail]()
+		var allMedias: [MediaDetail] = [MediaDetail]()
 		let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: currAlbum)
 
 		print("getting currAlbumRef : " + currAlbumRef.documentID)
@@ -203,23 +204,57 @@ class CacheHandler: NSObject
 					// process comments
 					let currComments: [[String: Any]] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [[String: Any]]
 
-					var parsedComments: [PhotoDetail.comment] = [PhotoDetail.comment]()
+					var parsedComments: [MediaDetail.comment] = [MediaDetail.comment]()
                     //for each comment array, parse them:
 					currComments.forEach
 					{ commentRow in
-						parsedComments.append(PhotoDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String, message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
+						parsedComments.append(MediaDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String, message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
 //						print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
 					}
 
 					// parse all data:
-                    allMedias.append(PhotoDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as! Int))
+                    allMedias.append(MediaDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as? [DocumentReference] ?? []))
 				}
+                print("after getAllPhotosInfo, length is:::", allMedias.count)
                 //pass data thru:
 				completion(allMedias, error)
 			}
 		}
 	}
 
+    public func getFamilyMembersInfo (completion: @escaping (_ familyMember: [FamilyMember], _ error: Error?) -> Void = { _, _ in }){
+        // get current user Document Ref:
+        let user = Auth.auth().currentUser!.uid
+        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user) { (docSnapshot, error) in
+            if let error = error {
+                print("error at getFamilyMembersInfo:::" , error)
+            }else{
+                //get family doc ref:
+                let famDocRef:DocumentReference = docSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY)  as! DocumentReference
+               //query for all members in fam:
+                DBController.getInstance().getDB().collection(RegisterDBController.USER_COLLECTION_NAME).whereField(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY, isEqualTo: famDocRef).getDocuments { (querySnapshot, error) in
+                    if let error = error {
+                        print("error at getFamilyMembersInfo:::" , error)
+                    }else{
+                        var familyMembers : [FamilyMember] =  [FamilyMember]();
+                        let familyMembersRef : [ QueryDocumentSnapshot] = querySnapshot!.documents
+                        //PARSE DATA:
+                        familyMembersRef.forEach({ (queryDocumentSnapshot) in
+                            let data : QueryDocumentSnapshot = queryDocumentSnapshot;
+                            familyMembers.append(
+                                FamilyMember(UID: data.documentID, dateOfBirth: data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Date, name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String, relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
+                            )
+                        })
+                        completion(familyMembers, error);
+                        
+
+                    }
+                }
+            }
+            
+        }
+        
+    }
 	/// gets the user's family info.
 	/// - Returns:  completion : the relevant family's details to be retrieved.
 	public func getFamilyInfo(completion: @escaping (_ UID: String?, _ Motto: String?, _ Name: String?, _ profileUID: String?, _ profileExtension: String?, _ error: Error?) -> Void = { _, _, _, _, _, _ in })
@@ -254,8 +289,10 @@ class CacheHandler: NSObject
 					let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT] as? String
 
 					completion(doc.documentID, motto, name, profile, profileExt, error)
+                    //we know that the user only related to 1 family, so break afterwards:
+                    break;
 				}
 			}
 		}
-	}
-}
+	
+    }}

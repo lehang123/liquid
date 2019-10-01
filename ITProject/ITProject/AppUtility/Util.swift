@@ -26,9 +26,14 @@ class Util {
     // Constants and properties go here
     public static let BUTTON_DISMISS = "dismiss"
     public static let EXTENSION_JPEG = "jpg"
+    public static let EXTENSION_M4A = "m4a"
+    public static let EXTENSION_MP4 = "mp4"
+    public static let EXTENSION_M4V = "m4v"
     public static let EXTENSION_PNG = "png"
     public static let EXTENSION_ZIP = "zip"
     public static let IMAGE_FOLDER = "images"
+    public static let VIDEO_FOLDER = "videos"
+    public static let AUDIO_FOLDER = "audios"
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
     public static let DEFAULT_IMAGE = "defaultImage"
@@ -41,6 +46,8 @@ class Util {
     public static func PrepareDocumentFolder() {
         DispatchQueue(label: "working_queue", qos: .userInitiated).async {
             CreateImageFolder()
+            CreateAudioFolder()
+            CreateVideoFolder()
             CreateTmpFolder()
         }
     }
@@ -67,6 +74,56 @@ class Util {
                            fileFullName: fileName + "." + fextension,
                            completion: completion,
                            errorHandler: errorHandler)
+    }
+    
+    public static func UploadZipFileToServer(data: Data,
+    metadata: StorageMetadata?,
+    fileName: String,
+    fextension: String,
+    completion: @escaping (URL?) -> Void = { _ in },
+    errorHandler: @escaping (Error?) -> Void = { _ in }){
+        
+        let storageRef = Storage.storage().reference()
+        
+        let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)
+        let filePath = folderPath! + fileName + "." + Util.EXTENSION_ZIP
+        
+        ReadFileFromDocumentDirectory(fileName: filePath) { fileData in
+
+            let sRef = storageRef.child(filePath)
+
+            // Upload the file to the path "images/rivers.jpg"
+            _ = sRef.putData(fileData, metadata: metadata) { metadata, error in
+                
+                print("UploadZipFileToServer : PUT DATA FILEPATH",filePath)
+                guard let metadata = metadata else {
+                    // Uh-oh, an error occurred!
+                    print("UploadZipFileToServer : metadata error : "
+                        + error!.localizedDescription)
+                    errorHandler(error)
+                    return
+                }
+                print("PUT DATA FILEPATH HAS END",filePath)
+                // Metadata contains file metadata such as size, content-type.
+                _ = metadata.size
+                // You can also access to download URL after upload.
+                sRef.downloadURL { url, error in
+                    print("downloadURL DATA ANYTHING",filePath)
+
+                    guard url != nil else {
+                        // Uh-oh, an error occurred!
+                        errorHandler(error)
+                        print("UploadZipFileToServer : url error : "
+                            + error!.localizedDescription)
+                        return
+                    }
+                    
+                    print("URL IS: GOING TO COMPLETION", url)
+                    completion(url)
+                }
+            }
+        }
+        
     }
 
     /// <#Description#>
@@ -107,6 +164,8 @@ class Util {
 
                     // Upload the file to the path "images/rivers.jpg"
                     _ = sRef.putData(fileData, metadata: metadata) { metadata, error in
+                        
+                        print("PUT DATA FILEPATH",filePath)
                         guard let metadata = metadata else {
                             // Uh-oh, an error occurred!
                             print("UploadFileToServer : metadata error : "
@@ -114,10 +173,13 @@ class Util {
                             errorHandler(error)
                             return
                         }
+                        print("PUT DATA FILEPATH HAS END",filePath)
                         // Metadata contains file metadata such as size, content-type.
                         _ = metadata.size
                         // You can also access to download URL after upload.
                         sRef.downloadURL { url, error in
+                            print("downloadURL DATA ANYTHING",filePath)
+
                             guard url != nil else {
                                 // Uh-oh, an error occurred!
                                 errorHandler(error)
@@ -125,6 +187,8 @@ class Util {
                                     + error!.localizedDescription)
                                 return
                             }
+                            
+                            print("URL IS: GOING TO COMPLETION", url)
                             completion(url)
                         }
                     }
@@ -159,6 +223,93 @@ class Util {
         } else {
             completion(nil)
             print("GetImageData fails: empty Image URL")
+        }
+    }
+    enum FileType {
+        case video
+        case audio
+    }
+    
+    public static func GetLocalFileURL(by UID: String, type fileType: FileType,  completion: @escaping (URL?) -> Void = { _ in }){
+        // looking for oringinal file from video folder first
+        let m4vPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4V)!
+        print("GetLocalFileURL : the m4v path : " + m4vPath)
+        let mp4Path = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_MP4)!
+        print("GetLocalFileURL : the mp4 path : " + mp4Path)
+        let m4aPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4A)!
+        print("GetLocalFileURL : the mp4 path : " + mp4Path)
+        
+        
+        
+        switch fileType {
+        case .video:
+            
+            let pathWithNoExtension = URL(string: m4vPath)?.deletingPathExtension()
+            let zipPath = pathWithNoExtension?.appendingPathExtension(Util.EXTENSION_ZIP)
+            print("GetLocalFileURL : the video zip path : " + zipPath!.absoluteString)
+            
+            if DoesFileExist(fullPath: m4vPath){
+                // m4v found, completion
+                print("m4v found, completion")
+                completion(URL(string: m4vPath))
+            }else if DoesFileExist(fullPath: mp4Path){
+                // mp4 found, completion
+                 print("mp4 found, completion")
+                completion(URL(string: mp4Path))
+            }else if DoesFileExist(fullPath: zipPath!.absoluteString) {
+                // unzip file and then give url
+                let folderPath = pathWithNoExtension?.deletingLastPathComponent().absoluteString
+                 print("GetLocalFileURL : the video folderPath : " + folderPath!)
+                
+                let zipfilePath =
+                    pathWithNoExtension?.lastPathComponent
+                print("GetLocalFileURL : the video zipFile : " + zipfilePath!)
+                
+                Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath! + "." + Util.EXTENSION_ZIP, deleteAfterFinish: true){
+                    url in
+                    completion(url)
+                }
+            }else{ // not in local, try fecth from sever
+                print("else case, completion")
+
+                let fileFullPath = VIDEO_FOLDER + "/" + zipPath!.lastPathComponent
+                Util.DownloadFileFromServer(fileFullPath: fileFullPath, completion: {
+                    url in
+                    
+                    completion(url)
+                })
+            }
+        case .audio:
+            
+            let pathWithNoExtension = URL(string: m4aPath)?.deletingPathExtension()
+            let zipPath = pathWithNoExtension?.appendingPathExtension(Util.EXTENSION_ZIP)
+            print("GetLocalFileURL : the audio zip path : " + zipPath!.absoluteString)
+            
+            if DoesFileExist(fullPath: m4aPath){
+               // m4v found, completion
+               completion(URL(string: m4aPath))
+            }else if DoesFileExist(fullPath: zipPath!.absoluteString) {
+               // unzip file and then give url
+               let folderPath = pathWithNoExtension?.deletingLastPathComponent().absoluteString
+                print("GetLocalFileURL : the audio folderPath : " + folderPath!)
+               
+               let zipfilePath =
+                   pathWithNoExtension?.lastPathComponent
+               print("GetLocalFileURL : the audio folderPath : " + zipfilePath!)
+               
+               Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath!, deleteAfterFinish: true){
+                   url in
+                   completion(url)
+               }
+            }else {
+                
+                let fileFullPath = AUDIO_FOLDER + "/" + zipPath!.lastPathComponent
+                Util.DownloadFileFromServer(fileFullPath: fileFullPath, completion: {
+                    url in
+                    
+                    completion(url)
+                })
+            }
         }
     }
 
@@ -325,6 +476,10 @@ class Util {
     public static func GetExtensionByFolderPath(fileFullPath: String) -> String? {
         if fileFullPath.contains(Util.IMAGE_FOLDER + "/") {
             return Util.EXTENSION_JPEG
+        }else if fileFullPath.contains(Util.VIDEO_FOLDER + "/") {
+            return Util.EXTENSION_M4V
+        }else if fileFullPath.contains(Util.AUDIO_FOLDER + "/") {
+            return Util.EXTENSION_M4A
         }
         return nil
     }
@@ -428,6 +583,16 @@ class Util {
             }
         }
     }
+    
+    public static func GetLocalFileFullPath(filename: String, fextension: String)->String!{
+        let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)!
+        let fileDocumentFullPath = GetDocumentsDirectory().appendingPathComponent(folderPath, isDirectory: true).absoluteString as NSString
+        let filenameWithExtension = URL(string: filename)?.appendingPathExtension(fextension).absoluteString
+
+        let fileFullPath = fileDocumentFullPath.appendingPathComponent(filenameWithExtension!)
+        
+        return fileFullPath
+    }
 
     /// <#Description#>
     /// usually is a zip file, so we need to unzip
@@ -511,8 +676,20 @@ class Util {
             fextension == ("." + EXTENSION_JPEG) ||
             fextension == EXTENSION_PNG ||
             fextension == ("." + EXTENSION_PNG) {
+            
             return withPathSlash ? (IMAGE_FOLDER + "/") : IMAGE_FOLDER
+        }else if fextension == EXTENSION_MP4 ||
+            fextension == ("." + EXTENSION_MP4) ||
+            fextension == EXTENSION_M4V ||
+            fextension == ("." + EXTENSION_M4V) {
+            
+            return withPathSlash ? (VIDEO_FOLDER + "/") : VIDEO_FOLDER
+        }else if fextension == EXTENSION_M4A ||
+            fextension == ("." + EXTENSION_M4A) {
+            
+            return withPathSlash ? (AUDIO_FOLDER + "/") : AUDIO_FOLDER
         }
+        
         return nil
     }
 
@@ -540,6 +717,14 @@ class Util {
     public static func GetImageDirectory() -> URL {
         return GetDocumentsDirectory().appendingPathComponent(IMAGE_FOLDER, isDirectory: true)
     }
+    
+    public static func GetVideoDirectory() -> URL {
+        return GetDocumentsDirectory().appendingPathComponent(VIDEO_FOLDER, isDirectory: true)
+    }
+    
+    public static func GetAudioDirectory() -> URL {
+        return GetDocumentsDirectory().appendingPathComponent(AUDIO_FOLDER, isDirectory: true)
+    }
 
     public static func GetTmpDirectory() -> URL {
         return GetDocumentsDirectory().appendingPathComponent(TMP_FOLDER, isDirectory: true)
@@ -566,6 +751,18 @@ class Util {
     /// Create the image folder for later use
     public static func CreateImageFolder() {
         let dataPath = GetDocumentsDirectory().appendingPathComponent(IMAGE_FOLDER, isDirectory: true)
+        CreateFolderInDocuments(folderURL: dataPath)
+    }
+    
+    /// Create the Video folder for later use
+    public static func CreateVideoFolder() {
+        let dataPath = GetDocumentsDirectory().appendingPathComponent(VIDEO_FOLDER, isDirectory: true)
+        CreateFolderInDocuments(folderURL: dataPath)
+    }
+    
+    /// Create the Audio folder for later use
+    public static func CreateAudioFolder() {
+        let dataPath = GetDocumentsDirectory().appendingPathComponent(AUDIO_FOLDER, isDirectory: true)
         CreateFolderInDocuments(folderURL: dataPath)
     }
 

@@ -28,8 +28,41 @@ class ChangePasswordViewController: UIViewController
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-	}
+        self.hideKeyboardWhenTappedAround()
+        // Check if the user is typing
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
+        self.originalPW.delegate = self
+        self.newPW.delegate = self
+        self.confirmedPassword.delegate = self
+	}
+    
+    /// Show the keyboard
+    /// - Parameter notification: notification
+    @objc func keyboardWillShow(notification: NSNotification)
+    {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue
+        {
+            if self.confirmedPassword.isEditing {
+                if view.frame.origin.y == 0 {
+                    UIView.animate(withDuration: 0.25, animations: {
+                        self.view.frame.origin.y -= keyboardSize.height
+                    })
+                }
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification _: NSNotification)
+    {
+        if view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.view.frame.origin.y = 0
+            })
+        }
+    }
+    
 	/// Check if the entered passwords are the same
 	/// If they are satisfied, then update it to databse
 	/// - Parameter sender: Clike the confirm bottom
@@ -100,4 +133,18 @@ class ChangePasswordViewController: UIViewController
 			}
 		}
 	}
+}
+
+extension ChangePasswordViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn : get called")
+        // end editing when user hit return
+        textField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldEndEditing : get called")
+        return true
+    }
 }

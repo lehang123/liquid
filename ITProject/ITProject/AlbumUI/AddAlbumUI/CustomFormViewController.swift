@@ -11,6 +11,7 @@
 import UIKit
 import SwiftEntryKit
 import AVFoundation
+import Foundation
 
 class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
 
@@ -21,6 +22,11 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     private(set) var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
     private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
+    private let randomUDID = Util.GenerateUDID()!
+    
+    var audioRecorder: AVAudioRecorder!
+    var isAudioRecordingGranted: Bool!
+    var isRecording = false
 
     
     public func initFormELement(formEle: FormElement){
@@ -30,6 +36,8 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setView()
+        
+        self.check_record_permission()
         
     }
 
@@ -52,6 +60,73 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
         contentv.layer.masksToBounds = true
 
     }
+    
+    func check_record_permission() {
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSessionRecordPermission.granted:
+            isAudioRecordingGranted = true
+            print ("allowed")
+            break
+        case AVAudioSessionRecordPermission.denied:
+            isAudioRecordingGranted = false
+            print ("not allowed")
+            break
+        case AVAudioSessionRecordPermission.undetermined:
+            AVAudioSession.sharedInstance().requestRecordPermission({ (allowed) in
+                if allowed {
+                    self.isAudioRecordingGranted = true
+                    print ("allowed")
+                } else {
+                    self.isAudioRecordingGranted = false
+                    print ("not allowed")
+                }
+            })
+            break
+        default:
+            break
+        }
+    }
+    
+    func setup_recorder() {
+        if isAudioRecordingGranted
+        {
+            let session = AVAudioSession.sharedInstance()
+            do
+            {
+                try session.setCategory(AVAudioSession.Category.playAndRecord)
+                //try session.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+                try session.setActive(true)
+                let settings = [
+                    AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+                    AVSampleRateKey: 44100,
+                    AVNumberOfChannelsKey: 2,
+                    AVEncoderAudioQualityKey:AVAudioQuality.high.rawValue
+                ]
+                audioRecorder = try AVAudioRecorder(url: getFileUrl(), settings: settings)
+                audioRecorder.delegate = self
+                audioRecorder.isMeteringEnabled = true
+                audioRecorder.prepareToRecord()
+            }
+            catch let error {
+                            Util.ShowAlert(title: "Error", message: error.localizedDescription, action_title: "OK", on: self)
+            }
+        }
+        else
+        {
+            Util.ShowAlert(title: "Error", message: "Don't have access to use your microphone.", action_title: "OK", on: self)
+
+        }
+    }
+    
+
+        
+        func getFileUrl() -> URL
+        {
+
+            let filename = URL(string: randomUDID)!.appendingPathExtension(Util.EXTENSION_M4A)
+            let filePath = Util.GetAudioDirectory().appendingPathComponent(filename.absoluteString)
+            return filePath as URL
+        }
     
 
 
@@ -172,20 +247,50 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     
     /// upload the file action
     @objc private func uploadAction() {
+        
         print("addPhotosTapped : Tapped")
         // pop gallery here
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
-        
         self.present(imagePicker, animated: true, completion:  nil)
+        
     }
     
     // TODO :- ChengHong add your audio action here
     @objc private func audioAction() {
+        
         print("audioButton Touched : Touched")
+        if(isRecording)
+        {
+            finishAudioRecording(success: true)
+            //record_btn_ref.setTitle("Record", for: .normal)
+            isRecording = false
+        }
+        else
+        {
+            setup_recorder()
+            audioRecorder.record()
+            //record_btn_ref.setTitle("Stop", for: .normal)
+            isRecording = true
+        }
         
         
+        
+    }
+    
+    func finishAudioRecording(success: Bool)
+    {
+        if success
+        {
+            audioRecorder.stop()
+            audioRecorder = nil
+            print("recorded successfully.")
+        }
+        else
+        {
+            Util.ShowAlert(title: "Error", message: "Recording failed.", action_title: "OK", on: self)
+        }
     }
     
     /// dismiss pop up form action
@@ -222,26 +327,6 @@ extension CustomFormViewController: UIImagePickerControllerDelegate, UINavigatio
         if let im = self.albumThumbnailImage{
             self.contentv.updatePreView(image: im)
         }
-        
-        
-//        let imageData = self.albumThumbnailImage?.jpegData(compressionQuality: 1.0)
-//        let imageString = Util.GenerateUDID()!
-        
-//        self.contentv.updatePreView(imageUID: self.albumThumbnailString, imageExtension: Util.EXTENSION_JPEG)
-        
-//        Util.UploadFileToServer(data: imageData!, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: {url in
-//
-//            if url != nil{
-//                self.albumThumbnailString = imageString
-//                print("ALBUMNAILSTIRNG", self.albumThumbnailString)
-//                // todo: update image from database
-//                self.contentv.updatePreView(imageUID: self.albumThumbnailString, imageExtension: Util.EXTENSION_JPEG)
-//            }
-//
-//        }, errorHandler: {e in
-//            print("you get error from Thumbnail choose")
-//            Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-//        })
 
         dismiss(animated: true, completion: nil)
     }

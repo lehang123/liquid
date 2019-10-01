@@ -12,6 +12,8 @@ class AlbumDetailPhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var photoImageView: UIImageView!
     
+    var indexInView: Int!
+    
     /// album detail photo 
     var image: UIImage! {
         didSet {

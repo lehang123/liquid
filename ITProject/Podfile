@@ -23,6 +23,7 @@ target 'ITProject' do
   pod 'SwiftEntryKit'
   pod 'SwipeCellKit'
   pod 'FaveButton'
+  pod 'Gallery'
 
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'
