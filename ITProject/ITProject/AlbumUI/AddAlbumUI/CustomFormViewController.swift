@@ -128,7 +128,7 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
         {
     //        let filename = "myRecording.m4a"
     //        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
-            let filePath = NSURL(fileURLWithPath: "/Users/zhuchenghong/Desktop/TESTING1.m4a")
+            let filePath = NSURL(fileURLWithPath: "/Users/gilbert/Desktop/TESTING1.m4a")
             return filePath as URL
         }
     

@@ -140,8 +140,8 @@ class AlbumCoverViewController: UIViewController {
                                          Util.DismissActivityIndicator()
                                          if url != nil {
                                              // todo : add the thumbnail is a dummy now, and, update cache
-                                             AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-                                                 docRef in
+                                             AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG,  mediaWithin: [], completion: {
+                                                 docRef,_ in
                                                  
                                                  self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
                                              })

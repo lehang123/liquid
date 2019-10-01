@@ -68,7 +68,11 @@ class AlbumDBController
 
 	public func UpdateComments(username: String, comment: String, photoUID: String)
 	{
-		// USE : [ [  "username" : USERNAME, "message"  : COMMENTS ] ]
+		/* comment structure : [
+         * [  "username" : USERNAME,
+         * "message"  : COMMENTS ]
+         * ]*/
+        
 		DBController.getInstance()
 			.updateArrayField(
 				collectionName: AlbumDBController.MEDIA_COLLECTION_NAME,
@@ -151,6 +155,24 @@ class AlbumDBController
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM:  albumDocumentReference,
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE: Timestamp(date: Date())
                     ], forDocument: DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).document(item.getUID()))
+                    
+                    if item.getExtension().contains(Util.EXTENSION_M4V) ||
+                        item.getExtension().contains(Util.EXTENSION_MP4){
+                        
+                        let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + item.getExtension()
+                        
+
+                        Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: Util.EXTENSION_JPEG)
+                        
+                        Util.ReadFileFromDocumentDirectory(fileName: videoPath){
+                            data in
+                            
+                            Util.UploadFileToServer(data: data, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
+                        }
+                    }else {// image, do as usual
+                        Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
+                    }
+                    
                 }
                 
                 //update to family:
@@ -252,34 +274,9 @@ class AlbumDBController
 		
 	}
 
-	/// gets all media file paths from an album.
-	/// - Parameters:
-	///   - albumUID: album's UID to be retrieved
-	///   - completion: gives all the media file paths  of the album.
-    ///TODO : CHANGE STRUCTURE
-	public func getPhotosFromAlbum(albumUID: String, completion: @escaping ([String]) -> Void)
-	{
-		DBController.getInstance()
-			.getDocumentFromCollection(
-				collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
-				documentUID: albumUID
-			)
-		{ document, error in
-			if let document = document, document.exists
-			{
-				// get all media file paths:
-				let mediaFilePaths: [String] = document
-					.get(AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS) as! [String]
-				print("MediaFilePaths at getPhotosFromAlbum::: \(mediaFilePaths)")
 
-				completion(mediaFilePaths)
-			}
-			else
-			{
-				print("ERROR at getPhotosFromAlbum::: ERROR RETRIEVING DOCUMENT: " + error!.localizedDescription)
-			}
-		}
-	}
+                    
+                    
 
 	/// gets all album listeners for certain user's family.
 	/// useful for getting notified for updates / deletions / additions to albums.
