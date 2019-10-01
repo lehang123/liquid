@@ -29,7 +29,7 @@ class MediaDetail: Equatable
 	/* filename :  UID.zip or UID.jpg */
 	public let UID: String!
 	public let ext: String!
-	private var watch: Int
+	private var watch: [DocumentReference]?
 
 	public func getUID() -> String
 	{
@@ -98,14 +98,6 @@ class MediaDetail: Equatable
         }
 	}
 
-	/// add watch counter and update it to db too.
-	public func upWatch()
-	{
-		self.watch += 1
-
-		DBController.getInstance().incrementValue(increment: 1, fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH, documentUID: self.UID, collectionName: AlbumDBController.MEDIA_COLLECTION_NAME)
-	}
-    
     ///  reduce # of likes by 1
 	public func DownLikes()
 	{ //get self current user:
@@ -139,7 +131,7 @@ class MediaDetail: Equatable
 
 	public func getWatch() -> Int
 	{
-		return self.watch
+        return self.watch?.count ?? 0
 	}
 
 	public func addComments(comment: comment)
@@ -158,7 +150,7 @@ class MediaDetail: Equatable
 	}
 
 	init(title: String!, description: String!,
-	     UID: String!, likes: [DocumentReference], comments: [comment]!, ext: String!, watch: Int)
+	     UID: String!, likes: [DocumentReference], comments: [comment]!, ext: String!, watch: [DocumentReference]?)
 	{
 		self.UID = UID
 		self.title = title
@@ -167,5 +159,18 @@ class MediaDetail: Equatable
 		self.comments = comments
 		self.ext = ext
 		self.watch = watch
+        
+        
 	}
+    func hasWatch(){
+        //get current user:
+           let currentUserReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: Auth.auth().currentUser!.uid)
+        
+        //if user never seen it yet, then add to watch array:
+        if (!(self.watch?.contains(currentUserReference) ?? false)){
+            self.watch?.append(currentUserReference);
+            DBController.getInstance().updateArrayField(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: self.UID, fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH, appendValue: currentUserReference)
+        }
+        
+    }
 }

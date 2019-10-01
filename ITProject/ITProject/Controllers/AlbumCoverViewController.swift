@@ -236,10 +236,13 @@ class AlbumCoverViewController: UIViewController {
 
         albumCollectionView.register(UINib(nibName: AlbumCoverViewController.NIB_NAME, bundle: nil), forCellWithReuseIdentifier: AlbumCoverViewController.CELL_IDENTIFIER)
         let layout = albumCollectionView!.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.itemSize = CGSize(width: albumCollectionView.frame.size.width, height: albumCollectionView.bounds.size.height / 2.2)
+        
+        // TODO :- FIX THE WIDTH AND HEIGHT BUG
+        layout.itemSize = CGSize(width: albumCollectionView.frame.width, height: self.albumCollectionView.frame.height / 2.2)
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 9, right: 0)
+    
     }
-
+    
     // To-do: changed list data structure so it fits for database
     /// prepare next view, passing album details to the display album content view
     ///
