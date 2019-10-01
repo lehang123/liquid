@@ -28,17 +28,24 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
             if url != nil {
                 
                 // add album to db
-                AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDescription, thumbnail: imageUid!, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-                    docRef in
+                AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDescription, thumbnail: imageUid!, thumbnailExt: Util.EXTENSION_JPEG,  mediaWithin: photoWithin){
+                    docRef,error in
+                    if let error = error{
+                        print("error at AlbumCoverViewController.createAlbum ",error)
+                    }else{
+                        print("succeed at AlbumCoverViewController.createAlbum ", docRef)
+                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
+                    }
                     
-                    self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
-                })
+                    
+                   
+                }}
                 
                 // todo : now expcet album itself, it also upload the image that already choosen.
+                
                 // todo : create another field for db to record location
-            }
-
-        }, errorHandler: { e in
+                
+            }, errorHandler: { e in
             print("you get error from Thumbnail choose")
             Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
         })
@@ -133,8 +140,8 @@ class AlbumCoverViewController: UIViewController {
                                          Util.DismissActivityIndicator()
                                          if url != nil {
                                              // todo : add the thumbnail is a dummy now, and, update cache
-                                             AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG, completion: {
-                                                 docRef in
+                                             AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG,  mediaWithin: [], completion: {
+                                                 docRef,_ in
                                                  
                                                  self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
                                              })
