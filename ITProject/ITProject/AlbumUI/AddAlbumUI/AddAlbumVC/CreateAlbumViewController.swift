@@ -32,8 +32,8 @@ class CreateAlbumViewController: UIViewController {
     @IBOutlet weak var albumNameTextField: UITextField!
     @IBOutlet weak var albumDescriptionTextView: UITextView!
     @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
-    
     @IBOutlet weak var thumbnailContentView: UIView!
+    
     
     var delegate: CreateAlbumViewControllerDelegate!
 
@@ -95,7 +95,9 @@ class CreateAlbumViewController: UIViewController {
         
         let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
         thumbnailContentView.addGestureRecognizer(thumbnailTapped)
+
     }
+
     
     @objc func addThumbnailTapped(sender _: UITapGestureRecognizer){
         print("addThumbnailTapped : tapped")
