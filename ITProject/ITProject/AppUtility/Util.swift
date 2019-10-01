@@ -417,28 +417,6 @@ class Util {
     }
 
     /// <#Description#>
-    ///
-    /// - Parameter fileName: file name
-    public static func GetMetadataFromServer(fileName: String) {
-        let fileFullPath = GetFullFilePath(fileName: fileName)
-        print("GetMetadataFromServer :file path " + fileFullPath)
-        let gsReference = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
-
-        // Get metadata properties
-        gsReference.getMetadata { metadata, error in
-            if let error = error {
-                // Uh-oh, an error occurred!
-                print("GetMetadataFromServer fail")
-                print(error)
-            } else {
-                // Metadata now contains the metadata for 'images/forest.jpg'
-                print("GetMetadataFromServer success with :")
-                print(metadata?.customMetadata as Any)
-            }
-        }
-    }
-
-    /// <#Description#>
     /// Zipfile function :
     ///
     /// from : zipfile location (folderPath)
