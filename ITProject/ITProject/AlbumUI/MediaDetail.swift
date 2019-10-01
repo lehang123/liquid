@@ -35,7 +35,11 @@ class MediaDetail: Equatable
 	{
 		return self.UID
 	}
-
+    
+    public func getExtension() -> String
+    {
+        return self.ext
+    }
 	/// photo's title
 	private var title: String!
 
