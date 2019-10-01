@@ -213,7 +213,7 @@ class CacheHandler: NSObject
 					}
 
 					// parse all data:
-                    allMedias.append(MediaDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as! Int))
+                    allMedias.append(MediaDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as? [DocumentReference] ?? []))
 				}
                 print("after getAllPhotosInfo, length is:::", allMedias.count)
                 //pass data thru:

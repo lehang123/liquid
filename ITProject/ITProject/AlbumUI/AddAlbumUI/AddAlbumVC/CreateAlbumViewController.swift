@@ -175,7 +175,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
             uiImages.forEach({
                 uiImage in
                 
-                let mediaDetail = MediaDetail(title: "Unknown", description: "None for now", UID: Util.GenerateUDID(), likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0)
+                let mediaDetail = MediaDetail(title: "Unknown", description: "None for now", UID: Util.GenerateUDID(), likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: [])
                 mediaDetail.cache = uiImage?.jpegData(compressionQuality: 1.0)
                 
                 self.addPhotosCollectionView.performBatchUpdates({
@@ -231,7 +231,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                 
                 
                 
-                let media = MediaDetail(title: "a video", description: "this is a video", UID: filename, likes: [], comments: nil, ext: fileExt, watch: 0)
+                let media = MediaDetail(title: "a video", description: "this is a video", UID: filename, likes: [], comments: nil, ext: fileExt, watch: [])
                 
                 var doesThumbnailMade = false
                 video.fetchThumbnail(completion: {

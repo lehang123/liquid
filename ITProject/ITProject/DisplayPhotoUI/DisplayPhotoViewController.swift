@@ -367,8 +367,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
             // load the likeNumbers and watched numbers
             cell0.likeNumbers.text = String(self.mediaDetail.getLikesCounter())
-
-            self.mediaDetail.upWatch()
+            
+            //check if you have watched it before?
+            self.mediaDetail.hasWatch()
 
             cell0.watchedNumbers.text = String(self.mediaDetail.getWatch())
 
