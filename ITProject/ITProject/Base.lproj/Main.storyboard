@@ -841,7 +841,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8VQ-8N-yav" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1761" y="-1407"/>
+            <point key="canvasLocation" x="1760.8" y="-1407.3463268365817"/>
         </scene>
         <!--Side Menu Table View Controller-->
         <scene sceneID="h6m-9z-lZ6">
@@ -1197,8 +1197,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOp-IL-JPD">
-                                <rect key="frame" x="30" y="525" width="57" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DOB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOp-IL-JPD">
+                                <rect key="frame" x="30" y="525" width="35.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1247,7 +1247,7 @@
                     <navigationItem key="navigationItem" id="Rkv-PJ-DIR"/>
                     <size key="freeformSize" width="320" height="700"/>
                     <connections>
-                        <outlet property="genderField" destination="feK-TA-bjA" id="iKv-Hm-OU6"/>
+                        <outlet property="dobField" destination="feK-TA-bjA" id="O2e-Sg-Ukf"/>
                         <outlet property="name" destination="q3p-uK-JX8" id="cyD-yg-LMH"/>
                         <outlet property="phoneField" destination="nAu-rN-acr" id="vgE-3p-jPB"/>
                         <outlet property="profilePicture" destination="WYE-xT-Ke1" id="oiT-gW-UK9"/>
@@ -1951,6 +1951,6 @@
         <image name="settingIcon" width="108" height="110"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MAc-qw-pwl"/>
+        <segue reference="JlC-27-WbR"/>
     </inferredMetricsTieBreakers>
 </document>
