@@ -89,17 +89,6 @@ class AlbumDetailTableViewController: UITableViewController {
             var indexPaths = [IndexPath]()
             print("the length of album  in reloadPhoto is ::: " , self.albumContents.count)
             print("the length of newPhotos  in reloadPhoto is ::: " , newPhotos.count)
-
-//            print(self.albumContents[0])
-            //make sure it's clear
-//            if self.albumContents.count > 0{
-//                for i in 0...self.albumContents.count - 1 {
-//                    indexPaths.append(IndexPath(item: i, section: 0))
-//                }
-//                self.albumContents.removeAll()
-//                self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
-//                indexPaths.removeAll()
-//            }
             
             
             if (newPhotos.count  > 0) {
@@ -248,7 +237,7 @@ class AlbumDetailTableViewController: UITableViewController {
         if segue.identifier == AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE{
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! MediaDetail
-                photoDetailTVC.setPhotoDetailData(photoDetail: photoDetail)
+                photoDetailTVC.setMediaDetailData(mediaDetail: photoDetail)
 
             }
         }
