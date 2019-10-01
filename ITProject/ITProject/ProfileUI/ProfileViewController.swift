@@ -28,7 +28,7 @@ class ProfileViewController: UIViewController
 	@IBOutlet var profilePicture: EnhancedCircleImageView!
 	@IBOutlet var name: UITextField!
 	@IBOutlet var relationship: UITextField!
-	@IBOutlet var genderField: UITextField!
+	@IBOutlet var dobField: UITextField!
 	@IBOutlet var phoneField: UITextField!
 
 	override func viewDidLoad()
@@ -69,9 +69,9 @@ class ProfileViewController: UIViewController
 		self.name.text = self.userInformation.username
 		self.relationship.text = self.userInformation.familyRelation
 		self.phoneField.text = self.userInformation.phone
-		self.genderField.text = self.userInformation.gender?.rawValue
+		self.dobField.text = self.userInformation.gender?.rawValue
 		self.currentRelationship = self.userInformation.familyRelation
-		self.currentGender = self.genderField.text
+		self.currentGender = self.dobField.text
 		self.didChangeUserInfo = false
         
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -89,7 +89,7 @@ class ProfileViewController: UIViewController
 		self.name.endEditing(true)
 		self.relationship.endEditing(true)
 		self.phoneField.endEditing(true)
-		self.genderField.endEditing(true)
+		self.dobField.endEditing(true)
 	}
 
 	/// Show the keyboard
@@ -156,11 +156,12 @@ class ProfileViewController: UIViewController
 			DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
 			self.currentRelationship = self.relationship.text
 		}
-		if self.currentGender != self.genderField.text
+		if self.currentGender != self.dobField.text
 		{
+            // TO DO here changed to dobfield
 			self.didChangeUserInfo = true
-			DBController.getInstance().updateSpecificField(newValue: self.genderField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-			self.currentGender = self.genderField.text
+			DBController.getInstance().updateSpecificField(newValue: self.dobField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+			self.currentGender = self.dobField.text
 		}
 
 		if self.didChangeUserProfile
