@@ -34,7 +34,7 @@ class ProfileViewController: UIViewController
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-
+        self.hideKeyboardWhenTappedAround()
 		// Set right bar button as Done to store any changes that user made
 		let rightButtonItem = UIBarButtonItem(
 			title: "Done",
@@ -76,20 +76,12 @@ class ProfileViewController: UIViewController
         
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.name.delegate = self
+        self.relationship.delegate = self
+        self.phoneField.delegate = self
+        self.dobField.delegate = self
 
-		// but to stop editing when the user taps anywhere on the view, add this gesture recogniser
-		let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
-		view.addGestureRecognizer(tapGestureBackground)
-	}
-
-	/// hide the keyboard
-	/// - Parameter sender: tap the background
-	@objc func backgroundTapped(_: UITapGestureRecognizer)
-	{
-		self.name.endEditing(true)
-		self.relationship.endEditing(true)
-		self.phoneField.endEditing(true)
-		self.dobField.endEditing(true)
 	}
 
 	/// Show the keyboard
@@ -192,6 +184,20 @@ class ProfileViewController: UIViewController
 	{
 		dismiss(animated: true, completion: nil)
 	}
+}
+
+extension ProfileViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn : get called")
+        // end editing when user hit return
+        textField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldEndEditing : get called")
+        return true
+    }
 }
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
