@@ -75,6 +75,56 @@ class Util {
                            completion: completion,
                            errorHandler: errorHandler)
     }
+    
+    public static func UploadZipFileToServer(data: Data,
+    metadata: StorageMetadata?,
+    fileName: String,
+    fextension: String,
+    completion: @escaping (URL?) -> Void = { _ in },
+    errorHandler: @escaping (Error?) -> Void = { _ in }){
+        
+        let storageRef = Storage.storage().reference()
+        
+        let folderPath = GetFolderByExtension(fextension: fextension, withPathSlash: true)
+        let filePath = folderPath! + fileName + "." + Util.EXTENSION_ZIP
+        
+        ReadFileFromDocumentDirectory(fileName: filePath) { fileData in
+
+            let sRef = storageRef.child(filePath)
+
+            // Upload the file to the path "images/rivers.jpg"
+            _ = sRef.putData(fileData, metadata: metadata) { metadata, error in
+                
+                print("UploadZipFileToServer : PUT DATA FILEPATH",filePath)
+                guard let metadata = metadata else {
+                    // Uh-oh, an error occurred!
+                    print("UploadZipFileToServer : metadata error : "
+                        + error!.localizedDescription)
+                    errorHandler(error)
+                    return
+                }
+                print("PUT DATA FILEPATH HAS END",filePath)
+                // Metadata contains file metadata such as size, content-type.
+                _ = metadata.size
+                // You can also access to download URL after upload.
+                sRef.downloadURL { url, error in
+                    print("downloadURL DATA ANYTHING",filePath)
+
+                    guard url != nil else {
+                        // Uh-oh, an error occurred!
+                        errorHandler(error)
+                        print("UploadZipFileToServer : url error : "
+                            + error!.localizedDescription)
+                        return
+                    }
+                    
+                    print("URL IS: GOING TO COMPLETION", url)
+                    completion(url)
+                }
+            }
+        }
+        
+    }
 
     /// <#Description#>
     /// data : the file date you want to store in the server
@@ -114,6 +164,8 @@ class Util {
 
                     // Upload the file to the path "images/rivers.jpg"
                     _ = sRef.putData(fileData, metadata: metadata) { metadata, error in
+                        
+                        print("PUT DATA FILEPATH",filePath)
                         guard let metadata = metadata else {
                             // Uh-oh, an error occurred!
                             print("UploadFileToServer : metadata error : "
@@ -121,10 +173,13 @@ class Util {
                             errorHandler(error)
                             return
                         }
+                        print("PUT DATA FILEPATH HAS END",filePath)
                         // Metadata contains file metadata such as size, content-type.
                         _ = metadata.size
                         // You can also access to download URL after upload.
                         sRef.downloadURL { url, error in
+                            print("downloadURL DATA ANYTHING",filePath)
+
                             guard url != nil else {
                                 // Uh-oh, an error occurred!
                                 errorHandler(error)
@@ -132,6 +187,8 @@ class Util {
                                     + error!.localizedDescription)
                                 return
                             }
+                            
+                            print("URL IS: GOING TO COMPLETION", url)
                             completion(url)
                         }
                     }
@@ -193,9 +250,11 @@ class Util {
             
             if DoesFileExist(fullPath: m4vPath){
                 // m4v found, completion
+                print("m4v found, completion")
                 completion(URL(string: m4vPath))
             }else if DoesFileExist(fullPath: mp4Path){
                 // mp4 found, completion
+                 print("mp4 found, completion")
                 completion(URL(string: mp4Path))
             }else if DoesFileExist(fullPath: zipPath!.absoluteString) {
                 // unzip file and then give url
@@ -204,13 +263,15 @@ class Util {
                 
                 let zipfilePath =
                     pathWithNoExtension?.lastPathComponent
-                print("GetLocalFileURL : the video folderPath : " + zipfilePath!)
+                print("GetLocalFileURL : the video zipFile : " + zipfilePath!)
                 
-                Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath!, deleteAfterFinish: true){
+                Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath! + "." + Util.EXTENSION_ZIP, deleteAfterFinish: true){
                     url in
                     completion(url)
                 }
             }else{ // not in local, try fecth from sever
+                print("else case, completion")
+
                 let fileFullPath = VIDEO_FOLDER + "/" + zipPath!.lastPathComponent
                 Util.DownloadFileFromServer(fileFullPath: fileFullPath, completion: {
                     url in
@@ -415,6 +476,10 @@ class Util {
     public static func GetExtensionByFolderPath(fileFullPath: String) -> String? {
         if fileFullPath.contains(Util.IMAGE_FOLDER + "/") {
             return Util.EXTENSION_JPEG
+        }else if fileFullPath.contains(Util.VIDEO_FOLDER + "/") {
+            return Util.EXTENSION_M4V
+        }else if fileFullPath.contains(Util.AUDIO_FOLDER + "/") {
+            return Util.EXTENSION_M4A
         }
         return nil
     }

@@ -207,7 +207,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
             }
             if let tempPath = tempPath {
                 
-                 // temp Path : file:///Users/gonglehan/Library/Developer/CoreSimulator/Devices/68051ACC-8546-4EA1-8DCE-E20B7A4A93F0/data/Containers/Data/Application/75585C1C-A744-4A1C-B25F-C332DF2CEE75/tmp/547CF4AA-3AE9-451A-BA68-16756C89606A.mp4
+                 // temp Path :"file:///Users/gonglehan/Library/Developer/CoreSimulator/Devices/68051ACC-8546-4EA1-8DCE-E20B7A4A93F0/data/Containers/Data/Application/75585C1C-A744-4A1C-B25F-C332DF2CEE75/tmp/547CF4AA-3AE9-451A-BA68-16756C89606A.mp4
                
                 
                 let shortPath = tempPath.lastPathComponent as NSString
@@ -220,7 +220,14 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                 print("pathExt : " + fileExt)
                 print("path : " + filename)
                 
-                Util.ZipFile(from: onPath as NSString, to: Util.GetFolderByExtension(fextension: fileExt, withPathSlash: false)! as NSString, fileName: filename, fextension: "." + fileExt, deleteAfterFinish: true)
+                Util.ZipFile(from: onPath as NSString, to: Util.GetVideoDirectory().absoluteString as NSString, fileName: filename, fextension: "." + fileExt, deleteAfterFinish: true){
+                    url in
+                    
+                    let doesFileExist = Util.DoesFileExist(fullPath: url!.absoluteString)
+                    print("DOES FILE EXIST AFTER ZIP",url?.absoluteString, doesFileExist )
+                }
+                 print("FROM NNEW PATH IS : ", onPath)
+                print("TO NNEW PATH IS : ", Util.GetVideoDirectory().absoluteString as NSString)
                 
                 
                 
