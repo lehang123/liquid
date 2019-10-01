@@ -96,14 +96,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         self.setUpTableViewHeader()
 
-        // first one (1 +) for like, watched cell + list length (but when the list is too long, we are going to hide it and expand view appear)
-
-        // current cell doesn't show all the comments
-        //        if (commentsSource.count > commentCellsList.count){
-        //            print("there is more source")
-        //            hasHiddenCells = true
-        //        }
-
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
@@ -116,46 +108,30 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
          }
          else
          {
-             if FileManager.default.fileExists(atPath: getFileUrl().path)
-             {
-                 prepare_play()
-                 audioPlayer.play()
-                 isPlaying = true
-             }
-             else
-             {
-                 Util.ShowAlert(title: "Error", message: "Audio file is missing.", action_title: "OK", on: self)
-             }
+            Util.GetLocalFileURL(by: mediaDetail.audioDescriptionUID, type: .audio){
+                url in
+                self.prepare_play(url: url!)
+            }
+           
          }
     }
     
-    func prepare_play()
+    func prepare_play(url: URL)
     {
         do
         {
-            audioPlayer = try AVAudioPlayer(contentsOf: getFileUrl())
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer.delegate = self
             audioPlayer.prepareToPlay()
+            audioPlayer.play()
+            isPlaying = true
         }
         catch{
             print("Error")
         }
     }
     
-        func getDocumentsDirectory() -> URL
-        {
-            let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-            let documentsDirectory = paths[0]
-            return documentsDirectory
-        }
-        
-        func getFileUrl() -> URL
-        {
-    //        let filename = "myRecording.m4a"
-    //        let filePath = getDocumentsDirectory().appendingPathComponent(filename)
-            let filePath = NSURL(fileURLWithPath: "/Users/zhuchenghong/Desktop/TESTING1.m4a")
-            return filePath as URL
-        }
+    
     
     func textFieldShouldEndEditing(_: UITextField) -> Bool
     {
