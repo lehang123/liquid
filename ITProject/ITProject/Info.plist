@@ -6,6 +6,8 @@
 	<string>For using microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Photo Library Access Warning</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location Access Warning</string>
 	<key>CFBundleDevelopmentRegion</key>

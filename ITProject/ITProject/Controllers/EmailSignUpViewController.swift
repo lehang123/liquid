@@ -44,26 +44,21 @@ class EmailSignUpViewController: UIViewController
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-
+        
+        self.hideKeyboardWhenTappedAround()
 		// Check if the user is typing
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
-		let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
-		view.addGestureRecognizer(tapGestureBackground)
+        self.emailAddress.delegate = self
+        self.password.delegate = self
+        self.confirmPW.delegate = self
+        self.username.delegate = self
+        self.joinFamilyIDField.delegate = self
+        self.newFamilyField.delegate = self
+        
 	}
 
-	/// Tap the background stop editing
-	/// - Parameter sender: typing
-	@objc func backgroundTapped(_: UITapGestureRecognizer)
-	{
-		self.emailAddress.endEditing(true)
-		self.password.endEditing(true)
-		self.confirmPW.endEditing(true)
-		self.username.endEditing(true)
-		self.joinFamilyIDField.endEditing(true)
-		self.newFamilyField.endEditing(true)
-	}
 
 	/// Show the keyboard when the user is typing
 	/// - Parameter notification: notificate when user is typing
@@ -111,14 +106,19 @@ class EmailSignUpViewController: UIViewController
 				// check if family exists
 				DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.joinFamilyIDField.text!)
 				{
-					document, _ in
+					document, e in
 					if let document = document, document.exists
 					{
+                        print("if3 run:::")
+
 						// let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
 						self.authenticate(email: email, pw: pw)
 					}
 					else
 					{
+//                        print(e)
+                        print("else run:::")
+                        print("couldn't find:"+self.joinFamilyIDField.text! )
 						Util.DismissActivityIndicator()
 						Util.ShowAlert(title: EmailSignUpViewController.JOIN_FAMILY_NOT_EXIST,
 						               message: EmailSignUpViewController.ACCOUNT_INCORRECT_MESSAGE,
@@ -236,4 +236,18 @@ class EmailSignUpViewController: UIViewController
 			}
 		}
 	}
+}
+
+extension EmailSignUpViewController: UITextFieldDelegate{
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn : get called")
+        // end editing when user hit return
+        textField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldEndEditing : get called")
+        return true
+    }
 }

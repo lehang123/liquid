@@ -8,6 +8,7 @@
 
 import UIKit
 
+///handles displaying Album Title and Description 
 class AlbumDetailDescrpTableViewCell: UITableViewCell {
 
    
@@ -24,7 +25,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     /// update album detail information
     func updateUI()
     {
-        descpTitle.text = "Description"
+        descpTitle.text = descrp.title
         descpDetail.text = descrp.description
     }
 

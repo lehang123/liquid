@@ -1,5 +1,5 @@
 //
-//  PhotoDetail.swift
+//  MeidaDetail.swift
 //  ITProject
 //
 //  Created by Gong Lehan on 6/9/19.
@@ -12,7 +12,7 @@ import UIKit
 import Firebase
 
 /// Manages each photo's attributes and interactions for the UI.
-class PhotoDetail: Equatable
+class MediaDetail: Equatable
 {
 	public struct comment: Equatable
 	{
@@ -29,13 +29,17 @@ class PhotoDetail: Equatable
 	/* filename :  UID.zip or UID.jpg */
 	public let UID: String!
 	public let ext: String!
-	private var watch: Int
+	private var watch: [DocumentReference]?
 
 	public func getUID() -> String
 	{
 		return self.UID
 	}
-
+    
+    public func getExtension() -> String
+    {
+        return self.ext
+    }
 	/// photo's title
 	private var title: String!
 
@@ -94,14 +98,6 @@ class PhotoDetail: Equatable
         }
 	}
 
-	/// add watch counter and update it to db too.
-	public func upWatch()
-	{
-		self.watch += 1
-
-		DBController.getInstance().incrementValue(increment: 1, fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH, documentUID: self.UID, collectionName: AlbumDBController.MEDIA_COLLECTION_NAME)
-	}
-    
     ///  reduce # of likes by 1
 	public func DownLikes()
 	{ //get self current user:
@@ -116,12 +112,16 @@ class PhotoDetail: Equatable
             let idx : Int = self.likes!.firstIndex(of: currentUserReference)!
             self.likes!.remove(at: idx)
         }
-        
-        
-    
 	}
+    
+    var cache: Data!
+    
+    var audioDescriptionUID: String!
+    var audioDescriptionExt: String!
+    var thumbnailUID:String!
+    var thumbnailExt:String!
 
-	/// photo's comment
+	/// media's comment
 	private var comments: [comment]!
 
 	public func getComments() -> [comment]!
@@ -131,7 +131,7 @@ class PhotoDetail: Equatable
 
 	public func getWatch() -> Int
 	{
-		return self.watch
+        return self.watch?.count ?? 0
 	}
 
 	public func addComments(comment: comment)
@@ -144,13 +144,13 @@ class PhotoDetail: Equatable
 		self.comments = self.comments.filter { $0 != comment }
 	}
 
-	static func == (lhs: PhotoDetail, rhs: PhotoDetail) -> Bool
+	static func == (lhs: MediaDetail, rhs: MediaDetail) -> Bool
 	{
 		return lhs.UID == rhs.UID
 	}
 
 	init(title: String!, description: String!,
-	     UID: String!, likes: [DocumentReference], comments: [comment]!, ext: String!, watch: Int)
+	     UID: String!, likes: [DocumentReference], comments: [comment]!, ext: String!, watch: [DocumentReference]?)
 	{
 		self.UID = UID
 		self.title = title
@@ -159,5 +159,18 @@ class PhotoDetail: Equatable
 		self.comments = comments
 		self.ext = ext
 		self.watch = watch
+        
+        
 	}
+    func hasWatch(){
+        //get current user:
+           let currentUserReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: Auth.auth().currentUser!.uid)
+        
+        //if user never seen it yet, then add to watch array:
+        if (!(self.watch?.contains(currentUserReference) ?? false)){
+            self.watch?.append(currentUserReference);
+            DBController.getInstance().updateArrayField(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: self.UID, fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH, appendValue: currentUserReference)
+        }
+        
+    }
 }
