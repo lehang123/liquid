@@ -143,11 +143,14 @@ class AlbumDBController
                 
                 
                 
-                //create new docs for each media included:
+                /*create new docs for each media included:
+                //try to move it down after batch.commit():
+                 update: watch,comments,and likes now in arrays!
+                 */
                 mediaWithin.forEach { (item) in
                     
                     batch.setData([
-                        AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: 0,
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: item.getExtension(),
@@ -257,7 +260,8 @@ class AlbumDBController
 		/* init new media
 		 * update: now has Date Created + reference to its own album
 		 * update: Comment is in : Array of [username : value, message : value ]
-         * update : like is now an Array of userDocumentReference. */
+         * update : like is now an Array of userDocumentReference.
+         * update: the watch is now an []. each user can contribute to only 1 watch count.*/
 		let albumDocRef: DocumentReference = DBController
 			.getInstance()
 			.getDocumentReference(
@@ -269,7 +273,7 @@ class AlbumDBController
 			.addDocumentToCollectionWithUID(
 				documentUID: mediaPath,
 				inputData: [
-					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: 0,
+					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: ext,
