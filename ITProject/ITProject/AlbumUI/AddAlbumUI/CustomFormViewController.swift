@@ -309,14 +309,14 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     
     /// dismiss pop up form action
     /// - Parameter completion: completion action
-    public func dismissWithAnimation(completion: @escaping ((Data?, String?,String?) -> Void) = {_  ,_ ,_ in }){
+    public func dismissWithAnimation(completion: @escaping ((Data?, String?) -> Void) = {_  ,_ in }){
         UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
         }, completion:{
             bool in
             self.dismiss(animated: true, completion: {
                 
-                completion(self.contentv.getPreViewImage(), self.uploadFileName,self.audioUID)
+                completion(self.contentv.getPreViewImage(),self.audioUID)
             })
         })
     }

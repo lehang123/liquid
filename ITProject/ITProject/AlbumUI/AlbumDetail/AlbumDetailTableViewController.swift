@@ -197,10 +197,14 @@ class AlbumDetailTableViewController: UITableViewController {
                      okAction: {
                         
                         customFormVC.dismissWithAnimation(){
-                            imageData,uploadFileName,audioUID in
-                 
+                            imageData,audioUID in
+                            let filename = URL(string: audioUID!)!.appendingPathExtension(Util.EXTENSION_M4A)
+                                let filePath = Util
+                                               .GetAudioDirectory()
+                                               .appendingPathComponent(filename.absoluteString)
+                                let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
                                 if let imageData = imageData,
-                                   let audioUID = audioUID, let audioPath = uploadFileName, let imageUID = Util.GenerateUDID(){
+                                   let audioUID = audioUID,let imageUID = Util.GenerateUDID(){
                                     
                                    //uploads audio recorded to the storage:
                                     Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
