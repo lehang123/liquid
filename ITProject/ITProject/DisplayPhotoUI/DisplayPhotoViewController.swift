@@ -27,6 +27,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private static let LIKE_WATCH_CELL = 0
 
     private static let LIKE_WATACHED_CELL_LENGTH = 1
+    private static let DESCRIPTON_CELL = 1
     //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
 
     private struct CommentCellStruct
@@ -152,7 +153,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
            
          }
     }
-    
     func prepare_play(url: URL)
     {
         do
@@ -240,22 +240,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         // disable the button after sending the comment
          sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
         sendButton.isUserInteractionEnabled = false
-        
-        //        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
-        //            if let error = error {
-        //                print("Error in EnterComment: \(error)")
-        //            } else {
-        //                if (self.cmmentText.text!.count != 0) {
-        //                    print ("success enter comment")
-        //                    self.addCommentCellToList(username: username!, comment: String(self.cmmentText.text!))
-        //                    self.storeCommentToServer(username: username!, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
-        //
-        //                    self.tableView.reloadData()
-        //                    self.cmmentText.text = ""
-        //                }
-        //
-        //            }
-        //        }
+    
     }
 
     private func updateCommentSource()
@@ -342,7 +327,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     {
         print("numberOfRowsInSection : how often do you called ?")
         // return the number of rows
-        return self.commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+        return self.commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH +
+            DisplayPhotoViewController.DESCRIPTON_CELL
     }
 
     
@@ -413,10 +399,19 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             return cell0
         }
         else if (indexPath.row == 1) {
-            
+
             let descriptionCell = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
-            descriptionCell.setDescriptionLabel(description: "TRY HERE wo cao ni ma bi de ri ni ma de xian ren abnban jian zhi jiu shi shabi yige woc ao niaw jdoaiwjd iojwaio joiaj oijwo ijaowij oiawj oiajw ioaj iojawoijaw")
+            print("the description : " + mediaDetail.getDescription())
+            descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
+            
+//            descriptionCell.descriptionDetail.numberOfLines = 0
+//            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
+//            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
+//            descriptionCell.descriptionDetail.sizeToFit()
+            
+
             descriptionCell.selectionStyle = UITableViewCell.SelectionStyle.none
+            
             return descriptionCell
 
         }
@@ -425,8 +420,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
 
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
-            cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 1].username)
-            cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 1].comment)
+            cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)
+            cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 2].comment)
 
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
 
@@ -439,7 +434,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
         } else if indexPath.row == 1 {
-            return DisplayPhotoViewController.LIKES_ROW_HEIGHT*2
+            return UITableView.automaticDimension
         }
         else {
             return UITableView.automaticDimension
