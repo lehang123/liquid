@@ -14,6 +14,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
    
     @IBOutlet weak var descpDetail: UILabel!
     @IBOutlet weak var descpTitle: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
     
     /// reset the album detail if anything changed
     var descrp: AlbumDetail! {
@@ -27,6 +28,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     {
         descpTitle.text = "Description: "
         descpDetail.text = descrp.description
+        locationLabel.text = descrp.location
     }
 
 }

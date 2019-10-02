@@ -141,11 +141,11 @@ class CacheHandler: NSObject
 					albums[albumName] = [
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER: owner?.documentID as Any,
-//						AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_MEDIAS] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
 						AlbumDBController.DOCUMENTID: document.documentID,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as Any
 					]
                     
 				}
@@ -213,7 +213,16 @@ class CacheHandler: NSObject
 					}
 
 					// parse all data:
-                    allMedias.append(MediaDetail(title: doc.documentID, description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String, UID: doc.documentID, likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!, comments: parsedComments, ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String, watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as? [DocumentReference] ?? []))
+                    allMedias.append(
+                        MediaDetail(title: doc.documentID,
+                                    description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String,
+                                    UID: doc.documentID,
+                                    likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!,
+                                    comments: parsedComments,
+                                    ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String,
+                                    watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as? [DocumentReference] ?? [],
+                                    audioUID : currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO] as? String ?? ""))
+                    print("at getAllPhotosInfo::: audioUID:: ", currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO])
 				}
                 print("after getAllPhotosInfo, length is:::", allMedias.count)
                 //pass data thru:

@@ -237,7 +237,7 @@ class Util {
         let mp4Path = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_MP4)!
         print("GetLocalFileURL : the mp4 path : " + mp4Path)
         let m4aPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4A)!
-        print("GetLocalFileURL : the mp4 path : " + mp4Path)
+        print("GetLocalFileURL : the m4a path : " + m4aPath)
         
         
         
@@ -297,7 +297,7 @@ class Util {
                    pathWithNoExtension?.lastPathComponent
                print("GetLocalFileURL : the audio folderPath : " + zipfilePath!)
                
-               Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath!, deleteAfterFinish: true){
+               Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath! + "." + Util.EXTENSION_ZIP, deleteAfterFinish: true){
                    url in
                    completion(url)
                }
@@ -417,28 +417,6 @@ class Util {
     }
 
     /// <#Description#>
-    ///
-    /// - Parameter fileName: file name
-    public static func GetMetadataFromServer(fileName: String) {
-        let fileFullPath = GetFullFilePath(fileName: fileName)
-        print("GetMetadataFromServer :file path " + fileFullPath)
-        let gsReference = Storage.storage().reference(forURL: FIREBASE_STORAGE_URL + fileFullPath)
-
-        // Get metadata properties
-        gsReference.getMetadata { metadata, error in
-            if let error = error {
-                // Uh-oh, an error occurred!
-                print("GetMetadataFromServer fail")
-                print(error)
-            } else {
-                // Metadata now contains the metadata for 'images/forest.jpg'
-                print("GetMetadataFromServer success with :")
-                print(metadata?.customMetadata as Any)
-            }
-        }
-    }
-
-    /// <#Description#>
     /// Zipfile function :
     ///
     /// from : zipfile location (folderPath)
@@ -512,7 +490,9 @@ class Util {
                         completion(unzipped!)
                         if deleteAfterFinish {
                             do {
-                                try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
+                                try FileManager.default.removeItem(at: URL(fileURLWithPath: fullFilePath))
+                                print("DELETE AFTER FINISH SUCEED" )
+
                             } catch let error as NSError {
                                 print("UnzipFile : error occurs during remove unzip : " + error.localizedDescription)
                             }

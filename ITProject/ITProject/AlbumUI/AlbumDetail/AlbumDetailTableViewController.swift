@@ -38,7 +38,7 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerCut : CGFloat = 80
     
 
-    private let locationManager = CLLocationManager()
+//    private let locationManager = CLLocationManager()
     
     // imagePicker that to open photos library
     // private var imagePicker = UIImagePickerController()
@@ -58,8 +58,8 @@ class AlbumDetailTableViewController: UITableViewController {
         self.clearsSelectionOnViewWillAppear = false
         Util.CheckPhotoAcessPermission()
         
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+//        locationManager.delegate = self
+//        locationManager.requestWhenInUseAuthorization()
         
         self.navigationItem.title = albumDetail.title
         
@@ -153,33 +153,31 @@ class AlbumDetailTableViewController: UITableViewController {
         
     }
     
-    func retriveCurrentLocation(){
-        let status = CLLocationManager.authorizationStatus()
-
-        if(status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()){
-            // show alert to user telling them they need to allow location data to use some feature of your app
-            print("retriveCurrentLocation : rejected")
-            return
-        }
-
-        // if haven't show location permission dialog before, show it to user
-        if(status == .notDetermined){
-            locationManager.requestWhenInUseAuthorization()
-
-            // if you want the app to retrieve location data even in background, use requestAlwaysAuthorization
-             locationManager.requestAlwaysAuthorization()
-            return
-        }
-        
-        // at this point the authorization status is authorized
-        // request location data once
-        locationManager.requestLocation()
-      
-        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
-        locationManager.startUpdatingLocation()
-        
-        
-    }
+//    func retriveCurrentLocation(){
+//        let status = CLLocationManager.authorizationStatus()
+//
+//        if(status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()){
+//            // show alert to user telling them they need to allow location data to use some feature of your app
+//            print("retriveCurrentLocation : rejected")
+//            return
+//        }
+//
+//        // if haven't show location permission dialog before, show it to user
+//        if(status == .notDetermined){
+//            locationManager.requestWhenInUseAuthorization()
+//
+//            // if you want the app to retrieve location data even in background, use requestAlwaysAuthorization
+//             locationManager.requestAlwaysAuthorization()
+//            return
+//        }
+//
+//        // at this point the authorization status is authorized
+//        // request location data once
+//        locationManager.requestLocation()
+//
+//        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
+//        locationManager.startUpdatingLocation()
+//    }
     
     
     /// set up form to ask user to choose an new photo to add
@@ -195,24 +193,49 @@ class AlbumDetailTableViewController: UITableViewController {
                      okButtonText: "Create",
                      cancelAction:{},
                      okAction: {
-
+                        
                         customFormVC.dismissWithAnimation(){
-                                imageData in
-                 
+                            imageData,audioUID in
+                            let filename = URL(string: audioUID!)!.appendingPathExtension(Util.EXTENSION_M4A)
+                                let filePath = Util
+                                               .GetAudioDirectory()
+                                               .appendingPathComponent(filename.absoluteString)
+                                let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
                                 if let imageData = imageData,
-                                   let imageUID = Util.GenerateUDID(){
+                                   let audioUID = audioUID,let imageUID = Util.GenerateUDID(){
                                     
-                                    Util.ShowActivityIndicator(withStatus: "Creating photo ...")
+                                   //uploads audio recorded to the storage:
+                                    Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
+                                        Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
+                                    }
+                                    
                                     Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
                                         Util.DismissActivityIndicator()
                                         if url != nil{
                                            //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
-                                            AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
+                                            AlbumDBController
+                                                .getInstance()
+                                                .addPhotoToAlbum(
+                                                    desc:textFields.first!.textContent,
+                                                    ext: Util.EXTENSION_JPEG,
+                                                    albumUID: self.albumDetail.UID,
+                                                    mediaPath: imageUID,
+                                                    dateCreated: Timestamp(date: Date()),
+                                                    audioUID: audioUID)
                                                 
                                                 // To do for gillbert
                                                 // UPloading audio to database
+                                                //upload audio to storage:
+//                                            Util.UploadFileToServer(data: Data, metadata: <#T##StorageMetadata?#>, fileName: <#T##String#>, fextension: <#T##String#>)
+                                                self.updatePhoto(
+                                                    newPhoto: MediaDetail(
+                                                        title: imageUID,
+                                                        description: textFields.first!.textContent,
+                                                        UID: imageUID,
+                                                        likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG,
+                                                        watch: [],
+                                                        audioUID : ""))
                                             
-                                                self.updatePhoto(newPhoto: MediaDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: []))
                                                 // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }
@@ -475,55 +498,55 @@ extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectio
         }
 }
 
-extension AlbumDetailTableViewController: CLLocationManagerDelegate {
-    // handle delegate methods of location manager here
-    
-    // called when the authorization status is changed for the core location permission
-   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-           print("location manager authorization status changed")
-           
-           switch status {
-           case .authorizedAlways:
-               print("user allow app to get location data when app is active or in background")
-           case .authorizedWhenInUse:
-               print("user allow app to get location data only when app is active")
-           case .denied:
-               print("user tap 'disallow' on the permission dialog, cant get location data")
-           case .restricted:
-               print("parental control setting disallow location data")
-           case .notDetermined:
-               print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
-           @unknown default:
-            print("locationManager : error ")
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-           // .requestLocation will only pass one location to the locations array
-           // hence we can access it by taking the first element of the array
-        if let location = locations.first {
-            print("locationManager didUpdateLocations : \(location.coordinate.latitude)")
-            print("locationManager didUpdateLocations : \(location.coordinate.longitude)")
-            
-            let geocoder = CLGeocoder()
-                    
-            // Look up the location and pass it to the completion handler
-            geocoder.reverseGeocodeLocation(location,
-                        completionHandler: { (placemarks, error) in
-                if error == nil {
-                    let firstLocation = placemarks?[0]
-                    
-                    // todo : get erc Library now, depends on your simulator location
-                    print("prase location with country : \(firstLocation?.country ?? "unknown country")" )
-                    print("prase location with locality : \(firstLocation?.locality ?? "unknown city")" )
-                    print("prase location with name : \(firstLocation?.name ?? "unknown name")" )
-                }
-            })
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("locationManager didFailWithError : " + error.localizedDescription)
-    }
-}
+//extension AlbumDetailTableViewController: CLLocationManagerDelegate {
+//    // handle delegate methods of location manager here
+//
+//    // called when the authorization status is changed for the core location permission
+//   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+//           print("location manager authorization status changed")
+//
+//           switch status {
+//           case .authorizedAlways:
+//               print("user allow app to get location data when app is active or in background")
+//           case .authorizedWhenInUse:
+//               print("user allow app to get location data only when app is active")
+//           case .denied:
+//               print("user tap 'disallow' on the permission dialog, cant get location data")
+//           case .restricted:
+//               print("parental control setting disallow location data")
+//           case .notDetermined:
+//               print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
+//           @unknown default:
+//            print("locationManager : error ")
+//        }
+//    }
+//
+//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//           // .requestLocation will only pass one location to the locations array
+//           // hence we can access it by taking the first element of the array
+//        if let location = locations.first {
+//            print("locationManager didUpdateLocations : \(location.coordinate.latitude)")
+//            print("locationManager didUpdateLocations : \(location.coordinate.longitude)")
+//
+//            let geocoder = CLGeocoder()
+//
+//            // Look up the location and pass it to the completion handler
+//            geocoder.reverseGeocodeLocation(location,
+//                        completionHandler: { (placemarks, error) in
+//                if error == nil {
+//                    let firstLocation = placemarks?[0]
+//
+//                    // todo : get erc Library now, depends on your simulator location
+//                    print("prase location with country : \(firstLocation?.country ?? "unknown country")" )
+//                    print("prase location with locality : \(firstLocation?.locality ?? "unknown city")" )
+//                    print("prase location with name : \(firstLocation?.name ?? "unknown name")" )
+//                }
+//            })
+//        }
+//    }
+//
+//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+//        print("locationManager didFailWithError : " + error.localizedDescription)
+//    }
+//}
 
