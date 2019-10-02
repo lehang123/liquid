@@ -17,9 +17,10 @@ class DescriptionCell: UITableViewCell {
 
     @IBOutlet weak var descriptionDetail: UILabel!
     
+    @IBOutlet weak var playAudioButton: UIButton!
     public func setDescriptionLabel(description: String){
         if (description.isEmpty) {
-            descriptionDetail.text = "No description yest"
+            descriptionDetail.text = "No description yest dlaslkdabksjdlakkladkhasl kdhladkla jdakj ldaksl d ajldkla dladakld jlka ldak ;ld;ad as djkla skd jasd lasdas"
         } else {
             descriptionDetail.text = description
         }
