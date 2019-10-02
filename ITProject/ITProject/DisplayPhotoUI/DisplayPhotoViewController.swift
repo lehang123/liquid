@@ -403,7 +403,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let descriptionCell = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
             print("the description : " + mediaDetail.getDescription())
             descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
-            
+            descriptionCell.setAudioUID(audioUID: mediaDetail.audioUID)
 //            descriptionCell.descriptionDetail.numberOfLines = 0
 //            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
 //            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
