@@ -15,12 +15,12 @@ import UPCarouselFlowLayout
 
 protocol CreateAlbumViewControllerDelegate {
     func checkForRepeatName(album name: String)->Bool
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String)
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?)
 }
 
 extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String) {
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?) {
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
         let imageUid = Util.GenerateUDID()
         
@@ -38,13 +38,14 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                     thumbnail: imageUid!,
                     thumbnailExt: Util.EXTENSION_JPEG,
                     mediaWithin: photoWithin,
-                    location: ""){
+                    location: currentLocation??""){
+
                     docRef,error in
                     if let error = error{
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef)
-                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: )
+                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation)
                     }
                     
                     

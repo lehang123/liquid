@@ -41,6 +41,9 @@ class AlbumDetail: Equatable
 
 	/// description of album
 	var description = ""
+    
+    /// location of album created
+    private(set) var location = ""
 
 	/// UID of album ,private on set
 	private(set) var UID = ""
@@ -61,19 +64,14 @@ class AlbumDetail: Equatable
 	//        photos = photos.filter{$0 != photo}
 	//    }
 
-    /// init Album's info. for the UI to display.
-    /// - Parameter title: title of the album.
-    /// - Parameter description: description of the album/
-    /// - Parameter UID: UID of the album itself.
-    /// - Parameter imageUID: the thumbnail of album.
-    /// - Parameter imageExtension: thumbnail extension  for the album.
-    /// - Parameter location: location of the album
-    init(title: String,
-         description: String,
-         UID: String,
-         coverImageUID imageUID: String?,
-         coverImageExtension imageExtension: String?,
-         location:String)
+
+	/// init Album's info. for the UI to display.
+	/// - Parameter title: title of the album.
+	/// - Parameter description: description of the album/
+	/// - Parameter UID: UID of the album itself.
+	/// - Parameter imageUID: the thumbnail of album.
+	/// - Parameter imageExtension: thumbnail extension  for the album.
+    init(title: String, description: String, UID: String, coverImageUID imageUID: String?, coverImageExtension imageExtension: String?, createdLocation location: String = "")
 	{
 		self.title = title
 		self.coverImageUID = imageUID

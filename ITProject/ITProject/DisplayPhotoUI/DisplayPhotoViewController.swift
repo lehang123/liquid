@@ -238,7 +238,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.updateCommentSource()
         
         // disable the button after sending the comment
-         sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
+        sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
         sendButton.isUserInteractionEnabled = false
     
     }
@@ -256,8 +256,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         self.tableView.insertRows(at: indexPaths, with: .top)
         self.tableView.endUpdates()
-        self.tableView.scrollToRow(at: IndexPath(row: self.commentsSource.count, section: 0), at: .bottom, animated: true)
-        self.tableView.reloadData()
+        self.tableView.scrollToRow(at: IndexPath(row: self.commentsSource.count+1, section: 0), at: .bottom, animated: true)
+//        self.tableView.reloadData()
     }
 
     private func storeCommentToServer(username: String, comment: String, photoUID: String)
