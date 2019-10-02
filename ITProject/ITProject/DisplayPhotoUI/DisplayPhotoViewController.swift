@@ -241,22 +241,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         // disable the button after sending the comment
          sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
         sendButton.isUserInteractionEnabled = false
-        
-        //        CacheHandler.getInstance().getUserInfo { (username, _, _, error) in
-        //            if let error = error {
-        //                print("Error in EnterComment: \(error)")
-        //            } else {
-        //                if (self.cmmentText.text!.count != 0) {
-        //                    print ("success enter comment")
-        //                    self.addCommentCellToList(username: username!, comment: String(self.cmmentText.text!))
-        //                    self.storeCommentToServer(username: username!, comment:  String(self.cmmentText.text!), photoUID: self.photoUID)
-        //
-        //                    self.tableView.reloadData()
-        //                    self.cmmentText.text = ""
-        //                }
-        //
-        //            }
-        //        }
+    
     }
 
     private func updateCommentSource()
@@ -420,10 +405,10 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             print("the description : " + mediaDetail.getDescription())
             descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
             
-            descriptionCell.descriptionDetail.numberOfLines = 0
-            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
-            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
-            descriptionCell.descriptionDetail.sizeToFit()
+//            descriptionCell.descriptionDetail.numberOfLines = 0
+//            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
+//            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
+//            descriptionCell.descriptionDetail.sizeToFit()
             
 
             descriptionCell.selectionStyle = UITableViewCell.SelectionStyle.none
