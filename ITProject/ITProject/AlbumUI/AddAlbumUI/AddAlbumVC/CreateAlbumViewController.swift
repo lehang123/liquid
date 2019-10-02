@@ -91,11 +91,17 @@ class CreateAlbumViewController: UIViewController {
         layout.minimumLineSpacing = 5
         addPhotosCollectionView.collectionViewLayout = layout
         
-        albumNameTextField.delegate = self
+        setupAlbumNameTextField()
         
         let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
         thumbnailContentView.addGestureRecognizer(thumbnailTapped)
 
+    }
+    
+    func setupAlbumNameTextField(){
+        albumNameTextField.delegate = self
+        albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name",
+                                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
     }
 
     
