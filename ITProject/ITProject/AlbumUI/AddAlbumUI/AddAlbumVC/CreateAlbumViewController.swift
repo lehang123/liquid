@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Gallery
+import CoreLocation
 //import AVFoundation
 //import AVKit
 
@@ -46,6 +47,8 @@ class CreateAlbumViewController: UIViewController {
     private let editor: VideoEditing = VideoEditor()
     // imagePicker that to open photos library
     private var imagePicker:UIImagePickerController!
+    
+    private let locationManager = CLLocationManager()
     
     
     @IBAction func createTapped(_ sender: Any) {
@@ -93,6 +96,9 @@ class CreateAlbumViewController: UIViewController {
         
         albumNameTextField.delegate = self
         
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        
         let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
         thumbnailContentView.addGestureRecognizer(thumbnailTapped)
 
@@ -107,6 +113,32 @@ class CreateAlbumViewController: UIViewController {
         imagePicker.allowsEditing = true
                
         self.present(imagePicker, animated: true, completion:  nil)
+    }
+    
+    func retriveCurrentLocation(){
+        let status = CLLocationManager.authorizationStatus()
+
+        if(status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()){
+            // show alert to user telling them they need to allow location data to use some feature of your app
+            print("retriveCurrentLocation : rejected")
+            return
+        }
+
+        // if haven't show location permission dialog before, show it to user
+        if(status == .notDetermined){
+            locationManager.requestWhenInUseAuthorization()
+
+            // if you want the app to retrieve location data even in background, use requestAlwaysAuthorization
+             locationManager.requestAlwaysAuthorization()
+            return
+        }
+        
+        // at this point the authorization status is authorized
+        // request location data once
+        locationManager.requestLocation()
+      
+        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
+        locationManager.startUpdatingLocation()
     }
 }
 
@@ -160,6 +192,58 @@ extension CreateAlbumViewController:UIImagePickerControllerDelegate
         
         print ("imagePickerController: Did canceled pressed !!")
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension CreateAlbumViewController: CLLocationManagerDelegate {
+    // handle delegate methods of location manager here
+    
+    // called when the authorization status is changed for the core location permission
+   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+           print("location manager authorization status changed")
+           
+           switch status {
+           case .authorizedAlways:
+               print("user allow app to get location data when app is active or in background")
+           case .authorizedWhenInUse:
+               print("user allow app to get location data only when app is active")
+           case .denied:
+               print("user tap 'disallow' on the permission dialog, cant get location data")
+           case .restricted:
+               print("parental control setting disallow location data")
+           case .notDetermined:
+               print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
+           @unknown default:
+            print("locationManager : error ")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+           // .requestLocation will only pass one location to the locations array
+           // hence we can access it by taking the first element of the array
+        if let location = locations.first {
+            print("locationManager didUpdateLocations : \(location.coordinate.latitude)")
+            print("locationManager didUpdateLocations : \(location.coordinate.longitude)")
+            
+            let geocoder = CLGeocoder()
+                    
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(location,
+                        completionHandler: { (placemarks, error) in
+                if error == nil {
+                    let firstLocation = placemarks?[0]
+                    
+                    // todo : get erc Library now, depends on your simulator location
+                    print("prase location with country : \(firstLocation?.country ?? "unknown country")" )
+                    print("prase location with locality : \(firstLocation?.locality ?? "unknown city")" )
+                    print("prase location with name : \(firstLocation?.name ?? "unknown name")" )
+                }
+            })
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("locationManager didFailWithError : " + error.localizedDescription)
     }
 }
 
@@ -223,7 +307,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                     url in
                     
                     let doesFileExist = Util.DoesFileExist(fullPath: url!.absoluteString)
-                    print("DOES FILE EXIST AFTER ZIP",url?.absoluteString, doesFileExist )
+                    print("DOES FILE EXIST AFTER ZIP",url?.absoluteString as Any, doesFileExist )
                 }
                  print("FROM NNEW PATH IS : ", onPath)
                 print("TO NNEW PATH IS : ", Util.GetVideoDirectory().absoluteString as NSString)
@@ -271,8 +355,6 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
         print("galleryController : galleryControllerDidCancel")
         controller.dismiss(animated: true, completion: nil)
     }
-    
-    
 }
 
 extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {

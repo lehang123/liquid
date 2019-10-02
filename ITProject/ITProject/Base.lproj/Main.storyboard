@@ -1432,20 +1432,31 @@
                                             <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6W-39-R64" userLabel="Show Location">
+                                            <rect key="frame" x="349" y="21" width="0.0" height="23.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="width" secondItem="7TJ-Iy-YFb" secondAttribute="width" multiplier="0.92" id="3MY-wy-e3E"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="20" symbolic="YES" id="IBk-DL-fb6"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="centerX" secondItem="7TJ-Iy-YFb" secondAttribute="centerX" id="LAn-Ae-hGc"/>
+                                        <constraint firstItem="U6W-39-R64" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="8" symbolic="YES" id="VB1-K0-ItB"/>
                                         <constraint firstItem="ck4-lA-ALm" firstAttribute="leading" secondItem="7TJ-Iy-YFb" secondAttribute="leading" constant="16" id="XSR-BR-lCf"/>
+                                        <constraint firstItem="mgb-uA-gOd" firstAttribute="top" secondItem="U6W-39-R64" secondAttribute="bottom" constant="10" id="YI0-qZ-aiZ"/>
                                         <constraint firstItem="ck4-lA-ALm" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="top" constant="10" id="azd-ed-sRl"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="centerY" secondItem="7TJ-Iy-YFb" secondAttribute="centerY" id="hby-DD-vw5"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="U6W-39-R64" secondAttribute="trailing" constant="10" id="mbm-wW-lFG"/>
+                                        <constraint firstItem="U6W-39-R64" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="topMargin" constant="10" id="umK-v8-cT0"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="top" secondItem="ck4-lA-ALm" secondAttribute="bottom" constant="10" id="xED-CN-KWZ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="descpDetail" destination="mgb-uA-gOd" id="0PP-CH-3ST"/>
                                     <outlet property="descpTitle" destination="ck4-lA-ALm" id="Zw1-zW-UuY"/>
+                                    <outlet property="locationLabel" destination="U6W-39-R64" id="gbS-5C-YLC"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AlbumDetailPhotoCell" rowHeight="443" id="wn2-GH-3kD" customClass="AlbumDetailPhotoTableViewCell" customModule="ITProject" customModuleProvider="target">
