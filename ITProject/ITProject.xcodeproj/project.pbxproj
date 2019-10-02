@@ -11,6 +11,7 @@
 		0D71EF032322247800E4F7F7 /* FamilyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D71EF022322247800E4F7F7 /* FamilyTableViewController.swift */; };
 		0D71EF0523222BCA00E4F7F7 /* FamilyCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D71EF0423222BCA00E4F7F7 /* FamilyCustomCell.swift */; };
 		0D7DBDB422FD3D72005D4C0F /* DBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7DBDB322FD3D72005D4C0F /* DBController.swift */; };
+		0D7FF21323447A5400ADA2B6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 0D7FF21223447A5400ADA2B6 /* Podfile */; };
 		0DC1BCAC230AB314006968DF /* CacheHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1BCAB230AB314006968DF /* CacheHandler.swift */; };
 		520667F322FAEEAE002C61B6 /* EmailSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */; };
 		5206680E23042F85002C61B6 /* IndividualSettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5206680D23042F85002C61B6 /* IndividualSettingTableViewController.swift */; };
@@ -88,6 +89,7 @@
 		0D71EF022322247800E4F7F7 /* FamilyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTableViewController.swift; sourceTree = "<group>"; };
 		0D71EF0423222BCA00E4F7F7 /* FamilyCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyCustomCell.swift; sourceTree = "<group>"; };
 		0D7DBDB322FD3D72005D4C0F /* DBController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBController.swift; sourceTree = "<group>"; };
+		0D7FF21223447A5400ADA2B6 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = Podfile; sourceTree = "<group>"; };
 		0DC1BCAB230AB314006968DF /* CacheHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheHandler.swift; sourceTree = "<group>"; };
 		369369FF4CBC1A188C396FB1 /* Pods-ITProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ITProject.debug.xcconfig"; path = "Target Support Files/Pods-ITProject/Pods-ITProject.debug.xcconfig"; sourceTree = "<group>"; };
 		520667F222FAEEAE002C61B6 /* EmailSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailSignUpViewController.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 		9FB4B798B7F8A8AF46D94C8D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0D7FF21223447A5400ADA2B6 /* Podfile */,
 				BCE9DEDE305F1297A64C2B51 /* Pods_ITProject.framework */,
 			);
 			name = Frameworks;
@@ -453,6 +456,7 @@
 				84E9BA4B22F941F4003EA693 /* Main.storyboard in Resources */,
 				6C0DC6C72333474E005953DD /* AlbumCollectionViewCell.xib in Resources */,
 				8446C07F230F82DF000ABCD7 /* Assets.xcassets in Resources */,
+				0D7FF21323447A5400ADA2B6 /* Podfile in Resources */,
 				6C0151E323006DC700FEF794 /* CarouselEffectCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

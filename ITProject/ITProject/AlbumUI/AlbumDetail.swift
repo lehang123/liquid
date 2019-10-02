@@ -51,7 +51,6 @@ class AlbumDetail: Equatable
 	/// album created date
 	private var createDate: Date!
     
-    private var location : String
 
 	/* photos that contained in the album */
 	//    private(set) var photos = [PhotoDetail]()

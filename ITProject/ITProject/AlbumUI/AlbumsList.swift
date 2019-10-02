@@ -38,7 +38,7 @@ class AlbumsList {
                                 UID: UID,
                                 coverImageUID: imageUID,
                                 coverImageExtension: imageExtension,
-                                location : location)
+                                createdLocation : location)
 
         addNewAlbum(newAlbum: album, addToHead: true)
 
