@@ -237,7 +237,7 @@ class Util {
         let mp4Path = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_MP4)!
         print("GetLocalFileURL : the mp4 path : " + mp4Path)
         let m4aPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4A)!
-        print("GetLocalFileURL : the mp4 path : " + mp4Path)
+        print("GetLocalFileURL : the m4a path : " + m4aPath)
         
         
         
@@ -297,7 +297,7 @@ class Util {
                    pathWithNoExtension?.lastPathComponent
                print("GetLocalFileURL : the audio folderPath : " + zipfilePath!)
                
-               Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath!, deleteAfterFinish: true){
+               Util.UnzipFile(from: folderPath! as NSString, to: folderPath! as NSString, fileName: zipfilePath! + "." + Util.EXTENSION_ZIP, deleteAfterFinish: true){
                    url in
                    completion(url)
                }
@@ -490,7 +490,9 @@ class Util {
                         completion(unzipped!)
                         if deleteAfterFinish {
                             do {
-                                try FileManager.default.removeItem(at: URL(string: fullFilePath)!)
+                                try FileManager.default.removeItem(at: URL(fileURLWithPath: fullFilePath))
+                                print("DELETE AFTER FINISH SUCEED" )
+
                             } catch let error as NSError {
                                 print("UnzipFile : error occurs during remove unzip : " + error.localizedDescription)
                             }

@@ -138,22 +138,21 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-//    @IBAction func playAudio(_ sender: Any) {
-//        if(isPlaying)
-//         {
-//             audioPlayer.stop()
-//             isPlaying = false
-//         }
-//         else
-//         {
-//            Util.GetLocalFileURL(by: mediaDetail.audioDescriptionUID, type: .audio){
-//                url in
-//                self.prepare_play(url: url!)
-//            }
-//           
-//         }
-//    }
-    
+    @IBAction func playAudio(_ sender: Any) {
+        if(isPlaying)
+         {
+             audioPlayer.stop()
+             isPlaying = false
+         }
+         else
+         {
+            Util.GetLocalFileURL(by: mediaDetail.audioUID, type: .audio){
+                url in
+                self.prepare_play(url: url!)
+            }
+           
+         }
+    }
     func prepare_play(url: URL)
     {
         do
@@ -269,8 +268,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     @objc func imageTapped(_ sender: UITapGestureRecognizer)
     {
-        // todo : play video if it's a video
         
+        // show photo:
         if mediaDetail.ext.contains(Util.EXTENSION_JPEG)  ||
             mediaDetail.ext.contains(Util.EXTENSION_PNG){
             
@@ -278,7 +277,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
                   let controller = storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
                   controller.selectedImage = imageView.image
                   present(controller, animated: true)
-            
+            // else, play video:
         }else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
             mediaDetail.ext.contains(Util.EXTENSION_MP4){
             
@@ -404,7 +403,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let descriptionCell = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
             print("the description : " + mediaDetail.getDescription())
             descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
-            
+            descriptionCell.setAudioUID(audioUID: mediaDetail.audioUID)
 //            descriptionCell.descriptionDetail.numberOfLines = 0
 //            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
 //            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width

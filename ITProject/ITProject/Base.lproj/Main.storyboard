@@ -832,6 +832,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="LocationButton" destination="ddT-Gx-Md5" id="TZC-KC-xWF"/>
                         <outlet property="addPhotosCollectionView" destination="1Xm-Bl-9Ey" id="dHa-Gl-j5I"/>
                         <outlet property="albumDescriptionTextView" destination="sz9-SQ-zeX" id="4pp-Fa-om6"/>
                         <outlet property="albumNameTextField" destination="40K-Hb-HNN" id="Zwu-BY-oeo"/>
@@ -1662,6 +1663,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9YX-3Q-gbg">
                                                     <rect key="frame" x="131" y="11" width="40" height="30"/>
                                                     <state key="normal" title="Audio"/>
+                                                    <connections>
+                                                        <action selector="onClickPlayAudio:" destination="nCG-eE-6IP" eventType="touchUpInside" id="8Wz-3j-2la"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qJs-fk-Py6">
                                                     <rect key="frame" x="25" y="42.5" width="42" height="29.5"/>
@@ -1688,20 +1692,20 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" id="pkt-eV-5dR" userLabel="CommentCell" customClass="CommentCell" customModule="ITProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="413" width="320" height="24.5"/>
+                                        <rect key="frame" x="0.0" y="413" width="320" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pkt-eV-5dR" id="eBh-Fg-Gld">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="24.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="25"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="APr-WB-ZZb">
-                                                    <rect key="frame" x="0.0" y="0.0" width="96" height="22"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="96" height="22.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="let's talk about it" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AsR-br-2L7" userLabel="Comment">
-                                                    <rect key="frame" x="96" y="0.0" width="133" height="24.5"/>
+                                                    <rect key="frame" x="96" y="0.0" width="133" height="25"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>

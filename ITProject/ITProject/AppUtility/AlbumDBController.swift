@@ -152,6 +152,7 @@ class AlbumDBController
                     batch.setData([
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO : "",
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: item.getExtension(),
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: item.getDescription() ?? "",
@@ -255,13 +256,14 @@ class AlbumDBController
 	///   - ext: the file extension (e.g. .zip)
 	///   - albumUID: the UID of the album to be updated.
 	///   - mediaPath:  the media file's path to be inserted ( unique), preferrably fullPaths.
-	public func addPhotoToAlbum(desc: String, ext: String, albumUID: String, mediaPath: String, dateCreated: Timestamp)
+    public func addPhotoToAlbum(desc: String, ext: String, albumUID: String, mediaPath: String, dateCreated: Timestamp, audioUID:String  )
 	{
 		/* init new media
 		 * update: now has Date Created + reference to its own album
 		 * update: Comment is in : Array of [username : value, message : value ]
          * update : like is now an Array of userDocumentReference.
          * update: the watch is now an []. each user can contribute to only 1 watch count.*/
+        
 		let albumDocRef: DocumentReference = DBController
 			.getInstance()
 			.getDocumentReference(
@@ -274,12 +276,13 @@ class AlbumDBController
 				documentUID: mediaPath,
 				inputData: [
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
+                    AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO : audioUID,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: ext,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: desc,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM: albumDocRef,
-					AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE: dateCreated,
+					AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE: dateCreated
 				],
 				collectionName: AlbumDBController.MEDIA_COLLECTION_NAME
 			)
