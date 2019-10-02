@@ -194,6 +194,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					                               UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
 					                               coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
 					                               coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
+                                                   location: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as? String ?? "",
 					                               doesReload: true,
                                                    reverseOrder: false)
 				}

@@ -20,6 +20,8 @@ protocol CreateAlbumViewControllerDelegate {
 
 extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     
+    
+    
     func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?) {
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
         let imageUid = Util.GenerateUDID()
@@ -38,14 +40,14 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                     thumbnail: imageUid!,
                     thumbnailExt: Util.EXTENSION_JPEG,
                     mediaWithin: photoWithin,
-                    location: currentLocation??""){
+                    location: currentLocation ?? ""){
 
                     docRef,error in
                     if let error = error{
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef)
-                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation)
+                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation ??  "")
                     }
                     
                     
@@ -163,7 +165,7 @@ class AlbumCoverViewController: UIViewController {
                                                     completion: {
                                                  docRef,_ in
                                                  
-                                                 self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
+                                                        self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: "")
                                              })
                                          }
 
@@ -216,7 +218,7 @@ class AlbumCoverViewController: UIViewController {
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
         
-        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension, location : location)
+        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension, createdLocation : location)
         
         albumCollectionView.performBatchUpdates({
             albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reverseOrder)
