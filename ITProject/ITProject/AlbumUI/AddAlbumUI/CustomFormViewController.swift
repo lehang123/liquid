@@ -17,18 +17,20 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
 
     private var contentv : CustomFormView!
 
-    // imagePicker that to open photos library
+    /// imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
     private(set) var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
     private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
     private var formEle: FormElement!
-    private let randomUDID = Util.GenerateUDID()!
+    private let audioUID = Util.GenerateUDID()!
     
     var audioRecorder: AVAudioRecorder!
     var isAudioRecordingGranted: Bool!
     var isRecording = false
+    ///filepath for audio: 
+    private(set) var filePath: URL!;
+    private(set) var uploadFileName: String!;
 
-    
     public func initFormELement(formEle: FormElement){
         self.formEle = formEle
     }
@@ -42,14 +44,15 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     }
 
 
-
+    
+    /// initiates the add photo Ui view:
     private func setView(){
 
         self.contentv = showPopUpForm(formEle: self.formEle, style: .light)
 
         self.view.addSubview(contentv)
 
-        // constraint
+        // set the constraints:
         contentv.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         contentv.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         contentv.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.8).isActive = true
@@ -87,9 +90,11 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
     
+    /// sets the recorder on form:
     func setup_recorder() {
         if isAudioRecordingGranted
         {
+            self.setAudioFileUrl()
             let session = AVAudioSession.sharedInstance()
             do
             {
@@ -102,7 +107,8 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
                     AVNumberOfChannelsKey: 2,
                     AVEncoderAudioQualityKey:AVAudioQuality.high.rawValue
                 ]
-                audioRecorder = try AVAudioRecorder(url: getFileUrl(), settings: settings)
+                
+                audioRecorder = try AVAudioRecorder(url: self.filePath, settings: settings)
                 audioRecorder.delegate = self
                 audioRecorder.isMeteringEnabled = true
                 audioRecorder.prepareToRecord()
@@ -119,19 +125,26 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     }
     
 
-        
-        func getFileUrl() -> URL
+    
+    /// init the file for audio to upload:
+        func setAudioFileUrl()
         {
 
-            let filename = URL(string: randomUDID)!.appendingPathExtension(Util.EXTENSION_M4A)
-            let filePath = Util.GetAudioDirectory().appendingPathComponent(filename.absoluteString)
-            return filePath as URL
+            let filename = URL(string: audioUID)!.appendingPathExtension(Util.EXTENSION_M4A)
+            self.filePath = Util
+                .GetAudioDirectory()
+                .appendingPathComponent(filename.absoluteString)
+             uploadFileName = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
+            print("AUDIO FILENAME IS : " , uploadFileName)
+            print("AUDIO filePath IS : " , self.filePath)
+            
+            
+
         }
     
 
 
-    /// Sign up form
-    ///
+    /// init sign up form
     /// - Parameter formEle: form element
     /// - Parameter style: form style
     private func showPopUpForm(formEle: FormElement,
@@ -203,8 +216,9 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
         )
         
         switch formEle.formType {
+        // form type with image view and upload file
         case .withImageView:
-            // form type with image view and upload file
+           
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
@@ -218,9 +232,9 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
             contentView.audioButton.addTarget(self, action: #selector(audioAction), for: .touchUpInside)
             
              return contentView
-            
+        // form type with upload file, without image file
         case .withoutImageView:
-            // form type with upload file, without image file
+            
             let contentView = CustomFormView(
                 with: title,
                 textFieldsContent: textFields,
@@ -295,14 +309,14 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
     
     /// dismiss pop up form action
     /// - Parameter completion: completion action
-    public func dismissWithAnimation(completion: @escaping ((Data?) -> Void) = {_ in }){
+    public func dismissWithAnimation(completion: @escaping ((Data?, String?) -> Void) = {_  ,_ in }){
         UIView.animate(withDuration: 0.1, delay: 0.0, options:[], animations: {
             self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
         }, completion:{
             bool in
             self.dismiss(animated: true, completion: {
                 
-                completion(self.contentv.getPreViewImage())
+                completion(self.contentv.getPreViewImage(),self.audioUID)
             })
         })
     }

@@ -116,8 +116,8 @@ class MediaDetail: Equatable
     
     var cache: Data!
     
-    var audioDescriptionUID: String!
-    var audioDescriptionExt: String!
+    var audioUID: String!
+    var audioExt: String!
     var thumbnailUID:String!
     var thumbnailExt:String!
 
@@ -150,7 +150,11 @@ class MediaDetail: Equatable
 	}
 
 	init(title: String!, description: String!,
-	     UID: String!, likes: [DocumentReference], comments: [comment]!, ext: String!, watch: [DocumentReference]?)
+         UID: String!, likes: [DocumentReference],
+         comments: [comment]!,
+         ext: String!,
+         watch: [DocumentReference]?,
+         audioUID: String)
 	{
 		self.UID = UID
 		self.title = title
@@ -159,17 +163,28 @@ class MediaDetail: Equatable
 		self.comments = comments
 		self.ext = ext
 		self.watch = watch
+        self.audioUID = audioUID
         
         
 	}
     func hasWatch(){
         //get current user:
-           let currentUserReference = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: Auth.auth().currentUser!.uid)
+           let currentUserReference = DBController
+            .getInstance()
+            .getDocumentReference(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID: Auth.auth().currentUser!.uid)
         
         //if user never seen it yet, then add to watch array:
         if (!(self.watch?.contains(currentUserReference) ?? false)){
             self.watch?.append(currentUserReference);
-            DBController.getInstance().updateArrayField(collectionName: AlbumDBController.MEDIA_COLLECTION_NAME, documentUID: self.UID, fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH, appendValue: currentUserReference)
+            DBController
+                .getInstance()
+                .updateArrayField(
+                    collectionName: AlbumDBController.MEDIA_COLLECTION_NAME,
+                    documentUID: self.UID,
+                    fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH,
+                    appendValue: currentUserReference)
         }
         
     }
