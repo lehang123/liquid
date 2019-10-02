@@ -66,7 +66,9 @@ class DescriptionCell: UITableViewCell ,AVAudioPlayerDelegate{
     @IBOutlet weak var playAudioButton: UIButton!
     public func setDescriptionLabel(description: String){
         if (description.isEmpty) {
+
             descriptionDetail.text = "Click to add description..."
+
         } else {
             descriptionDetail.text = description
         }
