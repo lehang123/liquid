@@ -145,7 +145,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
          }
          else
          {
-            Util.GetLocalFileURL(by: mediaDetail.audioDescriptionUID, type: .audio){
+            Util.GetLocalFileURL(by: mediaDetail.audioUID, type: .audio){
                 url in
                 self.prepare_play(url: url!)
             }
@@ -283,8 +283,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     @objc func imageTapped(_ sender: UITapGestureRecognizer)
     {
-        // todo : play video if it's a video
         
+        // show photo:
         if mediaDetail.ext.contains(Util.EXTENSION_JPEG)  ||
             mediaDetail.ext.contains(Util.EXTENSION_PNG){
             
@@ -292,7 +292,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
                   let controller = storyboard!.instantiateViewController(withIdentifier: "ShowDetailPhotoViewController") as! ShowDetailPhotoViewController
                   controller.selectedImage = imageView.image
                   present(controller, animated: true)
-            
+            // else, play video:
         }else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
             mediaDetail.ext.contains(Util.EXTENSION_MP4){
             

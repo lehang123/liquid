@@ -279,12 +279,14 @@ class CustomFormView: UIView {
     
     // MARK: User Intractions
     
-    // Tap Gesture
+    /// Tap Gesture
     @objc func tapGestureRecognized() {
         endEditing(true)
     }
     
-    // todo: update image from database
+    /// todo: update image from database
+    /// - Parameter imageUID: <#imageUID description#>
+    /// - Parameter imageExtension: <#imageExtension description#>
     public func updatePreView(imageUID : String, imageExtension : String){
         
         Util.GetImageData(imageUID: imageUID, UIDExtension: imageExtension, completion: {
@@ -306,7 +308,7 @@ class CustomFormView: UIView {
         return (self.imageView.image?.jpegData(compressionQuality: 1.0))!
     }
     
-    // Setup tap gesture
+    /// Setup tap gesture
     private func setupTapGestureRecognizer() {
         let tapGestureRecognizer = UITapGestureRecognizer(
             target: self,

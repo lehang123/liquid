@@ -195,24 +195,45 @@ class AlbumDetailTableViewController: UITableViewController {
                      okButtonText: "Create",
                      cancelAction:{},
                      okAction: {
-
+                        
                         customFormVC.dismissWithAnimation(){
-                                imageData in
+                            imageData,uploadFileName,audioUID in
                  
                                 if let imageData = imageData,
-                                   let imageUID = Util.GenerateUDID(){
+                                   let audioUID = audioUID, let audioPath = uploadFileName, let imageUID = Util.GenerateUDID(){
                                     
-                                    Util.ShowActivityIndicator(withStatus: "Creating photo ...")
+                                   //uploads audio recorded to the storage:
+                                    Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
+                                        Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
+                                    }
+                                    
                                     Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
                                         Util.DismissActivityIndicator()
                                         if url != nil{
                                            //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
-                                            AlbumDBController.getInstance().addPhotoToAlbum(desc:textFields.first!.textContent, ext: Util.EXTENSION_JPEG, albumUID: self.albumDetail.UID, mediaPath: imageUID, dateCreated:   Timestamp(date: Date()))
+                                            AlbumDBController
+                                                .getInstance()
+                                                .addPhotoToAlbum(
+                                                    desc:textFields.first!.textContent,
+                                                    ext: Util.EXTENSION_JPEG,
+                                                    albumUID: self.albumDetail.UID,
+                                                    mediaPath: imageUID,
+                                                    dateCreated: Timestamp(date: Date()),
+                                                    audioUID: audioUID)
                                                 
                                                 // To do for gillbert
                                                 // UPloading audio to database
+                                                //upload audio to storage:
+//                                            Util.UploadFileToServer(data: Data, metadata: <#T##StorageMetadata?#>, fileName: <#T##String#>, fextension: <#T##String#>)
+                                                self.updatePhoto(
+                                                    newPhoto: MediaDetail(
+                                                        title: imageUID,
+                                                        description: textFields.first!.textContent,
+                                                        UID: imageUID,
+                                                        likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG,
+                                                        watch: [],
+                                                        audioUID : ""))
                                             
-                                                self.updatePhoto(newPhoto: MediaDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG, watch: []))
                                                 // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
                                     }

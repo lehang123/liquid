@@ -175,7 +175,15 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
             uiImages.forEach({
                 uiImage in
                 
-                let mediaDetail = MediaDetail(title: "Unknown", description: "None for now", UID: Util.GenerateUDID(), likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: [])
+                let mediaDetail = MediaDetail(
+                    title: "Unknown",
+                    description: "None",
+                    UID: Util.GenerateUDID(),
+                    likes: [],
+                    comments: nil,
+                    ext: Util.EXTENSION_JPEG,
+                    watch: [],
+                    audioUID : "")
                 mediaDetail.cache = uiImage?.jpegData(compressionQuality: 1.0)
                 
                 self.addPhotosCollectionView.performBatchUpdates({
@@ -209,7 +217,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                 
                  // temp Path :"file:///Users/gonglehan/Library/Developer/CoreSimulator/Devices/68051ACC-8546-4EA1-8DCE-E20B7A4A93F0/data/Containers/Data/Application/75585C1C-A744-4A1C-B25F-C332DF2CEE75/tmp/547CF4AA-3AE9-451A-BA68-16756C89606A.mp4
                
-                
+                //init variables:
                 let shortPath = tempPath.lastPathComponent as NSString
                 let onPath = tempPath.deletingLastPathComponent().absoluteString
                 let fileExt = shortPath.pathExtension
@@ -219,7 +227,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                 print("onPath : " + onPath)
                 print("pathExt : " + fileExt)
                 print("path : " + filename)
-                
+                //zip the file:
                 Util.ZipFile(from: onPath as NSString, to: Util.GetVideoDirectory().absoluteString as NSString, fileName: filename, fextension: "." + fileExt, deleteAfterFinish: true){
                     url in
                     
@@ -231,7 +239,15 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                 
                 
                 
-                let media = MediaDetail(title: "a video", description: "this is a video", UID: filename, likes: [], comments: nil, ext: fileExt, watch: [])
+                let media = MediaDetail(
+                    title: "a video",
+                    description: "this is a video",
+                    UID: filename,
+                    likes: [],
+                    comments: nil,
+                    ext: fileExt,
+                    watch: [],
+                    audioUID: "")
                 
                 var doesThumbnailMade = false
                 video.fetchThumbnail(completion: {
