@@ -29,13 +29,22 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
             if url != nil {
                 
                 // add album to db
-                AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDescription, thumbnail: imageUid!, thumbnailExt: Util.EXTENSION_JPEG,  mediaWithin: photoWithin){
+                //TODO: PASS LOCATION ARG:
+                AlbumDBController
+                    .getInstance()
+                    .addNewAlbum(
+                    albumName: albumName,
+                    description: albumDescription,
+                    thumbnail: imageUid!,
+                    thumbnailExt: Util.EXTENSION_JPEG,
+                    mediaWithin: photoWithin,
+                    location: ""){
                     docRef,error in
                     if let error = error{
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef)
-                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
+                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: )
                     }
                     
                     
@@ -140,8 +149,17 @@ class AlbumCoverViewController: UIViewController {
                                      Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: { url in
                                          Util.DismissActivityIndicator()
                                          if url != nil {
-                                             // todo : add the thumbnail is a dummy now, and, update cache
-                                             AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDesc, thumbnail: imageUid, thumbnailExt: Util.EXTENSION_JPEG,  mediaWithin: [], completion: {
+                                             // todo : add the location argument
+                                             AlbumDBController
+                                                .getInstance()
+                                                .addNewAlbum(
+                                                    albumName: albumName,
+                                                    description: albumDesc,
+                                                    thumbnail: imageUid,
+                                                    thumbnailExt: Util.EXTENSION_JPEG,
+                                                    mediaWithin: [],
+                                                    location: "" ,
+                                                    completion: {
                                                  docRef,_ in
                                                  
                                                  self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG)
@@ -189,6 +207,7 @@ class AlbumCoverViewController: UIViewController {
                          UID: String,
                          coverImageUID imageUID: String?,
                          coverImageExtension imageExtension: String?,
+                         location : String,
                          doesReload: Bool = true,
                          reverseOrder: Bool = true) {
         // todo : this is just a dummy
@@ -196,7 +215,7 @@ class AlbumCoverViewController: UIViewController {
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
         
-        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension)
+        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension, location : location)
         
         albumCollectionView.performBatchUpdates({
             albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reverseOrder)
