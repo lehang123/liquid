@@ -200,7 +200,6 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
         gallery = nil
         Util.ShowActivityIndicator(withStatus: "Editing video")
         
-        
         editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
             DispatchQueue.main.async {
                 Util.DismissActivityIndicator()
@@ -319,8 +318,24 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
                 
                 let theIndex = self.medias.firstIndex(where: {
                     media in
+                    if media.UID == cellTapped.UID{
+                        if media.getExtension().contains(Util.EXTENSION_MP4) ||
+                        media.getExtension().contains(Util.EXTENSION_M4V){
+                            // remove the local zip file as well
+                            do {
+                                let fileToDelete = Util.GetVideoDirectory().appendingPathComponent(media.UID + "." + Util.EXTENSION_ZIP).absoluteString
+                                print("It's about the delete : " + fileToDelete)
+                                
+                                try FileManager.default.removeItem(at: URL(fileURLWithPath: fileToDelete))
+                                print("photoTapped : deleting media from local successes")
+                            }catch{
+                                print("photoTapped : deleting media from local fails")
+                            }
+                        }
+                    }
                     return media.UID == cellTapped.UID
                 })
+                
                 self.medias.remove(at: theIndex!)
                 let indexPath = IndexPath(item: theIndex!+1, section: 0)
                 self.addPhotosCollectionView.deleteItems(at: [indexPath])
