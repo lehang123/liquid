@@ -15,19 +15,20 @@ import UPCarouselFlowLayout
 
 protocol CreateAlbumViewControllerDelegate {
     func checkForRepeatName(album name: String)->Bool
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String)
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?)
 }
 
 extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String) {
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?) {
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
         let imageUid = Util.GenerateUDID()
+        
         Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!, metadata: nil, fileName: imageUid!, fextension: Util.EXTENSION_JPEG, completion: { url in
             Util.DismissActivityIndicator()
             if url != nil {
                 
-                // add album to db
+                // add album to db. Todo : add a location onto the album
                 AlbumDBController.getInstance().addNewAlbum(albumName: albumName, description: albumDescription, thumbnail: imageUid!, thumbnailExt: Util.EXTENSION_JPEG,  mediaWithin: photoWithin){
                     docRef,error in
                     if let error = error{
@@ -132,7 +133,7 @@ class AlbumCoverViewController: UIViewController {
                          } else {
                              // create a album here
                              customFormVC.dismissWithAnimation {
-                                 imageData in
+                                imageData,_,_  in
                                  if let imaged = imageData,
                                      let imageUid = Util.GenerateUDID() {
                                      Util.ShowActivityIndicator(withStatus: "Creating album ...")
