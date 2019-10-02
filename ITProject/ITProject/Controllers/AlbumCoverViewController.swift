@@ -133,7 +133,7 @@ class AlbumCoverViewController: UIViewController {
                          } else {
                              // create a album here
                              customFormVC.dismissWithAnimation {
-                                imageData,_,_  in
+                                imageData,_  in
                                  if let imaged = imageData,
                                      let imageUid = Util.GenerateUDID() {
                                      Util.ShowActivityIndicator(withStatus: "Creating album ...")
