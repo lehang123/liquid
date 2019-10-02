@@ -27,6 +27,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private static let LIKE_WATCH_CELL = 0
 
     private static let LIKE_WATACHED_CELL_LENGTH = 1
+    private static let DESCRIPTON_CELL = 1
     //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
 
     private struct CommentCellStruct
@@ -137,21 +138,21 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    @IBAction func playAudio(_ sender: Any) {
-        if(isPlaying)
-         {
-             audioPlayer.stop()
-             isPlaying = false
-         }
-         else
-         {
-            Util.GetLocalFileURL(by: mediaDetail.audioDescriptionUID, type: .audio){
-                url in
-                self.prepare_play(url: url!)
-            }
-           
-         }
-    }
+//    @IBAction func playAudio(_ sender: Any) {
+//        if(isPlaying)
+//         {
+//             audioPlayer.stop()
+//             isPlaying = false
+//         }
+//         else
+//         {
+//            Util.GetLocalFileURL(by: mediaDetail.audioDescriptionUID, type: .audio){
+//                url in
+//                self.prepare_play(url: url!)
+//            }
+//           
+//         }
+//    }
     
     func prepare_play(url: URL)
     {
@@ -342,7 +343,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     {
         print("numberOfRowsInSection : how often do you called ?")
         // return the number of rows
-        return self.commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH
+        return self.commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH +
+            DisplayPhotoViewController.DESCRIPTON_CELL
     }
 
     
@@ -413,10 +415,19 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             return cell0
         }
         else if (indexPath.row == 1) {
-            
+
             let descriptionCell = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
-            descriptionCell.setDescriptionLabel(description: "TRY HERE wo cao ni ma bi de ri ni ma de xian ren abnban jian zhi jiu shi shabi yige woc ao niaw jdoaiwjd iojwaio joiaj oijwo ijaowij oiawj oiajw ioaj iojawoijaw")
+            print("the description : " + mediaDetail.getDescription())
+            descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
+            
+            descriptionCell.descriptionDetail.numberOfLines = 0
+            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
+            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
+            descriptionCell.descriptionDetail.sizeToFit()
+            
+
             descriptionCell.selectionStyle = UITableViewCell.SelectionStyle.none
+            
             return descriptionCell
 
         }
@@ -425,8 +436,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
 
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
-            cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 1].username)
-            cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 1].comment)
+            cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)
+            cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 2].comment)
 
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
 
@@ -439,7 +450,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         if indexPath.row == 0 {
             return DisplayPhotoViewController.LIKES_ROW_HEIGHT
         } else if indexPath.row == 1 {
-            return DisplayPhotoViewController.LIKES_ROW_HEIGHT*2
+            return UITableView.automaticDimension
         }
         else {
             return UITableView.automaticDimension
