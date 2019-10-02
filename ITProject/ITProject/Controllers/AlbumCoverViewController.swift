@@ -23,6 +23,7 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String) {
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
         let imageUid = Util.GenerateUDID()
+        
         Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!, metadata: nil, fileName: imageUid!, fextension: Util.EXTENSION_JPEG, completion: { url in
             Util.DismissActivityIndicator()
             if url != nil {
@@ -132,7 +133,7 @@ class AlbumCoverViewController: UIViewController {
                          } else {
                              // create a album here
                              customFormVC.dismissWithAnimation {
-                                 imageData in
+                                imageData,_,_  in
                                  if let imaged = imageData,
                                      let imageUid = Util.GenerateUDID() {
                                      Util.ShowActivityIndicator(withStatus: "Creating album ...")
