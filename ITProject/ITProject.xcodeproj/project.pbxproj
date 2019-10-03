@@ -48,6 +48,7 @@
 		6CABC7E7230789C700D2AFBC /* AlbumDetailPhotoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7E6230789C700D2AFBC /* AlbumDetailPhotoTableViewCell.swift */; };
 		6CABC7EF23079D7900D2AFBC /* AlbumDetailPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7ED23079D7900D2AFBC /* AlbumDetailPhotoCollectionViewCell.swift */; };
 		6CD0F872232A95FD006B40E3 /* UIButton+DashedBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD0F871232A95FD006B40E3 /* UIButton+DashedBorder.swift */; };
+		6CD476F723461F8E00930C42 /* UIImage+withBackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD476F623461F8E00930C42 /* UIImage+withBackgroundColor.swift */; };
 		84080C2D2334ABED00F05BAD /* FamilyTableViewMemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84080C2C2334ABED00F05BAD /* FamilyTableViewMemberCell.swift */; };
 		8423A6E922F9CA390049B656 /* FamilyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6E822F9CA390049B656 /* FamilyProfileViewController.swift */; };
 		8423A6EB22F9CC610049B656 /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6EA22F9CC610049B656 /* MainNavigationController.swift */; };
@@ -143,6 +144,7 @@
 		6CABC7E6230789C700D2AFBC /* AlbumDetailPhotoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailPhotoTableViewCell.swift; sourceTree = "<group>"; };
 		6CABC7ED23079D7900D2AFBC /* AlbumDetailPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		6CD0F871232A95FD006B40E3 /* UIButton+DashedBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+DashedBorder.swift"; sourceTree = "<group>"; };
+		6CD476F623461F8E00930C42 /* UIImage+withBackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+withBackgroundColor.swift"; sourceTree = "<group>"; };
 		84080C2C2334ABED00F05BAD /* FamilyTableViewMemberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTableViewMemberCell.swift; sourceTree = "<group>"; };
 		8423A6E822F9CA390049B656 /* FamilyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyProfileViewController.swift; sourceTree = "<group>"; };
 		8423A6EA22F9CC610049B656 /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				6CD0F871232A95FD006B40E3 /* UIButton+DashedBorder.swift */,
 				6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */,
 				84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */,
+				6CD476F623461F8E00930C42 /* UIImage+withBackgroundColor.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6CD0F872232A95FD006B40E3 /* UIButton+DashedBorder.swift in Sources */,
+				6CD476F723461F8E00930C42 /* UIImage+withBackgroundColor.swift in Sources */,
 				6CABC7E32306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift in Sources */,
 				5206680E23042F85002C61B6 /* IndividualSettingTableViewController.swift in Sources */,
 				8446C075230E4DEA000ABCD7 /* DisplayPhotoViewController.swift in Sources */,
