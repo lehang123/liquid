@@ -127,6 +127,7 @@ class CreateAlbumViewController: UIViewController {
         setupChangeThumbnailButton()
         setupAlbumNameTextField()
         setupDateLabel()
+        setupAlbumDescriptionTextView()
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -165,6 +166,15 @@ class CreateAlbumViewController: UIViewController {
         let formattedDate = format.string(from: currentDate)
         dateLabel.text = formattedDate
         dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
+    }
+    
+    func setupAlbumDescriptionTextView(){
+        albumDescriptionTextView.delegate = self
+        albumDescriptionTextView.text = "Click To Edit Description..."
+        albumDescriptionTextView.textColor = UIColor.lightGray
+        albumDescriptionTextView.font = UIFont(name: "DINAlternate-Bold", size: 17)
+        albumDescriptionTextView.returnKeyType = .done
+
     }
     
     /// change thumbnail action
@@ -222,6 +232,34 @@ extension CreateAlbumViewController: UITextFieldDelegate{
         print("textFieldShouldEndEditing : get called")
         return true
     }
+}
+
+extension CreateAlbumViewController: UITextViewDelegate{
+    
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Click To Edit Description..." {
+            textView.text = ""
+            textView.textColor = UIColor.black
+            textView.font = UIFont(name: "verdana", size: 18.0)
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "Click To Edit Description..."
+            textView.textColor = UIColor.lightGray
+            textView.font = UIFont(name: "DINAlternate-Bold", size: 17)
+        }
+    }
+
 }
 
 // we use imagePicker to choose ablum thumb nail since there is only one image allowed
