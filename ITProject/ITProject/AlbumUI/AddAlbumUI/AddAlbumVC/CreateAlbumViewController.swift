@@ -68,8 +68,13 @@ class CreateAlbumViewController: UIViewController {
         }else {// pass name check start creating album
             dismiss(animated: true, completion: {
                 if(self.thumbnailImageView.image == nil){
-                    let image = UIImage(withBackground: UIColor.white)
-                    self.thumbnailImageView.image = image
+                
+                    if(self.medias.count >= 1){
+                        self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
+                    } else {
+                        let image = UIImage(withBackground: UIColor.white)
+                        self.thumbnailImageView.image = image
+                    }
                 }
                 if !self.doesLocationShow{
                     self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "")
