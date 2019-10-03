@@ -61,6 +61,7 @@
 		8446C0892321EA0A000ABCD7 /* MediaDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C0882321EA0A000ABCD7 /* MediaDetail.swift */; };
 		84ACE91B232CA41300E08756 /* UITableView+StickyHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */; };
 		84BA05B323447E08002BB7B3 /* ITProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BA05B223447E08002BB7B3 /* ITProjectTests.swift */; };
+		84BA05BB2345B7CC002BB7B3 /* AlbumDetailTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BA05BA2345B7CC002BB7B3 /* AlbumDetailTests.swift */; };
 		84DF66AD233DC40B0080F6E0 /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DF66AC233DC40B0080F6E0 /* DynamicHeightCollectionView.swift */; };
 		84DF66AF233DC66C0080F6E0 /* CreateAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DF66AE233DC66C0080F6E0 /* CreateAlbumViewController.swift */; };
 		84DF66B2233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DF66B1233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift */; };
@@ -157,6 +158,7 @@
 		84BA05B023447E08002BB7B3 /* ITProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ITProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		84BA05B223447E08002BB7B3 /* ITProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITProjectTests.swift; sourceTree = "<group>"; };
 		84BA05B423447E08002BB7B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84BA05BA2345B7CC002BB7B3 /* AlbumDetailTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailTests.swift; sourceTree = "<group>"; };
 		84DF66AC233DC40B0080F6E0 /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
 		84DF66AE233DC66C0080F6E0 /* CreateAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlbumViewController.swift; sourceTree = "<group>"; };
 		84DF66B1233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPhotoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 			children = (
 				84BA05B223447E08002BB7B3 /* ITProjectTests.swift */,
 				84BA05B423447E08002BB7B3 /* Info.plist */,
+				84BA05BA2345B7CC002BB7B3 /* AlbumDetailTests.swift */,
 			);
 			path = ITProjectTests;
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BA05BB2345B7CC002BB7B3 /* AlbumDetailTests.swift in Sources */,
 				84BA05B323447E08002BB7B3 /* ITProjectTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
