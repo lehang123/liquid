@@ -30,13 +30,6 @@ class CreateAlbumViewController: UIViewController {
     private static let DEFAULT_LOCATION_TEXT = "Show current location"
     private static let OK_ACTION = "Ok"
     
-    @IBOutlet weak var thumbnailImageView: UIImageView!
-    @IBOutlet weak var albumNameTextField: UITextField!
-    @IBOutlet weak var albumDescriptionTextView: UITextView!
-    @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
-    @IBOutlet weak var thumbnailContentView: UIView!
-    
-    
     var delegate: CreateAlbumViewControllerDelegate!
 
     private static let  ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH = 1
@@ -53,7 +46,15 @@ class CreateAlbumViewController: UIViewController {
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
     
+    @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet weak var albumNameTextField: UITextField!
+    @IBOutlet weak var albumDescriptionTextView: UITextView!
+    @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
+    @IBOutlet weak var thumbnailContentView: UIView!
+    
+    @IBOutlet var changeThumbnailButton: UIButton!
     @IBOutlet weak var LocationButton: UIButton!
+    @IBOutlet var dateLabel: UILabel!
     
     @IBAction func createTapped(_ sender: Any) {
         
@@ -115,32 +116,66 @@ class CreateAlbumViewController: UIViewController {
         layout.minimumLineSpacing = 5
         addPhotosCollectionView.collectionViewLayout = layout
         
+        setupChangeThumbnailButton()
         setupAlbumNameTextField()
+        setupDateLabel()
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
-        let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
-        thumbnailContentView.addGestureRecognizer(thumbnailTapped)
+   
 
     }
     
     func setupAlbumNameTextField(){
         albumNameTextField.delegate = self
-        albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name",
-                                                                      attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        albumNameTextField.backgroundColor = .clear
+        albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),  NSAttributedString.Key.font : UIFont(name: "DINAlternate-Bold", size: 25)!
+        ])
+        albumNameTextField.leftViewMode = UITextField.ViewMode.unlessEditing
+        let imageView = UIImageView()
+        let image = UIImage(named: "editNameIcon")
+        imageView.contentMode = .center
+        imageView.set(.width, .height, of: 35)
+        imageView.image = image
+        albumNameTextField.leftView = imageView
     }
-
     
-    @objc func addThumbnailTapped(sender _: UITapGestureRecognizer){
-        print("addThumbnailTapped : tapped")
+    func setupChangeThumbnailButton(){
+        changeThumbnailButton.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        changeThumbnailButton.setTitle("  Change Thumbnail  ", for: .normal)
+    
+        changeThumbnailButton.layer.cornerRadius = 10
+        changeThumbnailButton.layer.masksToBounds = true
+        
+           
+        changeThumbnailButton.addTarget(self, action: #selector(changeThumbnailAction), for: .touchUpInside)
+    }
+    
+    func setupDateLabel(){
+        let currentDate = Date()
+        let format = DateFormatter()
+        format.dateFormat = "dd.MM.yyyy"
+        let formattedDate = format.string(from: currentDate)
+        dateLabel.text = formattedDate
+        dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
+    }
+    
+    /// change thumbnail action
+    @objc private func changeThumbnailAction() {
+
+        // pop gallery here
+         print("addThumbnailTapped : tapped")
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
                
         self.present(imagePicker, animated: true, completion:  nil)
+        
     }
+
+
     
     func retriveCurrentLocation(){
         let status = CLLocationManager.authorizationStatus()
