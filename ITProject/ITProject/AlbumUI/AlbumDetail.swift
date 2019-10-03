@@ -79,4 +79,9 @@ class AlbumDetail: Equatable
 		self.UID = UID
         self.location = location
 	}
+    
+    public func testVaildId()->Bool{
+        return self.UID.count == Util.GenerateUDID()?.count
+    }
+    
 }
