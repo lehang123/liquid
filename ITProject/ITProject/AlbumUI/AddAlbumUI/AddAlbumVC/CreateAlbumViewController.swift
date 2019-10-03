@@ -67,7 +67,10 @@ class CreateAlbumViewController: UIViewController {
             Util.ShowAlert(title: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateAlbumViewController.OK_ACTION, on: self)
         }else {// pass name check start creating album
             dismiss(animated: true, completion: {
-                
+                if(self.thumbnailImageView.image == nil){
+                    let image = UIImage(withBackground: UIColor.white)
+                    self.thumbnailImageView.image = image
+                }
                 if !self.doesLocationShow{
                     self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "")
                 }else{
@@ -122,8 +125,6 @@ class CreateAlbumViewController: UIViewController {
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        
-   
 
     }
     
