@@ -30,13 +30,6 @@ class CreateAlbumViewController: UIViewController {
     private static let DEFAULT_LOCATION_TEXT = "Show current location"
     private static let OK_ACTION = "Ok"
     
-    @IBOutlet weak var thumbnailImageView: UIImageView!
-    @IBOutlet weak var albumNameTextField: UITextField!
-    @IBOutlet weak var albumDescriptionTextView: UITextView!
-    @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
-    @IBOutlet weak var thumbnailContentView: UIView!
-    
-    
     var delegate: CreateAlbumViewControllerDelegate!
 
     private static let  ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH = 1
@@ -53,7 +46,15 @@ class CreateAlbumViewController: UIViewController {
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
     
+    @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet weak var albumNameTextField: UITextField!
+    @IBOutlet weak var albumDescriptionTextView: UITextView!
+    @IBOutlet weak var addPhotosCollectionView: DynamicHeightCollectionView!
+    @IBOutlet weak var thumbnailContentView: UIView!
+    
+    @IBOutlet var changeThumbnailButton: UIButton!
     @IBOutlet weak var LocationButton: UIButton!
+    @IBOutlet var dateLabel: UILabel!
     
     @IBAction func createTapped(_ sender: Any) {
         
@@ -66,7 +67,15 @@ class CreateAlbumViewController: UIViewController {
             Util.ShowAlert(title: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateAlbumViewController.OK_ACTION, on: self)
         }else {// pass name check start creating album
             dismiss(animated: true, completion: {
+                if(self.thumbnailImageView.image == nil){
                 
+                    if(self.medias.count >= 1){
+                        self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
+                    } else {
+                        let image = UIImage(withBackground: UIColor.white)
+                        self.thumbnailImageView.image = image
+                    }
+                }
                 if !self.doesLocationShow{
                     self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "")
                 }else{
@@ -115,26 +124,74 @@ class CreateAlbumViewController: UIViewController {
         layout.minimumLineSpacing = 5
         addPhotosCollectionView.collectionViewLayout = layout
         
-        albumNameTextField.delegate = self
+        setupChangeThumbnailButton()
+        setupAlbumNameTextField()
+        setupDateLabel()
+        setupAlbumDescriptionTextView()
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        
-        let thumbnailTapped = UITapGestureRecognizer(target: self, action: #selector(self.addThumbnailTapped(sender:)))
-        thumbnailContentView.addGestureRecognizer(thumbnailTapped)
 
     }
-
     
-    @objc func addThumbnailTapped(sender _: UITapGestureRecognizer){
-        print("addThumbnailTapped : tapped")
+    func setupAlbumNameTextField(){
+        albumNameTextField.delegate = self
+        albumNameTextField.backgroundColor = .clear
+        albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),  NSAttributedString.Key.font : UIFont(name: "DINAlternate-Bold", size: 25)!
+        ])
+        albumNameTextField.leftViewMode = UITextField.ViewMode.unlessEditing
+        let imageView = UIImageView()
+        let image = UIImage(named: "editNameIcon")
+        imageView.contentMode = .center
+        imageView.set(.width, .height, of: 35)
+        imageView.image = image
+        albumNameTextField.leftView = imageView
+    }
+    
+    func setupChangeThumbnailButton(){
+        changeThumbnailButton.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        changeThumbnailButton.setTitle("  Change Thumbnail  ", for: .normal)
+    
+        changeThumbnailButton.layer.cornerRadius = 10
+        changeThumbnailButton.layer.masksToBounds = true
+        
+           
+        changeThumbnailButton.addTarget(self, action: #selector(changeThumbnailAction), for: .touchUpInside)
+    }
+    
+    func setupDateLabel(){
+        let currentDate = Date()
+        let format = DateFormatter()
+        format.dateFormat = "dd.MM.yyyy"
+        let formattedDate = format.string(from: currentDate)
+        dateLabel.text = formattedDate
+        dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
+    }
+    
+    func setupAlbumDescriptionTextView(){
+        albumDescriptionTextView.delegate = self
+        albumDescriptionTextView.text = "Click To Edit Description..."
+        albumDescriptionTextView.textColor = UIColor.lightGray
+        albumDescriptionTextView.font = UIFont(name: "DINAlternate-Bold", size: 17)
+        albumDescriptionTextView.returnKeyType = .done
+
+    }
+    
+    /// change thumbnail action
+    @objc private func changeThumbnailAction() {
+
+        // pop gallery here
+         print("addThumbnailTapped : tapped")
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
                
         self.present(imagePicker, animated: true, completion:  nil)
+        
     }
+
+
     
     func retriveCurrentLocation(){
         let status = CLLocationManager.authorizationStatus()
@@ -175,6 +232,34 @@ extension CreateAlbumViewController: UITextFieldDelegate{
         print("textFieldShouldEndEditing : get called")
         return true
     }
+}
+
+extension CreateAlbumViewController: UITextViewDelegate{
+    
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Click To Edit Description..." {
+            textView.text = ""
+            textView.textColor = UIColor.black
+            textView.font = UIFont(name: "verdana", size: 18.0)
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "Click To Edit Description..."
+            textView.textColor = UIColor.lightGray
+            textView.font = UIFont(name: "DINAlternate-Bold", size: 17)
+        }
+    }
+
 }
 
 // we use imagePicker to choose ablum thumb nail since there is only one image allowed
