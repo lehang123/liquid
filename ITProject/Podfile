@@ -28,4 +28,11 @@ target 'ITProject' do
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'
 
+ target ‘ITProjectTests’ do
+  inherit! :search_paths
+  # Pods for testing
+   pod 'Firebase'
+   end
 end
+
+

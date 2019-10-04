@@ -164,8 +164,6 @@ class MediaDetail: Equatable
 		self.ext = ext
 		self.watch = watch
         self.audioUID = audioUID
-        
-        
 	}
     func hasWatch(){
         //get current user:
@@ -187,5 +185,29 @@ class MediaDetail: Equatable
                     appendValue: currentUserReference)
         }
         
+    }
+    
+    func vaildExtension()->Bool{
+        
+        switch self.ext {
+        case Util.EXTENSION_M4A:
+            return true
+        case Util.EXTENSION_M4V:
+            return true
+        case Util.EXTENSION_MP4:
+            return true
+        case Util.EXTENSION_PNG:
+            return true
+        case Util.EXTENSION_JPEG:
+            return true
+        case Util.EXTENSION_ZIP:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    public func testVaildId()->Bool{
+        return self.UID.count == Util.GenerateUDID()?.count
     }
 }
