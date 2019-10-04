@@ -79,10 +79,14 @@ class CacheHandler: NSObject
 
 	/// get  current user's info from database.
 	///  - Parameter completion: passes on relation in family, user's gender, user's family reference.
-	public func getUserInfo(completion: @escaping (_ relation: String?, _ dateOfBirth: Date?, _ familyIn: DocumentReference?, _ error: Error?) -> Void = { _, _, _, _ in })
+    public func getUserInfo(completion: @escaping (_ relation: String?, _ dateOfBirth: Date?, _ familyIn: DocumentReference?, _ gender : String?, _ name : String?, _ error: Error?) -> Void = { _, _, _, _, _, _ in })
 	{
+        
 		let user = Auth.auth().currentUser!.uid
+        
 		Util.ShowActivityIndicator(withStatus: "retrieving user information...")
+        
+        //get from db:
 		DBController.getInstance()
 			.getDocumentFromCollection(
 				collectionName: RegisterDBController.USER_COLLECTION_NAME,
@@ -90,19 +94,25 @@ class CacheHandler: NSObject
 			)
 		{
 			userDocument, error in
+            //parse data:
 			if let userDocument = userDocument, userDocument.exists
 			{
                 let data: [String: Any] = userDocument.data()!
 
-                let dobTimestamp :Timestamp = data[RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH] as! Timestamp
-                let dob :Date = dobTimestamp.dateValue()
+                let dobTimestamp :Timestamp = data[RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH] as? Timestamp ?? Timestamp(date: Date())
+                print("dobTimestamp: ", dobTimestamp )
+                let dob :Date =   dobTimestamp.dateValue()
+                print("dob:",dob)
 				let position = data[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as? String
 				let familyDocRef: DocumentReference = data[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
-
-				completion(position, dob, familyDocRef, error)
+                let gender: String? = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
+                let name : String? = data[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as? String
+                //passes data to next stage:
+				completion(position, dob, familyDocRef, gender, name, error)
 
 				Util.DismissActivityIndicator()
 			}
+                //handle error:
 			else
 			{
 				print("ERROR LOADING cacheUserAndFam::: ", error as Any)

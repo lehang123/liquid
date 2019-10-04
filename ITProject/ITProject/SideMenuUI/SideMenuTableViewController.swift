@@ -16,7 +16,7 @@ struct UserInfo
 	var username: String
 	var imageUID: String?
 	var imageExtension: String?
-	var phone: String?
+	var gender: String?
 	var dateOfBirth: Date?
 	var familyRelation: String?
 	var userInfoDelegate: UserProfileViewDelegate!

@@ -42,10 +42,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     
 	private var familyUID: String!
 	private var familyName: String?
+    private var name: String?
 	private var familyProfileUID: String?
 	private var familyProfileExtension: String?
-	private var userFamilyPosition: String?
-	private var userDOB : Date?
+	private var familyPosition: String?
+	private var DOB : Date?
+    private var gender : String?
+
 	private var profileURL: String?
 	private var profileExtension: String?
 
@@ -133,12 +136,12 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                     
                    
 					sideMenuVC.userInformation = UserInfo(
-                        username: Auth.auth().currentUser?.displayName ?? "anonymous",
+                        username: self.name ?? "Not Available",
                         imageUID: self.profileURL ?? Util.DEFAULT_IMAGE,
                         imageExtension: self.profileExtension ?? Util.EXTENSION_JPEG,
-                        phone: currentUser?.phoneNumber ?? "Not Available",
-                        dateOfBirth: self.userDOB,
-                        familyRelation: self.userFamilyPosition ?? "Not Available",
+                        gender: self.gender ?? "Not Available",
+                        dateOfBirth: self.DOB,
+                        familyRelation: self.familyPosition ?? "Not Available",
                         userInfoDelegate: self)
                     
 
@@ -315,7 +318,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	{
 		// start pulling data from server : user info
 		CacheHandler.getInstance().getUserInfo(completion: {
-			relation, dob, _, error in
+			relation, dob, _, gender, name, error in
 
 			if let error = error
 			{
@@ -323,8 +326,13 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 			}
 			else
 			{
-				self.userFamilyPosition = relation
-                self.userDOB = dob
+				self.familyPosition = relation
+                self.DOB = dob
+                self.name = name
+                self.gender = gender
+                
+                
+                print(" self.userDOB", dob)
 				 
 			}
 		})

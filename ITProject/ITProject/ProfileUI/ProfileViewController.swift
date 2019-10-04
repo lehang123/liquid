@@ -15,10 +15,18 @@ class ProfileViewController: UIViewController
 {
 	// Constants and properties:
 	private static let CHANGED_INFO = "Succesfully"
+    
 	private static let CHANGED_MESSAGE = "The information has changed"
+    
+    ///for keyboard:
 	private var keyboardSize: CGRect!
+    
+    ///for image:
 	private var imagePicker = UIImagePickerController()
-    private(set) var currentRelationship: String?, currentName:String?,currentDOB: String?
+    ///for DOB:
+    private var datePicker  = UIDatePicker()
+    
+    private(set) var currentRelationship: String?, currentName:String?, currentDOB: Date?
 	var userInformation: UserInfo!
 	private(set) var didChangeUserInfo: Bool = false, didChangeUserProfile: Bool = false
 
@@ -26,7 +34,7 @@ class ProfileViewController: UIViewController
 	@IBOutlet var name: UITextField!
 	@IBOutlet var relationship: UITextField!
 	@IBOutlet var DOBField: UITextField!
-	@IBOutlet var phoneField: UITextField!
+	@IBOutlet var gender: UITextField!
 
 	override func viewDidLoad()
 	{
@@ -39,6 +47,7 @@ class ProfileViewController: UIViewController
 			target: self,
 			action: #selector(self.DoneButtonTapped)
 		)
+        
 		navigationItem.rightBarButtonItem = rightButtonItem
 
 		Util.GetImageData(imageUID: self.userInformation.imageUID, UIDExtension: self.userInformation.imageExtension, completion: {
@@ -61,26 +70,66 @@ class ProfileViewController: UIViewController
 			self.profilePicture.layer.shadowRadius = 1
 			self.profilePicture.clipsToBounds = false
 		})
+        // init dob's date field:
+        //todo: pick Locale! AU or ID?
+        datePicker.locale = Locale(identifier: "id")
+        datePicker.datePickerMode  = .date
+        
+        DOBField.inputView = datePicker
+        datePicker.addTarget(self, action: #selector(ProfileViewController.dateChanged(datePicker:)), for: .valueChanged)
+        //dob edge case: if tap somewhere else, end editing session:
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.viewTapped(gestureRecognizer:)))
+        view.addGestureRecognizer(tapGesture)
         
         //set default values to UI :
 		self.name.text = self.userInformation.username
 		self.relationship.text = self.userInformation.familyRelation
-		self.phoneField.text = self.userInformation.phone
-        //self.DOBField.text = self.userInformation.dateOfBirth CHANGE TO DATE FIELD!
+		self.gender.text = self.userInformation.gender
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        //set current vals to be checked later:
 		self.currentRelationship = self.userInformation.familyRelation
-		self.currentDOB = self.userInformation.dateOfBirth
+        let dob = dateFormatter.string(from:  self.userInformation.dateOfBirth ?? Date())
+        self.DOBField.text = dob
+        self.datePicker.date = dateFormatter.date(from: dob)!
+        self.currentDOB = dateFormatter.date(from: dob)!
+        self.datePicker.maximumDate = Date()
+        
+      
+//        print("DOB IS " ,  self.userInformation.dateOfBirth )
+//        print("date ",  self.datePicker.date  )
+        print("NAME IN PROFILE", self.userInformation.username)
         self.currentName = self.userInformation.username
 		self.didChangeUserInfo = false
         
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
+        self.setDelegate()
+	}
+    
+    func setDelegate(){
         self.name.delegate = self
         self.relationship.delegate = self
-        self.phoneField.delegate = self
+        self.gender.delegate = self
         self.DOBField.delegate = self
+    }
+    
+    /// ends editing on DOB field when screen is tapped.
+    /// - Parameter gestureRecognizer: <#gestureRecognizer description#>
+    @objc func viewTapped(gestureRecognizer:UITapGestureRecognizer){
+        view.endEditing(true)
+    }
+    /// handles changing date field.
+    /// - Parameter datePicker: datePicker UI
+    @objc func dateChanged(datePicker : UIDatePicker){
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        self.DOBField.text = dateFormatter.string(from: datePicker.date )
+        
+//        view.endEditing(true)
 
-	}
+    }
 
 	/// Show the keyboard
 	/// - Parameter notification: notification
@@ -105,7 +154,7 @@ class ProfileViewController: UIViewController
 		}
 	}
 
-	/// Touch the botton to lead to update photos
+	/// Touch the botton to trigger  update photos
 	/// - Parameter sender: sender
 	@IBAction func updateProfileImage(_: Any)
 	{
@@ -126,57 +175,95 @@ class ProfileViewController: UIViewController
 	}
 
 	/// When the button tapped, save all the changes that made by the user
-	@objc func DoneButtonTapped()
-	{
-		let user = Auth.auth().currentUser
-
-		// update DB according to what has changed:
-        if self.currentName != self.name.text
+    ///1st version: update when change, but total: 3x updates. MAYBE CAN USE BATCH.
+//	@objc func DoneButtonTapped()
+//	{
+//        //end editing first:
+//        view.endEditing(true)
+//
+//		let user = Auth.auth().currentUser
+//
+//		// update DB according to what has changed:
+//
+//        if self.currentName != self.name.text
+//        {
+//            self.didChangeUserInfo = true
+//
+//            DBController.getInstance().updateSpecificField(newValue: self.name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+//            self.currentName = self.name.text
+//        }
+//
+//		if self.currentRelationship != self.relationship.text
+//		{
+//			self.didChangeUserInfo = true
+//			DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+//			self.currentRelationship = self.relationship.text
+//		}
+//
+//        if self.currentDOB != self.datePicker.date
+//		{
+////            print("BEFORE currentDOB", self.currentDOB, "DATEPICKER",self.datePicker.date )
+//			self.didChangeUserInfo = true
+//            DBController.getInstance().updateSpecificField(newValue: self.datePicker.date, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+//            self.currentDOB = self.datePicker.date
+//
+//		}
+//        self.commitUIChange();
+//
+//
+//	}
+    /// When the button tapped, save all the changes that made by the user
+    ///2nd version: always update, but only 1x
+        @objc func DoneButtonTapped()
         {
+            //end editing date field first:
+            view.endEditing(true)
+            
+            //update:
             self.didChangeUserInfo = true
-           
-            DBController.getInstance().updateSpecificField(newValue: self.DOBField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-            self.currentName = self.name.text
+            DBController
+                .getInstance()
+                .getDB()
+                .collection(RegisterDBController.USER_COLLECTION_NAME)
+                .document( Auth.auth().currentUser!.uid)
+                .updateData(
+                    [
+                        RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH : self.datePicker.date,
+                        RegisterDBController.USER_DOCUMENT_FIELD_NAME : self.name.text!,
+                        RegisterDBController.USER_DOCUMENT_FIELD_POSITION : self.relationship.text!,
+                        RegisterDBController.USER_DOCUMENT_FIELD_GENDER : self.gender.text!,
+                    ])
+            
+            self.commitUIChange();
+    
+    
         }
-		
-		if self.currentRelationship != self.relationship.text
-		{
-			self.didChangeUserInfo = true
-			DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-			self.currentRelationship = self.relationship.text
-		}
-        
-		if self.currentDOB != self.DOBField.text
-		{
-            // TO DO here changed to dobfield
-			self.didChangeUserInfo = true
-			DBController.getInstance().updateSpecificField(newValue: self.DOBField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-			self.currentDOB = self.DOBField.text
-		}
+      
+    
+    func commitUIChange(){
+        if self.didChangeUserProfile
+        {
+            self.didChangeUserProfile = false
+            self.didChangeUserInfo = true
+            if let imageData = self.profilePicture.image?.jpegData(compressionQuality: 1.0),
+                let imageString = Util.GenerateUDID()
+            {
+                Util.ShowActivityIndicator(withStatus: "uploading Profile...")
+                Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: { url in
 
-		if self.didChangeUserProfile
-		{
-			self.didChangeUserProfile = false
-			self.didChangeUserInfo = true
-			if let imageData = self.profilePicture.image?.jpegData(compressionQuality: 1.0),
-				let imageString = Util.GenerateUDID()
-			{
-				Util.ShowActivityIndicator(withStatus: "uploading Profile...")
-				Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageString, fextension: Util.EXTENSION_JPEG, completion: { url in
-
-					if url != nil
-					{
-						// change photo url in auth service
-						Util.ChangeUserPhotoURL(imagePath: imageString, ext: Util.EXTENSION_JPEG)
-					}
-					Util.DismissActivityIndicator()
-				}, errorHandler: { e in
-					print("you get error from Thumbnail choose")
-					Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-				})
-			}
-		}
-	}
+                    if url != nil
+                    {
+                        // change photo url in auth service
+                        Util.ChangeUserPhotoURL(imagePath: imageString, ext: Util.EXTENSION_JPEG)
+                    }
+                    Util.DismissActivityIndicator()
+                }, errorHandler: { e in
+                    print("you get error from Thumbnail choose")
+                    Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+                })
+            }
+        }
+    }
 
 	@IBAction private func close()
 	{
