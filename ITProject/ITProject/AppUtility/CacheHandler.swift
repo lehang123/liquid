@@ -79,7 +79,7 @@ class CacheHandler: NSObject
 
 	/// get  current user's info from database.
 	///  - Parameter completion: passes on relation in family, user's gender, user's family reference.
-	public func getUserInfo(completion: @escaping (_ relation: String?, _ gender: Gender?, _ familyIn: DocumentReference?, _ error: Error?) -> Void = { _, _, _, _ in })
+	public func getUserInfo(completion: @escaping (_ relation: String?, _ dateOfBirth: Date?, _ familyIn: DocumentReference?, _ error: Error?) -> Void = { _, _, _, _ in })
 	{
 		let user = Auth.auth().currentUser!.uid
 		Util.ShowActivityIndicator(withStatus: "retrieving user information...")
@@ -94,12 +94,12 @@ class CacheHandler: NSObject
 			{
                 let data: [String: Any] = userDocument.data()!
 
-				let gender = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
-
+                let dobTimestamp :Timestamp = data[RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH] as! Timestamp
+                let dob :Date = dobTimestamp.dateValue()
 				let position = data[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as? String
 				let familyDocRef: DocumentReference = data[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
 
-				completion(position, Gender(rawValue: gender ?? "Unknown"), familyDocRef, error)
+				completion(position, dob, familyDocRef, error)
 
 				Util.DismissActivityIndicator()
 			}

@@ -22,10 +22,9 @@ class RegisterDBController
 	public static let USER_DOCUMENT_FIELD_FAMILY = "family"
 	/// user's position in family
 	public static let USER_DOCUMENT_FIELD_POSITION = "position"
-	/// user's gender
+	/// user's gender DEPRECATED
 	public static let USER_DOCUMENT_FIELD_GENDER = "gender"
-	/// user's phone number
-	public static let USER_DOCUMENT_FIELD_PHONE = "phone"
+    /// user's date of birth:
     public static let USER_DOCUMENT_FIELD_DATE_OF_BIRTH = "date_of_birth"
 
 	/* constant for FAMILIES collections */

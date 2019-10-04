@@ -17,12 +17,12 @@ struct UserInfo
 	var imageUID: String?
 	var imageExtension: String?
 	var phone: String?
-	var gender: Gender?
+	var dateOfBirth: Date?
 	var familyRelation: String?
 	var userInfoDelegate: UserProfileViewDelegate!
 }
 
-/// The gender's possible values
+/// The gender's possible values (DEPRECATED)
 enum Gender: String
 {
 	case Male

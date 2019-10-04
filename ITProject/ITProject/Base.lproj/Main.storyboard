@@ -1248,7 +1248,7 @@
                     <navigationItem key="navigationItem" id="Rkv-PJ-DIR"/>
                     <size key="freeformSize" width="320" height="700"/>
                     <connections>
-                        <outlet property="dobField" destination="feK-TA-bjA" id="O2e-Sg-Ukf"/>
+                        <outlet property="DOBField" destination="feK-TA-bjA" id="O2e-Sg-Ukf"/>
                         <outlet property="name" destination="q3p-uK-JX8" id="cyD-yg-LMH"/>
                         <outlet property="phoneField" destination="nAu-rN-acr" id="vgE-3p-jPB"/>
                         <outlet property="profilePicture" destination="WYE-xT-Ke1" id="oiT-gW-UK9"/>
