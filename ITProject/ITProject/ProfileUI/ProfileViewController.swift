@@ -26,50 +26,88 @@ class ProfileViewController: UIViewController
     ///for DOB:
     private var datePicker  = UIDatePicker()
     
-    private(set) var currentRelationship: String?, currentName:String?, currentDOB: Date?
+    private(set) var currentRelationship: String?, currentName:String?, currentDOB: Date?;
+    
+    private let dateFormatter : DateFormatter = DateFormatter();
+    
 	var userInformation: UserInfo!
+    ///flag variables to notice other UIs that data has been altered:
 	private(set) var didChangeUserInfo: Bool = false, didChangeUserProfile: Bool = false
 
+    //UI Fields:
 	@IBOutlet var profilePicture: EnhancedCircleImageView!
 	@IBOutlet var name: UITextField!
 	@IBOutlet var relationship: UITextField!
 	@IBOutlet var DOBField: UITextField!
 	@IBOutlet var gender: UITextField!
-
-	override func viewDidLoad()
-	{
-		super.viewDidLoad()
-        self.hideKeyboardWhenTapped()
-		// Set right bar button as Done to store any changes that user made
-		let rightButtonItem = UIBarButtonItem(
-			title: "Done",
-			style: .done,
-			target: self,
-			action: #selector(self.DoneButtonTapped)
-		)
+    
+    
+    
+    ///  Set right bar button as Done to store any changes that user made
+    func setDoneButton(){
+       
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(
+                   title: "Done",
+                   style: .done,
+                   target: self,
+                   action: #selector(self.DoneButtonTapped)
+               )
+    }
+    
+    /// Get Image Data from storage, then set it to UI .
+    func setProfilePicture(){
+        Util.GetImageData(imageUID: self.userInformation.imageUID, UIDExtension: self.userInformation.imageExtension, completion: {
+            data in
+            // image exists:
+            if let data = data
+            {
+                print("get image success : loading data to image")
+                self.profilePicture.image = UIImage(data: data)
+            }
+            // image doesn't exist:
+            else
+            {
+                print("get image fails : loading data to image")
+                self.profilePicture.image = #imageLiteral(resourceName: "item4")
+            }
+            //set profile picture UI layout:
+            self.profilePicture.layer.shadowColor = UIColor.selfcGrey.cgColor
+            self.profilePicture.layer.shadowOpacity = 0.7
+            self.profilePicture.layer.shadowOffset = CGSize(width: 10, height: 10)
+            self.profilePicture.layer.shadowRadius = 1
+            self.profilePicture.clipsToBounds = false
+        })
+    }
+    ///init date formatter:
+    func setDateFormatter(){
         
-		navigationItem.rightBarButtonItem = rightButtonItem
-
-		Util.GetImageData(imageUID: self.userInformation.imageUID, UIDExtension: self.userInformation.imageExtension, completion: {
-			data in
-
-			if let d = data
-			{
-				print("get image success : loading data to image")
-				self.profilePicture.image = UIImage(data: d)
-			}
-			else
-			{
-				print("get image fails : loading data to image")
-				self.profilePicture.image = #imageLiteral(resourceName: "item4")
-			}
-            //set UI layout:
-			self.profilePicture.layer.shadowColor = UIColor.selfcGrey.cgColor
-			self.profilePicture.layer.shadowOpacity = 0.7
-			self.profilePicture.layer.shadowOffset = CGSize(width: 10, height: 10)
-			self.profilePicture.layer.shadowRadius = 1
-			self.profilePicture.clipsToBounds = false
-		})
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        
+    }
+    ///fills in UI fields with most recent  values:
+    func populateData(){
+        //set default values to UI :
+        self.name.text = self.userInformation.username
+        self.relationship.text = self.userInformation.familyRelation
+        self.gender.text = self.userInformation.gender
+       
+        
+        let dob = dateFormatter.string(from:  self.userInformation.dateOfBirth ?? Date())
+        self.DOBField.text = dob
+        self.datePicker.date = dateFormatter.date(from: dob)!
+       
+        print("NAME IN PROFILE", self.userInformation.username)
+               
+        self.didChangeUserInfo = false
+        //deprecated:
+        //set current vals to be checked later:
+        //self.currentRelationship = self.userInformation.familyRelation
+        //self.currentDOB = dateFormatter.date(from: dob)!
+        //        self.currentName = self.userInformation.username
+    }
+    
+    /// configures a date picker for choosing date of birth later on.
+    func setDatePicker(){
         // init dob's date field:
         //todo: pick Locale! AU or ID?
         datePicker.locale = Locale(identifier: "id")
@@ -79,29 +117,31 @@ class ProfileViewController: UIViewController
         datePicker.addTarget(self, action: #selector(ProfileViewController.dateChanged(datePicker:)), for: .valueChanged)
         //dob edge case: if tap somewhere else, end editing session:
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.viewTapped(gestureRecognizer:)))
-        view.addGestureRecognizer(tapGesture)
-        
-        //set default values to UI :
-		self.name.text = self.userInformation.username
-		self.relationship.text = self.userInformation.familyRelation
-		self.gender.text = self.userInformation.gender
-        let dateFormatter:DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        //set current vals to be checked later:
-		self.currentRelationship = self.userInformation.familyRelation
-        let dob = dateFormatter.string(from:  self.userInformation.dateOfBirth ?? Date())
-        self.DOBField.text = dob
-        self.datePicker.date = dateFormatter.date(from: dob)!
-        self.currentDOB = dateFormatter.date(from: dob)!
         self.datePicker.maximumDate = Date()
+        view.addGestureRecognizer(tapGesture)
+    }
+	override func viewDidLoad()
+	{
+		super.viewDidLoad()
+        //set layout:
+        self.hideKeyboardWhenTapped()
+        
+		
+        self.setProfilePicture()
+        self.setDoneButton()
+        self.setDateFormatter()
+        self.setDatePicker()
+        
+        
+        //fill in default data:
+        self.populateData()
+        
         
       
 //        print("DOB IS " ,  self.userInformation.dateOfBirth )
 //        print("date ",  self.datePicker.date  )
-        print("NAME IN PROFILE", self.userInformation.username)
-        self.currentName = self.userInformation.username
-		self.didChangeUserInfo = false
-        
+       
+       //handle keyboard observer:
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -116,19 +156,14 @@ class ProfileViewController: UIViewController
     }
     
     /// ends editing on DOB field when screen is tapped.
-    /// - Parameter gestureRecognizer: <#gestureRecognizer description#>
+    /// - Parameter gestureRecognizer: listening  to tap gesture
     @objc func viewTapped(gestureRecognizer:UITapGestureRecognizer){
         view.endEditing(true)
     }
     /// handles changing date field.
     /// - Parameter datePicker: datePicker UI
     @objc func dateChanged(datePicker : UIDatePicker){
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        self.DOBField.text = dateFormatter.string(from: datePicker.date )
-        
-//        view.endEditing(true)
-
+        self.DOBField.text = self.dateFormatter.string(from: datePicker.date )
     }
 
 	/// Show the keyboard
@@ -219,7 +254,7 @@ class ProfileViewController: UIViewController
             //end editing date field first:
             view.endEditing(true)
             
-            //update:
+            //update to DB:
             self.didChangeUserInfo = true
             DBController
                 .getInstance()
