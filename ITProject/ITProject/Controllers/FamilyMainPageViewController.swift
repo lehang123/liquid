@@ -45,7 +45,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private var familyProfileUID: String?
 	private var familyProfileExtension: String?
 	private var userFamilyPosition: String?
-	private var userGender: Gender?
+	private var userDOB : Date?
 	private var profileURL: String?
 	private var profileExtension: String?
 
@@ -130,16 +130,17 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					let currentUser = Auth.auth().currentUser
 					self.profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
 					self.profileExtension = currentUser?.photoURL?.pathExtension
-
+                    
+                   
 					sideMenuVC.userInformation = UserInfo(
-						username: Auth.auth().currentUser?.displayName ?? "anonymous",
-						imageUID: self.profileURL ?? Util.DEFAULT_IMAGE,
-						imageExtension: self.profileExtension ?? Util.EXTENSION_JPEG,
-						phone: currentUser?.phoneNumber ?? "12345678",
-						gender: self.userGender ?? Gender.Unknown,
-						familyRelation: self.userFamilyPosition ?? "None",
-						userInfoDelegate: self
-					)
+                        username: Auth.auth().currentUser?.displayName ?? "anonymous",
+                        imageUID: self.profileURL ?? Util.DEFAULT_IMAGE,
+                        imageExtension: self.profileExtension ?? Util.EXTENSION_JPEG,
+                        phone: currentUser?.phoneNumber ?? "Not Available",
+                        dateOfBirth: self.userDOB,
+                        familyRelation: self.userFamilyPosition ?? "Not Available",
+                        userInfoDelegate: self)
+                    
 
 					// pass user's family info to the current sideMenuVC
 					sideMenuVC.userFamilyInformation = UserFamilyInfo(
@@ -314,16 +315,17 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	{
 		// start pulling data from server : user info
 		CacheHandler.getInstance().getUserInfo(completion: {
-			relation, gender, _, error in
+			relation, dob, _, error in
 
-			if let err = error
+			if let error = error
 			{
-				print("get User Info from server error " + err.localizedDescription)
+				print("get User Info from server error " + error.localizedDescription)
 			}
 			else
 			{
 				self.userFamilyPosition = relation
-				self.userGender = gender
+                self.userDOB = dob
+				 
 			}
 		})
 	}

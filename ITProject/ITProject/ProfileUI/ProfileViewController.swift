@@ -10,7 +10,6 @@ import EnhancedCircleImageView
 import Firebase
 import UIKit
 
-/// <#Description#>
 /// Shows users' info from DB.
 class ProfileViewController: UIViewController
 {
@@ -19,22 +18,20 @@ class ProfileViewController: UIViewController
 	private static let CHANGED_MESSAGE = "The information has changed"
 	private var keyboardSize: CGRect!
 	private var imagePicker = UIImagePickerController()
-	var currentRelationship: String?
-	var currentGender: String?
+    private(set) var currentRelationship: String?, currentName:String?,currentDOB: String?
 	var userInformation: UserInfo!
-	var didChangeUserInfo: Bool = false
-	var didChangeUserProfile: Bool = false
+	private(set) var didChangeUserInfo: Bool = false, didChangeUserProfile: Bool = false
 
 	@IBOutlet var profilePicture: EnhancedCircleImageView!
 	@IBOutlet var name: UITextField!
 	@IBOutlet var relationship: UITextField!
-	@IBOutlet var dobField: UITextField!
+	@IBOutlet var DOBField: UITextField!
 	@IBOutlet var phoneField: UITextField!
 
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-        self.hideKeyboardWhenTappedAround()
+        self.hideKeyboardWhenTapped()
 		// Set right bar button as Done to store any changes that user made
 		let rightButtonItem = UIBarButtonItem(
 			title: "Done",
@@ -69,9 +66,10 @@ class ProfileViewController: UIViewController
 		self.name.text = self.userInformation.username
 		self.relationship.text = self.userInformation.familyRelation
 		self.phoneField.text = self.userInformation.phone
-		self.dobField.text = self.userInformation.gender?.rawValue
+        //self.DOBField.text = self.userInformation.dateOfBirth CHANGE TO DATE FIELD!
 		self.currentRelationship = self.userInformation.familyRelation
-		self.currentGender = self.dobField.text
+		self.currentDOB = self.userInformation.dateOfBirth
+        self.currentName = self.userInformation.username
 		self.didChangeUserInfo = false
         
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -80,7 +78,7 @@ class ProfileViewController: UIViewController
         self.name.delegate = self
         self.relationship.delegate = self
         self.phoneField.delegate = self
-        self.dobField.delegate = self
+        self.DOBField.delegate = self
 
 	}
 
@@ -132,28 +130,28 @@ class ProfileViewController: UIViewController
 	{
 		let user = Auth.auth().currentUser
 
-		if let u = user
-		{
-			if u.displayName != self.name.text
-			{
-				self.didChangeUserInfo = true
-				Util.ChangeUserDisplayName(user: u, username: self.name.text!)
-			}
-		}
-
 		// update DB according to what has changed:
+        if self.currentName != self.name.text
+        {
+            self.didChangeUserInfo = true
+           
+            DBController.getInstance().updateSpecificField(newValue: self.DOBField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+            self.currentName = self.name.text
+        }
+		
 		if self.currentRelationship != self.relationship.text
 		{
 			self.didChangeUserInfo = true
 			DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
 			self.currentRelationship = self.relationship.text
 		}
-		if self.currentGender != self.dobField.text
+        
+		if self.currentDOB != self.DOBField.text
 		{
             // TO DO here changed to dobfield
 			self.didChangeUserInfo = true
-			DBController.getInstance().updateSpecificField(newValue: self.dobField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_GENDER, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-			self.currentGender = self.dobField.text
+			DBController.getInstance().updateSpecificField(newValue: self.DOBField.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
+			self.currentDOB = self.DOBField.text
 		}
 
 		if self.didChangeUserProfile
