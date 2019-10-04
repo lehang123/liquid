@@ -45,7 +45,7 @@ class EmailSignUpViewController: UIViewController
 	{
 		super.viewDidLoad()
         
-        self.hideKeyboardWhenTappedAround()
+        self.hideKeyboardWhenTapped()
 		// Check if the user is typing
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
