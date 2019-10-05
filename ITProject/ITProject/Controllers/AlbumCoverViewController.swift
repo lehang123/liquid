@@ -261,7 +261,8 @@ class AlbumCoverViewController: UIViewController {
         let layout = albumCollectionView!.collectionViewLayout as! UICollectionViewFlowLayout
         
         // TODO :- FIX THE WIDTH AND HEIGHT BUG
-        layout.itemSize = CGSize(width: albumCollectionView.frame.width, height: self.albumCollectionView.frame.height / 2.2)
+  
+        layout.itemSize = CGSize(width: 320, height: 435 / 2.2)
         albumCollectionView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 9, right: 0)
     
     }
