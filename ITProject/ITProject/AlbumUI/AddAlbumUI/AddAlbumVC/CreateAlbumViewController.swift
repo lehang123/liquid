@@ -151,14 +151,15 @@ class CreateAlbumViewController: UIViewController {
         albumNameTextField.backgroundColor = .clear
         albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),  NSAttributedString.Key.font : UIFont(name: "DINAlternate-Bold", size: 25)!
         ])
+        albumNameTextField.sizeToFit()
         
         // add icon on the left of textField
         albumNameTextField.leftViewMode = UITextField.ViewMode.unlessEditing
         let imageView = UIImageView()
         let image = UIImage(named: "editNameIcon")
         imageView.contentMode = .center
-        imageView.set(.width, .height, of: 35)
         imageView.image = image
+        imageView.frame = CGRect(x: 0, y: 0, width: imageView.image!.size.width , height: imageView.image!.size.height)
         albumNameTextField.leftView = imageView
     }
     
