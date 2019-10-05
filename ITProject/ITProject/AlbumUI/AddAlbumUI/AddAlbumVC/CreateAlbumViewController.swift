@@ -46,6 +46,9 @@ class CreateAlbumViewController: UIViewController {
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
     
+    private var recorderView: RecorderViewController!
+    private var isPlaying = false
+    
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var albumNameTextField: UITextField!
     @IBOutlet weak var albumDescriptionTextView: UITextView!
@@ -55,6 +58,9 @@ class CreateAlbumViewController: UIViewController {
     @IBOutlet var changeThumbnailButton: UIButton!
     @IBOutlet weak var LocationButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
+    
+    @IBOutlet var recordStartButton: UIButton!
+    @IBOutlet var audioPlayPauseButton: UIButton!
     
     @IBAction func createTapped(_ sender: Any) {
         
@@ -116,7 +122,7 @@ class CreateAlbumViewController: UIViewController {
         super.viewDidLoad()
         addPhotosCollectionView.delegate = self
         addPhotosCollectionView.dataSource = self
-        self.hideKeyboardWhenTapped()
+        //self.hideKeyboardWhenTappedAround()
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
 //        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width/3, height: UIScreen.main.bounds.width/3)
@@ -129,16 +135,24 @@ class CreateAlbumViewController: UIViewController {
         setupDateLabel()
         setupAlbumDescriptionTextView()
         
+        setupRecordStartButton()
+        setupRecorderView()
+        
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
 
     }
     
+    // MARK: - Set up
+    
+    /// AlbumTextField set up
     func setupAlbumNameTextField(){
         albumNameTextField.delegate = self
         albumNameTextField.backgroundColor = .clear
         albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),  NSAttributedString.Key.font : UIFont(name: "DINAlternate-Bold", size: 25)!
         ])
+        
+        // add icon on the left of textField
         albumNameTextField.leftViewMode = UITextField.ViewMode.unlessEditing
         let imageView = UIImageView()
         let image = UIImage(named: "editNameIcon")
@@ -148,6 +162,7 @@ class CreateAlbumViewController: UIViewController {
         albumNameTextField.leftView = imageView
     }
     
+    /// ChangeThumbnailButton set up
     func setupChangeThumbnailButton(){
         changeThumbnailButton.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         changeThumbnailButton.setTitle("  Change Thumbnail  ", for: .normal)
@@ -155,10 +170,11 @@ class CreateAlbumViewController: UIViewController {
         changeThumbnailButton.layer.cornerRadius = 10
         changeThumbnailButton.layer.masksToBounds = true
         
-           
+        // click button action
         changeThumbnailButton.addTarget(self, action: #selector(changeThumbnailAction), for: .touchUpInside)
     }
     
+    /// DateLabel set up
     func setupDateLabel(){
         let currentDate = Date()
         let format = DateFormatter()
@@ -168,13 +184,36 @@ class CreateAlbumViewController: UIViewController {
         dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
     }
     
+    // AlbumDescriptionTextView set up
     func setupAlbumDescriptionTextView(){
         albumDescriptionTextView.delegate = self
+    
+        
         albumDescriptionTextView.text = "Click To Edit Description..."
         albumDescriptionTextView.textColor = UIColor.lightGray
         albumDescriptionTextView.font = UIFont(name: "DINAlternate-Bold", size: 17)
         albumDescriptionTextView.returnKeyType = .done
 
+    }
+    
+    func setupRecordStartButton(){
+        recordStartButton.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.4)
+         recordStartButton.setTitle("  Start Recording  ", for: .normal)
+        recordStartButton.setTitleColor(.black, for: .normal)
+        
+           
+               recordStartButton.layer.cornerRadius = 10
+               recordStartButton.layer.masksToBounds = true
+        // click button action
+        recordStartButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+    }
+    
+    func setupRecorderView(){
+        
+        recorderView = (storyboard!.instantiateViewController(withIdentifier: "RecorderViewController") as! RecorderViewController)
+       
+        recorderView.modalTransitionStyle = .crossDissolve
+        recorderView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
     }
     
     /// change thumbnail action
@@ -190,8 +229,26 @@ class CreateAlbumViewController: UIViewController {
         self.present(imagePicker, animated: true, completion:  nil)
         
     }
+    
+    /// start recording action
+    @objc private func startRecord() {
+        self.present(recorderView, animated: true, completion: nil)
+    }
 
-
+    @IBAction func audioPlayPauseAction(_ sender: Any) {
+            if(!isPlaying){
+                // Recording mode
+                self.audioPlayPauseButton.setBackgroundImage(UIImage(named: "pauseIcon"), for: .normal)
+                self.isPlaying = true
+                
+            } else {
+                // Pause mode
+            self.audioPlayPauseButton.setBackgroundImage(UIImage(named: "playIcon"), for: .normal)
+                self.isPlaying = false
+            }
+        
+    }
+    
     
     func retriveCurrentLocation(){
         let status = CLLocationManager.authorizationStatus()
@@ -234,17 +291,25 @@ extension CreateAlbumViewController: UITextFieldDelegate{
     }
 }
 
+// MARK: - UITextViewDelegate
+// UITextView placeholder setting
 extension CreateAlbumViewController: UITextViewDelegate{
     
     
+    /// When user click to edit, placeholder disapper
+    /// - Parameter textView: textView
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == "Click To Edit Description..." {
             textView.text = ""
             textView.textColor = UIColor.black
-            textView.font = UIFont(name: "verdana", size: 18.0)
+            textView.font = UIFont(name: "DINAlternate-Bold", size: 17)
         }
     }
     
+    /// When user enter return, finish editing
+    /// - Parameter textView: textView
+    /// - Parameter range: text range
+    /// - Parameter text: text in textView
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
@@ -252,6 +317,8 @@ extension CreateAlbumViewController: UITextViewDelegate{
         return true
     }
     
+    /// If users do not enter any text, placeholder appear again
+    /// - Parameter textView: textView
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Click To Edit Description..."
@@ -486,7 +553,8 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
     }
 }
 
-extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+// MARK: -  UICollectionViewDelegate, UICollectionViewDataSource
+extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     ///
     /// - Parameter collectionView: The collection view requesting this information.
     /// - Returns: the number of sections
@@ -571,11 +639,11 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCollectionVewCell", for: indexPath) as! AddPhotoCollectionViewCell
         
         if indexPath.item == 0 {
-            cell.TheImageView.image = #imageLiteral(resourceName: "add")
+            cell.TheImageView.image = UIImage(named: "addPhotoButton")
             
             let tapped = UITapGestureRecognizer(target: self, action: #selector(self.addPhotoTapped(sender:)))
             cell.addGestureRecognizer(tapped)
-        }else {
+        } else {
             
             cell.UID = medias[indexPath.item-1].UID
             if (indexPath.item)<=medias.count { // make sure not out of bound
@@ -589,7 +657,17 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
         
         return cell
     }
-
+    
+    
+      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+      {
+          let layout = collectionViewLayout as! UICollectionViewFlowLayout
+          layout.minimumLineSpacing = 15.0
+          layout.minimumInteritemSpacing = 2.5
+          let itemWidth = (collectionView.bounds.width - 15.0) / 3.0
+          return CGSize(width: itemWidth, height: itemWidth)
+      }
 }
+
 
 
