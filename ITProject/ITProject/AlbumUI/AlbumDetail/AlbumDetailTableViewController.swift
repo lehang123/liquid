@@ -108,7 +108,8 @@ class AlbumDetailTableViewController: UITableViewController {
     func updatePhoto(newPhoto: MediaDetail){
         if !albumContents.contains(newPhoto){
             self.displayPhotoCollectionView?.performBatchUpdates({
-                albumContents.append(newPhoto)
+//                albumContents.append(newPhoto)
+                self.albumContents.insert(newPhoto, at: 0)
                 
                 if let index = self.albumContents.firstIndex(of: newPhoto){
                     let indexPath = IndexPath(item: index, section: 0)
@@ -197,9 +198,7 @@ class AlbumDetailTableViewController: UITableViewController {
                         customFormVC.dismissWithAnimation(){
                             imageData,audioUID in
                             let filename = URL(string: audioUID!)!.appendingPathExtension(Util.EXTENSION_M4A)
-                                let filePath = Util
-                                               .GetAudioDirectory()
-                                               .appendingPathComponent(filename.absoluteString)
+                            
                                 let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
                                 if let imageData = imageData,
                                    let audioUID = audioUID,let imageUID = Util.GenerateUDID(){
@@ -223,18 +222,14 @@ class AlbumDetailTableViewController: UITableViewController {
                                                     dateCreated: Timestamp(date: Date()),
                                                     audioUID: audioUID)
                                                 
-                                                // To do for gillbert
-                                                // UPloading audio to database
-                                                //upload audio to storage:
-//                                            Util.UploadFileToServer(data: Data, metadata: <#T##StorageMetadata?#>, fileName: <#T##String#>, fextension: <#T##String#>)
                                                 self.updatePhoto(
                                                     newPhoto: MediaDetail(
                                                         title: imageUID,
                                                         description: textFields.first!.textContent,
                                                         UID: imageUID,
-                                                        likes: [DocumentReference](), comments: nil, ext: Util.EXTENSION_JPEG,
+                                                        likes: [], comments: [], ext: Util.EXTENSION_JPEG,
                                                         watch: [],
-                                                        audioUID : ""))
+                                                        audioUID : audioUID))
                                             
                                                 // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
 
@@ -249,9 +244,9 @@ class AlbumDetailTableViewController: UITableViewController {
 
     /// view photo detail, present on display photo view controller
     /// - Parameter photoDetail: the photo that user wants to see
-    func viewPhoto(photoDetail: MediaDetail) {
+    func viewMedia(mediaDetail: MediaDetail) {
         
-        self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: photoDetail)
+        self.performSegue(withIdentifier: AlbumDetailTableViewController.SHOW_PHOTO_DETAIL_SEGUE, sender: mediaDetail)
     }
     
     /// prepare for transition for view
@@ -420,7 +415,7 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
             let photo = albumContents[indexPath.item]
-            cell.indexInView = indexPath.item
+            cell.mediaUID = photo.UID
             let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
             
             cell.addGestureRecognizer(longPressRecognizer)
@@ -456,13 +451,26 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.DELETE_PHOTO_TEXT, style: .destructive, action: { (action) in
                 print("confirmed deleting photo")
                 let photoView: AlbumDetailPhotoCollectionViewCell = sender.view as! AlbumDetailPhotoCollectionViewCell
+                
+                let index = self.albumContents.firstIndex(where: {
+                    media in
+                    
+                    return media.UID == photoView.mediaUID
+                })!
                 //remove at DB:
 //                print("ext is : ", self.albumContents[photoView.indexInView].ext)
 
-                AlbumDBController.getInstance().deleteMediaFromAlbum(mediaPath: self.albumContents[photoView.indexInView].UID, albumUID: self.albumDetail.UID , ext: self.albumContents[photoView.indexInView].ext)
+                AlbumDBController.getInstance().deleteMediaFromAlbum(mediaPath: self.albumContents[index].UID, albumUID: self.albumDetail.UID , ext: self.albumContents[index].ext)
 
-                //TODO: remove at frontend:
-                //since we want to change to a new view, I'll just wait to do it there:D
+                self.displayPhotoCollectionView?.performBatchUpdates({
+                    var indexPaths = [IndexPath]()
+                    indexPaths.append(IndexPath(row: index, section: 0))
+                    
+                    self.albumContents.remove(at: index)
+                    let indexPath = IndexPath(item: index, section: 0)
+                    self.displayPhotoCollectionView?.deleteItems(at: [indexPath])
+                    
+                }, completion: nil)
                 
                 
     //            DBController.getInstance().deleteWholeDocumentfromCollection(documentUID: String, collectionName: <#T##String#>)
@@ -479,8 +487,8 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
     
         /* called when collectionview on touched, go view photos */
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let photo = albumContents[indexPath.item]
-            viewPhoto(photoDetail: photo)
+            let media = albumContents[indexPath.item]
+            viewMedia(mediaDetail: media)
         }
     }
 

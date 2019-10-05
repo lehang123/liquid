@@ -12,7 +12,7 @@ class AlbumDetailPhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var photoImageView: UIImageView!
     
-    var indexInView: Int!
+    var mediaUID: String!
     
     /// album detail photo 
     var image: UIImage! {

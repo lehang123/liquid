@@ -187,6 +187,8 @@ class MediaDetail: Equatable
         
     }
     
+    
+    
     func vaildExtension()->Bool{
         
         switch self.ext {

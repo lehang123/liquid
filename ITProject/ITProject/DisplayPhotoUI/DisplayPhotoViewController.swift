@@ -248,16 +248,16 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         // pull new comment from the server
 
         var indexPaths = [IndexPath]()
-
+        let updateAtRow = self.commentsSource.count+1
         tableView.beginUpdates()
 
         //        print("COUNT IS: " ,commentsSource.count)
-        indexPaths.append(IndexPath(row: self.commentsSource.count, section: 0))
+        indexPaths.append(IndexPath(row: updateAtRow, section: 0))
 
         self.tableView.insertRows(at: indexPaths, with: .top)
         self.tableView.endUpdates()
-        self.tableView.scrollToRow(at: IndexPath(row: self.commentsSource.count+1, section: 0), at: .bottom, animated: true)
-//        self.tableView.reloadData()
+        self.tableView.scrollToRow(at: IndexPath(row: updateAtRow, section: 0), at: .bottom, animated: true)
+
     }
 
     private func storeCommentToServer(username: String, comment: String, photoUID: String)
@@ -327,8 +327,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     {
         print("numberOfRowsInSection : how often do you called ?")
         // return the number of rows
-        return self.commentsSource.count + DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH +
-            DisplayPhotoViewController.DESCRIPTON_CELL
+        return  DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH +
+            DisplayPhotoViewController.DESCRIPTON_CELL + self.commentsSource.count
     }
 
     
@@ -403,6 +403,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let descriptionCell = self.tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.descriptionTableViewCell, for: indexPath) as! DescriptionCell
             print("the description : " + mediaDetail.getDescription())
             descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
+            print("you don't call this, do you? : " + mediaDetail.audioUID)
             descriptionCell.setAudioUID(audioUID: mediaDetail.audioUID)
 //            descriptionCell.descriptionDetail.numberOfLines = 0
 //            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
