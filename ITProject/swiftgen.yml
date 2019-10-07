@@ -1,5 +1,0 @@
-xcassets:
-    inputs: ITProject/Assets.xcassets
-    outputs:
-      - templateName: swift4
-        output: ITProject/Utils/assets-images.swift

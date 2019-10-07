@@ -942,4 +942,9 @@ class Util {
             }
         }
     }
+    
+    public static func secondsToMinutesSeconds(seconds : Int) -> (Int, Int) {
+
+        return (seconds / 3600, (seconds / 60) % 60)
+    }
 }
