@@ -172,6 +172,11 @@ class SideMenuTableViewController: UITableViewController {
                 print(" SideMenuTableViewController prepare : pass success !")
                 FamilyProfileVC.userFamilyInfo = userFamilyInformation
             }
+        } else if segue.identifier == SideMenuTableViewController.SHOW_FAMILY_TABLE_VIEW_SEGUE {
+            if let FamilyTableVC = segue.destination as? FamilyTableViewController {
+                print(" SideMenuTableViewController prepare : pass success !")
+                FamilyTableVC.userFamilyInfo = userFamilyInformation
+            }
         }
     }
 }
