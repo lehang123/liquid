@@ -18,8 +18,8 @@ class AlbumDetailTests:XCTestCase {
         
         let album2 = AlbumDetail(title: "DummyAlbum", description: "none", UID: "Util.GenerateUDID()", coverImageUID: nil, coverImageExtension: nil, createdLocation: "home")
         
-        XCTAssertTrue(album.testVaildId())
-        XCTAssertFalse(album2.testVaildId())
+        XCTAssertTrue(album.testValidId())
+        XCTAssertFalse(album2.testValidId())
     }
     
     func testVaildMedia(){
@@ -30,14 +30,14 @@ class AlbumDetailTests:XCTestCase {
         
         let photo3 = MediaDetail(title: "anything", description: "anything", UID: Util.GenerateUDID(), likes: [], comments: nil, ext: "mp3", watch: nil, audioUID: "")
         
-        XCTAssertTrue(photo.testVaildId())
-        XCTAssertTrue(photo.vaildExtension())
+        XCTAssertTrue(photo.testValidId())
+        XCTAssertTrue(photo.validExtension())
         
-        XCTAssertFalse(photo2.testVaildId())
-        XCTAssertTrue(photo2.vaildExtension())
+        XCTAssertFalse(photo2.testValidId())
+        XCTAssertTrue(photo2.validExtension())
         
-        XCTAssertTrue(photo3.testVaildId())
-        XCTAssertFalse(photo3.vaildExtension())
+        XCTAssertTrue(photo3.testValidId())
+        XCTAssertFalse(photo3.validExtension())
      }
     
     
