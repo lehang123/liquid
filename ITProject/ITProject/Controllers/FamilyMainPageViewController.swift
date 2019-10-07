@@ -137,7 +137,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                    
 					sideMenuVC.userInformation = UserInfo(
                         username: self.name ?? "Not Available",
-                        imageUID: self.profileURL ?? Util.DEFAULT_IMAGE,
+                        imageUID: self.profileURL ?? ImageAsset.default_image.rawValue,
                         imageExtension: self.profileExtension ?? Util.EXTENSION_JPEG,
                         gender: self.gender ?? "Not Available",
                         dateOfBirth: self.DOB,
@@ -210,9 +210,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	func collectData()
 	{
 		self.items = [
-			ModelCollectionFlowLayout(title: "Album", image: UIImage(named: "imageIcon")),
-			ModelCollectionFlowLayout(title: "Timeline", image: UIImage(named: "settingIcon")),
-			ModelCollectionFlowLayout(title: "imageIcon", image: UIImage(named: "imageIcon")),
+            ModelCollectionFlowLayout(title: "Album", image: ImageAsset.image_icon.image),
+            ModelCollectionFlowLayout(title: "Timeline", image: ImageAsset.image_icon.image),
+            ModelCollectionFlowLayout(title: "imageIcon", image: ImageAsset.image_icon.image),
 		]
 	}
 
@@ -369,7 +369,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 						}
 						else
 						{
-							self.profileImg.image = UIImage(named: Util.DEFAULT_IMAGE)
+							self.profileImg.image = ImageAsset.default_image.image
 						}
 					})
 				}

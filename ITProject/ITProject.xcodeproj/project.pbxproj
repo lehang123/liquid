@@ -43,6 +43,8 @@
 		6C57C8FB230FE0C4001D65EF /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8FA230FE0C4001D65EF /* Font.swift */; };
 		6C57C8FE2314AC19001D65EF /* PopUpAlter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8FD2314AC19001D65EF /* PopUpAlter.swift */; };
 		6C5B8E462339C4450017B99C /* UIScreen+CGRect+minEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */; };
+		6C8957FF234AD2040083DEA2 /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8957FE234AD2040083DEA2 /* ImageAsset.swift */; };
+		6C895807234AED800083DEA2 /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C895806234AED800083DEA2 /* Recording.swift */; };
 		6CABC7DE2306C99800D2AFBC /* AlbumDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7DD2306C99800D2AFBC /* AlbumDBController.swift */; };
 		6CABC7E02306DACD00D2AFBC /* AlbumDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7DF2306DACD00D2AFBC /* AlbumDetailTableViewController.swift */; };
 		6CABC7E32306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7E22306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift */; };
@@ -140,6 +142,8 @@
 		6C57C8FA230FE0C4001D65EF /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		6C57C8FD2314AC19001D65EF /* PopUpAlter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpAlter.swift; sourceTree = "<group>"; };
 		6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+CGRect+minEdge.swift"; sourceTree = "<group>"; };
+		6C8957FE234AD2040083DEA2 /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
+		6C895806234AED800083DEA2 /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
 		6CABC7DD2306C99800D2AFBC /* AlbumDBController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumDBController.swift; sourceTree = "<group>"; };
 		6CABC7DF2306DACD00D2AFBC /* AlbumDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailTableViewController.swift; sourceTree = "<group>"; };
 		6CABC7E22306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailDescrpTableViewCell.swift; sourceTree = "<group>"; };
@@ -261,6 +265,7 @@
 			isa = PBXGroup;
 			children = (
 				6C56248F2348AE4E00CF4778 /* RecorderViewController.swift */,
+				6C895806234AED800083DEA2 /* Recording.swift */,
 			);
 			path = AudioUI;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 				6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */,
 				84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */,
 				6CD476F623461F8E00930C42 /* UIImage+withBackgroundColor.swift */,
+				6C8957FE234AD2040083DEA2 /* ImageAsset.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -393,7 +399,6 @@
 				84E9BA4422F941F4003EA693 /* ITProject */,
 				E9FABCC91C0AFFD2BEEC5363 /* Pods */,
 				5206680922FBB5EC002C61B6 /* ITProject.app */,
-				8446C07E230F82DF000ABCD7 /* Assets.xcassets */,
 				84BA05B123447E08002BB7B3 /* ITProjectTests */,
 				9FB4B798B7F8A8AF46D94C8D /* Frameworks */,
 				84BA05B023447E08002BB7B3 /* ITProjectTests.xctest */,
@@ -403,6 +408,7 @@
 		84E9BA4422F941F4003EA693 /* ITProject */ = {
 			isa = PBXGroup;
 			children = (
+				8446C07E230F82DF000ABCD7 /* Assets.xcassets */,
 				6C56248E2348AE2E00CF4778 /* AudioUI */,
 				84080C2B2334ABAC00F05BAD /* FamilyTableUI */,
 				6C19AB8323347CF90044EF30 /* TimelineUI */,
@@ -672,6 +678,7 @@
 				8446C075230E4DEA000ABCD7 /* DisplayPhotoViewController.swift in Sources */,
 				520667F322FAEEAE002C61B6 /* EmailSignUpViewController.swift in Sources */,
 				8446C081230F8AD9000ABCD7 /* CommentCell.swift in Sources */,
+				6C895807234AED800083DEA2 /* Recording.swift in Sources */,
 				6C0151D12300473700FEF794 /* SideMenuTableViewController.swift in Sources */,
 				6C234F932305055B001561CA /* AlbumCoverViewController.swift in Sources */,
 				6CABC7E7230789C700D2AFBC /* AlbumDetailPhotoTableViewCell.swift in Sources */,
@@ -679,6 +686,7 @@
 				6C57C8F3230FD78D001D65EF /* AddAlbumTextFieldSet.swift in Sources */,
 				6C2A07002326945E0060D7BA /* CustomTextField.swift in Sources */,
 				6C57C8FB230FE0C4001D65EF /* Font.swift in Sources */,
+				6C8957FF234AD2040083DEA2 /* ImageAsset.swift in Sources */,
 				8423A6E922F9CA390049B656 /* FamilyProfileViewController.swift in Sources */,
 				8423A6EB22F9CC610049B656 /* MainNavigationController.swift in Sources */,
 				0D71EF0523222BCA00E4F7F7 /* FamilyCustomCell.swift in Sources */,

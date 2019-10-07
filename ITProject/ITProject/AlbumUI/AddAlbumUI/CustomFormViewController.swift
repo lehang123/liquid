@@ -19,8 +19,8 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
 
     /// imagePicker that to open photos library
     private var imagePicker = UIImagePickerController()
-    private(set) var albumThumbnailImage : UIImage? = UIImage(named: Util.DEFAULT_IMAGE)
-    private(set) var albumThumbnailString: String = Util.DEFAULT_IMAGE
+    private(set) var albumThumbnailImage : UIImage? = ImageAsset.default_image.image
+    private(set) var albumThumbnailString: String = ImageAsset.default_image.rawValue
     private var formEle: FormElement!
     private let audioUID = Util.GenerateUDID()!
     
@@ -223,7 +223,7 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
                 with: title,
                 textFieldsContent: textFields,
                 buttonContent: buttonsBarContent,
-                imageViewContent: UIImage(named: Util.DEFAULT_IMAGE)!,
+                imageViewContent: ImageAsset.default_image.image,
                 withUploadFile: true,
                 uploadString: formEle.uploadTitle
             )

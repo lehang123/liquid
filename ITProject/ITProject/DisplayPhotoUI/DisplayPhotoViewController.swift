@@ -108,7 +108,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.rowHeight = UITableView.automaticDimension
         self.cmmentText.delegate = self
         self.sendButton.isUserInteractionEnabled = false
-        self.showRecordKeyboard.setImage(UIImage(named: "voiceInputIcon"), for: .normal)
+        self.showRecordKeyboard.setImage(ImageAsset.voice_input_icon.image, for: .normal)
 
         self.setUpTableViewHeader()
 
@@ -126,14 +126,14 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             self.cmmentText.isHidden = true
             
             self.recordButton.isHidden = false
-            self.showRecordKeyboard.setImage(UIImage(named: "keyboardViewIcon"), for: .normal)
+            self.showRecordKeyboard.setImage(ImageAsset.keyboard_view_icon.image, for: .normal)
             self.isShowRecord = true
             
         } else {
             // TextField mode
             self.cmmentText.isHidden = false
             self.recordButton.isHidden = true
-            self.showRecordKeyboard.setImage(UIImage(named: "voiceInputIcon"), for: .normal)
+            self.showRecordKeyboard.setImage(ImageAsset.voice_input_icon.image, for: .normal)
             self.isShowRecord = false
         }
     }
@@ -213,12 +213,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text = (cmmentText.text! as NSString).replacingCharacters(in: range, with: string)
         if text.isEmpty {
-            sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
+            sendButton.setImage(ImageAsset.disable_send_icon.image, for: .normal)
          sendButton.isEnabled = false
         } else {
             sendButton.isUserInteractionEnabled = true
          sendButton.isEnabled = true
-         sendButton.setImage(UIImage(named: "ableSendIcon"), for: .normal)
+            sendButton.setImage(ImageAsset.able_send_icon.image, for: .normal)
         }
          return true
     }
@@ -238,7 +238,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.updateCommentSource()
         
         // disable the button after sending the comment
-        sendButton.setImage(UIImage(named: "disableSendIcon"), for: .normal)
+        sendButton.setImage(ImageAsset.disable_send_icon.image, for: .normal)
         sendButton.isUserInteractionEnabled = false
     
     }

@@ -46,7 +46,7 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                     if let error = error{
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
-                        print("succeed at AlbumCoverViewController.createAlbum ", docRef)
+                        print("succeed at AlbumCoverViewController.createAlbum ", docRef as Any)
                         self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation ??  "")
                     }
                     
@@ -163,7 +163,7 @@ class AlbumCoverViewController: UIViewController {
     ///   - attributes: attributes description
     ///   - description: decription about what is wrong
     private func showPopupMessage(attributes: EKAttributes, description: String) {
-        let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
+        let image = ImageAsset.menu_icon.image.withRenderingMode(.alwaysTemplate)
         let title = "Error!"
         PopUpAlter.showPopupMessage(attributes: attributes,
                                     title: title,
