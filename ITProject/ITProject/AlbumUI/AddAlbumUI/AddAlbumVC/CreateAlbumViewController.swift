@@ -156,7 +156,7 @@ class CreateAlbumViewController: UIViewController {
         // add icon on the left of textField
         albumNameTextField.leftViewMode = UITextField.ViewMode.unlessEditing
         let imageView = UIImageView()
-        let image = UIImage(named: "editNameIcon")
+        let image = ImageAsset.edit_name_icon.image
         imageView.contentMode = .center
         imageView.image = image
         imageView.frame = CGRect(x: 0, y: 0, width: imageView.image!.size.width , height: imageView.image!.size.height)
@@ -234,17 +234,18 @@ class CreateAlbumViewController: UIViewController {
     /// start recording action
     @objc private func startRecord() {
         self.present(recorderView, animated: true, completion: nil)
+        
     }
 
     @IBAction func audioPlayPauseAction(_ sender: Any) {
             if(!isPlaying){
                 // Recording mode
-                self.audioPlayPauseButton.setBackgroundImage(UIImage(named: "pauseIcon"), for: .normal)
+                self.audioPlayPauseButton.setBackgroundImage(ImageAsset.pause_icon.image, for: .normal)
                 self.isPlaying = true
                 
             } else {
                 // Pause mode
-            self.audioPlayPauseButton.setBackgroundImage(UIImage(named: "playIcon"), for: .normal)
+                self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
                 self.isPlaying = false
             }
         
@@ -640,7 +641,7 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCollectionVewCell", for: indexPath) as! AddPhotoCollectionViewCell
         
         if indexPath.item == 0 {
-            cell.TheImageView.image = UIImage(named: "addPhotoButton")
+            cell.TheImageView.image = ImageAsset.add_photo_button.image
             
             let tapped = UITapGestureRecognizer(target: self, action: #selector(self.addPhotoTapped(sender:)))
             cell.addGestureRecognizer(tapped)

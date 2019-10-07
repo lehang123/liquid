@@ -184,7 +184,7 @@ class AlbumCoverViewController: UIViewController {
     ///   - attributes: attributes description
     ///   - description: decription about what is wrong
     private func showPopupMessage(attributes: EKAttributes, description: String) {
-        let image = UIImage(named: "menuIcon")!.withRenderingMode(.alwaysTemplate)
+        let image = ImageAsset.menu_icon.image.withRenderingMode(.alwaysTemplate)
         let title = "Error!"
         PopUpAlter.showPopupMessage(attributes: attributes,
                                     title: title,
