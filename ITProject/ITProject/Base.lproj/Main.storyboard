@@ -706,14 +706,17 @@
                                                 <rect key="frame" x="138" y="158" width="227" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="03i-tJ-K2J">
-                                                        <rect key="frame" x="10" y="12.5" width="50" height="25"/>
+                                                        <rect key="frame" x="10" y="12.5" width="25" height="25"/>
                                                         <state key="normal" backgroundImage="playIcon"/>
                                                         <connections>
                                                             <action selector="audioPlayPauseAction:" destination="Zri-AL-l0K" eventType="touchUpInside" id="IML-eq-MRz"/>
                                                         </connections>
                                                     </button>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="d9I-e6-o8L">
-                                                        <rect key="frame" x="68" y="10" width="151" height="31"/>
+                                                        <rect key="frame" x="43" y="10" width="176" height="31"/>
+                                                        <connections>
+                                                            <action selector="changeAudioTime:" destination="Zri-AL-l0K" eventType="valueChanged" id="Dp6-6A-jKu"/>
+                                                        </connections>
                                                     </slider>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="0.51075556506849318" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -780,16 +783,22 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Te8-8A-aeH">
+                                                <rect key="frame" x="15" y="193" width="49" height="30"/>
+                                                <state key="normal" title="Delete "/>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
                                             <constraint firstItem="xZF-Sz-A00" firstAttribute="centerY" secondItem="ddT-Gx-Md5" secondAttribute="centerY" id="Eqr-9b-Sq7"/>
                                             <constraint firstItem="sz9-SQ-zeX" firstAttribute="top" secondItem="E2t-wS-yFr" secondAttribute="top" constant="10" id="FFt-Np-pzy"/>
                                             <constraint firstAttribute="trailing" secondItem="1Xm-Bl-9Ey" secondAttribute="trailing" constant="15" id="K8Q-WA-WZp"/>
+                                            <constraint firstItem="Te8-8A-aeH" firstAttribute="top" secondItem="386-Kz-fZx" secondAttribute="bottom" constant="5" id="Lpf-YF-QaK"/>
                                             <constraint firstAttribute="trailing" secondItem="pRw-ru-eL2" secondAttribute="trailing" constant="10" id="MhR-Po-WQp"/>
                                             <constraint firstItem="Dbd-la-NxP" firstAttribute="leading" secondItem="E2t-wS-yFr" secondAttribute="leading" constant="10" id="P9m-oP-NLn"/>
                                             <constraint firstItem="ddT-Gx-Md5" firstAttribute="leading" secondItem="xZF-Sz-A00" secondAttribute="trailing" constant="15" id="Pp0-EL-15F"/>
                                             <constraint firstItem="pRw-ru-eL2" firstAttribute="leading" secondItem="386-Kz-fZx" secondAttribute="trailing" constant="15" id="Rip-5D-fQU"/>
+                                            <constraint firstItem="Te8-8A-aeH" firstAttribute="leading" secondItem="386-Kz-fZx" secondAttribute="leading" id="XjZ-ml-XFC"/>
                                             <constraint firstAttribute="bottom" secondItem="xZF-Sz-A00" secondAttribute="bottom" constant="71" id="b1X-Zc-obW"/>
                                             <constraint firstItem="1Xm-Bl-9Ey" firstAttribute="top" secondItem="Dbd-la-NxP" secondAttribute="bottom" constant="15" id="b4u-fc-4ja"/>
                                             <constraint firstItem="SpI-KC-fck" firstAttribute="top" secondItem="sz9-SQ-zeX" secondAttribute="bottom" constant="15" id="b8j-xy-rd8"/>
@@ -852,7 +861,10 @@
                         <outlet property="addPhotosCollectionView" destination="1Xm-Bl-9Ey" id="dHa-Gl-j5I"/>
                         <outlet property="albumDescriptionTextView" destination="sz9-SQ-zeX" id="4pp-Fa-om6"/>
                         <outlet property="albumNameTextField" destination="40K-Hb-HNN" id="Zwu-BY-oeo"/>
+                        <outlet property="audioDeleteButton" destination="Te8-8A-aeH" id="dNv-kr-gKt"/>
                         <outlet property="audioPlayPauseButton" destination="03i-tJ-K2J" id="hLC-ha-Lbu"/>
+                        <outlet property="audioPlaySlider" destination="d9I-e6-o8L" id="YAl-NY-VLR"/>
+                        <outlet property="audioPlayView" destination="pRw-ru-eL2" id="XWM-67-Rcd"/>
                         <outlet property="changeThumbnailButton" destination="Dir-ol-k5y" id="9yX-1S-7yd"/>
                         <outlet property="dateLabel" destination="RsQ-0C-PlC" id="30l-sw-C40"/>
                         <outlet property="recordStartButton" destination="386-Kz-fZx" id="R64-Wu-jAO"/>
@@ -1617,7 +1629,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="305.5" y="18" width="54.5" height="55"/>
+                                                    <rect key="frame" x="305.5" y="18" width="54.500000000000028" height="55.000000000000028"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="4Lz-go-1pw" secondAttribute="height" multiplier="1:1" id="31c-Vc-8vs"/>
                                                     </constraints>
@@ -1764,19 +1776,19 @@
                                 <rect key="frame" x="0.0" y="610.5" width="375" height="56.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Comment Here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MNA-qF-Ptv">
-                                        <rect key="frame" x="90" y="8" width="195" height="40.5"/>
+                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="295" y="6" width="60" height="44"/>
+                                        <rect key="frame" x="330" y="17" width="25" height="22"/>
                                         <state key="normal" image="disableSendIcon"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hno-TV-F7x">
-                                        <rect key="frame" x="10" y="-7" width="70" height="70"/>
+                                        <rect key="frame" x="10" y="10.5" width="35" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="hno-TV-F7x" secondAttribute="height" id="zVE-WP-khD"/>
                                         </constraints>
@@ -1786,7 +1798,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="prc-QY-NqT">
-                                        <rect key="frame" x="90" y="8" width="195" height="40.5"/>
+                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Long Press To Record">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -2062,6 +2074,9 @@
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="18"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Tap To Finish"/>
+                                        <connections>
+                                            <action selector="stopRecord" destination="zOg-Az-sxS" eventType="touchUpInside" id="rSD-QD-Xue"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
@@ -2089,10 +2104,10 @@
                         <viewLayoutGuide key="safeArea" id="FOd-Oq-aHh"/>
                     </view>
                     <connections>
-                        <outlet property="backgroundView" destination="b0Z-Tc-as0" id="hym-a9-hMb"/>
+                        <outlet property="backgroundView" destination="b0Z-Tc-as0" id="ko3-ZY-E83"/>
                         <outlet property="durationLabel" destination="a4X-sT-81h" id="kwG-z9-dmx"/>
-                        <outlet property="recordFinishButton" destination="Ezd-n9-Wpr" id="5Tw-6B-lyi"/>
-                        <outlet property="voiceView" destination="nIG-Lp-4YO" id="MVR-VM-u1S"/>
+                        <outlet property="singalImageView" destination="6IA-L8-hon" id="7ER-2z-Gfl"/>
+                        <outlet property="tapToFinishBtn" destination="Ezd-n9-Wpr" id="0mX-My-ib5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qex-sa-QNi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

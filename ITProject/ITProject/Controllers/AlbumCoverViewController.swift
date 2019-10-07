@@ -46,7 +46,7 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                     if let error = error{
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
-                        print("succeed at AlbumCoverViewController.createAlbum ", docRef)
+                        print("succeed at AlbumCoverViewController.createAlbum ", docRef as Any)
                         self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation ??  "")
                     }
                     
