@@ -159,7 +159,7 @@ class CacheHandler: NSObject
 					]
                     
 				}
-
+                
 				sortedAlbums = albums.sorted(by: { (first, second) -> Bool in
 
 					let (_, firstDetail) = first
@@ -195,7 +195,12 @@ class CacheHandler: NSObject
 
 		print("getting currAlbumRef : " + currAlbumRef.documentID)
        //get all photos from an album:
-        DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: currAlbumRef).getDocuments
+        DBController
+            .getInstance()
+            .getDB()
+            .collection(AlbumDBController.MEDIA_COLLECTION_NAME)
+            .whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: currAlbumRef)
+            .getDocuments
 		{ mediaQS, error in
             //handle error:
 			if let error = error
@@ -205,12 +210,30 @@ class CacheHandler: NSObject
                 
 			else
 			{
-				print(mediaQS!.documents)
-				for doc in mediaQS!.documents
+                
+				
+                let docs :[QueryDocumentSnapshot] = mediaQS!.documents.sorted { (first, second) -> Bool in
+                    let firstData :[String:Any] = first.data()
+                    let secondData :[String:Any] = second.data()
+                    let firstDate :Timestamp = firstData[AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                    let secondDate :Timestamp = secondData[AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                    switch firstDate.compare(secondDate)
+                    {
+                        case .orderedAscending:
+                            return false
+                        case .orderedSame:
+                            return true
+
+                        case .orderedDescending:
+                            return true
+                    }
+                }
+                                         
+				for doc in docs
 				{
 					// get current data:
-					let currData: [String: Any] = doc.data()
-
+					var currData: [String: Any] = doc.data()
+                    
 					// process comments
 					let currComments: [[String: Any]] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [[String: Any]]
 
@@ -218,7 +241,13 @@ class CacheHandler: NSObject
                     //for each comment array, parse them:
 					currComments.forEach
 					{ commentRow in
-						parsedComments.append(MediaDetail.comment(commentID: Util.GenerateUDID(), username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String, message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
+						parsedComments
+                            .append(
+                                MediaDetail
+                                    .comment(
+                                        commentID: Util.GenerateUDID(),
+                                        username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String,
+                                        message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
 //						print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
 					}
 
@@ -244,14 +273,27 @@ class CacheHandler: NSObject
     public func getFamilyMembersInfo (completion: @escaping (_ familyMember: [FamilyMember], _ error: Error?) -> Void = { _, _ in }){
         // get current user Document Ref:
         let user = Auth.auth().currentUser!.uid
-        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user) { (docSnapshot, error) in
+        DBController
+            .getInstance()
+            .getDocumentFromCollection(
+            collectionName: RegisterDBController.USER_COLLECTION_NAME,
+            documentUID: user)
+            { (docSnapshot, error) in
             if let error = error {
                 print("error at getFamilyMembersInfo:::" , error)
             }else{
                 //get family doc ref:
                 let famDocRef:DocumentReference = docSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY)  as! DocumentReference
                //query for all members in fam:
-                DBController.getInstance().getDB().collection(RegisterDBController.USER_COLLECTION_NAME).whereField(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY, isEqualTo: famDocRef).getDocuments { (querySnapshot, error) in
+                DBController
+                    .getInstance()
+                    .getDB()
+                    .collection(RegisterDBController.USER_COLLECTION_NAME)
+                    .whereField(
+                        RegisterDBController.USER_DOCUMENT_FIELD_FAMILY,
+                        isEqualTo: famDocRef)
+                    .getDocuments {
+                        (querySnapshot, error) in
                     if let error = error {
                         print("error at getFamilyMembersInfo:::" , error)
                     }else{
@@ -260,8 +302,36 @@ class CacheHandler: NSObject
                         //PARSE DATA:
                         familyMembersRef.forEach({ (queryDocumentSnapshot) in
                             let data : QueryDocumentSnapshot = queryDocumentSnapshot;
+//                            let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Timestamp) ?? Timestamp(date: Date()) ;
+                            let dateFormatter : DateFormatter = DateFormatter();
+                            dateFormatter.dateFormat = "dd-MM-yyyy";
+//                            let dobDate : Date = dateFormatter.date(from: dobTimestamp.description) ??  Date()
+//                            print("dobDate:::",dobDate)
+                            let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as! Timestamp) ;
+                    
+                            print("TS:::",dobTimestamp.dateValue().description)
+                            let str =  dobTimestamp.dateValue().description as? String
+                            let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
+                            let sep : String = "-"
+                            let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: sep)
+                           
+                          
+                            print("str:::",str)
+                            print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
+                            let dobString = yearMonthDate[2] + sep +  yearMonthDate[1] + sep + yearMonthDate[0]
+
+
+
+                            
+
+                            
+
                             familyMembers.append(
-                                FamilyMember(UID: data.documentID, dateOfBirth: data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Date, name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String, relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
+                                FamilyMember(
+                                    UID: data.documentID,
+                                    dateOfBirth: dobString,
+                                    name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String,
+                                    relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
                             )
                         })
                         completion(familyMembers, error);
