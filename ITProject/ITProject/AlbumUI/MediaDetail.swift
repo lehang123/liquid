@@ -189,7 +189,7 @@ class MediaDetail: Equatable
     
     
     
-    func vaildExtension()->Bool{
+    func validExtension()->Bool{
         
         switch self.ext {
         case Util.EXTENSION_M4A:
@@ -209,7 +209,7 @@ class MediaDetail: Equatable
         }
     }
     
-    public func testVaildId()->Bool{
+    public func testValidId()->Bool{
         return self.UID.count == Util.GenerateUDID()?.count
     }
 }

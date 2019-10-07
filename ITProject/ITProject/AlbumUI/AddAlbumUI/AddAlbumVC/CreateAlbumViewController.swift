@@ -48,6 +48,9 @@ class CreateAlbumViewController: UIViewController {
     
     private var recorderView: RecorderViewController!
     private var isPlaying = false
+    private var isFirstPlay = true
+    private var isResetTimer = true
+    private var myTimer = Timer()
     
     @IBOutlet weak var thumbnailImageView: UIImageView!
     @IBOutlet weak var albumNameTextField: UITextField!
@@ -61,6 +64,10 @@ class CreateAlbumViewController: UIViewController {
     
     @IBOutlet var recordStartButton: UIButton!
     @IBOutlet var audioPlayPauseButton: UIButton!
+    
+    @IBOutlet var audioDeleteButton: UIButton!
+    @IBOutlet var audioPlaySlider: UISlider!
+    @IBOutlet var audioPlayView: UIView!
     
     @IBAction func createTapped(_ sender: Any) {
         
@@ -136,7 +143,9 @@ class CreateAlbumViewController: UIViewController {
         setupAlbumDescriptionTextView()
         
         setupRecordStartButton()
+        setupAudioDeleteButton()
         setupRecorderView()
+        setupAudioPlayView()
         
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
@@ -156,7 +165,7 @@ class CreateAlbumViewController: UIViewController {
         // add icon on the left of textField
         albumNameTextField.leftViewMode = UITextField.ViewMode.unlessEditing
         let imageView = UIImageView()
-        let image = UIImage(named: "editNameIcon")
+        let image = ImageAsset.edit_name_icon.image
         imageView.contentMode = .center
         imageView.image = image
         imageView.frame = CGRect(x: 0, y: 0, width: imageView.image!.size.width , height: imageView.image!.size.height)
@@ -212,10 +221,31 @@ class CreateAlbumViewController: UIViewController {
     func setupRecorderView(){
         
         recorderView = (storyboard!.instantiateViewController(withIdentifier: "RecorderViewController") as! RecorderViewController)
-       
+        recorderView.delegate = self
+        recorderView.createRecorder()
         recorderView.modalTransitionStyle = .crossDissolve
         recorderView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+    
     }
+    
+    func setupAudioPlayView(){
+        audioPlayView.isHidden = true
+    }
+    
+    func setupAudioDeleteButton(){
+        audioDeleteButton.isHidden = true
+        audioDeleteButton.backgroundColor = UIColor.redish.withAlphaComponent(0.4)
+         audioDeleteButton.setTitle("  Delete  ", for: .normal)
+        audioDeleteButton.setTitleColor(.black, for: .normal)
+        
+           
+               audioDeleteButton.layer.cornerRadius = 10
+               audioDeleteButton.layer.masksToBounds = true
+        // click button action
+        audioDeleteButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+    }
+    
+
     
     /// change thumbnail action
     @objc private func changeThumbnailAction() {
@@ -234,21 +264,74 @@ class CreateAlbumViewController: UIViewController {
     /// start recording action
     @objc private func startRecord() {
         self.present(recorderView, animated: true, completion: nil)
+        recorderView.startRecording()
+        audioPlayView.isHidden = true
+        audioDeleteButton.isHidden = true
     }
 
+
     @IBAction func audioPlayPauseAction(_ sender: Any) {
+        if(isFirstPlay){
+            do {
+                   try recorderView.recording.initPlayer()
+               } catch {
+                   print(error)
+               }
+
+            audioPlaySlider.maximumValue = Float(Int(recorderView.recording.player?.duration ?? 0))
+            self.isFirstPlay = false
+        }
+        
+        if(isResetTimer){
+            startTimer()
+            self.isResetTimer = false
+        }
             if(!isPlaying){
-                // Recording mode
-                self.audioPlayPauseButton.setBackgroundImage(UIImage(named: "pauseIcon"), for: .normal)
+                // Playing mode
+                self.audioPlayPauseButton.setBackgroundImage(ImageAsset.pause_icon.image, for: .normal)
                 self.isPlaying = true
+   
+                recorderView.recording.player?.play()
+
                 
             } else {
                 // Pause mode
-            self.audioPlayPauseButton.setBackgroundImage(UIImage(named: "playIcon"), for: .normal)
+                self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
                 self.isPlaying = false
+                self.isFirstPlay = false
+                
+                recorderView.recording.player?.stop()
             }
         
     }
+    @IBAction func changeAudioTime(_ sender: Any) {
+        recorderView.recording.player?.stop()
+        recorderView.recording.player?.currentTime = TimeInterval(audioPlaySlider.value)
+        recorderView.recording.player?.prepareToPlay()
+        self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
+        self.isPlaying = false
+        
+        
+    }
+    
+        @objc func updateSlider(){
+            audioPlaySlider.value = Float(recorderView.recording.player?.currentTime ?? 0)
+            let duration = Float(recorderView.recording.player?.duration ?? 0)
+            print("duraction :: ",duration)
+            print("slider value :: ", audioPlaySlider.value)
+            
+            // TODO: - reset and stop update slider
+    //        if(audioPlaySlider.value >= duration){
+    //            self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
+    //            self.isPlaying = false
+    //            myTimer.invalidate()
+    //            self.isResetTimer = true
+    //        }
+        }
+        
+        func startTimer(){
+            myTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+        }
     
     
     func retriveCurrentLocation(){
@@ -290,6 +373,22 @@ extension CreateAlbumViewController: UITextFieldDelegate{
         print("textFieldShouldEndEditing : get called")
         return true
     }
+}
+
+// MARK: - RecorderViewDelegate
+extension CreateAlbumViewController: RecorderViewDelegate{
+    
+    internal func didFinishRecording(_ recorderViewController: RecorderViewController) {
+        print("Record url :: ", recorderView.recording.url)
+        
+        audioPlayView.isHidden = false
+        audioDeleteButton.isHidden = false
+        
+        audioPlaySlider.value = 0
+        
+    }
+    
+    
 }
 
 // MARK: - UITextViewDelegate
@@ -640,7 +739,7 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCollectionVewCell", for: indexPath) as! AddPhotoCollectionViewCell
         
         if indexPath.item == 0 {
-            cell.TheImageView.image = UIImage(named: "addPhotoButton")
+            cell.TheImageView.image = ImageAsset.add_photo_button.image
             
             let tapped = UITapGestureRecognizer(target: self, action: #selector(self.addPhotoTapped(sender:)))
             cell.addGestureRecognizer(tapped)

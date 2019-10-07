@@ -24,6 +24,7 @@ target 'ITProject' do
   pod 'SwipeCellKit'
   pod 'FaveButton'
   pod 'Gallery'
+  pod 'Dollar'
 
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'
