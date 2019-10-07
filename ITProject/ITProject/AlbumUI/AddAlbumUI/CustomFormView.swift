@@ -147,7 +147,7 @@ class CustomFormView: UIView {
         
         audioButton.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
         audioButton.setTitle("Audio Test", for: .normal)
-        audioButton.setImage(UIImage(named: "uploadIcon"), for: .normal)
+        audioButton.setImage(ImageAsset.upload_icon.image, for: .normal)
 
 
         audioButton.setTitleColor(.gray, for: .normal)
@@ -205,7 +205,7 @@ class CustomFormView: UIView {
             
             uploadButtonContent.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.2)
             uploadButtonContent.setTitle(uploadTitle, for: .normal)
-            uploadButtonContent.setImage(UIImage(named: "uploadIcon"), for: .normal)
+            uploadButtonContent.setImage(ImageAsset.upload_icon.image, for: .normal)
 
 
             uploadButtonContent.setTitleColor(.gray, for: .normal)

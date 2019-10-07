@@ -36,8 +36,6 @@ class Util {
     public static let AUDIO_FOLDER = "audios"
     public static let TMP_FOLDER = "tmp"
     public static let FIREBASE_STORAGE_URL = "gs://liquid-248305.appspot.com/"
-    public static let DEFAULT_IMAGE = "defaultImage"
-
     public static func GenerateUDID() -> String! {
         let uuid = UUID().uuidString
         return uuid
@@ -206,9 +204,9 @@ class Util {
                                     completion: @escaping (Data?) -> Void = { _ in },
                                     errorHandler: @escaping (Error?) -> Void = { _ in }) {
         if let imageid = imageUID, let imageExt = UIDExtension {
-            if imageid == Util.DEFAULT_IMAGE {
-                let uiImage = UIImage(named: Util.DEFAULT_IMAGE)
-                completion(uiImage?.jpegData(compressionQuality: 1.0))
+            if imageid == ImageAsset.default_image.rawValue {
+                let uiImage =  ImageAsset.default_image.image
+                completion(uiImage.jpegData(compressionQuality: 1.0))
             } else {
                 if let dataCahe = CacheHandler.getInstance().getCache(forKey: imageid) {
                     print("GetImageData : data in cache, fetching... ")

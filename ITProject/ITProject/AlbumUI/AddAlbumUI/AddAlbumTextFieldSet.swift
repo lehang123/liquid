@@ -80,7 +80,7 @@ final class AddAlbumUI {
                      tintColor: style.textColor,
                      displayMode: displayMode,
                      textStyle: textStyle,
-                     leadingImage: UIImage(named: "albumIcon")!.withRenderingMode(.alwaysTemplate),
+                     leadingImage: ImageAsset.album_icon.image.withRenderingMode(.alwaysTemplate),
                      bottomBorderColor: separatorColor,
                      accessibilityIdentifier: "albumNameTextField")
     }
@@ -106,7 +106,7 @@ final class AddAlbumUI {
                      tintColor: style.textColor,
                      displayMode: displayMode,
                      textStyle: textStyle,
-                     leadingImage: UIImage(named: "descriptionIcon")!.withRenderingMode(.alwaysTemplate),
+                     leadingImage: ImageAsset.description_icon.image.withRenderingMode(.alwaysTemplate),
                      bottomBorderColor: separatorColor,
                      accessibilityIdentifier: "albumDescriptionTextField")
     }
@@ -132,7 +132,7 @@ final class AddAlbumUI {
                      tintColor: style.textColor,
                      displayMode: displayMode,
                      textStyle: textStyle,
-                     leadingImage: UIImage(named: "descriptionIcon")!.withRenderingMode(.alwaysTemplate),
+                     leadingImage: ImageAsset.description_icon.image.withRenderingMode(.alwaysTemplate),
                      bottomBorderColor: separatorColor,
                      accessibilityIdentifier: "photoDescriptionTextField")
     }
