@@ -18,7 +18,7 @@ struct FamilyMember: Equatable
 	}
 
 	let UID: String!
-	let dateOfBirth: Date?
+	let dateOfBirth: String?
 	let name: String?
 	let relationship: String?
 }
@@ -52,6 +52,7 @@ class FamilyTableViewController: UITableViewController
         self.updateHeaderlayout = CAShapeLayer()
         self.tableView.UpdateView(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut)
        // self.populateData()
+        //todo: render family's image !!
         Util.ShowActivityIndicator()
 
         CacheHandler.getInstance().getFamilyMembersInfo { (familyMembers, error) in
@@ -116,7 +117,7 @@ class FamilyTableViewController: UITableViewController
 			let cell = self.tableView.dequeueReusableCell(withIdentifier: FamilyTableViewController.FAMILY_MEMBER_CELL) as! FamilyTableViewMemberCell
 			cell.nameLabel.text = self.familyMembers[indexPath.row - 1].name
 			cell.relationshipLabel.text =  rel
-            cell.dateOfBirthLabel.text = self.familyMembers[indexPath.row - 1].dateOfBirth?.description ?? "Not Available"
+            cell.dateOfBirthLabel.text = self.familyMembers[indexPath.row - 1].dateOfBirth ?? "Not Available"
 //            print("values of relationship ", self.familyMembers[indexPath.row - 1].relationship)
             
 			return cell

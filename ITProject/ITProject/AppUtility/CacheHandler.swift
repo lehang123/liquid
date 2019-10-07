@@ -285,7 +285,15 @@ class CacheHandler: NSObject
                 //get family doc ref:
                 let famDocRef:DocumentReference = docSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY)  as! DocumentReference
                //query for all members in fam:
-                DBController.getInstance().getDB().collection(RegisterDBController.USER_COLLECTION_NAME).whereField(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY, isEqualTo: famDocRef).getDocuments { (querySnapshot, error) in
+                DBController
+                    .getInstance()
+                    .getDB()
+                    .collection(RegisterDBController.USER_COLLECTION_NAME)
+                    .whereField(
+                        RegisterDBController.USER_DOCUMENT_FIELD_FAMILY,
+                        isEqualTo: famDocRef)
+                    .getDocuments {
+                        (querySnapshot, error) in
                     if let error = error {
                         print("error at getFamilyMembersInfo:::" , error)
                     }else{
@@ -294,8 +302,36 @@ class CacheHandler: NSObject
                         //PARSE DATA:
                         familyMembersRef.forEach({ (queryDocumentSnapshot) in
                             let data : QueryDocumentSnapshot = queryDocumentSnapshot;
+//                            let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Timestamp) ?? Timestamp(date: Date()) ;
+                            let dateFormatter : DateFormatter = DateFormatter();
+                            dateFormatter.dateFormat = "dd-MM-yyyy";
+//                            let dobDate : Date = dateFormatter.date(from: dobTimestamp.description) ??  Date()
+//                            print("dobDate:::",dobDate)
+                            let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as! Timestamp) ;
+                    
+                            print("TS:::",dobTimestamp.dateValue().description)
+                            let str =  dobTimestamp.dateValue().description as? String
+                            let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
+                            let sep : String = "-"
+                            let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: sep)
+                           
+                          
+                            print("str:::",str)
+                            print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
+                            let dobString = yearMonthDate[2] + sep +  yearMonthDate[1] + sep + yearMonthDate[0]
+
+
+
+                            
+
+                            
+
                             familyMembers.append(
-                                FamilyMember(UID: data.documentID, dateOfBirth: data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Date, name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String, relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
+                                FamilyMember(
+                                    UID: data.documentID,
+                                    dateOfBirth: dobString,
+                                    name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String,
+                                    relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
                             )
                         })
                         completion(familyMembers, error);
