@@ -20,6 +20,7 @@ protocol CreateMediaViewControllerDelegate {
 extension AlbumDetailTableViewController:CreateMediaViewControllerDelegate{
     func createMedia(mediaDetail: MediaDetail) {
         
+        Util.ShowActivityIndicator(withStatus: "Creating new media...")
         if let imageData = mediaDetail.cache,
            let audioUID = mediaDetail.audioUID,
            let imageUID = mediaDetail.UID{
