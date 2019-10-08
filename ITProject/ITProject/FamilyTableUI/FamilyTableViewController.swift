@@ -31,6 +31,7 @@ class FamilyTableViewController: UITableViewController
 //	                                  FamilyMember(UID: Util.GenerateUDID(), phone: "2312312", name: "Luke Sky Walker", relationship: "Son")]
 
 	private var familyMembers = [FamilyMember]()
+    var userFamilyInfo: UserFamilyInfo!
 
 	private var headerView: UIView!
 	private var updateHeaderlayout: CAShapeLayer!
@@ -48,6 +49,19 @@ class FamilyTableViewController: UITableViewController
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
+        
+        Util.GetImageData(imageUID: userFamilyInfo.familyProfileUID, UIDExtension: userFamilyInfo.familyProfileExtension, completion: {
+            data in
+                       
+            if let d = data {
+                self.familyPhoto.image = UIImage(data:d)
+            }
+
+        })
+        
+   
+        
+        
         self.headerView = self.tableView.tableHeaderView
         self.updateHeaderlayout = CAShapeLayer()
         self.tableView.UpdateView(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut)
