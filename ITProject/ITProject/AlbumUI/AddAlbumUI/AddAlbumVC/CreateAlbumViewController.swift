@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 import Gallery
 import CoreLocation
-//import AVFoundation
-//import AVKit
+import AVFoundation
 
 
 // extension for string to remove whiteSpace
@@ -29,6 +28,8 @@ class CreateAlbumViewController: UIViewController {
     private static let ALBUM_NAME_REPEAT_ALERT_TITLE = "repeat album name"
     private static let DEFAULT_LOCATION_TEXT = "Show current location"
     private static let OK_ACTION = "Ok"
+    
+    var isAudioRecordingGranted: Bool!
     
     var delegate: CreateAlbumViewControllerDelegate!
 
@@ -149,6 +150,7 @@ class CreateAlbumViewController: UIViewController {
         setupRecorderView()
         setupAudioPlayView()
         
+        check_record_permission()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
 
@@ -173,6 +175,8 @@ class CreateAlbumViewController: UIViewController {
         imageView.frame = CGRect(x: 0, y: 0, width: imageView.image!.size.width , height: imageView.image!.size.height)
         albumNameTextField.leftView = imageView
     }
+    
+    
     
     /// ChangeThumbnailButton set up
     func setupChangeThumbnailButton(){
@@ -258,6 +262,7 @@ class CreateAlbumViewController: UIViewController {
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = ["public.image", "public.movie"]
         imagePicker.allowsEditing = true
                
         self.present(imagePicker, animated: true, completion:  nil)
@@ -396,6 +401,32 @@ class CreateAlbumViewController: UIViewController {
       
         // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
         locationManager.startUpdatingLocation()
+    }
+    
+    func check_record_permission() {
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSessionRecordPermission.granted:
+            isAudioRecordingGranted = true
+            print ("allowed")
+            break
+        case AVAudioSessionRecordPermission.denied:
+            isAudioRecordingGranted = false
+            print ("not allowed")
+            break
+        case AVAudioSessionRecordPermission.undetermined:
+            AVAudioSession.sharedInstance().requestRecordPermission({ (allowed) in
+                if allowed {
+                    self.isAudioRecordingGranted = true
+                    print ("allowed")
+                } else {
+                    self.isAudioRecordingGranted = false
+                    print ("not allowed")
+                }
+            })
+            break
+        default:
+            break
+        }
     }
 }
 
