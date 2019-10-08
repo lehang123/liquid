@@ -11,6 +11,95 @@ import Photos
 import SwiftEntryKit
 import Firebase
 
+
+protocol CreateMediaViewControllerDelegate {
+
+    func createMedia(mediaDetail: MediaDetail)
+}
+
+extension AlbumDetailTableViewController:CreateMediaViewControllerDelegate{
+    func createMedia(mediaDetail: MediaDetail) {
+        
+        if let imageData = mediaDetail.cache,
+           let audioUID = mediaDetail.audioUID,
+           let imageUID = mediaDetail.UID{
+            
+            if !audioUID.removingWhitespaces().isEmpty{
+                
+                let filename = URL(string: mediaDetail.audioUID)!.appendingPathExtension(Util.EXTENSION_M4A)
+                                           
+                let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
+                //uploads audio recorded to the storage:
+                Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
+                  Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
+                }
+            }
+            
+        if mediaDetail.getExtension().contains(Util.EXTENSION_M4V) ||
+           mediaDetail.getExtension().contains(Util.EXTENSION_MP4) ||
+           mediaDetail.getExtension().contains(Util.EXTENSION_MOV){
+           
+           let videoPath = Util.VIDEO_FOLDER + "/" + mediaDetail.getUID() + "." + Util.EXTENSION_ZIP
+           
+           print("video path is: ",videoPath)
+
+           //upload vid thumbnail:
+           Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {
+               url in
+               print("COMPLETION 1")
+               //upload video itself:
+               print("UPLOAD THUMBNAIL SUCCEED")
+               Util.ReadFileFromDocumentDirectory(fileName: videoPath){
+                   data in
+                   print("read finish and there is data")
+                   Util.UploadZipFileToServer(data: data, metadata: nil, fileName: imageUID, fextension: mediaDetail.getExtension(), completion: {url in
+                      Util.DismissActivityIndicator()
+                      if url != nil{
+                         //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
+                          AlbumDBController
+                              .getInstance()
+                              .addPhotoToAlbum(
+                               desc:mediaDetail.getDescription(),
+                               ext: mediaDetail.getExtension(),
+                               albumUID: self.albumDetail.UID,
+                               mediaPath: imageUID,
+                               dateCreated: Timestamp(date: Date()),
+                               audioUID: audioUID)
+                              
+                              self.updatePhoto(
+                                  newPhoto: mediaDetail)
+                       }
+                   })
+               }
+           })
+           
+           
+       }else {
+           // upload image:
+           Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: mediaDetail.getExtension(), completion: {url in
+              Util.DismissActivityIndicator()
+              if url != nil{
+                 //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
+                  AlbumDBController
+                      .getInstance()
+                      .addPhotoToAlbum(
+                       desc:mediaDetail.getDescription(),
+                       ext: Util.EXTENSION_JPEG,
+                       albumUID: self.albumDetail.UID,
+                       mediaPath: imageUID,
+                       dateCreated: Timestamp(date: Date()),
+                       audioUID: audioUID)
+                      
+                      self.updatePhoto(
+                          newPhoto: mediaDetail)
+               }
+           })
+       }
+                                       
+        }
+    }
+}
+
 /// UI View Controller for each Album to be displayed
 class AlbumDetailTableViewController: UITableViewController {
     var albumDetail: AlbumDetail!
@@ -49,6 +138,7 @@ class AlbumDetailTableViewController: UITableViewController {
       
         static let albumDetailDescrpCell = "AlbumDetailDescrpCell"
         static let albumDetailPhotoCell = "AlbumDetailPhotoCell"
+        static let presentCreateAlbumVC = "PresentCreateAlbumVC"
     }
     
 
@@ -124,122 +214,74 @@ class AlbumDetailTableViewController: UITableViewController {
     /// add photo button get tapped, pop up add photo form
     @objc private  func addPhotosTapped(){
         print("addPhotosTapped : Tapped")
-        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
-
-           let formEle = self.setupFormELement(customFormVC: VC1)
-           VC1.initFormELement(formEle: formEle)
-           self.present(VC1, animated:true, completion: {
-               VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-           })
-        // todo : here !!!! to change the tap to action sheet bottom
-//        let actions = [ActionSheetDetail(title: AlbumDetailTableViewController.SELECT_FROM_ALBUM_TEXT, style: .default, action: {
-//            action in
-//            print("im run")
+//        let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
 //
-//            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
-//
-//            let formEle = self.setupFormELement(customFormVC: VC1)
-//            VC1.initFormELement(formEle: formEle)
-//            self.present(VC1, animated:true, completion: {
-//                VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-//            })
-//
-//        }), ActionSheetDetail(title: AlbumDetailTableViewController.TAKE_PHOTO_TEXT, style: .default, action: {
-//            action in
-//
-//            print("open take photo view")
-//        }),  ActionSheetDetail(title: AlbumDetailTableViewController.CANCEL_TEXT, style: .cancel, action: nil)]
-//        Util.ShowBottomAlertView(on: self, with: actions)
+//           let formEle = self.setupFormELement(customFormVC: VC1)
+//           VC1.initFormELement(formEle: formEle)
+//           self.present(VC1, animated:true, completion: {
+//               VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
+//           })
         
-        
+        self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
     }
-    
-//    func retriveCurrentLocation(){
-//        let status = CLLocationManager.authorizationStatus()
-//
-//        if(status == .denied || status == .restricted || !CLLocationManager.locationServicesEnabled()){
-//            // show alert to user telling them they need to allow location data to use some feature of your app
-//            print("retriveCurrentLocation : rejected")
-//            return
-//        }
-//
-//        // if haven't show location permission dialog before, show it to user
-//        if(status == .notDetermined){
-//            locationManager.requestWhenInUseAuthorization()
-//
-//            // if you want the app to retrieve location data even in background, use requestAlwaysAuthorization
-//             locationManager.requestAlwaysAuthorization()
-//            return
-//        }
-//
-//        // at this point the authorization status is authorized
-//        // request location data once
-//        locationManager.requestLocation()
-//
-//        // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
-//        locationManager.startUpdatingLocation()
-//    }
     
     
     /// set up form to ask user to choose an new photo to add
     /// - Parameter customFormVC: the view controller that the form attached to
-    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
-        let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
-        
-        return .init(formType: .withImageView,
-                     titleText: "Add new photo",
-                     textFields: textFields,
-                     uploadTitle: "Upload photo",
-                     cancelButtonText: "Cancel",
-                     okButtonText: "Create",
-                     cancelAction:{},
-                     okAction: {
-                        
-                        customFormVC.dismissWithAnimation(){
-                            imageData,audioUID in
-                            let filename = URL(string: audioUID!)!.appendingPathExtension(Util.EXTENSION_M4A)
-                            
-                                let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
-                                if let imageData = imageData,
-                                   let audioUID = audioUID,let imageUID = Util.GenerateUDID(){
-                                    
-                                   //uploads audio recorded to the storage:
-                                    Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
-                                        Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
-                                    }
-                                    
-                                    Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
-                                        Util.DismissActivityIndicator()
-                                        if url != nil{
-                                           //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
-                                            AlbumDBController
-                                                .getInstance()
-                                                .addPhotoToAlbum(
-                                                    desc:textFields.first!.textContent,
-                                                    ext: Util.EXTENSION_JPEG,
-                                                    albumUID: self.albumDetail.UID,
-                                                    mediaPath: imageUID,
-                                                    dateCreated: Timestamp(date: Date()),
-                                                    audioUID: audioUID)
-                                                
-                                                self.updatePhoto(
-                                                    newPhoto: MediaDetail(
-                                                        title: imageUID,
-                                                        description: textFields.first!.textContent,
-                                                        UID: imageUID,
-                                                        likes: [], comments: [], ext: Util.EXTENSION_JPEG,
-                                                        watch: [],
-                                                        audioUID : audioUID))
-                                            
-                                                // self.updatePhoto(newPhoto: PhotoDetail(title: imageUID, description: textFields.first!.textContent, UID: imageUID, likes: [], comments: nil, ext: Util.EXTENSION_JPEG, watch: 0))
-
-                                    }
-                            })
-                                
-                    }
-            }
-        })
-    }
+//    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
+//        let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
+//
+//        return .init(formType: .withImageView,
+//                     titleText: "Add new photo",
+//                     textFields: textFields,
+//                     uploadTitle: "Upload photo",
+//                     cancelButtonText: "Cancel",
+//                     okButtonText: "Create",
+//                     cancelAction:{},
+//                     okAction: {
+//
+//                        customFormVC.dismissWithAnimation(){
+//                            imageData,audioUID in
+//                            let filename = URL(string: audioUID!)!.appendingPathExtension(Util.EXTENSION_M4A)
+//
+//                                let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
+//                                if let imageData = imageData,
+//                                   let audioUID = audioUID,let imageUID = Util.GenerateUDID(){
+//
+//                                   //uploads audio recorded to the storage:
+//                                    Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
+//                                        Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
+//                                    }
+//
+//                                    Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
+//                                        Util.DismissActivityIndicator()
+//                                        if url != nil{
+//                                           //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
+//                                            AlbumDBController
+//                                                .getInstance()
+//                                                .addPhotoToAlbum(
+//                                                    desc:textFields.first!.textContent,
+//                                                    ext: Util.EXTENSION_JPEG,
+//                                                    albumUID: self.albumDetail.UID,
+//                                                    mediaPath: imageUID,
+//                                                    dateCreated: Timestamp(date: Date()),
+//                                                    audioUID: audioUID)
+//
+//                                                self.updatePhoto(
+//                                                    newPhoto: MediaDetail(
+//                                                        title: imageUID,
+//                                                        description: textFields.first!.textContent,
+//                                                        UID: imageUID,
+//                                                        likes: [], comments: [], ext: Util.EXTENSION_JPEG,
+//                                                        watch: [],
+//                                                        audioUID : audioUID))
+//                                    }
+//                            })
+//
+//                    }
+//            }
+//        })
+//    }
 
 
     /// view photo detail, present on display photo view controller
@@ -257,8 +299,13 @@ class AlbumDetailTableViewController: UITableViewController {
             if let photoDetailTVC = segue.destination as? DisplayPhotoViewController {
                 let photoDetail = sender as! MediaDetail
                 photoDetailTVC.setMediaDetailData(mediaDetail: photoDetail)
-
             }
+        }else if segue.identifier == Storyboard.presentCreateAlbumVC{
+            let navigationController = segue.destination as! UINavigationController
+            let createAlbumViewController = navigationController.topViewController as! CreateViewController
+                            
+            createAlbumViewController.mediaDelegate = self
+            createAlbumViewController.creating = .CreateMedia
         }
     }
     
@@ -423,7 +470,8 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             
             /* load image with the cell is visible */
             if photo.getExtension().contains(Util.EXTENSION_M4V) ||
-                photo.getExtension().contains(Util.EXTENSION_MP4){
+                photo.getExtension().contains(Util.EXTENSION_MP4) ||
+                photo.getExtension().contains(Util.EXTENSION_MOV){
                 print("VIDEO THUMBNAIL GET")
                 Util.GetImageData(imageUID: photo.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
                     data in

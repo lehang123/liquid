@@ -29,6 +29,7 @@ class Util {
     public static let EXTENSION_M4A = "m4a"
     public static let EXTENSION_MP4 = "mp4"
     public static let EXTENSION_M4V = "m4v"
+    public static let EXTENSION_MOV = "MOV"
     public static let EXTENSION_PNG = "png"
     public static let EXTENSION_ZIP = "zip"
     public static let IMAGE_FOLDER = "images"
@@ -659,7 +660,9 @@ class Util {
         }else if fextension == EXTENSION_MP4 ||
             fextension == ("." + EXTENSION_MP4) ||
             fextension == EXTENSION_M4V ||
-            fextension == ("." + EXTENSION_M4V) {
+            fextension == ("." + EXTENSION_M4V) ||
+            fextension == EXTENSION_MOV ||
+            fextension == ("." + EXTENSION_MOV) {
             
             return withPathSlash ? (VIDEO_FOLDER + "/") : VIDEO_FOLDER
         }else if fextension == EXTENSION_M4A ||

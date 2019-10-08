@@ -279,7 +279,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
                   present(controller, animated: true)
             // else, play video:
         }else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
-            mediaDetail.ext.contains(Util.EXTENSION_MP4){
+            mediaDetail.ext.contains(Util.EXTENSION_MP4) ||
+            mediaDetail.ext.contains(Util.EXTENSION_MOV){
             
             let controller = AVPlayerViewController()
             print("IMAGE TAPPED IM RUNNING")
