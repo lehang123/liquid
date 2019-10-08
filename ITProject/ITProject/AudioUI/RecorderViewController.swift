@@ -17,6 +17,7 @@ class RecorderViewController: UIViewController , RecorderDelegate {
     open weak var delegate: RecorderViewDelegate?
     var recording: Recording!
     var recordDuration = 0
+    var destinationUrl: String!
 
     @IBOutlet var backgroundView: UIView!
     @IBOutlet weak var tapToFinishBtn: UIButton!
@@ -44,7 +45,7 @@ class RecorderViewController: UIViewController , RecorderDelegate {
     }
     
     open func createRecorder() {
-        recording = Recording(to: "recording.m4a")
+        recording = Recording(to: destinationUrl)
         recording.delegate = self
         
         // Optionally, you can prepare the recording in the background to
