@@ -289,7 +289,7 @@ class CreateAlbumViewController: UIViewController {
                    print(error)
                }
 
-            audioPlaySlider.maximumValue = Float(Int(recorderView.recording.player?.duration ?? 0))
+            audioPlaySlider.maximumValue = Float(recorderView.recording.player?.duration ?? 0)
             self.isFirstPlay = false
         }
         
@@ -332,12 +332,12 @@ class CreateAlbumViewController: UIViewController {
             print("slider value :: ", audioPlaySlider.value)
             
             // TODO: - reset and stop update slider
-    //        if(audioPlaySlider.value >= duration){
-    //            self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
-    //            self.isPlaying = false
-    //            myTimer.invalidate()
-    //            self.isResetTimer = true
-    //        }
+            if(audioPlaySlider.value >= duration - 0.1){
+                self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
+                self.isPlaying = false
+                myTimer.invalidate()
+                self.isResetTimer = true
+            }
         }
         
         func startTimer(){
