@@ -99,7 +99,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         print("DisplayPhotoViewController : view did loaded ")
         super.viewDidLoad()
 
-        // makeDummyCommentSource(num: 20)
+        self.hideKeyboardWhenTapped()   
 
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -166,14 +166,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         catch{
             print("Error")
         }
-    }
-    
-    
-    
-    func textFieldShouldEndEditing(_: UITextField) -> Bool
-    {
-        print("textFieldShouldEndEditing : aaa")
-        return true
     }
 
     func textFieldShouldReturn(_: UITextField) -> Bool
@@ -249,12 +241,13 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         var indexPaths = [IndexPath]()
         let updateAtRow = self.commentsSource.count+1
-        tableView.beginUpdates()
+        self.tableView.beginUpdates()
 
         //        print("COUNT IS: " ,commentsSource.count)
         indexPaths.append(IndexPath(row: updateAtRow, section: 0))
 
         self.tableView.insertRows(at: indexPaths, with: .top)
+        
         self.tableView.endUpdates()
         self.tableView.scrollToRow(at: IndexPath(row: updateAtRow, section: 0), at: .bottom, animated: true)
 
@@ -424,9 +417,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
             cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)
             cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 2].comment)
-
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
-
             return cell1
         }
     }
@@ -440,17 +431,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
         else {
             return UITableView.automaticDimension
-        }
-    }
-
-    private func makeDummyCommentSource(num: Int)
-    {
-        for i in 1 ... num
-        {
-            var commentCell = CommentCellStruct()
-            commentCell.comment = "mkk" + String(i)
-            commentCell.username = "username" + String(i)
-            self.commentsSource.append(commentCell)
         }
     }
 
