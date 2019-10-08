@@ -15,23 +15,45 @@ import UPCarouselFlowLayout
 
 protocol CreateAlbumViewControllerDelegate {
     func checkForRepeatName(album name: String)->Bool
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?)
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?)
 }
 
 extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     
     
     
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?) {
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?) {
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
         let imageUid = Util.GenerateUDID()
+        
+        // TODO: audio for album in db
+        var hasAudio = false
+        
+        if let audioUrl = audioUrl {
+            if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(audioUrl).absoluteString){
+                
+                hasAudio = true
+                Util.ReadFileFromDocumentDirectory(fileName: audioUrl, completion: {
+                    data in
+                    
+                    let aUrl = URL(string: audioUrl)?.lastPathComponent
+                    Util.UploadFileToServer(data: data, metadata: nil, fileFullName: aUrl!, completion: {
+                        url in
+                        
+                        // upload audio to cloud success
+                    })
+                })
+                
+                
+            }
+        }
         
         Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!, metadata: nil, fileName: imageUid!, fextension: Util.EXTENSION_JPEG, completion: { url in
             Util.DismissActivityIndicator()
             if url != nil {
                 
                 // add album to db
-                //TODO: PASS LOCATION ARG:
+                //TODO: UPLOAD THE AUDIO AS WELL, if hasAudio equal to true
                 AlbumDBController
                     .getInstance()
                     .addNewAlbum(
@@ -49,9 +71,7 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef as Any)
                         self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation ??  "")
                     }
-                    
-                    
-                   
+
                 }}
                 
                 // todo : now expcet album itself, it also upload the image that already choosen.
@@ -62,8 +82,6 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
             print("you get error from Thumbnail choose")
             Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
         })
-
-        
     }
     
     func checkForRepeatName(album name: String)->Bool {
@@ -275,15 +293,10 @@ class AlbumCoverViewController: UIViewController {
         }else if segue.identifier == Storyboard.presentCreateAlbumVC{
             // Get the presented navigationController and the editViewController it contains
                   let navigationController = segue.destination as! UINavigationController
-                  let createAlbumViewController = navigationController.topViewController as! CreateAlbumViewController
+                  let createAlbumViewController = navigationController.topViewController as! CreateViewController
                   
-                  // this is how you solve the iOS 13 drop down problem
-                  // Set the editViewController to be the delegate of the presentationController for this presentation,
-                  // so that editViewController can respond to attempted dismissals
-//                  navigationController.presentationController?.delegate = createAlbumViewController
-                  
-                  // Set ourself as the delegate of editViewController, so we can respond to editViewController cancelling or finishing
                   createAlbumViewController.delegate = self
+                  createAlbumViewController.creating = .CreateAlbum
         }
     }
 

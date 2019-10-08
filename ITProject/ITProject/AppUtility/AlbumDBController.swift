@@ -178,7 +178,8 @@ class AlbumDBController
                     ], forDocument: DBController.getInstance().getDB().collection(AlbumDBController.MEDIA_COLLECTION_NAME).document(item.getUID()))
                     
                     if item.getExtension().contains(Util.EXTENSION_M4V) ||
-                        item.getExtension().contains(Util.EXTENSION_MP4){
+                       item.getExtension().contains(Util.EXTENSION_MP4) ||
+                       item.getExtension().contains(Util.EXTENSION_MOV){
                         
                         let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + Util.EXTENSION_ZIP
                         
