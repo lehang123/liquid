@@ -46,9 +46,11 @@ class CreateAlbumViewController: UIViewController {
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
     
+    private var audioDestinationURL =  Util.AUDIO_FOLDER + "/" + Util.GenerateUDID() + "." + Util.EXTENSION_M4A
     private var recorderView: RecorderViewController!
     private var isPlaying = false
     private var isFirstPlay = true
+    private var isFirstRecord = true
     private var isResetTimer = true
     private var myTimer = Timer()
     
@@ -221,6 +223,7 @@ class CreateAlbumViewController: UIViewController {
     func setupRecorderView(){
         
         recorderView = (storyboard!.instantiateViewController(withIdentifier: "RecorderViewController") as! RecorderViewController)
+        recorderView.destinationUrl = audioDestinationURL
         recorderView.delegate = self
         recorderView.createRecorder()
         recorderView.modalTransitionStyle = .crossDissolve
@@ -263,21 +266,45 @@ class CreateAlbumViewController: UIViewController {
     
     /// start recording action
     @objc private func startRecord() {
+        if(!isFirstRecord){
+            self.deleteAudioFile()
+        }
         self.present(recorderView, animated: true, completion: nil)
         recorderView.startRecording()
-        audioPlayView.isHidden = true
-        audioDeleteButton.isHidden = true
     }
     
     @objc private func deleteRecord(){
         let alertController = UIAlertController(title: "Delete Recording", message: "Are you sure to delete recording?", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "NO", style: .default))
         alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (_: UIAlertAction!) in
-
-            
+            self.deleteAudioFile()
         }))
 
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func deleteAudioFile(){
+        if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
+             
+              print("audio file does exist at : " +  Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString)
+             
+             do {
+                 self.recorderView.recording.delete()
+                 self.isFirstPlay = true
+                 let s = Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString
+                 
+                 
+                 try FileManager.default.removeItem(at: URL(fileURLWithPath: s))
+             }catch let err {
+                 print("delete with error " + err.localizedDescription)
+             }
+             
+             self.audioPlayView.isHidden = true
+             self.audioDeleteButton.isHidden = true
+              
+         }else {
+             print("audio file doesn't exist at : " +  Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString)
+         }
     }
 
 
@@ -328,8 +355,8 @@ class CreateAlbumViewController: UIViewController {
         @objc func updateSlider(){
             audioPlaySlider.value = Float(recorderView.recording.player?.currentTime ?? 0)
             let duration = Float(recorderView.recording.player?.duration ?? 0)
-            print("duraction :: ",duration)
-            print("slider value :: ", audioPlaySlider.value)
+//            print("duraction :: ",duration)
+//            print("slider value :: ", audioPlaySlider.value)
             
             // TODO: - reset and stop update slider
             if(audioPlaySlider.value >= duration - 0.1){
@@ -396,10 +423,8 @@ extension CreateAlbumViewController: RecorderViewDelegate{
         audioDeleteButton.isHidden = false
         
         audioPlaySlider.value = 0
-        
+        isFirstRecord = false
     }
-    
-    
 }
 
 // MARK: - UITextViewDelegate
