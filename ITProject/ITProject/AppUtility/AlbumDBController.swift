@@ -33,6 +33,8 @@ class AlbumDBController
 	public static let ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION = "thumbnail_extension"
     ///location of album:
     public static let ALBUM_DOCUMENT_FIELD_LOCATION = "location"
+    public static let ALBUM_DOCUMENT_FIELD_AUDIO  = "audio"
+
     
 
 	/* constant for MEDIA collections */

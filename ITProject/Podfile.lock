@@ -221,7 +221,7 @@ DEPENDENCIES:
   - Zip (~> 1.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
     - Dollar
     - EnhancedCircleImageView
@@ -305,4 +305,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 35d25ff221f67575fe6a9ae897be81673b743d96
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.7.5

@@ -157,6 +157,17 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 				}
 			}
 		}
+        else if segue.identifier == FamilyMainPageViewController.SHOW_TIMELINE_VIEW
+        {
+            print("PREPARING FOR TIMELINE BRO")
+            if let timelineVC = segue.destination as? TimelineViewController
+            {
+                // todo : pass cache here !!!!
+                print(" SHOW_TIMELINE_VIEW prepare : pass success !")
+                timelineVC.familyUID = self.familyUID
+                
+            }
+        }
 	}
 
 	func didUpdateFamilyInfo()
