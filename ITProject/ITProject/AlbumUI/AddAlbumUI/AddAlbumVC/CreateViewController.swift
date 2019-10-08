@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 import Gallery
 import CoreLocation
-//import AVFoundation
-//import AVKit
+import AVFoundation
 
 
 // extension for string to remove whiteSpace
@@ -21,7 +20,12 @@ extension String {
     }
 }
 
-class CreateAlbumViewController: UIViewController {
+enum CreateViewControllerState {
+    case CreateAlbum
+    case CreateMedia
+}
+
+class CreateViewController: UIViewController {
     
     private static let ALBUM_NAME_EMPTY_ALERT_MESSAGE = "album name cannot be empty"
     private static let ALBUM_NAME_EMPTY_ALERT_TITLE = "empty album name"
@@ -30,7 +34,15 @@ class CreateAlbumViewController: UIViewController {
     private static let DEFAULT_LOCATION_TEXT = "Show current location"
     private static let OK_ACTION = "Ok"
     
+    // use only creating media
+    var media:MediaDetail!
+    
+    var isAudioRecordingGranted: Bool!
+    
+    var creating:CreateViewControllerState!
+    
     var delegate: CreateAlbumViewControllerDelegate!
+    var mediaDelegate: CreateMediaViewControllerDelegate!
 
     private static let  ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH = 1
     
@@ -46,9 +58,11 @@ class CreateAlbumViewController: UIViewController {
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
     
+    private var audioDestinationURL =  Util.AUDIO_FOLDER + "/" + Util.GenerateUDID() + "." + Util.EXTENSION_M4A
     private var recorderView: RecorderViewController!
     private var isPlaying = false
     private var isFirstPlay = true
+    private var isFirstRecord = true
     private var isResetTimer = true
     private var myTimer = Timer()
     
@@ -71,34 +85,60 @@ class CreateAlbumViewController: UIViewController {
     
     @IBAction func createTapped(_ sender: Any) {
         
-        // create new album like the old day
-        let nameField = albumNameTextField.text!
-    
-        if nameField.removingWhitespaces() == ""{
-            Util.ShowAlert(title: CreateAlbumViewController.ALBUM_NAME_EMPTY_ALERT_TITLE, message: CreateAlbumViewController.ALBUM_NAME_EMPTY_ALERT_MESSAGE, action_title: CreateAlbumViewController.OK_ACTION, on: self)
-        }else if delegate.checkForRepeatName(album: nameField) {
-            Util.ShowAlert(title: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateAlbumViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateAlbumViewController.OK_ACTION, on: self)
-        }else {// pass name check start creating album
-            dismiss(animated: true, completion: {
-                if(self.thumbnailImageView.image == nil){
-                
-                    if(self.medias.count >= 1){
-                        self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
-                    } else {
-                        let image = UIImage(withBackground: UIColor.white)
-                        self.thumbnailImageView.image = image
-                    }
-                }
-                if !self.doesLocationShow{
-                    self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "")
-                }else{
-                    self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation)
-                }
-                
-            
-            })
+        switch creating {
+        case .CreateAlbum:
+            createAlbum()
+        case .CreateMedia:
+            createMedia()
+        case .none:
+            print("error : creating : wrong state")
         }
+    }
+    
+    func createMedia(){
+        dismiss(animated: true, completion:{
+            if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
+                // todo : media exist even I don't record
+                let aUrl = URL(string: self.audioDestinationURL)?.deletingPathExtension().lastPathComponent
+                print("createMedia : audio exist with UID : " + aUrl!)
+                self.media.audioUID = aUrl
+                self.media.audioExt = Util.EXTENSION_M4A
+            }
+
+            
+            self.media.changeTitle(to: self.albumNameTextField.text)
+            self.media.changeDescription(to: self.albumDescriptionTextView.text)
+            self.mediaDelegate.createMedia(mediaDetail: self.media)
+        })
         
+    }
+    
+    func createAlbum(){
+        // create new album like the old day
+            let nameField = albumNameTextField.text!
+        
+            if nameField.removingWhitespaces() == ""{
+                Util.ShowAlert(title: CreateViewController.ALBUM_NAME_EMPTY_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_EMPTY_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
+            }else if delegate.checkForRepeatName(album: nameField) {
+                Util.ShowAlert(title: CreateViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
+            }else {// pass name check start creating album
+                dismiss(animated: true, completion: {
+                    if(self.thumbnailImageView.image == nil){
+                    
+                        if(self.medias.count >= 1){
+                            self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
+                        } else {
+                            let image = UIImage(withBackground: UIColor.white)
+                            self.thumbnailImageView.image = image
+                        }
+                    }
+                    if !self.doesLocationShow{
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL)
+                    }else{
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL)
+                    }
+                })
+            }
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -116,7 +156,7 @@ class CreateAlbumViewController: UIViewController {
             
             if doesLocationShow {
                 doesLocationShow = false;
-            LocationButton.setTitle(CreateAlbumViewController.DEFAULT_LOCATION_TEXT, for: .normal)
+            LocationButton.setTitle(CreateViewController.DEFAULT_LOCATION_TEXT, for: .normal)
             }else {
                 doesLocationShow = true
                 LocationButton.setTitle(cLocation, for: .normal)
@@ -131,11 +171,19 @@ class CreateAlbumViewController: UIViewController {
         addPhotosCollectionView.dataSource = self
         self.hideKeyboardWhenTapped()
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width/3, height: UIScreen.main.bounds.width/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 5
         addPhotosCollectionView.collectionViewLayout = layout
+        
+        switch creating {
+        case .CreateAlbum: break
+            // do album stuffs
+        case .CreateMedia: break
+            // do album stuffs, hide the add photo View
+        case .none:
+            print("error : creating : wrong state")
+        }
         
         setupChangeThumbnailButton()
         setupAlbumNameTextField()
@@ -147,6 +195,7 @@ class CreateAlbumViewController: UIViewController {
         setupRecorderView()
         setupAudioPlayView()
         
+        check_record_permission()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
 
@@ -156,9 +205,20 @@ class CreateAlbumViewController: UIViewController {
     
     /// AlbumTextField set up
     func setupAlbumNameTextField(){
+        
+        var textFieldTitle:String!
+        switch creating {
+           case .CreateAlbum:
+               textFieldTitle = "Album Name"
+           case .CreateMedia:
+               textFieldTitle = "Media Name"
+           case .none:
+               print("error : creating : wrong state")
+        }
+        
         albumNameTextField.delegate = self
         albumNameTextField.backgroundColor = .clear
-        albumNameTextField.attributedPlaceholder = NSAttributedString(string: "Album Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),  NSAttributedString.Key.font : UIFont(name: "DINAlternate-Bold", size: 25)!
+        albumNameTextField.attributedPlaceholder = NSAttributedString(string: textFieldTitle, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.8),  NSAttributedString.Key.font : UIFont(name: "DINAlternate-Bold", size: 25)!
         ])
         albumNameTextField.sizeToFit()
         
@@ -171,6 +231,8 @@ class CreateAlbumViewController: UIViewController {
         imageView.frame = CGRect(x: 0, y: 0, width: imageView.image!.size.width , height: imageView.image!.size.height)
         albumNameTextField.leftView = imageView
     }
+    
+    
     
     /// ChangeThumbnailButton set up
     func setupChangeThumbnailButton(){
@@ -197,8 +259,6 @@ class CreateAlbumViewController: UIViewController {
     // AlbumDescriptionTextView set up
     func setupAlbumDescriptionTextView(){
         albumDescriptionTextView.delegate = self
-    
-        
         albumDescriptionTextView.text = "Click To Edit Description..."
         albumDescriptionTextView.textColor = UIColor.lightGray
         albumDescriptionTextView.font = UIFont(name: "DINAlternate-Bold", size: 17)
@@ -221,6 +281,7 @@ class CreateAlbumViewController: UIViewController {
     func setupRecorderView(){
         
         recorderView = (storyboard!.instantiateViewController(withIdentifier: "RecorderViewController") as! RecorderViewController)
+        recorderView.destinationUrl = audioDestinationURL
         recorderView.delegate = self
         recorderView.createRecorder()
         recorderView.modalTransitionStyle = .crossDissolve
@@ -235,12 +296,12 @@ class CreateAlbumViewController: UIViewController {
     func setupAudioDeleteButton(){
         audioDeleteButton.isHidden = true
         audioDeleteButton.backgroundColor = UIColor.redish.withAlphaComponent(0.4)
-         audioDeleteButton.setTitle("  Delete  ", for: .normal)
+        audioDeleteButton.setTitle("  Delete  ", for: .normal)
         audioDeleteButton.setTitleColor(.black, for: .normal)
         
            
-               audioDeleteButton.layer.cornerRadius = 10
-               audioDeleteButton.layer.masksToBounds = true
+        audioDeleteButton.layer.cornerRadius = 10
+        audioDeleteButton.layer.masksToBounds = true
         // click button action
         audioDeleteButton.addTarget(self, action: #selector(deleteRecord), for: .touchUpInside)
     }
@@ -255,6 +316,16 @@ class CreateAlbumViewController: UIViewController {
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
+
+        switch creating {
+          case .CreateAlbum:
+              imagePicker.mediaTypes = ["public.image"]
+          case .CreateMedia:
+              imagePicker.mediaTypes = ["public.image", "public.movie"]
+          case .none:
+              print("error : creating : wrong state")
+        }
+        
         imagePicker.allowsEditing = true
                
         self.present(imagePicker, animated: true, completion:  nil)
@@ -263,21 +334,45 @@ class CreateAlbumViewController: UIViewController {
     
     /// start recording action
     @objc private func startRecord() {
+        if(!isFirstRecord){
+            self.deleteAudioFile()
+        }
         self.present(recorderView, animated: true, completion: nil)
         recorderView.startRecording()
-        audioPlayView.isHidden = true
-        audioDeleteButton.isHidden = true
     }
     
     @objc private func deleteRecord(){
         let alertController = UIAlertController(title: "Delete Recording", message: "Are you sure to delete recording?", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "NO", style: .default))
         alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (_: UIAlertAction!) in
-
-            
+            self.deleteAudioFile()
         }))
 
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func deleteAudioFile(){
+        if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
+             
+              print("audio file does exist at : " +  Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString)
+             
+             do {
+                 self.recorderView.recording.delete()
+                 self.isFirstPlay = true
+                 let s = Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString
+                 
+                 
+                 try FileManager.default.removeItem(at: URL(fileURLWithPath: s))
+             }catch let err {
+                 print("delete with error " + err.localizedDescription)
+             }
+             
+             self.audioPlayView.isHidden = true
+             self.audioDeleteButton.isHidden = true
+              
+         }else {
+             print("audio file doesn't exist at : " +  Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString)
+         }
     }
 
 
@@ -328,8 +423,8 @@ class CreateAlbumViewController: UIViewController {
         @objc func updateSlider(){
             audioPlaySlider.value = Float(recorderView.recording.player?.currentTime ?? 0)
             let duration = Float(recorderView.recording.player?.duration ?? 0)
-            print("duraction :: ",duration)
-            print("slider value :: ", audioPlaySlider.value)
+//            print("duraction :: ",duration)
+//            print("slider value :: ", audioPlaySlider.value)
             
             // TODO: - reset and stop update slider
             if(audioPlaySlider.value >= duration - 0.1){
@@ -370,9 +465,35 @@ class CreateAlbumViewController: UIViewController {
         // start monitoring location data and get notified whenever there is change in location data / every few seconds, until stopUpdatingLocation() is called
         locationManager.startUpdatingLocation()
     }
+    
+    func check_record_permission() {
+        switch AVAudioSession.sharedInstance().recordPermission {
+        case AVAudioSessionRecordPermission.granted:
+            isAudioRecordingGranted = true
+            print ("allowed")
+            break
+        case AVAudioSessionRecordPermission.denied:
+            isAudioRecordingGranted = false
+            print ("not allowed")
+            break
+        case AVAudioSessionRecordPermission.undetermined:
+            AVAudioSession.sharedInstance().requestRecordPermission({ (allowed) in
+                if allowed {
+                    self.isAudioRecordingGranted = true
+                    print ("allowed")
+                } else {
+                    self.isAudioRecordingGranted = false
+                    print ("not allowed")
+                }
+            })
+            break
+        default:
+            break
+        }
+    }
 }
 
-extension CreateAlbumViewController: UITextFieldDelegate{
+extension CreateViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("textFieldShouldReturn : get called")
         // end editing when user hit return
@@ -387,7 +508,7 @@ extension CreateAlbumViewController: UITextFieldDelegate{
 }
 
 // MARK: - RecorderViewDelegate
-extension CreateAlbumViewController: RecorderViewDelegate{
+extension CreateViewController: RecorderViewDelegate{
     
     internal func didFinishRecording(_ recorderViewController: RecorderViewController) {
         print("Record url :: ", recorderView.recording.url)
@@ -396,15 +517,13 @@ extension CreateAlbumViewController: RecorderViewDelegate{
         audioDeleteButton.isHidden = false
         
         audioPlaySlider.value = 0
-        
+        isFirstRecord = false
     }
-    
-    
 }
 
 // MARK: - UITextViewDelegate
 // UITextView placeholder setting
-extension CreateAlbumViewController: UITextViewDelegate{
+extension CreateViewController: UITextViewDelegate{
     
     
     /// When user click to edit, placeholder disapper
@@ -437,11 +556,25 @@ extension CreateAlbumViewController: UITextViewDelegate{
             textView.font = UIFont(name: "DINAlternate-Bold", size: 17)
         }
     }
+    
+    func generateThumbnail(path: URL) -> UIImage? {
+        do {
+            let asset = AVURLAsset(url: path, options: nil)
+            let imgGenerator = AVAssetImageGenerator(asset: asset)
+            imgGenerator.appliesPreferredTrackTransform = true
+            let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(value: 0, timescale: 1), actualTime: nil)
+            let thumbnail = UIImage(cgImage: cgImage)
+            return thumbnail
+        } catch let error {
+            print("*** Error generating thumbnail: \(error.localizedDescription)")
+            return nil
+        }
+    }
 
 }
 
 // we use imagePicker to choose ablum thumb nail since there is only one image allowed
-extension CreateAlbumViewController:UIImagePickerControllerDelegate
+extension CreateViewController:UIImagePickerControllerDelegate
         ,UINavigationControllerDelegate{
 
         /// image picker from photo gallery
@@ -455,9 +588,80 @@ extension CreateAlbumViewController:UIImagePickerControllerDelegate
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             thumbnailImage =
             editedImage.withRenderingMode(.alwaysOriginal)
+            
+            if creating == CreateViewControllerState.CreateMedia{
+               self.media = MediaDetail(
+                   title: self.albumNameTextField.text,
+                   description: self.albumDescriptionTextView.text,
+                   UID: Util.GenerateUDID(),
+                   likes: [],
+                   comments: nil,
+                   ext: Util.EXTENSION_JPEG,
+                   watch: [],
+                   audioUID: "")
+                          
+               media.cache = thumbnailImage.jpegData(compressionQuality: 1.0)
+            }
+            
+            
         } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             thumbnailImage = originalImage.withRenderingMode(.alwaysOriginal)
+            
+             if creating == CreateViewControllerState.CreateMedia{
+               self.media = MediaDetail(
+                   title: self.albumNameTextField.text,
+                   description: self.albumDescriptionTextView.text,
+                   UID: Util.GenerateUDID(),
+                   likes: [],
+                   comments: nil,
+                   ext: Util.EXTENSION_JPEG,
+                   watch: [],
+                   audioUID: "")
+                          
+               media.cache = thumbnailImage.jpegData(compressionQuality: 1.0)
+            }
+
+        } else if let videoURL = info[UIImagePickerController.InfoKey.mediaURL] as? NSURL{
+            print("imagePickerController : didFinishPickingMediaWithInfo :" + videoURL.absoluteString!)
+            if let thumbnail = generateThumbnail(path: videoURL as URL){
+                print("successfully generate Thumbnail from video")
+                self.thumbnailImageView.image = thumbnail
+                
+                //init variables:
+                let shortPath = videoURL.lastPathComponent! as NSString
+                let onPath = videoURL.deletingLastPathComponent!.absoluteString
+                let fileExt = shortPath.pathExtension
+                let filename = shortPath.deletingPathExtension
+               
+               
+                print("onPath : " + onPath)
+                print("pathExt : " + fileExt)
+                print("path : " + filename)
+                //zip the file:
+                Util.ZipFile(from: onPath as NSString, to: Util.GetVideoDirectory().absoluteString as NSString, fileName: filename, fextension: "." + fileExt, deleteAfterFinish: true){
+                   url in
+                   
+                   let doesFileExist = Util.DoesFileExist(fullPath: url!.absoluteString)
+                   print("DOES FILE EXIST AFTER ZIP",url?.absoluteString as Any, doesFileExist )
+                }
+               
+                self.media = MediaDetail(
+                    title: self.albumNameTextField.text,
+                    description: self.albumDescriptionTextView.text,
+                    UID: filename,
+                    likes: [],
+                    comments: nil,
+                    ext: fileExt,
+                    watch: [],
+                    audioUID: "")
+               
+                media.cache = thumbnail.jpegData(compressionQuality: 1.0)
+                media.thumbnailUID = filename
+                media.thumbnailExt = Util.EXTENSION_JPEG
+            }
+            
         }
+         
         
         if let im = thumbnailImage{
             self.thumbnailImageView.image = im
@@ -479,7 +683,7 @@ extension CreateAlbumViewController:UIImagePickerControllerDelegate
     }
 }
 
-extension CreateAlbumViewController: CLLocationManagerDelegate {
+extension CreateViewController: CLLocationManagerDelegate {
     // handle delegate methods of location manager here
     
     // called when the authorization status is changed for the core location permission
@@ -538,7 +742,7 @@ extension CreateAlbumViewController: CLLocationManagerDelegate {
     }
 }
 
-extension CreateAlbumViewController: GalleryControllerDelegate{
+extension CreateViewController: GalleryControllerDelegate{
     
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
         // todo : need to make sure is thumbnail selecting photo or the photo
@@ -584,12 +788,12 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
         Util.ShowActivityIndicator(withStatus: "Editing video")
         
         editor.edit(video: video) { (editedVideo: Video?, tempPath: URL?) in
-            DispatchQueue.main.async {
-                Util.DismissActivityIndicator()
-            }
+ 
             if let tempPath = tempPath {
                 
                  // temp Path :"file:///Users/gonglehan/Library/Developer/CoreSimulator/Devices/68051ACC-8546-4EA1-8DCE-E20B7A4A93F0/data/Containers/Data/Application/75585C1C-A744-4A1C-B25F-C332DF2CEE75/tmp/547CF4AA-3AE9-451A-BA68-16756C89606A.mp4
+                
+                let thumbnail = self.generateThumbnail(path: tempPath)
                
                 //init variables:
                 let shortPath = tempPath.lastPathComponent as NSString
@@ -608,46 +812,34 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
                     let doesFileExist = Util.DoesFileExist(fullPath: url!.absoluteString)
                     print("DOES FILE EXIST AFTER ZIP",url?.absoluteString as Any, doesFileExist )
                 }
-                 print("FROM NNEW PATH IS : ", onPath)
-                print("TO NNEW PATH IS : ", Util.GetVideoDirectory().absoluteString as NSString)
-                
-                
                 
                 let media = MediaDetail(
-                    title: "a video",
-                    description: "this is a video",
-                    UID: filename,
-                    likes: [],
-                    comments: nil,
-                    ext: fileExt,
-                    watch: [],
-                    audioUID: "")
+                                   title: "a video",
+                                   description: "this is a video",
+                                   UID: filename,
+                                   likes: [],
+                                   comments: nil,
+                                   ext: fileExt,
+                                   watch: [],
+                                   audioUID: "")
                 
-                var doesThumbnailMade = false
-                video.fetchThumbnail(completion: {
-                    thumbnailImage in
-                    
-                    if !doesThumbnailMade{
-                        
-                        doesThumbnailMade = true
-                           
-                        media.cache = thumbnailImage?.jpegData(compressionQuality: 1.0)
-                        
-                        
-                        media.thumbnailUID = filename
-                        media.thumbnailExt = Util.EXTENSION_JPEG
-                        
-                        self.addPhotosCollectionView.performBatchUpdates({
-                           self.medias.append(media)
-                           let index = self.medias.count // the lastestUpdate
-                           let indexPath = IndexPath(item: index, section: 0)
-                           self.addPhotosCollectionView.insertItems(at: [indexPath])
-                        }, completion: nil)
-                    }
-
-                })
-            
-
+                media.cache = thumbnail?.jpegData(compressionQuality: 1.0)
+                media.thumbnailUID = filename
+                media.thumbnailExt = Util.EXTENSION_JPEG
+                
+                DispatchQueue.main.async {
+                    self.addPhotosCollectionView.performBatchUpdates({
+                       self.medias.append(media)
+                       let index = self.medias.count // the lastestUpdate
+                       let indexPath = IndexPath(item: index, section: 0)
+                       self.addPhotosCollectionView.insertItems(at: [indexPath])
+                    }, completion: {
+                        b in
+                        Util.DismissActivityIndicator()
+                    })
+                }
+                
+                
               // if you want to play the video
 
             }
@@ -665,7 +857,7 @@ extension CreateAlbumViewController: GalleryControllerDelegate{
 }
 
 // MARK: -  UICollectionViewDelegate, UICollectionViewDataSource
-extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     ///
     /// - Parameter collectionView: The collection view requesting this information.
     /// - Returns: the number of sections
@@ -680,7 +872,7 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
     ///   - section: An index number identifying a section in collectionView.
     /// - Returns: The number of rows in section.
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return medias.count + CreateAlbumViewController.ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH
+        return medias.count + CreateViewController.ADD_PHOTO_TO_ALBUM_BUTTON_LENGTH
     }
 
     /// when album on clicked : open albumDetail controller
@@ -710,7 +902,8 @@ extension CreateAlbumViewController: UICollectionViewDelegate, UICollectionViewD
                     media in
                     if media.UID == cellTapped.UID{
                         if media.getExtension().contains(Util.EXTENSION_MP4) ||
-                        media.getExtension().contains(Util.EXTENSION_M4V){
+                        media.getExtension().contains(Util.EXTENSION_M4V) ||
+                        media.getExtension().contains(Util.EXTENSION_MOV){
                             // remove the local zip file as well
                             do {
                                 let fileToDelete = Util.GetVideoDirectory().appendingPathComponent(media.UID + "." + Util.EXTENSION_ZIP).absoluteString

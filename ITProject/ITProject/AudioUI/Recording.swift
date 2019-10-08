@@ -96,7 +96,9 @@ open class Recording : NSObject {
 //        player?.play()
         state = .play
     }
-    
+    open func delete(){
+        player = nil
+    }
     open func play(){
         player?.play()
     }
