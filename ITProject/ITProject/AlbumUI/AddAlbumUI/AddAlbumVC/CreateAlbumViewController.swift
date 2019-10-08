@@ -242,7 +242,7 @@ class CreateAlbumViewController: UIViewController {
                audioDeleteButton.layer.cornerRadius = 10
                audioDeleteButton.layer.masksToBounds = true
         // click button action
-        audioDeleteButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+        audioDeleteButton.addTarget(self, action: #selector(deleteRecord), for: .touchUpInside)
     }
     
 
@@ -267,6 +267,17 @@ class CreateAlbumViewController: UIViewController {
         recorderView.startRecording()
         audioPlayView.isHidden = true
         audioDeleteButton.isHidden = true
+    }
+    
+    @objc private func deleteRecord(){
+        let alertController = UIAlertController(title: "Delete Recording", message: "Are you sure to delete recording?", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "NO", style: .default))
+        alertController.addAction(UIAlertAction(title: "YES", style: .default, handler: { (_: UIAlertAction!) in
+
+            
+        }))
+
+        present(alertController, animated: true, completion: nil)
     }
 
 
