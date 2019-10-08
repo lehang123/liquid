@@ -1637,7 +1637,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="305.5" y="18" width="54.5" height="55"/>
+                                                    <rect key="frame" x="305.5" y="18" width="54.500000000000028" height="55.000000000000028"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="4Lz-go-1pw" secondAttribute="height" multiplier="1:1" id="31c-Vc-8vs"/>
                                                     </constraints>
@@ -1731,15 +1731,15 @@
                                             <outlet property="playAudioButton" destination="9YX-3Q-gbg" id="cX3-lM-0ne"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="91" id="pkt-eV-5dR" userLabel="CommentCell" customClass="CommentCell" customModule="ITProject" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" rowHeight="91" id="pkt-eV-5dR" userLabel="CommentCell" customClass="CommentCell" customModule="ITProject" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="413" width="375" height="91"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pkt-eV-5dR" id="eBh-Fg-Gld">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="91"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tempFamilyImage" translatesAutoresizingMaskIntoConstraints="NO" id="YeU-Wa-4EQ" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
-                                                    <rect key="frame" x="15" y="16" width="40" height="40"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tempProfileImage" translatesAutoresizingMaskIntoConstraints="NO" id="YeU-Wa-4EQ" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
+                                                    <rect key="frame" x="15" y="31" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="TTZ-w9-ejz"/>
                                                         <constraint firstAttribute="height" constant="40" id="ioS-EB-Xk3"/>
@@ -1761,8 +1761,9 @@
                                             <constraints>
                                                 <constraint firstItem="APr-WB-ZZb" firstAttribute="top" secondItem="eBh-Fg-Gld" secondAttribute="top" constant="15" id="7P9-7s-oQv"/>
                                                 <constraint firstItem="APr-WB-ZZb" firstAttribute="leading" secondItem="YeU-Wa-4EQ" secondAttribute="trailing" constant="15" id="CHA-f5-WSO"/>
-                                                <constraint firstItem="YeU-Wa-4EQ" firstAttribute="top" secondItem="eBh-Fg-Gld" secondAttribute="topMargin" constant="5" id="FIr-1N-1Vh"/>
+                                                <constraint firstItem="YeU-Wa-4EQ" firstAttribute="top" secondItem="eBh-Fg-Gld" secondAttribute="topMargin" constant="20" id="FIr-1N-1Vh"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="AsR-br-2L7" secondAttribute="bottom" id="ICo-UY-eHW"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="APr-WB-ZZb" secondAttribute="trailing" constant="20" symbolic="YES" id="Jx6-f0-yxJ"/>
                                                 <constraint firstItem="AsR-br-2L7" firstAttribute="leading" secondItem="APr-WB-ZZb" secondAttribute="leading" id="PhN-he-zXc"/>
                                                 <constraint firstItem="YeU-Wa-4EQ" firstAttribute="leading" secondItem="eBh-Fg-Gld" secondAttribute="leading" constant="15" id="Sza-MR-k95"/>
                                                 <constraint firstAttribute="trailing" secondItem="AsR-br-2L7" secondAttribute="trailing" constant="15" id="gcr-Mx-uIF"/>
@@ -1770,6 +1771,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="UserProfileImage" destination="YeU-Wa-4EQ" id="INZ-9N-9BH"/>
                                             <outlet property="commentLabel" destination="AsR-br-2L7" id="cXR-0N-OPo"/>
                                             <outlet property="usernameLabel" destination="APr-WB-ZZb" id="1Em-VL-0Ek"/>
                                         </connections>
@@ -1784,19 +1786,19 @@
                                 <rect key="frame" x="0.0" y="610.5" width="375" height="56.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Comment Here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MNA-qF-Ptv">
-                                        <rect key="frame" x="90" y="8" width="195" height="40.5"/>
+                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="295" y="6" width="60" height="44"/>
+                                        <rect key="frame" x="330" y="17" width="25" height="22"/>
                                         <state key="normal" image="disableSendIcon"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hno-TV-F7x">
-                                        <rect key="frame" x="10" y="-7" width="70" height="70"/>
+                                        <rect key="frame" x="10" y="10.5" width="35" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="hno-TV-F7x" secondAttribute="height" id="zVE-WP-khD"/>
                                         </constraints>
@@ -1806,7 +1808,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="prc-QY-NqT">
-                                        <rect key="frame" x="90" y="8" width="195" height="40.5"/>
+                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Long Press To Record">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -2139,7 +2141,7 @@
         <image name="playIcon" width="25" height="25"/>
         <image name="recordingSignal8" width="38" height="100"/>
         <image name="settingIcon" width="108" height="110"/>
-        <image name="tempFamilyImage" width="603" height="603"/>
+        <image name="tempProfileImage" width="600" height="600"/>
         <image name="voiceInputIcon" width="35" height="35"/>
     </resources>
     <inferredMetricsTieBreakers>

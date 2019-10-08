@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import EnhancedCircleImageView
 
 class CommentCell: UITableViewCell {
     
@@ -17,6 +18,7 @@ class CommentCell: UITableViewCell {
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
 
+    @IBOutlet weak var UserProfileImage: EnhancedCircleImageView!
     public func setCommentLabel(comment: String){
         commentLabel.text = comment
     }
