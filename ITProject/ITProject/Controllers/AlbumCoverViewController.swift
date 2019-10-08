@@ -90,28 +90,7 @@ class AlbumCoverViewController: UIViewController {
     @IBAction func AddAlbumPressed(_: Any) {
         print("AddAlbumPressed : ")
 
-        // todo : delete this, keep only new version when done
-        
-        let actions = [ActionSheetDetail(title: "old version", style: .default, action: {
-            action in
-            let VC1 = self.storyboard!.instantiateViewController(withIdentifier: "CustomFormViewController") as! CustomFormViewController
-
-            let formEle = self.setupFormELement(customFormVC: VC1)
-                    VC1.initFormELement(formEle: formEle)
-            self.present(VC1, animated: true, completion: {
-                        VC1.view.backgroundColor = UIColor.black.withAlphaComponent(0.15)
-                    })
-        }), ActionSheetDetail(title: "new version", style: .default, action: {
-            action in
-            
-            self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
-            
-        }), ActionSheetDetail(title: "Cancel", style: .cancel, action: {
-            action in
-            
-        })]
-        
-        Util.ShowBottomAlertView(on: self, with: actions)
+        self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
         
     }
 
