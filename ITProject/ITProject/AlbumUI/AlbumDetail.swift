@@ -49,7 +49,7 @@ class AlbumDetail: Equatable
 	private(set) var UID = ""
 
 	/// album created date
-	private var createDate: Date!
+	private(set) var createDate: Date!
     
     /// album audio descrption
     private(set) var audioUID: String!
@@ -74,7 +74,14 @@ class AlbumDetail: Equatable
 	/// - Parameter UID: UID of the album itself.
 	/// - Parameter imageUID: the thumbnail of album.
 	/// - Parameter imageExtension: thumbnail extension  for the album.
-    init(title: String, description: String, UID: String, coverImageUID imageUID: String?, coverImageExtension imageExtension: String?, createdLocation location: String = "", audio audioUID: String = "")
+    init(title: String,
+         description: String,
+         UID: String,
+         coverImageUID imageUID: String?,
+         coverImageExtension imageExtension: String?,
+         createdLocation location: String = "",
+         createDate: Date,
+         audio audioUID: String = "")
 	{
 		self.title = title
 		self.coverImageUID = imageUID
@@ -83,6 +90,7 @@ class AlbumDetail: Equatable
 		self.UID = UID
         self.location = location
         self.audioUID = audioUID
+        self.createDate = createDate
 	}
     
     public func testValidId()->Bool{
