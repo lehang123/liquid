@@ -8,6 +8,36 @@
 
 import UIKit
 
+extension Date {
+    public static let   DATE_SEPARATOR : String = "-"
+     public static let TIME_SEPARATOR : String = ":"
+
+    func DateToStringWithTimes() -> String{
+        let dateString = self.description
+        
+         let dateTimeComponents : [String] = (dateString.components(separatedBy: " "))
+       
+        
+        let yearMonthDate : [String] = dateTimeComponents[0].components(separatedBy: Date.DATE_SEPARATOR)
+        let time : [String] = dateTimeComponents[1].components(separatedBy: Date.TIME_SEPARATOR)
+//        print("dateTimeComponents",  dateTimeComponents)
+//        print("time:", time)
+        let res = yearMonthDate[2] + Date.DATE_SEPARATOR +  yearMonthDate[1] +  Date.DATE_SEPARATOR + yearMonthDate[0] + " at " + time[0] + Date.TIME_SEPARATOR + time[1]
+        return res;
+    }
+    func DateToString() -> String{
+        let str =  self.description as? String
+           let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
+          
+        let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: Date.DATE_SEPARATOR)
+          
+         
+           print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
+           let res = yearMonthDate[2] + Date.DATE_SEPARATOR +  yearMonthDate[1] + Date.DATE_SEPARATOR + yearMonthDate[0]
+        return res;
+    }
+}
+
 class TimelineViewController: UIViewController
 {
 	var scrollView: UIScrollView!
