@@ -69,7 +69,7 @@ class FamilyTableViewController: UITableViewController
         //todo: render family's image !!
         Util.ShowActivityIndicator()
 
-        CacheHandler.getInstance().getFamilyMembersInfo { (familyMembers, error) in
+        RegisterDBController.getInstance().getFamilyMembersInfo { (familyMembers, error) in
             if let error = error {
                 print("error in populateData::: ", error )
                 Util.DismissActivityIndicator()
@@ -93,7 +93,7 @@ class FamilyTableViewController: UITableViewController
     }
     /// Populates the data for family table with FamilyMembers data type.
     private func populateData(){
-        CacheHandler.getInstance().getFamilyMembersInfo { (familyMembers, error) in
+        RegisterDBController.getInstance().getFamilyMembersInfo { (familyMembers, error) in
             if let error = error {
                 print("error in populateData::: ", error )
             }else{
