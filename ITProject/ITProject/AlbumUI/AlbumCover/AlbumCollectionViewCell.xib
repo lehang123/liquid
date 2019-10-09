@@ -23,8 +23,14 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GtG-Fh-4BN">
                         <rect key="frame" x="0.0" y="0.0" width="312" height="198"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQd-Vu-0Zn">
+                                <rect key="frame" x="156" y="124" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="25"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3lG-du-akw">
-                                <rect key="frame" x="156" y="82" width="0.0" height="34"/>
+                                <rect key="frame" x="156" y="79" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -32,14 +38,14 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="3lG-du-akw" firstAttribute="top" secondItem="GtG-Fh-4BN" secondAttribute="top" constant="82" id="hGE-RD-Gd5"/>
-                            <constraint firstItem="3lG-du-akw" firstAttribute="centerY" secondItem="GtG-Fh-4BN" secondAttribute="centerY" id="hck-Nr-evN"/>
+                            <constraint firstItem="aQd-Vu-0Zn" firstAttribute="centerY" secondItem="GtG-Fh-4BN" secondAttribute="centerY" constant="25" id="U0L-73-1Wc"/>
+                            <constraint firstItem="3lG-du-akw" firstAttribute="centerY" secondItem="GtG-Fh-4BN" secondAttribute="centerY" constant="-20" id="hck-Nr-evN"/>
+                            <constraint firstItem="aQd-Vu-0Zn" firstAttribute="centerX" secondItem="GtG-Fh-4BN" secondAttribute="centerX" id="rtO-lD-Sef"/>
                         </constraints>
                     </view>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="3lG-du-akw" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="9b1-Py-PoA"/>
                 <constraint firstItem="GtG-Fh-4BN" firstAttribute="centerY" secondItem="zNp-Tp-RVL" secondAttribute="centerY" id="Fo7-2Y-Qbb"/>
                 <constraint firstItem="3lG-du-akw" firstAttribute="centerX" secondItem="zNp-Tp-RVL" secondAttribute="centerX" id="Hk9-D9-hZL"/>
                 <constraint firstItem="zNp-Tp-RVL" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="IdH-IB-Aez"/>
@@ -56,6 +62,7 @@
                 <outlet property="albumTitleLabel" destination="3lG-du-akw" id="y86-Rk-ywb"/>
                 <outlet property="backgroundImageView" destination="zNp-Tp-RVL" id="kzd-rD-KnU"/>
                 <outlet property="backgroundMask" destination="GtG-Fh-4BN" id="t3p-bq-hId"/>
+                <outlet property="dateLabel" destination="aQd-Vu-0Zn" id="l5n-34-LnP"/>
             </connections>
             <point key="canvasLocation" x="324.63768115942031" y="179.46428571428569"/>
         </collectionViewCell>
