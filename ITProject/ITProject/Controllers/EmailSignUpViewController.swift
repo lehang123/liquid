@@ -96,7 +96,7 @@ class EmailSignUpViewController: UIViewController
 		let pw: String = self.password.text!
 
 		// only field filled up, then try authentiate
-		if self.doesFieldFilledUp()
+		if self.fieldFilledUp()
 		{
 			print("if run:::")
 			if !self.joinFamilyIDField.text!.isEmpty
@@ -136,7 +136,7 @@ class EmailSignUpViewController: UIViewController
 
 	/// Check is there any empty field when sign in the info
 	/// - Returns: Return true for the field is filled up
-	func doesFieldFilledUp() -> Bool
+	func fieldFilledUp() -> Bool
 	{
 		if self.username.text!.isEmpty
 		{

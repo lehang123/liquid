@@ -53,6 +53,160 @@ class RegisterDBController
 		}
 		return self.single
 	}
+    /// gets the user's family info.
+    /// - Returns:  completion : the relevant family's details to be retrieved.
+    public func getFamilyInfo(completion: @escaping (_ UID: String?, _ Motto: String?, _ Name: String?, _ profileUID: String?, _ profileExtension: String?, _ error: Error?) -> Void = { _, _, _, _, _, _ in })
+    {
+        // get user Document Ref:
+        let user = Auth.auth().currentUser!.uid
+
+        print("getting family info with uid : " + user)
+        let userDocRef = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: user)
+        print("getting family info with userDocRef : " + userDocRef.documentID)
+
+        Util.ShowActivityIndicator(withStatus: "retrieving user's family information...")
+        // get users related family:
+        DBController.getInstance().getDB().collection(RegisterDBController.FAMILY_COLLECTION_NAME).whereField(RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS, arrayContains: userDocRef as Any).getDocuments
+        { familyQuerySnapshot, error in
+            Util.DismissActivityIndicator()
+            if let error = error
+            {
+                print("ERROR GET FAM \(error)")
+            }
+            else
+            {
+//                print("come to here with userDocRef : ")
+                for doc in familyQuerySnapshot!.documents
+                {
+//                    print("come to here with userDocRef : with the doc")
+                    let data = doc.data()
+                    let motto = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO] as? String
+                    let name = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME] as? String
+                    let profile = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL] as? String
+                    let profileExt = data[RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT] as? String
+
+                    completion(doc.documentID, motto, name, profile, profileExt, error)
+                    //we know that the user only related to 1 family, so break afterwards:
+                    break;
+                }
+            }
+        }
+    
+    }
+    /// get  current user's info from database.
+    ///  - Parameter completion: passes on relation in family, user's gender, user's family reference.
+    public func getUserInfo(completion: @escaping (_ relation: String?, _ dateOfBirth: Date?, _ familyIn: DocumentReference?, _ gender : String?, _ name : String?, _ error: Error?) -> Void = { _, _, _, _, _, _ in })
+    {
+        
+        let user = Auth.auth().currentUser!.uid
+        
+        Util.ShowActivityIndicator(withStatus: "retrieving user information...")
+        
+        //get from db:
+        DBController.getInstance()
+            .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID: user
+            )
+        {
+            userDocument, error in
+            //parse data:
+            if let userDocument = userDocument, userDocument.exists
+            {
+                let data: [String: Any] = userDocument.data()!
+
+                let dobTimestamp :Timestamp = data[RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH] as? Timestamp ?? Timestamp(date: Date())
+                print("dobTimestamp: ", dobTimestamp )
+                let dob :Date =   dobTimestamp.dateValue()
+                print("dob:",dob)
+                let position = data[RegisterDBController.USER_DOCUMENT_FIELD_POSITION] as? String
+                let familyDocRef: DocumentReference = data[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
+                let gender: String? = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
+                let name : String? = data[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as? String
+                //passes data to next stage:
+                completion(position, dob, familyDocRef, gender, name, error)
+
+                Util.DismissActivityIndicator()
+            }
+                //handle error:
+            else
+            {
+                print("ERROR LOADING cacheUserAndFam::: ", error as Any)
+            }
+        }
+    }
+     public func getFamilyMembersInfo (completion: @escaping (_ familyMember: [FamilyMember], _ error: Error?) -> Void = { _, _ in }){
+            // get current user Document Ref:
+            let user = Auth.auth().currentUser!.uid
+            DBController
+                .getInstance()
+                .getDocumentFromCollection(
+                collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                documentUID: user)
+                { (docSnapshot, error) in
+                if let error = error {
+                    print("error at getFamilyMembersInfo:::" , error)
+                }else{
+                    //get family doc ref:
+                    let famDocRef:DocumentReference = docSnapshot?.get(RegisterDBController.USER_DOCUMENT_FIELD_FAMILY)  as! DocumentReference
+                   //query for all members in fam:
+                    DBController
+                        .getInstance()
+                        .getDB()
+                        .collection(RegisterDBController.USER_COLLECTION_NAME)
+                        .whereField(
+                            RegisterDBController.USER_DOCUMENT_FIELD_FAMILY,
+                            isEqualTo: famDocRef)
+                        .getDocuments {
+                            (querySnapshot, error) in
+                        if let error = error {
+                            print("error at getFamilyMembersInfo:::" , error)
+                        }else{
+                            var familyMembers : [FamilyMember] =  [FamilyMember]();
+                            let familyMembersRef : [ QueryDocumentSnapshot] = querySnapshot!.documents
+                            //PARSE DATA:
+                            familyMembersRef.forEach({ (queryDocumentSnapshot) in
+                                let data : QueryDocumentSnapshot = queryDocumentSnapshot;
+    //                            let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Timestamp) ?? Timestamp(date: Date()) ;
+                                let dateFormatter : DateFormatter = DateFormatter();
+                                dateFormatter.dateFormat = "dd-MM-yyyy";
+    //                            let dobDate : Date = dateFormatter.date(from: dobTimestamp.description) ??  Date()
+    //                            print("dobDate:::",dobDate)
+                                let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as! Timestamp) ;
+                        
+                                let str =  dobTimestamp.dateValue().description as? String
+                                let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
+                                let separator : String = "-"
+                                let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: separator)
+                               
+                              
+                                print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
+                                let dobString = yearMonthDate[2] + separator +  yearMonthDate[1] + separator + yearMonthDate[0]
+
+
+
+                                
+
+                                
+
+                                familyMembers.append(
+                                    FamilyMember(
+                                        UID: data.documentID,
+                                        dateOfBirth: dobString,
+                                        name: data.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as? String,
+                                        relationship: data.get(RegisterDBController.USER_DOCUMENT_FIELD_POSITION) as? String)
+                                )
+                            })
+                            completion(familyMembers, error);
+                            
+
+                        }
+                    }
+                }
+                
+            }
+            
+        }
 
 	/// adds a new user document into "users" collection.
 	/// - Parameters:
