@@ -54,6 +54,7 @@ class CreateViewController: UIViewController {
     // imagePicker that to open photos library
     private var imagePicker:UIImagePickerController!
     
+    private let currentDate = Date()
     private let locationManager = CLLocationManager()
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
@@ -64,6 +65,7 @@ class CreateViewController: UIViewController {
     private var isFirstPlay = true
     private var isFirstRecord = true
     private var isResetTimer = true
+    private var hasRecordFile = false
     private var myTimer = Timer()
     
     @IBOutlet weak var thumbnailImageView: UIImageView!
@@ -83,6 +85,9 @@ class CreateViewController: UIViewController {
     @IBOutlet var audioPlaySlider: UISlider!
     @IBOutlet var audioPlayView: UIView!
     
+    @IBOutlet weak var infomationScrollView: UIScrollView!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var addPhotoLabel: UILabel!
     @IBAction func createTapped(_ sender: Any) {
         
         switch creating {
@@ -132,9 +137,19 @@ class CreateViewController: UIViewController {
                         }
                     }
                     if !self.doesLocationShow{
-                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL)
+                        if self.hasRecordFile{
+                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL, createDate: self.currentDate)
+                        }else {
+                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: "", createDate: self.currentDate)
+                        }
+                        
                     }else{
-                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL)
+                        
+                        if self.hasRecordFile{
+                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL, createDate: self.currentDate)
+                        }else {
+                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: "", createDate: self.currentDate)
+                        }
                     }
                 })
             }
@@ -176,17 +191,23 @@ class CreateViewController: UIViewController {
         addPhotosCollectionView.collectionViewLayout = layout
         
         switch creating {
-        case .CreateAlbum: break
+        case .CreateAlbum:
             // do album stuffs
-        case .CreateMedia: break
+            setupDateLabel()
+        case .CreateMedia:
             // do album stuffs, hide the add photo View
+            addPhotosCollectionView.isHidden = true
+            addPhotoLabel.isHidden = true
+            LocationButton.isHidden = true
+            locationLabel.isHidden = true
+            infomationScrollView.delegate = self
         case .none:
             print("error : creating : wrong state")
         }
         
         setupChangeThumbnailButton()
         setupAlbumNameTextField()
-        setupDateLabel()
+     
         setupAlbumDescriptionTextView()
         
         setupRecordStartButton()
@@ -195,6 +216,7 @@ class CreateViewController: UIViewController {
         setupAudioPlayView()
         
         check_record_permission()
+        
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
 
@@ -236,7 +258,16 @@ class CreateViewController: UIViewController {
     /// ChangeThumbnailButton set up
     func setupChangeThumbnailButton(){
         changeThumbnailButton.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        changeThumbnailButton.setTitle("  Change Thumbnail  ", for: .normal)
+        
+        switch creating {
+           case .CreateAlbum:
+               changeThumbnailButton.setTitle("  Change Thumbnail  ", for: .normal)
+           case .CreateMedia:
+               changeThumbnailButton.setTitle("  Add Photo  ", for: .normal)
+           case .none:
+            changeThumbnailButton.setTitle("  Something Wrong  ", for: .disabled)
+        }
+        
     
         changeThumbnailButton.layer.cornerRadius = 10
         changeThumbnailButton.layer.masksToBounds = true
@@ -247,10 +278,10 @@ class CreateViewController: UIViewController {
     
     /// DateLabel set up
     func setupDateLabel(){
-        let currentDate = Date()
+        
         let format = DateFormatter()
         format.dateFormat = "dd.MM.yyyy"
-        let formattedDate = format.string(from: currentDate)
+        let formattedDate = format.string(from: self.currentDate)
         dateLabel.text = formattedDate
         dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
     }
@@ -333,6 +364,7 @@ class CreateViewController: UIViewController {
     
     /// start recording action
     @objc private func startRecord() {
+        print("test if i tap or not :::")
         if(!isFirstRecord){
             self.deleteAudioFile()
         }
@@ -368,6 +400,7 @@ class CreateViewController: UIViewController {
              
              self.audioPlayView.isHidden = true
              self.audioDeleteButton.isHidden = true
+             self.hasRecordFile = false
               
          }else {
              print("audio file doesn't exist at : " +  Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString)
@@ -492,6 +525,17 @@ class CreateViewController: UIViewController {
     }
 }
 
+//MARK: - UIScrollViewDelegate
+extension CreateViewController: UIScrollViewDelegate{
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > 0 || scrollView.contentOffset.y < 0 {
+           scrollView.contentOffset.y = 0
+        }
+     }
+}
+
+//MARK: - UITextFieldDelegate
 extension CreateViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("textFieldShouldReturn : get called")
@@ -514,6 +558,7 @@ extension CreateViewController: RecorderViewDelegate{
         
         audioPlayView.isHidden = false
         audioDeleteButton.isHidden = false
+        self.hasRecordFile = true
         
         audioPlaySlider.value = 0
         isFirstRecord = false

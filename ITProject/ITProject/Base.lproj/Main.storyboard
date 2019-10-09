@@ -638,20 +638,20 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dir-ol-k5y">
-                                        <rect key="frame" x="15" y="15" width="134" height="32"/>
+                                        <rect key="frame" x="15" y="15" width="30" height="32"/>
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="17"/>
-                                        <state key="normal" title="Change Thumbnail">
+                                        <state key="normal">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Album Name" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="40K-Hb-HNN" userLabel="Album Name Text Field">
-                                        <rect key="frame" x="118" y="93" width="139" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="40K-Hb-HNN" userLabel="Album Name Text Field">
+                                        <rect key="frame" x="184.5" y="93" width="6" height="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" textContentType="name"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05.10.2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RsQ-0C-PlC">
-                                        <rect key="frame" x="144.5" y="136.5" width="86.5" height="23.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RsQ-0C-PlC">
+                                        <rect key="frame" x="187.5" y="148" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -865,6 +865,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="LocationButton" destination="ddT-Gx-Md5" id="TZC-KC-xWF"/>
+                        <outlet property="addPhotoLabel" destination="Dbd-la-NxP" id="XEs-R9-yGe"/>
                         <outlet property="addPhotosCollectionView" destination="1Xm-Bl-9Ey" id="dHa-Gl-j5I"/>
                         <outlet property="albumDescriptionTextView" destination="sz9-SQ-zeX" id="4pp-Fa-om6"/>
                         <outlet property="albumNameTextField" destination="40K-Hb-HNN" id="Zwu-BY-oeo"/>
@@ -874,6 +875,8 @@
                         <outlet property="audioPlayView" destination="pRw-ru-eL2" id="XWM-67-Rcd"/>
                         <outlet property="changeThumbnailButton" destination="Dir-ol-k5y" id="9yX-1S-7yd"/>
                         <outlet property="dateLabel" destination="RsQ-0C-PlC" id="30l-sw-C40"/>
+                        <outlet property="infomationScrollView" destination="MIC-2o-sTD" id="IhT-6D-bcV"/>
+                        <outlet property="locationLabel" destination="xZF-Sz-A00" id="XON-S1-FcS"/>
                         <outlet property="recordStartButton" destination="386-Kz-fZx" id="R64-Wu-jAO"/>
                         <outlet property="thumbnailContentView" destination="GAv-a3-X3O" id="xBb-qg-dpz"/>
                         <outlet property="thumbnailImageView" destination="2Bt-0z-Kmq" id="k03-oK-EXW"/>
@@ -1337,7 +1340,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OoM-AK-s5D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2464" y="-1347"/>
+            <point key="canvasLocation" x="2463" y="-1408"/>
         </scene>
         <!--Album Cover View Controller-->
         <scene sceneID="ltI-Uc-nAg">
@@ -1478,9 +1481,17 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isg-Qi-093">
+                                            <rect key="frame" x="169" y="21" width="40" height="30"/>
+                                            <state key="normal" title="Audio"/>
+                                            <connections>
+                                                <action selector="playAudio:" destination="dP9-AL-Ziv" eventType="touchUpInside" id="AjS-Rz-kja"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="width" secondItem="7TJ-Iy-YFb" secondAttribute="width" multiplier="0.92" id="3MY-wy-e3E"/>
+                                        <constraint firstItem="isg-Qi-093" firstAttribute="leading" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="30" id="8eA-Xb-stf"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="20" symbolic="YES" id="IBk-DL-fb6"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="centerX" secondItem="7TJ-Iy-YFb" secondAttribute="centerX" id="LAn-Ae-hGc"/>
                                         <constraint firstItem="U6W-39-R64" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="8" symbolic="YES" id="VB1-K0-ItB"/>
@@ -1489,11 +1500,13 @@
                                         <constraint firstItem="ck4-lA-ALm" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="top" constant="10" id="azd-ed-sRl"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="centerY" secondItem="7TJ-Iy-YFb" secondAttribute="centerY" id="hby-DD-vw5"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="U6W-39-R64" secondAttribute="trailing" constant="10" id="mbm-wW-lFG"/>
+                                        <constraint firstItem="isg-Qi-093" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="topMargin" constant="10" id="oPH-n9-Upu"/>
                                         <constraint firstItem="U6W-39-R64" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="topMargin" constant="10" id="umK-v8-cT0"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="top" secondItem="ck4-lA-ALm" secondAttribute="bottom" constant="10" id="xED-CN-KWZ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="PlayAudioButton" destination="isg-Qi-093" id="KsO-gE-1IJ"/>
                                     <outlet property="descpDetail" destination="mgb-uA-gOd" id="0PP-CH-3ST"/>
                                     <outlet property="descpTitle" destination="ck4-lA-ALm" id="Zw1-zW-UuY"/>
                                     <outlet property="locationLabel" destination="U6W-39-R64" id="gbS-5C-YLC"/>
@@ -1637,7 +1650,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="305.5" y="18" width="54.500000000000028" height="55.000000000000028"/>
+                                                    <rect key="frame" x="305.5" y="18" width="54.5" height="55"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="4Lz-go-1pw" secondAttribute="height" multiplier="1:1" id="31c-Vc-8vs"/>
                                                     </constraints>
@@ -1771,8 +1784,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="UserProfileImage" destination="YeU-Wa-4EQ" id="INZ-9N-9BH"/>
                                             <outlet property="commentLabel" destination="AsR-br-2L7" id="cXR-0N-OPo"/>
+                                            <outlet property="profileImageView" destination="YeU-Wa-4EQ" id="XNi-Dx-Wey"/>
+                                            <outlet property="userProfileImage" destination="YeU-Wa-4EQ" id="8ZX-qq-7Ha"/>
                                             <outlet property="usernameLabel" destination="APr-WB-ZZb" id="1Em-VL-0Ek"/>
                                         </connections>
                                     </tableViewCell>
@@ -1786,19 +1800,19 @@
                                 <rect key="frame" x="0.0" y="610.5" width="375" height="56.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Comment Here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MNA-qF-Ptv">
-                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
+                                        <rect key="frame" x="90" y="8" width="195" height="40.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="330" y="17" width="25" height="22"/>
+                                        <rect key="frame" x="295" y="6" width="60" height="44"/>
                                         <state key="normal" image="disableSendIcon"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hno-TV-F7x">
-                                        <rect key="frame" x="10" y="10.5" width="35" height="35"/>
+                                        <rect key="frame" x="10" y="-7" width="70" height="70"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="hno-TV-F7x" secondAttribute="height" id="zVE-WP-khD"/>
                                         </constraints>
@@ -1808,7 +1822,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="prc-QY-NqT">
-                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
+                                        <rect key="frame" x="90" y="8" width="195" height="40.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Long Press To Record">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
