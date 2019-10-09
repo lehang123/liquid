@@ -22,7 +22,7 @@ class RegisterDBController
 	public static let USER_DOCUMENT_FIELD_FAMILY = "family"
 	/// user's position in family
 	public static let USER_DOCUMENT_FIELD_POSITION = "position"
-	/// user's gender DEPRECATED
+	/// user's gender
 	public static let USER_DOCUMENT_FIELD_GENDER = "gender"
     /// user's date of birth:
     public static let USER_DOCUMENT_FIELD_DATE_OF_BIRTH = "date_of_birth"
@@ -33,8 +33,6 @@ class RegisterDBController
 	public static let FAMILY_DOCUMENT_FIELD_NAME = "name"
 	/// the members of the family
 	public static let FAMILY_DOCUMENT_FIELD_MEMBERS = "family_members"
-	/// paths to album
-	public static let FAMILY_DOCUMENT_FIELD_ALBUM_PATHS = "album_paths"
 	/// family's motto
 	public static let FAMILY_DOCUMENT_FIELD_MOTTO = "motto"
 	/// paths to family profile pict
@@ -88,7 +86,6 @@ class RegisterDBController
 		let familyUID = DBController.getInstance().addDocumentToCollection(inputData:
 			[RegisterDBController.FAMILY_DOCUMENT_FIELD_NAME: familyName,
 			 RegisterDBController.FAMILY_DOCUMENT_FIELD_MEMBERS: [userDocumentReference],
-			 RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS: [],
 			 RegisterDBController.FAMILY_DOCUMENT_FIELD_MOTTO: "",
 			 RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL: ""], collectionName: RegisterDBController.FAMILY_COLLECTION_NAME)
 		return familyUID
