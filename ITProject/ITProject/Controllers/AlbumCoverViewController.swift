@@ -69,7 +69,7 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                                         let audioURLTmp = URL(string: audioUrl)
                                         let audioUID = audioURLTmp?.deletingPathExtension().lastPathComponent
                                         print("AUDIO UID IS: ", audioUID)
-                                        DBController.getInstance().updateSpecificField(newValue: audioUID, fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO, documentUID: docRef!.documentID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME)
+                                        DBController.getInstance().updateSpecificField(newValue: audioUID as Any, fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO, documentUID: docRef!.documentID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME)
                                     })
                                 })
                                 

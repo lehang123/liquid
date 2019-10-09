@@ -638,20 +638,20 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="displayP3"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dir-ol-k5y">
-                                        <rect key="frame" x="15" y="15" width="134" height="32"/>
+                                        <rect key="frame" x="15" y="15" width="30" height="32"/>
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="17"/>
-                                        <state key="normal" title="Change Thumbnail">
+                                        <state key="normal">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Album Name" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="40K-Hb-HNN" userLabel="Album Name Text Field">
-                                        <rect key="frame" x="118" y="93" width="139" height="30"/>
+                                    <textField opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" textAlignment="center" adjustsFontForContentSizeCategory="YES" minimumFontSize="25" translatesAutoresizingMaskIntoConstraints="NO" id="40K-Hb-HNN" userLabel="Album Name Text Field">
+                                        <rect key="frame" x="184.5" y="93" width="6" height="30"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" textContentType="name"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="05.10.2019" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RsQ-0C-PlC">
-                                        <rect key="frame" x="144.5" y="136.5" width="86.5" height="23.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RsQ-0C-PlC">
+                                        <rect key="frame" x="187.5" y="148" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -865,6 +865,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="LocationButton" destination="ddT-Gx-Md5" id="TZC-KC-xWF"/>
+                        <outlet property="addPhotoLabel" destination="Dbd-la-NxP" id="XEs-R9-yGe"/>
                         <outlet property="addPhotosCollectionView" destination="1Xm-Bl-9Ey" id="dHa-Gl-j5I"/>
                         <outlet property="albumDescriptionTextView" destination="sz9-SQ-zeX" id="4pp-Fa-om6"/>
                         <outlet property="albumNameTextField" destination="40K-Hb-HNN" id="Zwu-BY-oeo"/>
@@ -874,6 +875,8 @@
                         <outlet property="audioPlayView" destination="pRw-ru-eL2" id="XWM-67-Rcd"/>
                         <outlet property="changeThumbnailButton" destination="Dir-ol-k5y" id="9yX-1S-7yd"/>
                         <outlet property="dateLabel" destination="RsQ-0C-PlC" id="30l-sw-C40"/>
+                        <outlet property="infomationScrollView" destination="MIC-2o-sTD" id="IhT-6D-bcV"/>
+                        <outlet property="locationLabel" destination="xZF-Sz-A00" id="XON-S1-FcS"/>
                         <outlet property="recordStartButton" destination="386-Kz-fZx" id="R64-Wu-jAO"/>
                         <outlet property="thumbnailContentView" destination="GAv-a3-X3O" id="xBb-qg-dpz"/>
                         <outlet property="thumbnailImageView" destination="2Bt-0z-Kmq" id="k03-oK-EXW"/>
@@ -1478,9 +1481,17 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isg-Qi-093">
+                                            <rect key="frame" x="169" y="21" width="40" height="30"/>
+                                            <state key="normal" title="Audio"/>
+                                            <connections>
+                                                <action selector="playAudio:" destination="dP9-AL-Ziv" eventType="touchUpInside" id="AjS-Rz-kja"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="width" secondItem="7TJ-Iy-YFb" secondAttribute="width" multiplier="0.92" id="3MY-wy-e3E"/>
+                                        <constraint firstItem="isg-Qi-093" firstAttribute="leading" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="30" id="8eA-Xb-stf"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="20" symbolic="YES" id="IBk-DL-fb6"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="centerX" secondItem="7TJ-Iy-YFb" secondAttribute="centerX" id="LAn-Ae-hGc"/>
                                         <constraint firstItem="U6W-39-R64" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ck4-lA-ALm" secondAttribute="trailing" constant="8" symbolic="YES" id="VB1-K0-ItB"/>
@@ -1489,11 +1500,13 @@
                                         <constraint firstItem="ck4-lA-ALm" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="top" constant="10" id="azd-ed-sRl"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="centerY" secondItem="7TJ-Iy-YFb" secondAttribute="centerY" id="hby-DD-vw5"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="U6W-39-R64" secondAttribute="trailing" constant="10" id="mbm-wW-lFG"/>
+                                        <constraint firstItem="isg-Qi-093" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="topMargin" constant="10" id="oPH-n9-Upu"/>
                                         <constraint firstItem="U6W-39-R64" firstAttribute="top" secondItem="7TJ-Iy-YFb" secondAttribute="topMargin" constant="10" id="umK-v8-cT0"/>
                                         <constraint firstItem="mgb-uA-gOd" firstAttribute="top" secondItem="ck4-lA-ALm" secondAttribute="bottom" constant="10" id="xED-CN-KWZ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="PlayAudioButton" destination="isg-Qi-093" id="KsO-gE-1IJ"/>
                                     <outlet property="descpDetail" destination="mgb-uA-gOd" id="0PP-CH-3ST"/>
                                     <outlet property="descpTitle" destination="ck4-lA-ALm" id="Zw1-zW-UuY"/>
                                     <outlet property="locationLabel" destination="U6W-39-R64" id="gbS-5C-YLC"/>
@@ -1942,26 +1955,26 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="InfoDescriCell" id="Rkf-Pe-zWT" userLabel="Show Info Cell">
-                                <rect key="frame" x="0.0" y="72" width="375" height="43.5"/>
+                                <rect key="frame" x="0.0" y="72" width="375" height="43"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rkf-Pe-zWT" id="gCJ-IP-VAP">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Member" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ib-IV-ssG">
-                                            <rect key="frame" x="26" y="11" width="64" height="21.5"/>
+                                            <rect key="frame" x="26" y="11" width="64" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Relationship" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DG-kG-aX3">
-                                            <rect key="frame" x="120" y="0.0" width="93.5" height="43.5"/>
+                                            <rect key="frame" x="120" y="0.0" width="93.5" height="43"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DoB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-dS-B8g">
-                                            <rect key="frame" x="316" y="11" width="33" height="21.5"/>
+                                            <rect key="frame" x="316" y="11" width="33" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -1982,26 +1995,26 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FamilyMemberCell" id="1QS-js-vUd" userLabel="Family Member Cell" customClass="FamilyTableViewMemberCell" customModule="ITProject" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="115.5" width="375" height="43.5"/>
+                                <rect key="frame" x="0.0" y="115" width="375" height="43"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1QS-js-vUd" id="OPD-ye-xh3">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ZR-iy-06U" userLabel="Name Label">
-                                            <rect key="frame" x="26" y="11" width="42" height="21.5"/>
+                                            <rect key="frame" x="26" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwi-yV-YNb" userLabel="Relationship Label">
-                                            <rect key="frame" x="98" y="0.0" width="42" height="43.5"/>
+                                            <rect key="frame" x="98" y="0.0" width="42" height="43"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTz-Em-m5t" userLabel="Phone Label">
-                                            <rect key="frame" x="307" y="11" width="42" height="21.5"/>
+                                            <rect key="frame" x="307" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
