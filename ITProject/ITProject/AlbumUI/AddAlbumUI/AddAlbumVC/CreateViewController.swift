@@ -128,8 +128,7 @@ class CreateViewController: UIViewController {
                         if(self.medias.count >= 1){
                             self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
                         } else {
-                            let image = UIImage(withBackground: UIColor.white)
-                            self.thumbnailImageView.image = image
+                            self.thumbnailImageView.image = #imageLiteral(resourceName: "defaultImage")
                         }
                     }
                     if !self.doesLocationShow{

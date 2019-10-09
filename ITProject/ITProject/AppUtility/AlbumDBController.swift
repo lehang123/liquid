@@ -157,7 +157,8 @@ class AlbumDBController
                     AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: thumbnail,
                     AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: Timestamp(date: Date()),
                     AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: thumbnailExt,
-                    AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : location
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : location,
+                    AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO : ""
                 ], forDocument: albumDocumentReference)
                 
                 

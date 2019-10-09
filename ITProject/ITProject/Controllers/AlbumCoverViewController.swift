@@ -23,37 +23,20 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     
     
     func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?) {
+        
+        //tell user to wait:
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
+        
+        //get image UID:
         let imageUid = Util.GenerateUDID()
         
-        // TODO: audio for album in db
-        var hasAudio = false
         
-        if let audioUrl = audioUrl {
-            if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(audioUrl).absoluteString){
-                
-                hasAudio = true
-                Util.ReadFileFromDocumentDirectory(fileName: audioUrl, completion: {
-                    data in
-                    
-                    let aUrl = URL(string: audioUrl)?.lastPathComponent
-                    Util.UploadFileToServer(data: data, metadata: nil, fileFullName: aUrl!, completion: {
-                        url in
-                        
-                        // upload audio to cloud success
-                    })
-                })
-                
-                
-            }
-        }
-        
+        //now, upload image itself:
         Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!, metadata: nil, fileName: imageUid!, fextension: Util.EXTENSION_JPEG, completion: { url in
             Util.DismissActivityIndicator()
             if url != nil {
                 
-                // add album to db
-                //TODO: UPLOAD THE AUDIO AS WELL, if hasAudio equal to true
+                //add album to db:
                 AlbumDBController
                     .getInstance()
                     .addNewAlbum(
@@ -69,6 +52,30 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef as Any)
+                        
+                        //now, time to add audio, if there's any:
+                        if let audioUrl = audioUrl {
+                            if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(audioUrl).absoluteString){
+                            
+                                
+                                Util.ReadFileFromDocumentDirectory(fileName: audioUrl, completion: {
+                                    data in
+                                    
+                                    let aUrl = URL(string: audioUrl)?.lastPathComponent
+                                    Util.UploadFileToServer(data: data, metadata: nil, fileFullName: aUrl!, completion: {
+                                        url in
+                                        
+                                        // upload audio to cloud success
+                                        let audioURLTmp = URL(string: audioUrl)
+                                        let audioUID = audioURLTmp?.deletingPathExtension().lastPathComponent
+                                        print("AUDIO UID IS: ", audioUID)
+                                        DBController.getInstance().updateSpecificField(newValue: audioUID, fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO, documentUID: docRef!.documentID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME)
+                                    })
+                                })
+                                
+                                
+                            }
+                        }
                         self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation ??  "")
                     }
 
@@ -112,7 +119,6 @@ class AlbumCoverViewController: UIViewController {
         
     }
 
-    /// <#Description#>
     /// Setting up all infomation signed by user to create the album
     /// - Parameter customFormVC: custom Form View Controller
     /// - Returns: formElement: formElement with all information
