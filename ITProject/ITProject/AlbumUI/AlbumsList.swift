@@ -32,13 +32,15 @@ class AlbumsList {
                             coverImageUID imageUID: String?,
                             coverImageExtension imageExtension: String?,
                             location : String,
+                            createDate: Date,
                             addToHead _: Bool = true) {
         let album = AlbumDetail(title: title,
                                 description: description,
                                 UID: UID,
                                 coverImageUID: imageUID,
                                 coverImageExtension: imageExtension,
-                                createdLocation : location)
+                                createdLocation : location,
+                                createDate: createDate)
 
         addNewAlbum(newAlbum: album, addToHead: true)
 

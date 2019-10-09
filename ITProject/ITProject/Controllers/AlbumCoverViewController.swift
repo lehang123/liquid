@@ -15,14 +15,20 @@ import UPCarouselFlowLayout
 
 protocol CreateAlbumViewControllerDelegate {
     func checkForRepeatName(album name: String)->Bool
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?)
+    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?, createDate: Date)
 }
 
 extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
     
     
     
-    func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?) {
+    func createAlbum(thumbnail :UIImage,
+                     photoWithin: [MediaDetail],
+                     albumName: String,
+                     albumDescription: String,
+                     currentLocation: String?,
+                     audioUrl : String?,
+                     createDate: Date) {
         Util.ShowActivityIndicator(withStatus: "Creating Album...")
         let imageUid = Util.GenerateUDID()
         
@@ -48,7 +54,11 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
             }
         }
         
-        Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!, metadata: nil, fileName: imageUid!, fextension: Util.EXTENSION_JPEG, completion: { url in
+        Util.UploadFileToServer(data: thumbnail.jpegData(compressionQuality: 1.0)!,
+                                metadata: nil,
+                                fileName: imageUid!,
+                                fextension: Util.EXTENSION_JPEG,
+                                completion: { url in
             Util.DismissActivityIndicator()
             if url != nil {
                 
@@ -69,7 +79,13 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef as Any)
-                        self.loadAlbumToList(title: albumName, description: albumDescription, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: currentLocation ??  "")
+                        self.loadAlbumToList(title: albumName,
+                                             description: albumDescription,
+                                             UID: docRef!.documentID,
+                                             coverImageUID: imageUid,
+                                             coverImageExtension: Util.EXTENSION_JPEG,
+                                             location: currentLocation ??  "",
+                                             createDate: createDate)
                     }
 
                 }}
@@ -116,65 +132,65 @@ class AlbumCoverViewController: UIViewController {
     /// Setting up all infomation signed by user to create the album
     /// - Parameter customFormVC: custom Form View Controller
     /// - Returns: formElement: formElement with all information
-    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement {
-        // initial all text fields needed by creating album form
-        let textFields = AddAlbumUI.fields(by: [.albumName, .albumDescription], style: .light)
-        
-        return .init(formType: .withImageView,
-                     titleText: "Add new album",
-                     textFields: textFields,
-                     uploadTitle: "Upload Thumbnail",
-                     cancelButtonText: "Cancel",
-                     okButtonText: "Create",
-                     cancelAction: {},
-                     okAction: {
-                        // get text filled in album name and description text fields
-                         let albumName = textFields.first!.textContent
-                         let albumDesc = textFields.last!.textContent
-                        // prepare atrributes for pop up alter
-                         let popattributes = PopUpAlter.setupPopupPresets()
-                         if albumName == "" {
-                            // alter if the album name is empty
-                             self.showPopupMessage(attributes: popattributes, description: self.NON_EMPTY_MESSAGE)
-                         } else if self.albumDataList.contains(albumName) {
-                            // alter if the album name repeated
-                             self.showPopupMessage(attributes: popattributes, description: self.NO_REPEAT_MESSAGE)
-                         } else {
-                             // create a album here
-                             customFormVC.dismissWithAnimation {
-                                imageData,_  in
-                                 if let imaged = imageData,
-                                     let imageUid = Util.GenerateUDID() {
-                                     Util.ShowActivityIndicator(withStatus: "Creating album ...")
-                                     Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: { url in
-                                         Util.DismissActivityIndicator()
-                                         if url != nil {
-                                             // todo : add the location argument
-                                             AlbumDBController
-                                                .getInstance()
-                                                .addNewAlbum(
-                                                    albumName: albumName,
-                                                    description: albumDesc,
-                                                    thumbnail: imageUid,
-                                                    thumbnailExt: Util.EXTENSION_JPEG,
-                                                    mediaWithin: [],
-                                                    location: "" ,
-                                                    completion: {
-                                                 docRef,_ in
-                                                 
-                                                        self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: "")
-                                             })
-                                         }
-
-                                     }, errorHandler: { e in
-                                         print("you get error from Thumbnail choose")
-                                         Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-                                     })
-                                 }
-                             }
-                         }
-        })
-    }
+//    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement {
+//        // initial all text fields needed by creating album form
+//        let textFields = AddAlbumUI.fields(by: [.albumName, .albumDescription], style: .light)
+//        
+//        return .init(formType: .withImageView,
+//                     titleText: "Add new album",
+//                     textFields: textFields,
+//                     uploadTitle: "Upload Thumbnail",
+//                     cancelButtonText: "Cancel",
+//                     okButtonText: "Create",
+//                     cancelAction: {},
+//                     okAction: {
+//                        // get text filled in album name and description text fields
+//                         let albumName = textFields.first!.textContent
+//                         let albumDesc = textFields.last!.textContent
+//                        // prepare atrributes for pop up alter
+//                         let popattributes = PopUpAlter.setupPopupPresets()
+//                         if albumName == "" {
+//                            // alter if the album name is empty
+//                             self.showPopupMessage(attributes: popattributes, description: self.NON_EMPTY_MESSAGE)
+//                         } else if self.albumDataList.contains(albumName) {
+//                            // alter if the album name repeated
+//                             self.showPopupMessage(attributes: popattributes, description: self.NO_REPEAT_MESSAGE)
+//                         } else {
+//                             // create a album here
+//                             customFormVC.dismissWithAnimation {
+//                                imageData,_  in
+//                                 if let imaged = imageData,
+//                                     let imageUid = Util.GenerateUDID() {
+//                                     Util.ShowActivityIndicator(withStatus: "Creating album ...")
+//                                     Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: { url in
+//                                         Util.DismissActivityIndicator()
+//                                         if url != nil {
+//                                             // todo : add the location argument
+//                                             AlbumDBController
+//                                                .getInstance()
+//                                                .addNewAlbum(
+//                                                    albumName: albumName,
+//                                                    description: albumDesc,
+//                                                    thumbnail: imageUid,
+//                                                    thumbnailExt: Util.EXTENSION_JPEG,
+//                                                    mediaWithin: [],
+//                                                    location: "" ,
+//                                                    completion: {
+//                                                 docRef,_ in
+//                                                 
+//                                                        self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: "")
+//                                             })
+//                                         }
+//
+//                                     }, errorHandler: { e in
+//                                         print("you get error from Thumbnail choose")
+//                                         Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
+//                                     })
+//                                 }
+//                             }
+//                         }
+//        })
+//    }
 
     /// Pop up error message
     /// - Parameters:
@@ -208,6 +224,7 @@ class AlbumCoverViewController: UIViewController {
                          coverImageUID imageUID: String?,
                          coverImageExtension imageExtension: String?,
                          location : String,
+                         createDate: Date,
                          doesReload: Bool = true,
                          reverseOrder: Bool = true) {
         // todo : this is just a dummy
@@ -215,7 +232,13 @@ class AlbumCoverViewController: UIViewController {
             " with description : " + newAlbumDescrp +
             " with UID " + UID)
         
-        let newAlbum = AlbumDetail(title: newAlbumTitle, description: newAlbumDescrp, UID: UID, coverImageUID: imageUID, coverImageExtension: imageExtension, createdLocation : location)
+        let newAlbum = AlbumDetail(title: newAlbumTitle,
+                                   description: newAlbumDescrp,
+                                   UID: UID,
+                                   coverImageUID: imageUID,
+                                   coverImageExtension: imageExtension,
+                                   createdLocation : location,
+                                   createDate: createDate)
         
         albumCollectionView.performBatchUpdates({
             albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reverseOrder)

@@ -193,14 +193,19 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					arg in
 
 					let (albumName, albumDetails) = arg
+                    let dateTimestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                    
+           
 					albumDetailTVC.loadAlbumToList(title: albumName,
 					                               description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
 					                               UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
 					                               coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
 					                               coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
                                                    location: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as? String ?? "",
+                                                   createDate: dateTimestamp.dateValue(),
 					                               doesReload: true,
                                                    reverseOrder: false)
+                    
 				}
 			}
 		})

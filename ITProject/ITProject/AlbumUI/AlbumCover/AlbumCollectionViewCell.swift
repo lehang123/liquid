@@ -11,6 +11,7 @@ import SwipeCellKit
 
 class AlbumCollectionViewCell: SwipeCollectionViewCell {
     
+    @IBOutlet var dateLabel: UILabel!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var albumTitleLabel: UILabel!
     @IBOutlet weak var backgroundMask: UIView!
@@ -33,6 +34,13 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
                                 data in
                                 self.backgroundImageView.image = UIImage(data: data!)
                                 self.albumTitleLabel.text = album.title
+                                
+                                let format = DateFormatter()
+                                       format.dateFormat = "dd.MM.yyyy"
+                                       let formattedDate = format.string(from: album.createDate)
+                                self.dateLabel.text = formattedDate
+                            
+                                
                     
             })
             
@@ -40,6 +48,7 @@ class AlbumCollectionViewCell: SwipeCollectionViewCell {
             backgroundImageView.image = nil
             albumTitleLabel.text = nil
             backgroundMask.backgroundColor = nil
+            dateLabel.text = nil
         }
     }
      
