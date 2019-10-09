@@ -186,17 +186,18 @@ class AlbumDBController
                         
                         let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + Util.EXTENSION_ZIP
                         
-                        print("video path is: ",videoPath)
+                        //print("video path is: ",videoPath)
  
-                        //upload vid thumbnail:
+                        //upload video thumbnail:
                         Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: Util.EXTENSION_JPEG, completion: {
                             url in
-                            print("COMPLETION 1")
+
                             //upload video itself:
-                            print("UPLOAD THUMBNAIL SUCCEED")
+                            // print("COMPLETION 1")
+                           //print("UPLOAD THUMBNAIL SUCCEED")
                             Util.ReadFileFromDocumentDirectory(fileName: videoPath){
                                 data in
-                                print("read finish and there is data")
+                                //print("read finish and there is data")
                                 Util.UploadZipFileToServer(data: data, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
                             }
                         })
@@ -209,9 +210,6 @@ class AlbumDBController
                     
                 }
                 
-                //update to family:
-                
-                batch.updateData([ RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS: FieldValue.arrayUnion([albumDocumentReference])], forDocument: familyDocRef!)
                 
                 //commit the actions altogether:
                 batch.commit() {error  in
