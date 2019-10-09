@@ -147,15 +147,21 @@ class CacheHandler: NSObject
 					let albumName: String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String
 
 					let owner: DocumentReference? = (albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference)
+                    
+                    
+                    let dateTimestamp : Timestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                    
+                    
 
 					albums[albumName] = [
-						AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as Any,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: dateTimestamp.dateValue() as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER: owner?.documentID as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
 						AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
 						AlbumDBController.DOCUMENTID: document.documentID,
                         AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as Any
+                        
 					]
                     
 				}
@@ -165,8 +171,9 @@ class CacheHandler: NSObject
 					let (_, firstDetail) = first
 
 					let (_, secondDetail) = second
-					let firstDate: Timestamp = firstDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
-					let secondDate: Timestamp = secondDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+					let firstDate: Date = firstDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Date
+					let secondDate: Date = secondDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Date
+                    
 					switch firstDate.compare(secondDate)
 					{
 						case .orderedAscending:
@@ -309,16 +316,14 @@ class CacheHandler: NSObject
 //                            print("dobDate:::",dobDate)
                             let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as! Timestamp) ;
                     
-                            print("TS:::",dobTimestamp.dateValue().description)
                             let str =  dobTimestamp.dateValue().description as? String
                             let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
-                            let sep : String = "-"
-                            let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: sep)
+                            let separator : String = "-"
+                            let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: separator)
                            
                           
-                            print("str:::",str)
                             print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
-                            let dobString = yearMonthDate[2] + sep +  yearMonthDate[1] + sep + yearMonthDate[0]
+                            let dobString = yearMonthDate[2] + separator +  yearMonthDate[1] + separator + yearMonthDate[0]
 
 
 
