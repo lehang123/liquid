@@ -16,6 +16,11 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     @IBOutlet weak var descpTitle: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     
+    @IBOutlet weak var PlayAudioButton: UIButton!
+    
+    @IBAction func playAudio(_ sender: Any) {
+    }
+    
     /// reset the album detail if anything changed
     var descrp: AlbumDetail! {
         didSet {
