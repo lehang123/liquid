@@ -15,10 +15,12 @@ class CommentCell: UITableViewCell {
     private static let COMMENT_ERROR = "Error reading comment"
     private static let USERNAME_ERROR = "Error reading username"
     
+
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet var userProfileImage: EnhancedCircleImageView!
+    
 
-    @IBOutlet weak var UserProfileImage: EnhancedCircleImageView!
     public func setCommentLabel(comment: String){
         commentLabel.text = comment
     }
@@ -34,4 +36,6 @@ class CommentCell: UITableViewCell {
     public func getUsernameLabel()->String{
         return usernameLabel!.text ?? CommentCell.USERNAME_ERROR
     }
+    
+
 }

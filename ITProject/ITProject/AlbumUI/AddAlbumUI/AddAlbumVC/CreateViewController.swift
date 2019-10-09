@@ -54,6 +54,7 @@ class CreateViewController: UIViewController {
     // imagePicker that to open photos library
     private var imagePicker:UIImagePickerController!
     
+    private let currentDate = Date()
     private let locationManager = CLLocationManager()
     private var cLocation:String = ""
     private var doesLocationShow:Bool = false
@@ -133,9 +134,9 @@ class CreateViewController: UIViewController {
                         }
                     }
                     if !self.doesLocationShow{
-                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL)
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL, createDate: self.currentDate)
                     }else{
-                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL)
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL, createDate: self.currentDate)
                     }
                 })
             }
@@ -248,10 +249,10 @@ class CreateViewController: UIViewController {
     
     /// DateLabel set up
     func setupDateLabel(){
-        let currentDate = Date()
+        
         let format = DateFormatter()
         format.dateFormat = "dd.MM.yyyy"
-        let formattedDate = format.string(from: currentDate)
+        let formattedDate = format.string(from: self.currentDate)
         dateLabel.text = formattedDate
         dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
     }
