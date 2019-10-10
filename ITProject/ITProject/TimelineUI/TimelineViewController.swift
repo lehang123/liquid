@@ -99,8 +99,8 @@ class TimelineViewController: UIViewController
 
                     
                         Util.GetImageData(
-                            imageUID: albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String,
-                            UIDExtension: albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String,
+                            imageUID: (albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String),
+                            UIDExtension: (albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String),
                             completion: { (data) in
                             //pass data to UI:
                             self.timeFrames
@@ -109,6 +109,7 @@ class TimelineViewController: UIViewController
                                     date: createdDate ,
                                     content: content,
                                     image: UIImage(data: data!)) )
+                            //so, wait until this completion finished
                             group.leave()
                         })
                         
@@ -123,11 +124,12 @@ class TimelineViewController: UIViewController
                   
                 }
                 
+                //after all images downloaded, continue loading UI:
                 group.notify(queue: .main) {
-                        //continue loading UI:
-                        self.timeline = TimelineView(timeFrames: self.timeFrames)
+                    //continue loading UI:
+                    self.timeline = TimelineView(timeFrames: self.timeFrames)
                         
-                        self.setupTimelineView()
+                    self.setupTimelineView()
                     self.view.sendSubviewToBack(self.scrollView)
                 }
                 
