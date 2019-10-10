@@ -229,7 +229,7 @@ class Util {
         case audio
     }
     
-    public static func GetLocalFileURL(by UID: String, type fileType: FileType,  completion: @escaping (URL?) -> Void = { _ in }){
+    public static func GetLocalFileURL(by UID: String, type fileType: FileType,  error: @escaping (Error?) -> Void = { _ in },  completion: @escaping (URL?) -> Void = { _ in }){
         // looking for oringinal file from video folder first
         let m4vPath = GetLocalFileFullPath(filename: UID, fextension: Util.EXTENSION_M4V)!
         print("GetLocalFileURL : the m4v path : " + m4vPath)
@@ -276,6 +276,9 @@ class Util {
                     url in
                     
                     completion(url)
+                }, errorHandler: {
+                    e in
+                    error(e)
                 })
             }
         case .audio:
@@ -307,6 +310,9 @@ class Util {
                     url in
                     
                     completion(url)
+                }, errorHandler: {
+                    e in
+                    error(e)
                 })
             }
         }

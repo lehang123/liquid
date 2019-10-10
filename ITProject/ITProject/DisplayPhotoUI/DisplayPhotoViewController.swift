@@ -114,6 +114,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
     
@@ -411,7 +412,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 //            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
 //            descriptionCell.descriptionDetail.sizeToFit()
             
-
+            if self.mediaDetail.audioUID.removingWhitespaces().isEmpty{
+                descriptionCell.playAudioButton.isHidden = true
+            }
+            else {
+                Util.GetLocalFileURL(by: self.mediaDetail.audioUID, type: .audio, error: {
+                    e in
+                    if let _ = e {
+                          descriptionCell.playAudioButton.isHidden = true
+                    }
+              
+                })
+            }
             descriptionCell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             return descriptionCell

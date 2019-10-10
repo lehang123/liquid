@@ -102,15 +102,17 @@ class CreateViewController: UIViewController {
     
     func createMedia(){
         dismiss(animated: true, completion:{
-            if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
+            if self.hasRecordFile && Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
                 // todo : media exist even I don't record
                 let aUrl = URL(string: self.audioDestinationURL)?.deletingPathExtension().lastPathComponent
                 print("createMedia : audio exist with UID : " + aUrl!)
                 self.media.audioUID = aUrl
-                self.media.audioExt = Util.EXTENSION_M4A
+            
+            } else {
+                self.media.audioUID = ""
             }
 
-            
+            self.media.audioExt = Util.EXTENSION_M4A
             self.media.changeTitle(to: self.albumNameTextField.text)
             self.media.changeDescription(to: self.albumDescriptionTextView.text)
             self.mediaDelegate.createMedia(mediaDetail: self.media)
