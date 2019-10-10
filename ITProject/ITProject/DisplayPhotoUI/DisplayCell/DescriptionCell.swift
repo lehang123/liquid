@@ -26,7 +26,10 @@ class DescriptionCell: UITableViewCell ,AVAudioPlayerDelegate{
     
 
     @IBAction func onClickPlayAudio(_ sender: Any) {
-        print("PLEASE WORK ON CLICK")
+        if self.audioUID.removingWhitespaces().isEmpty{
+            print("there is no audioUID")
+            return
+        }
        
         if(audioPlayer?.isPlaying ?? false)
             {

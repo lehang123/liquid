@@ -1785,7 +1785,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="commentLabel" destination="AsR-br-2L7" id="cXR-0N-OPo"/>
-                                            <outlet property="profileImageView" destination="YeU-Wa-4EQ" id="XNi-Dx-Wey"/>
                                             <outlet property="userProfileImage" destination="YeU-Wa-4EQ" id="8ZX-qq-7Ha"/>
                                             <outlet property="usernameLabel" destination="APr-WB-ZZb" id="1Em-VL-0Ek"/>
                                         </connections>
