@@ -7,33 +7,37 @@
 //
 
 import UIKit
-
 extension Date {
+    ///date separator as from firestore
     public static let   DATE_SEPARATOR : String = "-"
+    ///time separator as from firestore
      public static let TIME_SEPARATOR : String = ":"
-
+    ///space separator
+    public static let SPACE_SEPARATOR  : String = " "
+    
+    /// Converts Date to String in "dd/mm/yyyy at HH:MM" format.
     func DateToStringWithTimes() -> String{
         let dateString = self.description
         
-         let dateTimeComponents : [String] = (dateString.components(separatedBy: " "))
+        let dateTimeComponents : [String] = (dateString.components(separatedBy: Date.SPACE_SEPARATOR))
        
         
         let yearMonthDate : [String] = dateTimeComponents[0].components(separatedBy: Date.DATE_SEPARATOR)
         let time : [String] = dateTimeComponents[1].components(separatedBy: Date.TIME_SEPARATOR)
-//        print("dateTimeComponents",  dateTimeComponents)
-//        print("time:", time)
+
         let res = yearMonthDate[2] + Date.DATE_SEPARATOR +  yearMonthDate[1] +  Date.DATE_SEPARATOR + yearMonthDate[0] + " at " + time[0] + Date.TIME_SEPARATOR + time[1]
         return res;
     }
+    
+    /// Converts Date to String in "dd/mm/yyyy" format.
     func DateToString() -> String{
-        let str =  self.description as? String
-           let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
+        let dateTimeComp : [String] = self.description.components(separatedBy: Date.SPACE_SEPARATOR)
           
         let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: Date.DATE_SEPARATOR)
           
          
-           print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
-           let res = yearMonthDate[2] + Date.DATE_SEPARATOR +  yearMonthDate[1] + Date.DATE_SEPARATOR + yearMonthDate[0]
+           //print("yearMonthDate:",yearMonthDate[2] +  yearMonthDate[1] +  yearMonthDate[0])
+        let res = yearMonthDate[2] + Date.DATE_SEPARATOR +  yearMonthDate[1] + Date.DATE_SEPARATOR + yearMonthDate[0]
         return res;
     }
 }
@@ -70,49 +74,37 @@ class TimelineViewController: UIViewController
 //        ]
         
         //bug here: it shows nothing:(
-        print("FAMILY UID IS AT LOADTIMEFRAMES: ",self.familyUID)
-        Util.ShowActivityIndicator()
+       // print("FAMILY UID IS AT LOADTIMEFRAMES: ",self.familyUID)
+        //Util.ShowActivityIndicator()
         AlbumDBController.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.familyUID)) { (data, error) in
             if let error = error{
                 print("error at loadTimeFrames:::", error)
             }else{
-                print("RUNS HERE")
+                //print("RUNS HERE")
                 data.forEach { (data) in
                     let (albumName, albumDetail)  = data
-                    //PARSE DATE TO STRING:
-                    
+                    //parse date to string:
                     let createdDateTmp : Date = albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Date
-                    let str =  createdDateTmp.description
-                    let dateTimeComponents : [String] = (str.components(separatedBy: " "))
-                    let dateSeparator : String = "-"
-                    let timeSeparator : String = ":"
+                    let createdDate : String = createdDateTmp.DateToStringWithTimes()
                     
-                    let yearMonthDate : [String] = dateTimeComponents[0].components(separatedBy: dateSeparator)
-                    let time : [String] = dateTimeComponents[1].components(separatedBy: timeSeparator)
-                    print("dateTimeComponents",  dateTimeComponents)
-                    print("time:", time)
-                    let createdDate = yearMonthDate[2] + dateSeparator +  yearMonthDate[1] + dateSeparator + yearMonthDate[0] + " at " + time[0] + timeSeparator + time[1]
-                    
+                    //find album creator:
                     let content :String = albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! String + " created " + albumName
+                    //pass data to UI:
                     self.timeFrames
-                                    .append(
-                                              TimelineField(
-                                                          date: createdDate ,
-                                                          content:content
-                                                           )
-                                                   )
+                        .append(
+                            TimelineField(
+                                date: createdDate ,
+                                content:content
+                            )
+                        )
                                               
                   
                 }
                 
+                //continue loading UI:
                 self.timeline = TimelineView(timeFrames: self.timeFrames)
+                
                 self.setupTimelineView()
-
-
-                print("TIMEFRAME IS", self.timeFrames)
-                self.reloadInputViews()
-
-                Util.DismissActivityIndicator()
 
                
                
