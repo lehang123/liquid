@@ -17,6 +17,10 @@ protocol CreateMediaViewControllerDelegate {
     func createMedia(mediaDetail: MediaDetail)
 }
 
+protocol AlbumDetailTableViewDelegate {
+    func audioPlayFinish()
+}
+
 extension AlbumDetailTableViewController:CreateMediaViewControllerDelegate{
     func createMedia(mediaDetail: MediaDetail) {
         
@@ -292,7 +296,7 @@ class AlbumDetailTableViewController: UITableViewController {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailDescrpCell, for: indexPath) as! AlbumDetailDescrpTableViewCell
             cell.descrp = albumDetail
-            cell.delegate = self
+            cell.audioUID = albumDetail.audioUID
             cell.selectionStyle = .none
             print("AlbumDetailTableViewController.tableView.cell :::", cell)
             
@@ -377,58 +381,7 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
-// MARK: - AlbumDetailDescrpTableViewCellDedelegate
-extension AlbumDetailTableViewController: AlbumDetailDescrpTableViewCellDedelegate
-{
-    func playDescriptionAudio() {
-        let audioUID = albumDetail.audioUID
-        if audioUID!.removingWhitespaces().isEmpty{
-            print("there is no audioUID")
-            return
-        }
-        
-        print("playDescriptionAudio : playing audio with UID : " + audioUID!)
-        if(isPlaying)
-                {
-                    audioPlayer.stop()
-                    isPlaying = false
-                }
-                else
-                {
-                    Util.GetLocalFileURL(by: audioUID!, type: .audio){
-                       url in
-                       self.prepare_play(url: url!)
-                   }
-                  
-                }
-    }
 
-    func prepare_play(url: URL)
-    {
-        do
-        {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer.delegate = self
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
-            isPlaying = true
-        }
-        catch{
-            print("Error")
-        }
-    }
-}
-
-extension AlbumDetailTableViewController: AVAudioPlayerDelegate
-{
-    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-        // do something when error
-    }
-    
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        // do something when finished
-    }
-}
 
 
 // MARK: -  UICollectionViewDataSource
@@ -536,4 +489,6 @@ extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectio
             return CGSize(width: itemWidth, height: itemWidth)
         }
 }
+
+
 

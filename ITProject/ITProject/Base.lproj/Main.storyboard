@@ -1483,6 +1483,7 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isg-Qi-093">
                                             <rect key="frame" x="154" y="21" width="40" height="40"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="isg-Qi-093" secondAttribute="height" id="AUg-Jv-e4d"/>
                                                 <constraint firstAttribute="height" constant="40" id="Lha-DC-MjN"/>
@@ -1720,6 +1721,7 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9YX-3Q-gbg">
                                                     <rect key="frame" x="131" y="11" width="24.5" height="24.5"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="9YX-3Q-gbg" secondAttribute="height" id="U3Y-6O-WUO"/>
                                                     </constraints>
@@ -1735,6 +1737,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="qJs-fk-Py6" firstAttribute="leading" secondItem="XRE-LR-wZm" secondAttribute="leadingMargin" constant="10" id="A5f-i9-kUB"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="qJs-fk-Py6" secondAttribute="bottom" id="FIt-kd-eeV"/>
@@ -1748,6 +1751,7 @@
                                                 <constraint firstItem="9YX-3Q-gbg" firstAttribute="top" secondItem="XRE-LR-wZm" secondAttribute="topMargin" id="rmb-ih-vCh"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="descriptionDetail" destination="qJs-fk-Py6" id="OHr-Xx-GGp"/>
                                             <outlet property="playAudioButton" destination="9YX-3Q-gbg" id="cX3-lM-0ne"/>
