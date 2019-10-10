@@ -142,7 +142,9 @@ class AlbumDBController
                         AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
                         AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
                         AlbumDBController.DOCUMENTID: document.documentID,
-                        AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as Any
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as Any,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO :
+                            albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO] as Any
                         
                     ]
                     
