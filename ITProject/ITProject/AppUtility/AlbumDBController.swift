@@ -87,6 +87,7 @@ class AlbumDBController
 				appendValue: [AlbumDBController.COMMENTS_USERNAME: username, AlbumDBController.COMMENTS_MESSAGE: comment]
 			)
 	}
+    
 
 	/// singleton pattern:
 	/// - Returns: return an instance of this AlbumDBController.
@@ -98,6 +99,165 @@ class AlbumDBController
 		}
 		return self.single
 	}
+    
+    
+
+    ///  get all album's info from database.
+    /// - Parameter familyID: album related to the familyID to be retrieved.
+    /// - Parameter completion:  passes all albums' info from DB .
+    public func getAlbumInfo(familyID: DocumentReference, completion: @escaping (_ albums: [(key: String, value: [String: Any])], _ error: Error?) -> Void = { _, _ in })
+    {
+        Util.ShowActivityIndicator(withStatus: "retrieving album information...")
+        DBController.getInstance().getDB().collection(AlbumDBController.ALBUM_COLLECTION_NAME).whereField(AlbumDBController.ALBUM_DOCUMENT_FIELD_FAMILY, isEqualTo: familyID).getDocuments(completion: { querySnapshot, error in
+            //                print("getAlbumInfo : do you get called")
+            Util.DismissActivityIndicator()
+            // error handle:
+            if let error = error
+            {
+                print("cacheAlbum Error getting documents: \(error)")
+            }
+            else
+            {
+                var albums: [String: [String: Any]] = [String: [String: Any]]()
+                var sortedAlbums: [(key: String, value: [String: Any])] = [(key: String, value: [String: Any])]()
+
+                // loop thru each document, parse them into the required data format:
+                for document in querySnapshot!.documents
+                {
+                    let albumDetails: [String: Any] = document.data()
+
+                    let albumName: String = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_NAME] as! String
+
+                    let owner: DocumentReference? = (albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! DocumentReference)
+                    
+                    
+                    let dateTimestamp : Timestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                    
+                    
+
+                    albums[albumName] = [
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE: dateTimestamp.dateValue() as Any,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER: owner?.documentID as Any,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as Any,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION]!,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as Any,
+                        AlbumDBController.DOCUMENTID: document.documentID,
+                        AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION : albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as Any
+                        
+                    ]
+                    
+                }
+                
+                sortedAlbums = albums.sorted(by: { (first, second) -> Bool in
+
+                    let (_, firstDetail) = first
+
+                    let (_, secondDetail) = second
+                    let firstDate: Date = firstDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Date
+                    let secondDate: Date = secondDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Date
+                    
+                    switch firstDate.compare(secondDate)
+                    {
+                        case .orderedAscending:
+                            return false
+                        case .orderedSame:
+                            return true
+
+                        case .orderedDescending:
+                            return true
+                    }
+
+                })
+                completion(sortedAlbums, error)
+            }
+        })
+    }
+
+    ///  get all Photos from database.
+        /// - Parameter currAlbum: get all photos from  curAlbum's
+        /// - Parameter completion: completion description
+        public func getAllPhotosInfo(currAlbum: String, completion: @escaping (_ allMedias: [MediaDetail], _ error: Error?) -> Void = { _, _ in })
+        {
+            
+            var allMedias: [MediaDetail] = [MediaDetail]()
+            let currAlbumRef = DBController.getInstance().getDocumentReference(collectionName: AlbumDBController.ALBUM_COLLECTION_NAME, documentUID: currAlbum)
+
+            print("getting currAlbumRef : " + currAlbumRef.documentID)
+           //get all photos from an album:
+            DBController
+                .getInstance()
+                .getDB()
+                .collection(AlbumDBController.MEDIA_COLLECTION_NAME)
+                .whereField(AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM, isEqualTo: currAlbumRef)
+                .getDocuments
+            { mediaQS, error in
+                //handle error:
+                if let error = error
+                {
+                    print("ERROR AT getAllPhotosInfo: ", error)
+                }
+                    
+                else
+                {
+                    
+                    
+                    let docs :[QueryDocumentSnapshot] = mediaQS!.documents.sorted { (first, second) -> Bool in
+                        let firstData :[String:Any] = first.data()
+                        let secondData :[String:Any] = second.data()
+                        let firstDate :Timestamp = firstData[AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                        let secondDate :Timestamp = secondData[AlbumDBController.MEDIA_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                        switch firstDate.compare(secondDate)
+                        {
+                            case .orderedAscending:
+                                return false
+                            case .orderedSame:
+                                return true
+
+                            case .orderedDescending:
+                                return true
+                        }
+                    }
+                                             
+                    for doc in docs
+                    {
+                        // get current data:
+                        let currData: [String: Any] = doc.data()
+                        
+                        // process comments
+                        let currComments: [[String: Any]] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [[String: Any]]
+
+                        var parsedComments: [MediaDetail.comment] = [MediaDetail.comment]()
+                        //for each comment array, parse them:
+                        currComments.forEach
+                        { commentRow in
+                            parsedComments
+                                .append(
+                                    MediaDetail
+                                        .comment(
+                                            commentID: Util.GenerateUDID(),
+                                            username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String,
+                                            message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
+    //                        print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
+                        }
+
+                        // parse all data:
+                        allMedias.append(
+                            MediaDetail(title: doc.documentID,
+                                        description: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION] as? String,
+                                        UID: doc.documentID,
+                                        likes: (currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES] as! [DocumentReference]?)!,
+                                        comments: parsedComments,
+                                        ext: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION] as? String,
+                                        watch: currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH] as? [DocumentReference] ?? [],
+                                        audioUID : currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO] as? String ?? ""))
+                       // print("at getAllPhotosInfo::: audioUID:: ", currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO])
+                    }
+                    //print("after getAllPhotosInfo, length is:::", allMedias.count)
+                    //pass data thru:
+                    completion(allMedias, error)
+                }
+            }
+        }
 
     /// creates a new album and attaches it to the family .
     /// user may also populate the album with a few media.
@@ -186,17 +346,18 @@ class AlbumDBController
                         
                         let videoPath = Util.VIDEO_FOLDER + "/" + item.getUID() + "." + Util.EXTENSION_ZIP
                         
-                        print("video path is: ",videoPath)
+                        //print("video path is: ",videoPath)
  
-                        //upload vid thumbnail:
+                        //upload video thumbnail:
                         Util.UploadFileToServer(data: item.cache, metadata: nil, fileName: item.getUID(), fextension: Util.EXTENSION_JPEG, completion: {
                             url in
-                            print("COMPLETION 1")
+
                             //upload video itself:
-                            print("UPLOAD THUMBNAIL SUCCEED")
+                            // print("COMPLETION 1")
+                           //print("UPLOAD THUMBNAIL SUCCEED")
                             Util.ReadFileFromDocumentDirectory(fileName: videoPath){
                                 data in
-                                print("read finish and there is data")
+                                //print("read finish and there is data")
                                 Util.UploadZipFileToServer(data: data, metadata: nil, fileName: item.getUID(), fextension: item.getExtension())
                             }
                         })
@@ -209,9 +370,6 @@ class AlbumDBController
                     
                 }
                 
-                //update to family:
-                
-                batch.updateData([ RegisterDBController.FAMILY_DOCUMENT_FIELD_ALBUM_PATHS: FieldValue.arrayUnion([albumDocumentReference])], forDocument: familyDocRef!)
                 
                 //commit the actions altogether:
                 batch.commit() {error  in

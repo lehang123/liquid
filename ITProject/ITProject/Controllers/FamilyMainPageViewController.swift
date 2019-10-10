@@ -191,7 +191,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private func passAlbumsData(to albumDetailTVC: AlbumCoverViewController)
 	{
 		// start pulling data from server : albums info
-		CacheHandler.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.familyUID), completion: {
+		AlbumDBController.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.familyUID), completion: {
 			albumDic, error in
 			if let err = error
 			{
@@ -201,9 +201,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 			{
 				albumDic.forEach
 				{
-					arg in
+					data in
 
-					let (albumName, albumDetails) = arg
+					let (albumName, albumDetails) = data
                     let dateTimestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE]
                     
            
@@ -216,7 +216,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                                                    createDate: dateTimestamp as! Date,
 					                               doesReload: true,
                                                    reverseOrder: false)
-                    
 				}
 			}
 		})
@@ -333,7 +332,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private func loadUserInfoFromServer()
 	{
 		// start pulling data from server : user info
-		CacheHandler.getInstance().getUserInfo(completion: {
+		RegisterDBController.getInstance().getUserInfo(completion: {
 			relation, dob, _, gender, name, error in
 
 			if let error = error
@@ -358,7 +357,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private func loadFamilyInfoFromServer()
 	{
 		// start pulling data from server : family info
-		CacheHandler.getInstance().getFamilyInfo(completion: {
+		RegisterDBController.getInstance().getFamilyInfo(completion: {
 			uid, motto, name, profileUId, profileExtension, error in
 
 			if let err = error

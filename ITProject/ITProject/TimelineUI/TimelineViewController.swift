@@ -72,7 +72,7 @@ class TimelineViewController: UIViewController
         //bug here: it shows nothing:(
         print("FAMILY UID IS AT LOADTIMEFRAMES: ",self.familyUID)
         Util.ShowActivityIndicator()
-        CacheHandler.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.familyUID)) { (data, error) in
+        AlbumDBController.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.familyUID)) { (data, error) in
             if let error = error{
                 print("error at loadTimeFrames:::", error)
             }else{

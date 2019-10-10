@@ -310,7 +310,7 @@ class AlbumCoverViewController: UIViewController {
                 // todo : make album's photo according to the photo UID
                 let albumUID = albumDetailTVC.albumDetail.UID
                 // put it in here : albumDetailTVC.albumContents
-                CacheHandler.getInstance().getAllPhotosInfo(currAlbum: albumUID) { detail, error in
+                AlbumDBController.getInstance().getAllPhotosInfo(currAlbum: albumUID) { detail, error in
                     if let error = error {
                         print("error at prepare AlbumCoverViewController", error)
                     } else {
