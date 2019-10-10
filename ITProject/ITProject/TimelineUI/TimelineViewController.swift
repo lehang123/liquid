@@ -57,7 +57,7 @@ class TimelineViewController: UIViewController
 
         loadTimeFrames()
        
-		view.sendSubviewToBack(self.scrollView)
+		
 	}
     
     /// get timeline data from db
@@ -80,6 +80,8 @@ class TimelineViewController: UIViewController
             if let error = error{
                 print("error at loadTimeFrames:::", error)
             }else{
+                //using DispatchGroup to wait for images to download:
+                let group = DispatchGroup()
                 //print("RUNS HERE")
                 data.forEach { (data) in
                     let (albumName, albumDetail)  = data
@@ -87,24 +89,49 @@ class TimelineViewController: UIViewController
                     let createdDateTmp : Date = albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Date
                     let createdDate : String = createdDateTmp.DateToStringWithTimes()
                     
+                    
                     //find album creator:
                     let content :String = albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! String + " created " + albumName
-                    //pass data to UI:
-                    self.timeFrames
-                        .append(
-                            TimelineField(
-                                date: createdDate ,
-                                content:content
-                            )
-                        )
+                    
+                    //enter async :
+                    
+                    group.enter()
+
+                    
+                        Util.GetImageData(
+                            imageUID: albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String,
+                            UIDExtension: albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String,
+                            completion: { (data) in
+                            //pass data to UI:
+                            self.timeFrames
+                            .append(
+                                TimelineField(
+                                    date: createdDate ,
+                                    content: content,
+                                    image: UIImage(data: data!)) )
+                            group.leave()
+                        })
+                        
+                
+
+                
+
+                   
+                    
+                    
                                               
                   
                 }
                 
-                //continue loading UI:
-                self.timeline = TimelineView(timeFrames: self.timeFrames)
+                group.notify(queue: .main) {
+                        //continue loading UI:
+                        self.timeline = TimelineView(timeFrames: self.timeFrames)
+                        
+                        self.setupTimelineView()
+                    self.view.sendSubviewToBack(self.scrollView)
+                }
                 
-                self.setupTimelineView()
+                
 
                
                
