@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol AlbumDetailDescrpTableViewCellDedelegate {
+    func playDescriptionAudio()
+}
+
 ///handles displaying Album Title and Description 
 class AlbumDetailDescrpTableViewCell: UITableViewCell {
 
+    var delegate:AlbumDetailDescrpTableViewCellDedelegate!
    
     @IBOutlet weak var descpDetail: UILabel!
     @IBOutlet weak var descpTitle: UILabel!
@@ -19,6 +24,7 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     @IBOutlet weak var PlayAudioButton: UIButton!
     
     @IBAction func playAudio(_ sender: Any) {
+        delegate.playDescriptionAudio()
     }
     
     /// reset the album detail if anything changed

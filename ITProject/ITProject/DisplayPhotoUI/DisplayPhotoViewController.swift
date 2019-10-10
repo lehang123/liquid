@@ -71,8 +71,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private let headerCut: CGFloat = 0
     private var cell0Info: LikeWatchedBookmarkCell!
     
-    var audioPlayer : AVAudioPlayer!
-    var isPlaying = false
+    private var audioPlayer : AVAudioPlayer!
+    private var isPlaying = false
     var isShowRecord = false
     
     @IBOutlet var tableView: UITableView!
@@ -138,35 +138,42 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
     }
     
-    @IBAction func playAudio(_ sender: Any) {
-        if(isPlaying)
-         {
-             audioPlayer.stop()
-             isPlaying = false
-         }
-         else
-         {
-            Util.GetLocalFileURL(by: mediaDetail.audioUID, type: .audio){
-                url in
-                self.prepare_play(url: url!)
-            }
-           
-         }
-    }
-    func prepare_play(url: URL)
-    {
-        do
-        {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer.delegate = self
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
-            isPlaying = true
-        }
-        catch{
-            print("Error")
-        }
-    }
+    // todo : come back to this
+//    @IBAction func playAudio(_ sender: Any) {
+//
+//        if mediaDetail.audioUID!.removingWhitespaces().isEmpty{
+//            print("there is no audioUID")
+//            return
+//        }
+//
+//        if(isPlaying)
+//         {
+//             audioPlayer.stop()
+//             isPlaying = false
+//         }
+//         else
+//         {
+//            Util.GetLocalFileURL(by: mediaDetail.audioUID, type: .audio){
+//                url in
+//                self.prepare_play(url: url!)
+//            }
+//
+//         }
+//    }
+//    func prepare_play(url: URL)
+//    {
+//        do
+//        {
+//            audioPlayer = try AVAudioPlayer(contentsOf: url)
+//            audioPlayer.delegate = self
+//            audioPlayer.prepareToPlay()
+//            audioPlayer.play()
+//            isPlaying = true
+//        }
+//        catch{
+//            print("Error")
+//        }
+//    }
 
     func textFieldShouldReturn(_: UITextField) -> Bool
     {

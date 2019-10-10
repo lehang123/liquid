@@ -63,12 +63,17 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                         print("error at AlbumCoverViewController.createAlbum ",error)
                     }else{
                         print("succeed at AlbumCoverViewController.createAlbum ", docRef as Any)
-
+                        
+                        var audioUID = ""
                         
                         //now, time to add audio, if there's any:
                         if let audioUrl = audioUrl {
                             if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(audioUrl).absoluteString){
                             
+                                // upload audio to cloud success
+                                let audioURLTmp = URL(string: audioUrl)
+                                audioUID = (audioURLTmp?.deletingPathExtension().lastPathComponent)!
+                                let audioUID = (audioURLTmp?.deletingPathExtension().lastPathComponent)!
                                 
                                 Util.ReadFileFromDocumentDirectory(fileName: audioUrl, completion: {
                                     data in
@@ -77,15 +82,11 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                                     Util.UploadFileToServer(data: data, metadata: nil, fileFullName: aUrl!, completion: {
                                         url in
                                         
-                                        // upload audio to cloud success
-                                        let audioURLTmp = URL(string: audioUrl)
-                                        let audioUID = audioURLTmp?.deletingPathExtension().lastPathComponent
+                                        
                                         print("AUDIO UID IS: ", audioUID)
                                         DBController.getInstance().updateSpecificField(newValue: audioUID as Any, fieldName: AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO, documentUID: docRef!.documentID, collectionName: AlbumDBController.ALBUM_COLLECTION_NAME)
                                     })
                                 })
-                                
-                                
                             }
                         }
                         self.loadAlbumToList(title: albumName,
@@ -93,16 +94,12 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
                                              UID: docRef!.documentID,
                                              coverImageUID: imageUid,
                                              coverImageExtension: Util.EXTENSION_JPEG,
-                                             location: currentLocation ??  "",
+                                             location: currentLocation ??  "", audioID: audioUID,
                                              createDate: createDate)
 
                     }
 
                 }}
-                
-                // todo : now expcet album itself, it also upload the image that already choosen.
-                
-                // todo : create another field for db to record location
                 
             }, errorHandler: { e in
             print("you get error from Thumbnail choose")
@@ -233,6 +230,7 @@ class AlbumCoverViewController: UIViewController {
                          coverImageUID imageUID: String?,
                          coverImageExtension imageExtension: String?,
                          location : String,
+                         audioID :String,
                          createDate: Date,
                          doesReload: Bool = true,
                          reverseOrder: Bool = true) {
@@ -247,7 +245,8 @@ class AlbumCoverViewController: UIViewController {
                                    coverImageUID: imageUID,
                                    coverImageExtension: imageExtension,
                                    createdLocation : location,
-                                   createDate: createDate)
+                                   createDate: createDate,
+                                   audio: audioID)
         
         albumCollectionView.performBatchUpdates({
             albumsList.addNewAlbum(newAlbum: newAlbum, addToHead: reverseOrder)

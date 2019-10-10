@@ -204,7 +204,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					arg in
 
 					let (albumName, albumDetails) = arg
-                    let dateTimestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE] as! Timestamp
+                    let dateTimestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE]
                     
            
 					albumDetailTVC.loadAlbumToList(title: albumName,
@@ -212,8 +212,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					                               UID: albumDetails[AlbumDBController.DOCUMENTID] as! String,
 					                               coverImageUID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as? String,
 					                               coverImageExtension: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as? String,
-                                                   location: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as? String ?? "",
-                                                   createDate: dateTimestamp.dateValue(),
+                                                   location: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_LOCATION] as? String ?? "", audioID: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO] as? String ?? "",
+                                                   createDate: dateTimestamp as! Date,
 					                               doesReload: true,
                                                    reverseOrder: false)
                     

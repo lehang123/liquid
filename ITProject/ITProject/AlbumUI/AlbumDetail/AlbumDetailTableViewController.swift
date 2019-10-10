@@ -127,11 +127,9 @@ class AlbumDetailTableViewController: UITableViewController {
     private let headerHeight : CGFloat = 300
     private let headerCut : CGFloat = 80
     
-
-//    private let locationManager = CLLocationManager()
+    private var audioPlayer : AVAudioPlayer!
+    private var isPlaying = false
     
-    // imagePicker that to open photos library
-    // private var imagePicker = UIImagePickerController()
 
     
     /// Description
@@ -225,64 +223,6 @@ class AlbumDetailTableViewController: UITableViewController {
         
         self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
     }
-    
-    
-    /// set up form to ask user to choose an new photo to add
-    /// - Parameter customFormVC: the view controller that the form attached to
-//    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement{
-//        let textFields = AddAlbumUI.fields(by: [.photoDescription], style: .light)
-//
-//        return .init(formType: .withImageView,
-//                     titleText: "Add new photo",
-//                     textFields: textFields,
-//                     uploadTitle: "Upload photo",
-//                     cancelButtonText: "Cancel",
-//                     okButtonText: "Create",
-//                     cancelAction:{},
-//                     okAction: {
-//
-//                        customFormVC.dismissWithAnimation(){
-//                            imageData,audioUID in
-//                            let filename = URL(string: audioUID!)!.appendingPathExtension(Util.EXTENSION_M4A)
-//
-//                                let audioPath = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
-//                                if let imageData = imageData,
-//                                   let audioUID = audioUID,let imageUID = Util.GenerateUDID(){
-//
-//                                   //uploads audio recorded to the storage:
-//                                    Util.ReadFileFromDocumentDirectory(fileName: audioPath){ data in
-//                                        Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
-//                                    }
-//
-//                                    Util.UploadFileToServer(data: imageData, metadata: nil, fileName: imageUID, fextension: Util.EXTENSION_JPEG, completion: {url in
-//                                        Util.DismissActivityIndicator()
-//                                        if url != nil{
-//                                           //ASSUME THAT PHOTO IS CREATED JUST NOW, I.E. TODAY
-//                                            AlbumDBController
-//                                                .getInstance()
-//                                                .addPhotoToAlbum(
-//                                                    desc:textFields.first!.textContent,
-//                                                    ext: Util.EXTENSION_JPEG,
-//                                                    albumUID: self.albumDetail.UID,
-//                                                    mediaPath: imageUID,
-//                                                    dateCreated: Timestamp(date: Date()),
-//                                                    audioUID: audioUID)
-//
-//                                                self.updatePhoto(
-//                                                    newPhoto: MediaDetail(
-//                                                        title: imageUID,
-//                                                        description: textFields.first!.textContent,
-//                                                        UID: imageUID,
-//                                                        likes: [], comments: [], ext: Util.EXTENSION_JPEG,
-//                                                        watch: [],
-//                                                        audioUID : audioUID))
-//                                    }
-//                            })
-//
-//                    }
-//            }
-//        })
-//    }
 
 
     /// view photo detail, present on display photo view controller
@@ -351,6 +291,7 @@ class AlbumDetailTableViewController: UITableViewController {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailDescrpCell, for: indexPath) as! AlbumDetailDescrpTableViewCell
             cell.descrp = albumDetail
+            cell.delegate = self
             cell.selectionStyle = .none
             print("AlbumDetailTableViewController.tableView.cell :::", cell)
             return cell;
@@ -422,31 +363,58 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
-// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
-//extension AlbumDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-//
-//    internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        guard let image = info[.editedImage] as? UIImage else {
-//            print("there is no edited Image ")
-//            return
-//        }
-//
-//        print ("imagePickerController: Did picked pressed !!")
-//        picker.dismiss(animated: true, completion: nil)
-//
-//        // todo : push add/edit photo view
-//    }
-//
-//    /* delegate function from the UIImagePickerControllerDelegate
-//     called when canceled button pressed, get out of photo library
-//     */
-//    internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-//
-//        print ("imagePickerController: Did canceled pressed !!")
-//        picker.dismiss(animated: true, completion: nil)
-//    }
-//
-//}
+// MARK: - AlbumDetailDescrpTableViewCellDedelegate
+extension AlbumDetailTableViewController: AlbumDetailDescrpTableViewCellDedelegate
+{
+    func playDescriptionAudio() {
+        let audioUID = albumDetail.audioUID
+        if audioUID!.removingWhitespaces().isEmpty{
+            print("there is no audioUID")
+            return
+        }
+        
+        print("playDescriptionAudio : playing audio with UID : " + audioUID!)
+        if(isPlaying)
+                {
+                    audioPlayer.stop()
+                    isPlaying = false
+                }
+                else
+                {
+                    Util.GetLocalFileURL(by: audioUID!, type: .audio){
+                       url in
+                       self.prepare_play(url: url!)
+                   }
+                  
+                }
+    }
+
+    func prepare_play(url: URL)
+    {
+        do
+        {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer.delegate = self
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+            isPlaying = true
+        }
+        catch{
+            print("Error")
+        }
+    }
+}
+
+extension AlbumDetailTableViewController: AVAudioPlayerDelegate
+{
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        // do something when error
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        // do something when finished
+    }
+}
 
 
 // MARK: -  UICollectionViewDataSource
@@ -554,56 +522,4 @@ extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectio
             return CGSize(width: itemWidth, height: itemWidth)
         }
 }
-
-//extension AlbumDetailTableViewController: CLLocationManagerDelegate {
-//    // handle delegate methods of location manager here
-//
-//    // called when the authorization status is changed for the core location permission
-//   func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-//           print("location manager authorization status changed")
-//
-//           switch status {
-//           case .authorizedAlways:
-//               print("user allow app to get location data when app is active or in background")
-//           case .authorizedWhenInUse:
-//               print("user allow app to get location data only when app is active")
-//           case .denied:
-//               print("user tap 'disallow' on the permission dialog, cant get location data")
-//           case .restricted:
-//               print("parental control setting disallow location data")
-//           case .notDetermined:
-//               print("the location permission dialog haven't shown before, user haven't tap allow/disallow")
-//           @unknown default:
-//            print("locationManager : error ")
-//        }
-//    }
-//
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//           // .requestLocation will only pass one location to the locations array
-//           // hence we can access it by taking the first element of the array
-//        if let location = locations.first {
-//            print("locationManager didUpdateLocations : \(location.coordinate.latitude)")
-//            print("locationManager didUpdateLocations : \(location.coordinate.longitude)")
-//
-//            let geocoder = CLGeocoder()
-//
-//            // Look up the location and pass it to the completion handler
-//            geocoder.reverseGeocodeLocation(location,
-//                        completionHandler: { (placemarks, error) in
-//                if error == nil {
-//                    let firstLocation = placemarks?[0]
-//
-//                    // todo : get erc Library now, depends on your simulator location
-//                    print("prase location with country : \(firstLocation?.country ?? "unknown country")" )
-//                    print("prase location with locality : \(firstLocation?.locality ?? "unknown city")" )
-//                    print("prase location with name : \(firstLocation?.name ?? "unknown name")" )
-//                }
-//            })
-//        }
-//    }
-//
-//    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-//        print("locationManager didFailWithError : " + error.localizedDescription)
-//    }
-//}
 
