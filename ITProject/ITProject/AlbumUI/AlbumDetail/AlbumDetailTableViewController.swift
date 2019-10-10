@@ -167,6 +167,7 @@ class AlbumDetailTableViewController: UITableViewController {
         updateHeaderlayout = CAShapeLayer()
         self.tableView.UpdateView(headerView: headerView, updateHeaderlayout:
             updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        
     }
     
     /// reload the album's photos when there is a big change
@@ -294,6 +295,19 @@ class AlbumDetailTableViewController: UITableViewController {
             cell.delegate = self
             cell.selectionStyle = .none
             print("AlbumDetailTableViewController.tableView.cell :::", cell)
+            
+                      if self.albumDetail.audioUID.removingWhitespaces().isEmpty{
+                          cell.playAudioButton.isHidden = true
+                      }
+                      else {
+                          Util.GetLocalFileURL(by: self.albumDetail.audioUID, type: .audio, error: {
+                              e in
+                              if let _ = e {
+                                    cell.playAudioButton.isHidden = true
+                              }
+                        
+                          })
+                      }
             return cell;
             
         } else {

@@ -11,62 +11,27 @@ import UIKit
 import AVFoundation
 import AVKit
 
-class DescriptionCell: UITableViewCell ,AVAudioPlayerDelegate{
+class DescriptionCell: UITableViewCell{
     
     private static let COMMENT_ERROR = "Error reading comment"
     private static let USERNAME_ERROR = "Error reading username"
     private var audioUID : String!
     private var audioPlayer : AVAudioPlayer!
-
     
-    public func setAudioUID(audioUID:String){
-
-        self.audioUID = audioUID
-    }
-    
-
-    @IBAction func onClickPlayAudio(_ sender: Any) {
-        if self.audioUID.removingWhitespaces().isEmpty{
-            print("there is no audioUID")
-            return
-        }
-       
-        if(audioPlayer?.isPlaying ?? false)
-            {
-                audioPlayer.stop()
-            }
-            else
-            {
-                Util.GetLocalFileURL(by: self.audioUID, type: .audio){
-                   url in
-                    let newURL = URL(fileURLWithPath: url!.absoluteString)
-                    print("URL prepare_play", newURL)
-
-                    self.prepare_play(url: newURL)
-               }
-              
-            }
-           
-        
-        
-    }
-    func prepare_play(url: URL)
-    {
-        do
-        {
-            
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer.delegate = self
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
-        }
-        catch{
-            print("Error")
-        }
-    }
     @IBOutlet weak var descriptionDetail: UILabel!
     
-    @IBOutlet weak var playAudioButton: UIButton!
+    @IBOutlet weak var playAudioButton: UIButton!{
+        didSet{
+            self.playAudioButton.imageView!.animationImages = [
+                ImageAsset.voice_Image_1.image,
+                ImageAsset.voice_Image_1.image,
+                ImageAsset.voice_Image_3.image
+            ]
+            playAudioButton.imageView!.animationDuration = 1
+            playAudioButton.isSelected = false
+        }
+    }
+    
     public func setDescriptionLabel(description: String){
         if (description.isEmpty) {
 
@@ -76,10 +41,65 @@ class DescriptionCell: UITableViewCell ,AVAudioPlayerDelegate{
             descriptionDetail.text = description
         }
     }
+
+    
+    public func setAudioUID(audioUID:String){
+
+        self.audioUID = audioUID
+    }
+        
+
+    
+    @IBAction func onClickPlayAudio(_ sender: Any) {
+               if self.audioUID.removingWhitespaces().isEmpty{
+                   print("there is no audioUID")
+                   return
+               }
+              
+               if(audioPlayer?.isPlaying ?? false)
+                   {
+                       audioPlayer.stop()
+                   }
+                   else
+                   {
+                       Util.GetLocalFileURL(by: self.audioUID, type: .audio){
+                          url in
+                           let newURL = URL(fileURLWithPath: url!.absoluteString)
+                           print("URL prepare_play", newURL)
+                            
+                           self.prepare_play(url: newURL)
+                      }
+                     
+                   }
+               
+           }
+           
+       func prepare_play(url: URL)
+       {
+           do
+           {
+               
+               audioPlayer = try AVAudioPlayer(contentsOf: url)
+               audioPlayer.delegate = self
+               audioPlayer.prepareToPlay()
+               audioPlayer.play()
+               self.playAudioButton.imageView!.startAnimating()
+           }
+           catch{
+               print("Error")
+           }
+       }
     
     public func getDescriptionDLabel()->String{
         return descriptionDetail!.text ?? DescriptionCell.COMMENT_ERROR
     }
     
+}
+
+extension DescriptionCell: AVAudioPlayerDelegate{
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        self.playAudioButton.imageView!.stopAnimating()
+        self.playAudioButton.isSelected = false
+    }
 }
 
