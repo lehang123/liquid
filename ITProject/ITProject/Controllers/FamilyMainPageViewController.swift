@@ -206,6 +206,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					let (albumName, albumDetails) = data
                     let dateTimestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE]
                     
+                    print("audioID IS : ",  albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO] )
            
 					albumDetailTVC.loadAlbumToList(title: albumName,
 					                               description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
