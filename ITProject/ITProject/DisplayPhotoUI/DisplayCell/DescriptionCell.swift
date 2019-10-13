@@ -51,28 +51,45 @@ class DescriptionCell: UITableViewCell{
 
     
     @IBAction func onClickPlayAudio(_ sender: Any) {
-               if self.audioUID.removingWhitespaces().isEmpty{
-                   print("there is no audioUID")
-                   return
-               }
-              
-               if(audioPlayer?.isPlaying ?? false)
-                   {
-                       audioPlayer.stop()
-                   }
-                   else
-                   {
-                       Util.GetLocalFileURL(by: self.audioUID, type: .audio){
-                          url in
-                           let newURL = URL(fileURLWithPath: url!.absoluteString)
-                           print("URL prepare_play", newURL)
-                            
-                           self.prepare_play(url: newURL)
-                      }
-                     
-                   }
+        if(audioPlayer?.isPlaying ?? false)
+        {
+            audioPlayer.stop()
+            self.playAudioButton.imageView!.stopAnimating()
+            self.playAudioButton.isSelected = false
+            
+        }
+        else
+        {
+            playDescriptionAudio()
+            self.playAudioButton.imageView!.startAnimating()
+          
+        }
                
            }
+    
+        func playDescriptionAudio() {
+            
+             if self.audioUID.removingWhitespaces().isEmpty{
+                 print("there is no audioUID")
+                 return
+             }
+            
+             if(audioPlayer?.isPlaying ?? false)
+                 {
+                     audioPlayer.stop()
+                 }
+                 else
+                 {
+                     Util.GetLocalFileURL(by: self.audioUID, type: .audio){
+                        url in
+                         let newURL = URL(fileURLWithPath: url!.absoluteString)
+                         print("URL prepare_play", newURL)
+                          
+                         self.prepare_play(url: newURL)
+                    }
+                   
+                 }
+        }
            
        func prepare_play(url: URL)
        {
