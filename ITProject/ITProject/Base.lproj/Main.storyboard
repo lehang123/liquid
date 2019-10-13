@@ -1765,7 +1765,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tempProfileImage" translatesAutoresizingMaskIntoConstraints="NO" id="YeU-Wa-4EQ" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
-                                                    <rect key="frame" x="15" y="31" width="40" height="40"/>
+                                                    <rect key="frame" x="15" y="16" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="TTZ-w9-ejz"/>
                                                         <constraint firstAttribute="height" constant="40" id="ioS-EB-Xk3"/>
@@ -1787,11 +1787,12 @@
                                             <constraints>
                                                 <constraint firstItem="APr-WB-ZZb" firstAttribute="top" secondItem="eBh-Fg-Gld" secondAttribute="top" constant="15" id="7P9-7s-oQv"/>
                                                 <constraint firstItem="APr-WB-ZZb" firstAttribute="leading" secondItem="YeU-Wa-4EQ" secondAttribute="trailing" constant="15" id="CHA-f5-WSO"/>
-                                                <constraint firstItem="YeU-Wa-4EQ" firstAttribute="top" secondItem="eBh-Fg-Gld" secondAttribute="topMargin" constant="20" id="FIr-1N-1Vh"/>
+                                                <constraint firstItem="YeU-Wa-4EQ" firstAttribute="top" secondItem="eBh-Fg-Gld" secondAttribute="topMargin" constant="5" id="FIr-1N-1Vh"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="AsR-br-2L7" secondAttribute="bottom" id="ICo-UY-eHW"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="APr-WB-ZZb" secondAttribute="trailing" constant="20" symbolic="YES" id="Jx6-f0-yxJ"/>
                                                 <constraint firstItem="AsR-br-2L7" firstAttribute="leading" secondItem="APr-WB-ZZb" secondAttribute="leading" id="PhN-he-zXc"/>
                                                 <constraint firstItem="YeU-Wa-4EQ" firstAttribute="leading" secondItem="eBh-Fg-Gld" secondAttribute="leading" constant="15" id="Sza-MR-k95"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="YeU-Wa-4EQ" secondAttribute="bottom" constant="24" id="cBn-1A-r4g"/>
                                                 <constraint firstAttribute="trailing" secondItem="AsR-br-2L7" secondAttribute="trailing" constant="15" id="gcr-Mx-uIF"/>
                                                 <constraint firstItem="AsR-br-2L7" firstAttribute="top" secondItem="APr-WB-ZZb" secondAttribute="bottom" constant="5" id="zb9-Tz-Rnp"/>
                                             </constraints>
