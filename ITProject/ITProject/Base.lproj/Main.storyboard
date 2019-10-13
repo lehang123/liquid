@@ -1489,7 +1489,7 @@
                                                 <constraint firstAttribute="height" constant="40" id="Lha-DC-MjN"/>
                                                 <constraint firstAttribute="width" constant="40" id="gls-zT-ZLg"/>
                                             </constraints>
-                                            <state key="normal" image="voiceImage1"/>
+                                            <state key="normal" image="voiceImage0"/>
                                             <connections>
                                                 <action selector="playAudio:" destination="dP9-AL-Ziv" eventType="touchUpInside" id="AjS-Rz-kja"/>
                                             </connections>
@@ -1725,7 +1725,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="9YX-3Q-gbg" secondAttribute="height" id="U3Y-6O-WUO"/>
                                                     </constraints>
-                                                    <state key="normal" image="voiceImage1"/>
+                                                    <state key="normal" image="voiceImage0"/>
                                                     <connections>
                                                         <action selector="onClickPlayAudio:" destination="nCG-eE-6IP" eventType="touchUpInside" id="8Wz-3j-2la"/>
                                                     </connections>
@@ -2168,7 +2168,7 @@
         <image name="recordingSignal8" width="38" height="100"/>
         <image name="settingIcon" width="108" height="110"/>
         <image name="tempProfileImage" width="600" height="600"/>
-        <image name="voiceImage1" width="531.5" height="512.5"/>
+        <image name="voiceImage0" width="412" height="507"/>
         <image name="voiceInputIcon" width="35" height="35"/>
     </resources>
     <inferredMetricsTieBreakers>
