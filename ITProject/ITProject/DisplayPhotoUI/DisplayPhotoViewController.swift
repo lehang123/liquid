@@ -432,6 +432,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         else {
             // create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
+            print("creating comment cell ::: ")
 
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
             cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)

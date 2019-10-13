@@ -181,6 +181,20 @@ class AlbumDetailTableViewController: UITableViewController {
  
         self.displayPhotoCollectionView?.performBatchUpdates({
             var indexPaths = [IndexPath]()
+            
+            if (albumContents.count > 0) {
+                for i in 0...albumContents.count - 1 {
+                    
+//                    self.albumContents.append(newPhotos[i])
+                    // first one for description
+                    indexPaths.append(IndexPath(item: i, section: 0))
+                    print("RUN reloadPhoto")
+                }
+                self.albumContents.removeAll()
+                self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
+                indexPaths.removeAll()
+            }
+            
             print("the length of album  in reloadPhoto is ::: " , self.albumContents.count)
             print("the length of newPhotos  in reloadPhoto is ::: " , newPhotos.count)
             
@@ -227,6 +241,21 @@ class AlbumDetailTableViewController: UITableViewController {
 //           })
         
         self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // reload album data every time load this view
+        
+        AlbumDBController.getInstance().getAllPhotosInfo(currAlbum: albumDetail.UID) { detail, error in
+            if let error = error {
+                print("error at prepare AlbumCoverViewController", error)
+            } else {
+                print("AlbumCoverViewC.prepare:::",detail.count)
+                print("AlbumCoverViewC CALL ")
+                self.reloadPhoto(newPhotos: detail)
+                
+            }
+        }
     }
 
 
