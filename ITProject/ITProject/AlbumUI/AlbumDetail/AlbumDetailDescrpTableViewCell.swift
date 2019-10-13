@@ -38,8 +38,20 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
     
     @IBAction func playAudio(_ sender: Any) {
        
-        playDescriptionAudio()
-        self.playAudioButton.imageView!.startAnimating()
+        if(isPlaying)
+        {
+            audioPlayer.stop()
+            isPlaying = false
+            self.playAudioButton.imageView!.stopAnimating()
+            self.playAudioButton.isSelected = false
+            
+        }
+        else
+        {
+            playDescriptionAudio()
+            self.playAudioButton.imageView!.startAnimating()
+          
+        }
     }
     
     /// reset the album detail if anything changed
@@ -89,7 +101,6 @@ class AlbumDetailDescrpTableViewCell: UITableViewCell {
             audioPlayer.delegate = self
             audioPlayer.play()
             isPlaying = true
-            
         }
         catch{
             print("Error")
