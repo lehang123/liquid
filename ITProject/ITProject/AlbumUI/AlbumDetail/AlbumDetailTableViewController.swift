@@ -17,6 +17,10 @@ protocol CreateMediaViewControllerDelegate {
     func createMedia(mediaDetail: MediaDetail)
 }
 
+protocol AlbumDetailTableViewDelegate {
+    func audioPlayFinish()
+}
+
 extension AlbumDetailTableViewController:CreateMediaViewControllerDelegate{
     func createMedia(mediaDetail: MediaDetail) {
         
@@ -167,6 +171,7 @@ class AlbumDetailTableViewController: UITableViewController {
         updateHeaderlayout = CAShapeLayer()
         self.tableView.UpdateView(headerView: headerView, updateHeaderlayout:
             updateHeaderlayout, headerHeight: headerHeight, headerCut: headerCut)
+        
     }
     
     /// reload the album's photos when there is a big change
@@ -176,6 +181,20 @@ class AlbumDetailTableViewController: UITableViewController {
  
         self.displayPhotoCollectionView?.performBatchUpdates({
             var indexPaths = [IndexPath]()
+            
+            if (albumContents.count > 0) {
+                for i in 0...albumContents.count - 1 {
+                    
+//                    self.albumContents.append(newPhotos[i])
+                    // first one for description
+                    indexPaths.append(IndexPath(item: i, section: 0))
+                    print("RUN reloadPhoto")
+                }
+                self.albumContents.removeAll()
+                self.displayPhotoCollectionView?.deleteItems(at: indexPaths)
+                indexPaths.removeAll()
+            }
+            
             print("the length of album  in reloadPhoto is ::: " , self.albumContents.count)
             print("the length of newPhotos  in reloadPhoto is ::: " , newPhotos.count)
             
@@ -222,6 +241,21 @@ class AlbumDetailTableViewController: UITableViewController {
 //           })
         
         self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // reload album data every time load this view
+        
+        AlbumDBController.getInstance().getAllPhotosInfo(currAlbum: albumDetail.UID) { detail, error in
+            if let error = error {
+                print("error at prepare AlbumCoverViewController", error)
+            } else {
+                print("AlbumCoverViewC.prepare:::",detail.count)
+                print("AlbumCoverViewC CALL ")
+                self.reloadPhoto(newPhotos: detail)
+                
+            }
+        }
     }
 
 
@@ -291,9 +325,22 @@ class AlbumDetailTableViewController: UITableViewController {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: Storyboard.albumDetailDescrpCell, for: indexPath) as! AlbumDetailDescrpTableViewCell
             cell.descrp = albumDetail
-            cell.delegate = self
+            cell.audioUID = albumDetail.audioUID
             cell.selectionStyle = .none
             print("AlbumDetailTableViewController.tableView.cell :::", cell)
+            
+                      if self.albumDetail.audioUID.removingWhitespaces().isEmpty{
+                          cell.playAudioButton.isHidden = true
+                      }
+                      else {
+                          Util.GetLocalFileURL(by: self.albumDetail.audioUID, type: .audio, error: {
+                              e in
+                              if let _ = e {
+                                    cell.playAudioButton.isHidden = true
+                              }
+                        
+                          })
+                      }
             return cell;
             
         } else {
@@ -363,58 +410,7 @@ class AlbumDetailTableViewController: UITableViewController {
     }
 }
 
-// MARK: - AlbumDetailDescrpTableViewCellDedelegate
-extension AlbumDetailTableViewController: AlbumDetailDescrpTableViewCellDedelegate
-{
-    func playDescriptionAudio() {
-        let audioUID = albumDetail.audioUID
-        if audioUID!.removingWhitespaces().isEmpty{
-            print("there is no audioUID")
-            return
-        }
-        
-        print("playDescriptionAudio : playing audio with UID : " + audioUID!)
-        if(isPlaying)
-                {
-                    audioPlayer.stop()
-                    isPlaying = false
-                }
-                else
-                {
-                    Util.GetLocalFileURL(by: audioUID!, type: .audio){
-                       url in
-                       self.prepare_play(url: url!)
-                   }
-                  
-                }
-    }
 
-    func prepare_play(url: URL)
-    {
-        do
-        {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer.delegate = self
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
-            isPlaying = true
-        }
-        catch{
-            print("Error")
-        }
-    }
-}
-
-extension AlbumDetailTableViewController: AVAudioPlayerDelegate
-{
-    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-        // do something when error
-    }
-    
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        // do something when finished
-    }
-}
 
 
 // MARK: -  UICollectionViewDataSource
@@ -522,4 +518,6 @@ extension AlbumDetailTableViewController : UICollectionViewDelegate, UICollectio
             return CGSize(width: itemWidth, height: itemWidth)
         }
 }
+
+
 

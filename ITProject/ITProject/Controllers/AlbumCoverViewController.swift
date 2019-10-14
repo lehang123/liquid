@@ -308,18 +308,18 @@ class AlbumCoverViewController: UIViewController {
                 albumDetailTVC.albumDetail = selectedAlbum
 
                 // todo : make album's photo according to the photo UID
-                let albumUID = albumDetailTVC.albumDetail.UID
-                // put it in here : albumDetailTVC.albumContents
-                AlbumDBController.getInstance().getAllPhotosInfo(currAlbum: albumUID) { detail, error in
-                    if let error = error {
-                        print("error at prepare AlbumCoverViewController", error)
-                    } else {
-                        print("AlbumCoverViewC.prepare:::",detail.count)
-                        print("AlbumCoverViewC CALL ")
-                        albumDetailTVC.reloadPhoto(newPhotos: detail)
-                        
-                    }
-                }
+                // let albumUID = albumDetailTVC.albumDetail.UID, to constant update
+                // note : change to reload at nextVC viewAppear
+//                AlbumDBController.getInstance().getAllPhotosInfo(currAlbum: albumUID) { detail, error in
+//                    if let error = error {
+//                        print("error at prepare AlbumCoverViewController", error)
+//                    } else {
+//                        print("AlbumCoverViewC.prepare:::",detail.count)
+//                        print("AlbumCoverViewC CALL ")
+//                        albumDetailTVC.reloadPhoto(newPhotos: detail)
+//
+//                    }
+//                }
             }
         }else if segue.identifier == Storyboard.presentCreateAlbumVC{
             // Get the presented navigationController and the editViewController it contains

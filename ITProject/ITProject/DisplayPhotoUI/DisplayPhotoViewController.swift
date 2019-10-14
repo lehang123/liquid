@@ -49,7 +49,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     public func setMediaDetailData(mediaDetail: MediaDetail)
     {
         self.mediaDetail = mediaDetail
-        self.fillCommentSource()
+//        self.fillCommentSource()
         
     }
 
@@ -80,10 +80,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             self.initialiseCommentSource()
                        }
         
-        
-            
-        
-        
     }
     //todo: fix bug : why photo is always default image? 
     private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
@@ -97,8 +93,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let UIDExtension =  documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION) {
             print("ELSE IF RUNS")
             Util.GetImageData(
-                imageUID: imageUID as! String,
-                UIDExtension: UIDExtension as! String ,
+                imageUID: imageUID as? String,
+                UIDExtension: UIDExtension as? String,
                 completion: {
                     data in
                     
@@ -178,6 +174,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
     
@@ -523,7 +520,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 //            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
 //            descriptionCell.descriptionDetail.sizeToFit()
             
-
+            if self.mediaDetail.audioUID.removingWhitespaces().isEmpty{
+                descriptionCell.playAudioButton.isHidden = true
+            }
+            else {
+                Util.GetLocalFileURL(by: self.mediaDetail.audioUID, type: .audio, error: {
+                    e in
+                    if let _ = e {
+                          descriptionCell.playAudioButton.isHidden = true
+                    }
+              
+                })
+            }
             descriptionCell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             return descriptionCell
@@ -532,11 +540,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         else {
             // create comment cell
             // show the comments, if there are hidden cells, show expandsion cell in the last cell
+            print("creating comment cell ::: ")
 
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
             cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)
             cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 2].comment)
-            cell1.imageView!.image = self.commentsSource[indexPath.row - 2].image
+            cell1.imageView!.image = #imageLiteral(resourceName: "heartIcon")
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell1
         }
