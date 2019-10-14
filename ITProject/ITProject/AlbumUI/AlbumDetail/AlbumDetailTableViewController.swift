@@ -24,7 +24,7 @@ extension AlbumDetailTableViewController:CreateMediaViewControllerDelegate{
         if let imageData = mediaDetail.cache,
            let audioUID = mediaDetail.audioUID,
            let imageUID = mediaDetail.UID{
-            
+            //upload audio, if there is any:
             if !audioUID.removingWhitespaces().isEmpty{
                 
                 let filename = URL(string: mediaDetail.audioUID)!.appendingPathExtension(Util.EXTENSION_M4A)
@@ -35,7 +35,7 @@ extension AlbumDetailTableViewController:CreateMediaViewControllerDelegate{
                   Util.UploadFileToServer(data: data , metadata: nil, fileName: audioUID, fextension: Util.EXTENSION_M4A)
                 }
             }
-            
+        //upload video:
         if mediaDetail.getExtension().contains(Util.EXTENSION_M4V) ||
            mediaDetail.getExtension().contains(Util.EXTENSION_MP4) ||
            mediaDetail.getExtension().contains(Util.EXTENSION_MOV){

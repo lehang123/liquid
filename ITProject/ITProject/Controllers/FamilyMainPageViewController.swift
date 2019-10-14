@@ -51,9 +51,10 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
 	private var profileURL: String?
 	private var profileExtension: String?
+    
 
 	@IBOutlet var familyMotto: UILabel!
-	@IBOutlet var profileImg: EnhancedCircleImageView!
+	@IBOutlet var familyProfileImg: EnhancedCircleImageView!
 	@IBOutlet var profileImgContainer: UIView!
 	@IBOutlet var carouselCollectionView: UICollectionView!
 
@@ -81,11 +82,11 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
 		// set Profile Image
 		// loading profileImage with shadow
-		self.profileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
-		self.profileImg.layer.shadowOpacity = 0.7
-		self.profileImg.layer.shadowOffset = CGSize(width: 10, height: 10)
-		self.profileImg.layer.shadowRadius = 1
-		self.profileImg.clipsToBounds = false
+		self.familyProfileImg.layer.shadowColor = UIColor.selfcGrey.cgColor
+		self.familyProfileImg.layer.shadowOpacity = 0.7
+		self.familyProfileImg.layer.shadowOffset = CGSize(width: 10, height: 10)
+		self.familyProfileImg.layer.shadowRadius = 1
+		self.familyProfileImg.clipsToBounds = false
 
 		// carousel effect
 		self.collectData()
@@ -130,9 +131,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					print(" FamilyMainPageViewController prepare : UISideMenuNavigationController !")
 
 					// pass user info to the current sideMenuVC
-					let currentUser = Auth.auth().currentUser
-					self.profileURL = currentUser?.photoURL?.deletingPathExtension().absoluteString
-					self.profileExtension = currentUser?.photoURL?.pathExtension
                     
                    
 					sideMenuVC.userInformation = UserInfo(
@@ -333,8 +331,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private func loadUserInfoFromServer()
 	{
 		// start pulling data from server : user info
-		RegisterDBController.getInstance().getUserInfo(completion: {
-			relation, dob, _, gender, name, error in
+        RegisterDBController.getInstance().getUserInfo(completion: {
+			relation, dob, _, gender, name, photoPath,photoExt , error in
 
 			if let error = error
 			{
@@ -346,6 +344,9 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 self.DOB = dob
                 self.name = name
                 self.gender = gender
+                self.profileURL = photoPath
+                self.profileExtension = photoExt
+                
                 
                 
                 print(" self.userDOB", dob)
@@ -381,11 +382,11 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
 						if let d = data
 						{
-							self.profileImg.image = UIImage(data: d)
+							self.familyProfileImg.image = UIImage(data: d)
 						}
 						else
 						{
-							self.profileImg.image = ImageAsset.default_image.image
+							self.familyProfileImg.image = ImageAsset.default_image.image
 						}
 					})
 				}

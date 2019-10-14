@@ -288,8 +288,10 @@ class ProfileViewController: UIViewController
 
                     if url != nil
                     {
-                        // change photo url in auth service
-                        Util.ChangeUserPhotoURL(imagePath: imageString, ext: Util.EXTENSION_JPEG)
+                        //todo : delete old photo in db:
+                        
+                        // change photo url in db:
+                        RegisterDBController.getInstance().UploadUserProfilePicture(imagePath: (url?.deletingPathExtension().lastPathComponent)!  , imageExt: Util.EXTENSION_JPEG)
                     }
                     Util.DismissActivityIndicator()
                 }, errorHandler: { e in

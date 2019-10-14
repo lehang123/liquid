@@ -71,18 +71,18 @@ class AlbumDBController
     /// updates the comment's field of a certain media.
     /// - Parameter username: user that commented
     /// - Parameter comment: comment message
-    /// - Parameter photoUID: photo to be amended.
-	public func UpdateComments(username: String, comment: String, photoUID: String)
+    /// - Parameter photoUID: photo to be commentedPhoto.
+	public func UpdateComments(username: DocumentReference, comment: String, commentedPhotoUID: String)
 	{
 		/* comment structure : [
-         * [  "username" : USERNAME,
-         * "message"  : COMMENTS ]
+         * [  "username" : DocumentReference,
+         * "message"  : String]
          * ]*/
         
 		DBController.getInstance()
 			.updateArrayField(
 				collectionName: AlbumDBController.MEDIA_COLLECTION_NAME,
-				documentUID: photoUID,
+				documentUID: commentedPhotoUID,
 				fieldName: AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS,
 				appendValue: [AlbumDBController.COMMENTS_USERNAME: username, AlbumDBController.COMMENTS_MESSAGE: comment]
 			)
@@ -226,7 +226,7 @@ class AlbumDBController
                         let currData: [String: Any] = doc.data()
                         
                         // process comments
-                        let currComments: [[String: Any]] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as! [[String: Any]]
+                        let currComments: [[String: Any]] = currData[AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS] as? [[String: Any]] ?? [[:]]
 
                         var parsedComments: [MediaDetail.comment] = [MediaDetail.comment]()
                         //for each comment array, parse them:
@@ -237,7 +237,7 @@ class AlbumDBController
                                     MediaDetail
                                         .comment(
                                             commentID: Util.GenerateUDID(),
-                                            username: commentRow[AlbumDBController.COMMENTS_USERNAME] as? String,
+                                            username: (commentRow[AlbumDBController.COMMENTS_USERNAME] as? DocumentReference ) ?? nil,
                                             message: commentRow[AlbumDBController.COMMENTS_MESSAGE] as? String))
     //                        print("at getAllPhotosInfo::: ", commentRow[AlbumDBController.COMMENTS_USERNAME], commentRow[AlbumDBController.COMMENTS_MESSAGE])
                         }
@@ -329,13 +329,21 @@ class AlbumDBController
                 //try to move it down after batch.commit():
                  update: watch,comments,and likes now in arrays!
                  */
+                let templateUser = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: "NRlhcwr4nR9t17mg27mq")
+                
                 mediaWithin.forEach { (item) in
                     
                     batch.setData([
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO : "",
-                        AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
+                        AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS:
+                            [
+                                [
+                                    AlbumDBController.COMMENTS_USERNAME: templateUser,
+                                    AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
+                                ]
+                            ],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: item.getExtension(),
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: item.getDescription() ?? "",
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM:  albumDocumentReference,
@@ -451,6 +459,8 @@ class AlbumDBController
 				collectionName: AlbumDBController.ALBUM_COLLECTION_NAME,
 				documentUID: albumUID
 			)
+
+        let templateUser = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: "NRlhcwr4nR9t17mg27mq")
 		DBController
 			.getInstance()
 			.addDocumentToCollectionWithUID(
@@ -459,7 +469,13 @@ class AlbumDBController
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO : audioUID,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
-					AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [[:]],
+					 AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS:
+                                               [
+                                                   [
+                                                       AlbumDBController.COMMENTS_USERNAME: templateUser,
+                                                       AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
+                                                   ]
+                                               ],
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: ext,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: desc,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM: albumDocRef,
