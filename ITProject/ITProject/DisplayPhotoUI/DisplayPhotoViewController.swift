@@ -57,9 +57,9 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     public func fillCommentSource()
     {
         let currSrc: [MediaDetail.comment]? = self.mediaDetail.getComments()
-        print("COMMENT SRC COUNT IS : ",currSrc!.count)
+        //ßprint("COMMENT SRC COUNT IS : ",currSrc!.count)
         //using DispatchGroup to wait for images to download:
-
+        Util.ShowActivityIndicator(withStatus: "loading Comments...")
         let group = DispatchGroup()
         
         currSrc?.forEach{ item in
@@ -78,7 +78,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         group.notify(queue: .main) {
             
             self.initialiseCommentSource()
-                       }
+            Util.DismissActivityIndicator()
+        }
         
     }
     //todo: fix bug : why photo is always default image? 
@@ -350,7 +351,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
              self.tableView.beginUpdates()
              var ctr :Int = 0
              self.commentsSource.forEach { (item) in
-                 indexPaths.append(IndexPath(row: ctr, section: 0))
+                 indexPaths.append(IndexPath(row: ctr+2, section: 0))
 
                  self.tableView.insertRows(at: indexPaths, with: .top)
                  ctr += 1
@@ -361,7 +362,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
              
              
              self.tableView.endUpdates()
-             self.tableView.scrollToRow(at: IndexPath(row: self.commentsSource.count-1, section: 0), at: .bottom, animated: true)
+             self.tableView.scrollToRow(at: IndexPath(row: self.commentsSource.count+1, section: 0), at: .bottom, animated: true)
 
          }
 
@@ -584,10 +585,18 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)
             cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 2].comment)
             Util.GetImageData(imageUID: self.commentsSource[indexPath.row - 2].image, UIDExtension: self.commentsSource[indexPath.row - 2].ext, completion: {
-                                          data in
+            data in
+                let width = cell1.userProfileImage.bounds.width
+                let height = cell1.userProfileImage.bounds.height
+                Util.UserInitThread(work: {
+                    // resize image in worker thread
+                    let image = RBResizer.RBResizeImage(image: UIImage(data:data!), targetSize: CGSize(width: width, height: height))
+                    DispatchQueue.main.async {
+                        cell1.userProfileImage.image = image
+                    }
+                })
                                           
-                                          cell1.userProfileImage.image = UIImage(data:data!)
-                                      })
+            })
             
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell1
