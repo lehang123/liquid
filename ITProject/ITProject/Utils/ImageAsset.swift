@@ -48,6 +48,9 @@ extension UIImage {
         case record_playing_3 = "recordPlaying3"
         case setting_icon = "settingIcon"
         case upload_icon = "uploadIcon"
+        case voice_Image_1 = "voiceImage1"
+        case voice_Image_2 = "voiceImage2"
+        case voice_Image_3 = "voiceImage3"
         case voice_input_icon = "voiceInputIcon"
         
 

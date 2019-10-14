@@ -469,6 +469,7 @@ class AlbumDBController
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_WATCH: [],
                     AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO : audioUID,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_LIKES: [],
+
 					 AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS:
                                                [
                                                    [
@@ -476,6 +477,9 @@ class AlbumDBController
                                                        AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
                                                    ]
                                                ],
+
+					AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [], //was [[:]]
+
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: ext,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: desc,
 					AlbumDBController.MEDIA_DOCUMENT_FIELD_ALBUM: albumDocRef,
