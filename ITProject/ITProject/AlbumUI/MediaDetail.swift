@@ -17,7 +17,7 @@ class MediaDetail: Equatable
 	public struct comment: Equatable
 	{
 		let commentID: String!
-		let username: String!
+		let username: DocumentReference?
 		let message: String!
 
 		static func == (lhs: comment, rhs: comment) -> Bool

@@ -26,6 +26,8 @@ class RegisterDBController
 	public static let USER_DOCUMENT_FIELD_GENDER = "gender"
     /// user's date of birth:
     public static let USER_DOCUMENT_FIELD_DATE_OF_BIRTH = "date_of_birth"
+    public static let USER_DOCUMENT_FIELD_PROFILE_PICTURE = "profile_picture"
+    public static let USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION = "profile_picture_extension"
 
 	/* constant for FAMILIES collections */
 	public static let FAMILY_COLLECTION_NAME = "families"
@@ -95,7 +97,7 @@ class RegisterDBController
     }
     /// get  current user's info from database.
     ///  - Parameter completion: passes on relation in family, user's gender, user's family reference.
-    public func getUserInfo(completion: @escaping (_ relation: String?, _ dateOfBirth: Date?, _ familyIn: DocumentReference?, _ gender : String?, _ name : String?, _ error: Error?) -> Void = { _, _, _, _, _, _ in })
+    public func getUserInfo(completion: @escaping (_ relation: String?, _ dateOfBirth: Date?, _ familyIn: DocumentReference?, _ gender : String?, _ name : String?, _ photoPath : String?,_ photoExt : String?, _ error: Error?) -> Void = { _, _, _, _, _,_,_, _ in })
     {
         
         let user = Auth.auth().currentUser!.uid
@@ -123,8 +125,11 @@ class RegisterDBController
                 let familyDocRef: DocumentReference = data[RegisterDBController.USER_DOCUMENT_FIELD_FAMILY] as! DocumentReference
                 let gender: String? = data[RegisterDBController.USER_DOCUMENT_FIELD_GENDER] as? String
                 let name : String? = data[RegisterDBController.USER_DOCUMENT_FIELD_NAME] as? String
+                let photoExt : String? = data[RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION] as? String
+                let photoPath : String? = data[RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE] as? String
+
                 //passes data to next stage:
-                completion(position, dob, familyDocRef, gender, name, error)
+                completion(position, dob, familyDocRef, gender, name,photoPath,photoExt, error)
 
                 Util.DismissActivityIndicator()
             }
@@ -134,6 +139,21 @@ class RegisterDBController
                 print("ERROR LOADING cacheUserAndFam::: ", error as Any)
             }
         }
+    }
+    
+    public func UploadUserProfilePicture (imagePath : String, imageExt : String){
+       
+        let userUID = Auth.auth().currentUser?.uid
+        let userDocRef = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: userUID!)
+        
+        //todo : delete old photo:
+        
+        
+        //then, add new photo in:
+        userDocRef.updateData(
+            [RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE  : imagePath,
+             RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION : imageExt])
+
     }
      public func getFamilyMembersInfo (completion: @escaping (_ familyMember: [FamilyMember], _ error: Error?) -> Void = { _, _ in }){
             // get current user Document Ref:

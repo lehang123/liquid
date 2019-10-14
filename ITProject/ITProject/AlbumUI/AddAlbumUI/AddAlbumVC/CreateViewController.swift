@@ -106,6 +106,7 @@ class CreateViewController: UIViewController {
                 // todo : media exist even I don't record
                 let aUrl = URL(string: self.audioDestinationURL)?.deletingPathExtension().lastPathComponent
                 print("createMedia : audio exist with UID : " + aUrl!)
+
                 self.media.audioUID = aUrl
                 self.media.audioExt = Util.EXTENSION_M4A
             }
