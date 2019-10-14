@@ -204,25 +204,27 @@ class Util {
                                     UIDExtension: String?,
                                     completion: @escaping (Data?) -> Void = { _ in },
                                     errorHandler: @escaping (Error?) -> Void = { _ in }) {
-        if let imageid = imageUID, let imageExt = UIDExtension {
-            if imageid == ImageAsset.default_image.rawValue {
-                let uiImage =  ImageAsset.default_image.image
-                completion(uiImage.jpegData(compressionQuality: 1.0))
-            } else {
-                if let dataCahe = CacheHandler.getInstance().getCache(forKey: imageid) {
-                    print("GetImageData : data in cache, fetching... ")
-                    completion(dataCahe)
-                } else if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion) {
-                    print("GetImageData : getting image from local documentPath...")
+        
+            if let imageid = imageUID, let imageExt = UIDExtension {
+                if imageid == ImageAsset.default_image.rawValue {
+                    let uiImage =  ImageAsset.default_image.image
+                        completion(uiImage.jpegData(compressionQuality: 1.0))
                 } else {
-                    print("GetImageData : Local folder doesn't have file, searching from sever..")
-                    GetImageFromServer(imageUID: imageid, completion: completion, errorHandler: errorHandler)
+                    if let dataCahe = CacheHandler.getInstance().getCache(forKey: imageid) {
+                        print("GetImageData : data in cache, fetching... ")
+                            completion(dataCahe)
+                    } else if GetDataFromLocalFile(filename: imageid, fextension: imageExt, completion: completion) {
+                        print("GetImageData : getting image from local documentPath...")
+                    } else {
+                        print("GetImageData : Local folder doesn't have file, searching from sever..")
+                        GetImageFromServer(imageUID: imageid, completion: completion, errorHandler: errorHandler)
+                    }
                 }
+            } else {
+                    completion(nil)
+                
+                print("GetImageData fails: empty Image URL")
             }
-        } else {
-            completion(nil)
-            print("GetImageData fails: empty Image URL")
-        }
     }
     enum FileType {
         case video

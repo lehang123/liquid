@@ -58,6 +58,7 @@
 		8423A6ED22FA700E0049B656 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8423A6EC22FA700E0049B656 /* GoogleService-Info.plist */; };
 		8423A6F622FD03370049B656 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6F522FD03370049B656 /* Util.swift */; };
 		8423A6FB22FE94720049B656 /* LoginNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8423A6FA22FE94720049B656 /* LoginNavigationController.swift */; };
+		8438135F23544492004CA4C4 /* RBResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8438135E23544492004CA4C4 /* RBResizer.swift */; };
 		8446C075230E4DEA000ABCD7 /* DisplayPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C074230E4DEA000ABCD7 /* DisplayPhotoViewController.swift */; };
 		8446C077230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446C076230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift */; };
 		8446C07F230F82DF000ABCD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8446C07E230F82DF000ABCD7 /* Assets.xcassets */; };
@@ -157,6 +158,7 @@
 		8423A6EC22FA700E0049B656 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8423A6F522FD03370049B656 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		8423A6FA22FE94720049B656 /* LoginNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationController.swift; sourceTree = "<group>"; };
+		8438135E23544492004CA4C4 /* RBResizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBResizer.swift; sourceTree = "<group>"; };
 		8446C074230E4DEA000ABCD7 /* DisplayPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPhotoViewController.swift; sourceTree = "<group>"; };
 		8446C076230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWatchedBookmarkCell.swift; sourceTree = "<group>"; };
 		8446C07E230F82DF000ABCD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				6CABC7DD2306C99800D2AFBC /* AlbumDBController.swift */,
 				0D067F512304EFB100F232E8 /* RegisterDBController.swift */,
 				0DC1BCAB230AB314006968DF /* CacheHandler.swift */,
+				8438135E23544492004CA4C4 /* RBResizer.swift */,
 			);
 			path = AppUtility;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				84DF66B2233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift in Sources */,
 				84E9BA4822F941F4003EA693 /* LoginViewController.swift in Sources */,
 				6C3ECB9E22FC61FF003C89DB /* FamilyMainPageViewController.swift in Sources */,
+				8438135F23544492004CA4C4 /* RBResizer.swift in Sources */,
 				526A4549233B0DC400ADEE66 /* DescriptionCell.swift in Sources */,
 				8446C0892321EA0A000ABCD7 /* MediaDetail.swift in Sources */,
 				6C0151E223006DC700FEF794 /* CarouselEffectCollectionViewCell.swift in Sources */,
