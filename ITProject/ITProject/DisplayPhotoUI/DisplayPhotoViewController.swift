@@ -33,7 +33,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     {
         var comment = String()
         var username = String()
-        var image : UIImage
+        var image = String()
+        var ext = String()
     }
 
     /// source is the total number of comments
@@ -49,7 +50,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     public func setMediaDetailData(mediaDetail: MediaDetail)
     {
         self.mediaDetail = mediaDetail
-//        self.fillCommentSource()
+        self.fillCommentSource()
         
     }
 
@@ -61,9 +62,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         let group = DispatchGroup()
         
-        currSrc?.forEach
-            
-        { item in
+        currSrc?.forEach{ item in
             group.enter()
 
             //download current user profile picture, then put it to UI:
@@ -77,53 +76,91 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
                 
             }
         group.notify(queue: .main) {
+            
             self.initialiseCommentSource()
                        }
         
     }
     //todo: fix bug : why photo is always default image? 
-    private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
-        print("GET PHOTO FROM DB")
-        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: currentUserUID) { (documentSnapshot, error) in
-        if let error = error {
-            print("error at fillCommentSource:::", error)
-             group.leave()
-         //if we actually have photo, put it in to comment src now:
-        }else if let imageUID = documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE),
-            let UIDExtension =  documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION) {
-            print("ELSE IF RUNS")
-            Util.GetImageData(
-                imageUID: imageUID as? String,
-                UIDExtension: UIDExtension as? String,
-                completion: {
-                    data in
-                    
-                    self.commentsSource
-                        .append(
-                            DisplayPhotoViewController
-                                .CommentCellStruct(
-                              comment: comment ?? "",
-                              username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
-                              image : UIImage(data:data!)!
-                          ))
-                    group.leave()
-                      })
-        //if we dont have photo, we need to set a default image:
-        } else{
-            print(" ELSE RUNS")
-            self.commentsSource
-              .append(
-                  DisplayPhotoViewController
-                      .CommentCellStruct(
-                    comment: comment ?? "",
-                    username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
-                    image : #imageLiteral(resourceName: "tempProfileImage")
-                ))
-            group.leave()
+//    private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
+//        print("GET PHOTO FROM DB")
+//        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: currentUserUID) { (documentSnapshot, error) in
+//        if let error = error {
+//            print("error at fillCommentSource:::", error)
+//             group.leave()
+//         //if we actually have photo, put it in to comment src now:
+//        }else if let imageUID = documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE),
+//            let UIDExtension =  documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION) {
+//            print("ELSE IF RUNS")
+//            Util.GetImageData(
+//                imageUID: imageUID as? String,
+//                UIDExtension: UIDExtension as? String,
+//                completion: {
+//                    data in
+//
+//                    self.commentsSource
+//                        .append(
+//                            DisplayPhotoViewController
+//                                .CommentCellStruct(
+//                              comment: comment ?? "",
+//                              username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
+//                              image : UIImage(data:data!)!
+//                          ))
+//                    group.leave()
+//                      })
+//        //if we dont have photo, we need to set a default image:
+//        } else{
+//            print(" ELSE RUNS")
+//            self.commentsSource
+//              .append(
+//                  DisplayPhotoViewController
+//                      .CommentCellStruct(
+//                    comment: comment ?? "",
+//                    username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
+//                    image : #imageLiteral(resourceName: "tempProfileImage")
+//                ))
+//            group.leave()
+//            }
+//
+//        }
+//    }
+      private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
+            print("GET PHOTO FROM DB")
+            DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: currentUserUID) { (documentSnapshot, error) in
+            if let error = error {
+                print("error at fillCommentSource:::", error)
+                 group.leave()
+             //if we actually have photo, put it in to comment src now:
+            }else if let imageUID = documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE),
+                let UIDExtension =  documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION) {
+                print("ELSE IF RUNS")
+                self.commentsSource
+                                           .append(
+                                               DisplayPhotoViewController
+                                                   .CommentCellStruct(
+                                                 comment: comment ?? "",
+                                                 username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
+                                                 image :imageUID as! String,
+                                                 ext :UIDExtension as! String
+                                             ))
+                group.leave()
+            //if we dont have photo, we need to set a default image:
+            } else{
+                print(" ELSE RUNS")
+                self.commentsSource
+                  .append(
+                      DisplayPhotoViewController
+                          .CommentCellStruct(
+                        comment: comment ?? "",
+                        username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
+                        image :ImageAsset.default_image.rawValue,
+                        ext :Util.EXTENSION_JPEG
+                    ))
+                group.leave()
+                }
+    
             }
-            
         }
-    }
     private var headerView: UIView!
     private var updateHeaderlayout: CAShapeLayer!
 
@@ -370,6 +407,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         
         group.notify(queue: .main)
         {
+            
             self.updateCommentSource()
         }
        
@@ -545,7 +583,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             let cell1 = tableView.dequeueReusableCell(withIdentifier: DisplayPhotoViewController.commentTableViewCell, for: indexPath) as! CommentCell
             cell1.setUsernameLabel(username: self.commentsSource[indexPath.row - 2].username)
             cell1.setCommentLabel(comment: self.commentsSource[indexPath.row - 2].comment)
-            cell1.imageView!.image = #imageLiteral(resourceName: "heartIcon")
+            Util.GetImageData(imageUID: self.commentsSource[indexPath.row - 2].image, UIDExtension: self.commentsSource[indexPath.row - 2].ext, completion: {
+                                          data in
+                                          
+                                          cell1.userProfileImage.image = UIImage(data:data!)
+                                      })
+            
             cell1.selectionStyle = UITableViewCell.SelectionStyle.none
             return cell1
         }
