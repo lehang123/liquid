@@ -117,7 +117,7 @@ class Util {
                         return
                     }
                     
-                    print("URL IS: GOING TO COMPLETION", url)
+                   // print("URL IS: GOING TO COMPLETION", url)
                     completion(url)
                 }
             }
@@ -187,7 +187,7 @@ class Util {
                                 return
                             }
                             
-                            print("URL IS: GOING TO COMPLETION", url)
+//                            print("URL IS: GOING TO COMPLETION", url)
                             completion(url)
                         }
                     }
