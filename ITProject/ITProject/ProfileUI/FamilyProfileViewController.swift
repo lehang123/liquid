@@ -57,7 +57,12 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate
 			action: #selector(self.DoneButtonTapped)
 		)
 		navigationItem.rightBarButtonItem = rightButtonItem
+        self.setupDisplayFamilyUID()
 	}
+    
+    private func setupDisplayFamilyUID(){
+        displayFamilyUID.layer.addBorder(edge: UIRectEdge.bottom, adjust: CGFloat(0), color: UIColor.lightGray, thickness: 1)
+    }
 
 	/// Setting up the view and make it looks better
 	private func setUpView()
@@ -73,7 +78,7 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate
 			else
 			{
 				print("get image fails : loading data to image")
-				self.familyProfileImageView.image = #imageLiteral(resourceName: "item4")
+                self.familyProfileImageView.image = ImageAsset.default_image.image
 			}
 			self.familyProfileImageView.layer.shadowColor = UIColor.selfcGrey.cgColor
 			self.familyProfileImageView.layer.shadowOpacity = 0.7
