@@ -1691,12 +1691,6 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bookmark" translatesAutoresizingMaskIntoConstraints="NO" id="4Lz-go-1pw" userLabel="Bookmark">
-                                                    <rect key="frame" x="305.5" y="18" width="54.500000000000028" height="55.000000000000028"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="4Lz-go-1pw" secondAttribute="height" multiplier="1:1" id="31c-Vc-8vs"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="owC-ug-4kH" customClass="FaveButton" customModule="FaveButton">
                                                     <rect key="frame" x="15" y="29.5" width="32" height="32"/>
                                                     <constraints>
@@ -1716,23 +1710,19 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="1LB-ea-9he"/>
-                                                <constraint firstAttribute="trailing" secondItem="4Lz-go-1pw" secondAttribute="trailing" constant="15" id="2ne-TC-aeF"/>
                                                 <constraint firstItem="owC-ug-4kH" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="77Q-OD-pea"/>
                                                 <constraint firstItem="owC-ug-4kH" firstAttribute="width" secondItem="sEm-hM-BI3" secondAttribute="height" multiplier="0.35" id="Cmh-5I-rsR"/>
-                                                <constraint firstItem="4Lz-go-1pw" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="D5l-BC-ruX"/>
                                                 <constraint firstItem="owC-ug-4kH" firstAttribute="leading" secondItem="sEm-hM-BI3" secondAttribute="leading" constant="15" id="Fdc-i1-lyl"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="YX2-tn-i8S" secondAttribute="trailing" constant="20" symbolic="YES" id="FfK-12-RZa"/>
                                                 <constraint firstItem="rF1-zc-94m" firstAttribute="leading" secondItem="owC-ug-4kH" secondAttribute="trailing" constant="10" id="IwF-pp-O6W"/>
                                                 <constraint firstItem="YX2-tn-i8S" firstAttribute="leading" secondItem="cms-Sz-D2f" secondAttribute="trailing" constant="10" id="NbX-rF-gAB"/>
                                                 <constraint firstItem="rF1-zc-94m" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="Osk-rl-Qfe"/>
                                                 <constraint firstItem="YX2-tn-i8S" firstAttribute="centerY" secondItem="sEm-hM-BI3" secondAttribute="centerY" id="T3e-Ls-Kou"/>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="leading" secondItem="rF1-zc-94m" secondAttribute="trailing" constant="20" id="V2b-tT-2Nt"/>
-                                                <constraint firstItem="4Lz-go-1pw" firstAttribute="width" secondItem="sEm-hM-BI3" secondAttribute="height" multiplier="0.6" id="k99-Yu-YDx"/>
                                                 <constraint firstItem="cms-Sz-D2f" firstAttribute="width" secondItem="sEm-hM-BI3" secondAttribute="height" multiplier="0.6" id="vxX-Yc-4ZV"/>
-                                                <constraint firstItem="4Lz-go-1pw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YX2-tn-i8S" secondAttribute="trailing" constant="8" symbolic="YES" id="xj3-Jm-lcN"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="Bookmark" destination="4Lz-go-1pw" id="tYP-AB-Jtc"/>
                                             <outlet property="likeButton" destination="owC-ug-4kH" id="vHo-0B-eiv"/>
                                             <outlet property="likeNumbers" destination="rF1-zc-94m" id="hhl-6W-icp"/>
                                             <outlet property="watchedLabel" destination="cms-Sz-D2f" id="Un0-cU-Rfs"/>
@@ -1849,50 +1839,25 @@
                                 <rect key="frame" x="0.0" y="610.5" width="375" height="56.5"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Comment Here" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MNA-qF-Ptv">
-                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
+                                        <rect key="frame" x="56.5" y="8" width="262.5" height="40.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="330" y="17" width="25" height="22"/>
+                                        <rect key="frame" x="332.5" y="17" width="22.5" height="22"/>
                                         <state key="normal" image="disableSendIcon"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hno-TV-F7x">
-                                        <rect key="frame" x="10" y="10.5" width="35" height="35"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="hno-TV-F7x" secondAttribute="height" id="zVE-WP-khD"/>
-                                        </constraints>
-                                        <state key="normal" image="voiceInputIcon"/>
-                                        <connections>
-                                            <action selector="showRecording:" destination="zQN-g9-n7S" eventType="touchUpInside" id="k4M-Di-B7L"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="prc-QY-NqT">
-                                        <rect key="frame" x="55" y="8" width="265" height="40.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Long Press To Record">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="prc-QY-NqT" firstAttribute="centerY" secondItem="LQI-L1-LBa" secondAttribute="centerY" id="2ge-7i-Hko"/>
                                     <constraint firstItem="MNA-qF-Ptv" firstAttribute="centerY" secondItem="LQI-L1-LBa" secondAttribute="centerY" id="6lH-N6-EuA"/>
                                     <constraint firstItem="Ral-km-w5x" firstAttribute="centerY" secondItem="MNA-qF-Ptv" secondAttribute="centerY" id="ET5-XC-FWk"/>
                                     <constraint firstItem="MNA-qF-Ptv" firstAttribute="centerX" secondItem="LQI-L1-LBa" secondAttribute="centerX" id="Gz2-00-LHd"/>
                                     <constraint firstAttribute="trailing" secondItem="Ral-km-w5x" secondAttribute="trailing" constant="20" id="Hyk-9J-if6"/>
-                                    <constraint firstItem="prc-QY-NqT" firstAttribute="leading" secondItem="hno-TV-F7x" secondAttribute="trailing" constant="10" id="Jzl-CJ-11T"/>
-                                    <constraint firstItem="Ral-km-w5x" firstAttribute="leading" secondItem="prc-QY-NqT" secondAttribute="trailing" constant="10" id="P45-T1-zn2"/>
-                                    <constraint firstItem="hno-TV-F7x" firstAttribute="centerY" secondItem="LQI-L1-LBa" secondAttribute="centerY" id="a0O-jS-asP"/>
-                                    <constraint firstItem="MNA-qF-Ptv" firstAttribute="leading" secondItem="hno-TV-F7x" secondAttribute="trailing" constant="10" id="hYO-oQ-A8g"/>
-                                    <constraint firstItem="hno-TV-F7x" firstAttribute="leading" secondItem="LQI-L1-LBa" secondAttribute="leading" constant="10" id="ivX-nt-SYz"/>
-                                    <constraint firstItem="prc-QY-NqT" firstAttribute="centerY" secondItem="MNA-qF-Ptv" secondAttribute="centerY" id="tJv-MJ-2KF"/>
-                                    <constraint firstItem="prc-QY-NqT" firstAttribute="width" secondItem="MNA-qF-Ptv" secondAttribute="width" id="v9H-2x-bd5"/>
-                                    <constraint firstItem="prc-QY-NqT" firstAttribute="height" secondItem="MNA-qF-Ptv" secondAttribute="height" id="xPU-lp-mGm"/>
+                                    <constraint firstItem="MNA-qF-Ptv" firstAttribute="width" secondItem="LQI-L1-LBa" secondAttribute="width" multiplier="0.7" id="edL-qz-zeA"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -1914,9 +1879,7 @@
                     <connections>
                         <outlet property="cmmentText" destination="MNA-qF-Ptv" id="ZjC-1F-gHF"/>
                         <outlet property="displayPhotoImageView" destination="38E-Ff-saF" id="hsH-20-dle"/>
-                        <outlet property="recordButton" destination="prc-QY-NqT" id="0FS-ic-20E"/>
                         <outlet property="sendButton" destination="Ral-km-w5x" id="Rcm-u8-zHQ"/>
-                        <outlet property="showRecordKeyboard" destination="hno-TV-F7x" id="S3s-VJ-37e"/>
                         <outlet property="tableView" destination="21E-H0-baM" id="3eM-2R-iOI"/>
                     </connections>
                 </viewController>
@@ -2192,7 +2155,6 @@
     </scenes>
     <resources>
         <image name="addIcon" width="101" height="101"/>
-        <image name="bookmark" width="107" height="107"/>
         <image name="defaultImage" width="800" height="600"/>
         <image name="disableSendIcon" width="22.5" height="22"/>
         <image name="eye" width="108" height="108"/>
@@ -2205,7 +2167,6 @@
         <image name="recordingSignal8" width="38" height="100"/>
         <image name="settingIcon" width="108" height="110"/>
         <image name="voiceImage0" width="412" height="507"/>
-        <image name="voiceInputIcon" width="35" height="35"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="cdT-L3-sIn"/>
