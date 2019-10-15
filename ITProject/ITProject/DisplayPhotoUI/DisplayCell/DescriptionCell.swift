@@ -35,7 +35,7 @@ class DescriptionCell: UITableViewCell{
     public func setDescriptionLabel(description: String){
         if (description.isEmpty) {
 
-            descriptionDetail.text = "Click to add description..."
+            descriptionDetail.text = "There is no description..."
 
         } else {
             descriptionDetail.text = description
