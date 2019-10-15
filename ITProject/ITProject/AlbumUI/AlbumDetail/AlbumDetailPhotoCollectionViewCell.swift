@@ -18,6 +18,7 @@ class AlbumDetailPhotoCollectionViewCell: UICollectionViewCell {
     var image: UIImage! {
         didSet {
             self.photoImageView.image = image
+            self.photoImageView.contentMode = .scaleToFill
             self.setNeedsLayout()
         }
         
