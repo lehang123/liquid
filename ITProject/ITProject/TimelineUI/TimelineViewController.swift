@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 extension Date {
     ///date separator as from firestore
     public static let   DATE_SEPARATOR : String = "-"
@@ -62,20 +63,7 @@ class TimelineViewController: UIViewController
     
     /// get timeline data from db
     private func loadTimeFrames(){
-//        self.timeFrames = [
-//            TimelineField(date: "January 1", content: "New Year's Day", image: UIImage(named: "tempProfileImage")),
-//            TimelineField(date: "February 14", content: "The month of love!", image: UIImage(named: "heartIcon")),
-//            TimelineField(date: "March", content: "Comes like a lion, leaves like a lamb", image: nil),
-//            TimelineField(date: "April 1", content: "Dumb stupid pranks.", image: UIImage(named: "eye")),
-//            TimelineField(date: "No image?", content: "That's right. No image is necessary!"),
-//            TimelineField(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
-//            TimelineField(date: "Long text", content: "This control can stretch. It doesn't matter how long or short the text is, or how many times you wiggle your nose and make a wish. The control always fits the content, and even extends a while at the end so the scroll view it is put into, even when pulled pretty far down, does not show the end of the scroll view."),
-//            TimelineField(date: "That's it!"),
-//        ]
-        
-        //bug here: it shows nothing:(
-       // print("FAMILY UID IS AT LOADTIMEFRAMES: ",self.familyUID)
-        //Util.ShowActivityIndicator()
+
         AlbumDBController.getInstance().getAlbumInfo(familyID: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.FAMILY_COLLECTION_NAME, documentUID: self.familyUID)) { (data, error) in
             if let error = error{
                 print("error at loadTimeFrames:::", error)
@@ -90,8 +78,7 @@ class TimelineViewController: UIViewController
                     let createdDate : String = createdDateTmp.DateToStringWithTimes()
                     
                     
-                    //find album creator:
-                    let content :String = albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! String + " created " + albumName
+                    
                     
                     //enter async :
                     
@@ -102,13 +89,33 @@ class TimelineViewController: UIViewController
                             imageUID: (albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL] as! String),
                             UIDExtension: (albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_THUMBNAIL_EXTENSION] as! String),
                             completion: { (data) in
-                            //pass data to UI:
-                            self.timeFrames
-                            .append(
-                                TimelineField(
-                                    date: createdDate ,
-                                    content: content,
-                                    image: UIImage(data: data!)) )
+                                group.enter()
+                                DBController
+                                    .getInstance()
+                                    .getDocumentFromCollection(
+                                    collectionName: RegisterDBController.USER_COLLECTION_NAME,
+                                    documentUID:  albumDetail[AlbumDBController.ALBUM_DOCUMENT_FIELD_OWNER] as! String)
+                                    { (doc, e) in
+                                    if let error  = e {
+                                        print("error at getting timeline", error)
+                                    }
+                                    else{
+                                        //find album creator:
+                                        let content :String =  doc?.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String + " created " + albumName
+                                        
+                                        //pass data to UI:
+                                        self.timeFrames
+                                        .append(
+                                            TimelineField(
+                                                date: createdDate ,
+                                                content: content,
+                                                image: UIImage(data: data!)) )
+                                        group.leave()
+                                    }
+                                }
+                                
+                                
+                            
                             //so, wait until this completion finished
                             group.leave()
                         })
