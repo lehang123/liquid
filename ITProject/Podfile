@@ -25,6 +25,7 @@ target 'ITProject' do
   pod 'FaveButton'
   pod 'Gallery'
   pod 'Dollar'
+  pod 'DropDown'
 
   source 'https://github.com/CocoaPods/Specs.git'
   pod 'Zip', '~> 1.1'

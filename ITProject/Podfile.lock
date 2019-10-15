@@ -6,6 +6,7 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.3)
   - BoringSSL-GRPC/Interface (0.0.3)
   - Dollar (9.0.0)
+  - DropDown (2.3.13)
   - EnhancedCircleImageView (0.1)
   - FaveButton (3.2.0)
   - FBSDKCoreKit (5.3.0):
@@ -203,6 +204,7 @@ PODS:
 
 DEPENDENCIES:
   - Dollar
+  - DropDown
   - EnhancedCircleImageView
   - FaveButton
   - Firebase
@@ -224,6 +226,7 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - BoringSSL-GRPC
     - Dollar
+    - DropDown
     - EnhancedCircleImageView
     - FaveButton
     - FBSDKCoreKit
@@ -265,6 +268,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   Dollar: 2fc9bdeeb2d3ae1f251461803240d5c93829ee0c
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   EnhancedCircleImageView: 1069bbc14526d89502cc0e48b45f5da6a3317a47
   FaveButton: c818ab3d04d22a7615e93f08c7b35932acb3f735
   FBSDKCoreKit: 39748deefe37a005f983722e433be2ddcdd83ae7
@@ -303,6 +307,6 @@ SPEC CHECKSUMS:
   UPCarouselFlowLayout: 4c7d2c43a10ebb1597bde502a53699d378341dad
   Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 35d25ff221f67575fe6a9ae897be81673b743d96
+PODFILE CHECKSUM: 0e1ed4a8911fbca2b10d3a8e500f17c76f0727bf
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.8.3
