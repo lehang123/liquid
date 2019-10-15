@@ -194,8 +194,8 @@ class RegisterDBController
     //                            print("dobDate:::",dobDate)
                                 let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as! Timestamp) ;
                         
-                                let str =  dobTimestamp.dateValue().description as? String
-                                let dateTimeComp : [String] = (str?.components(separatedBy: " "))!
+                                let str =  dobTimestamp.dateValue().description 
+                                let dateTimeComp : [String] = (str.components(separatedBy: " "))
                                 let separator : String = "-"
                                 let yearMonthDate : [String] = dateTimeComp[0].components(separatedBy: separator)
                                
