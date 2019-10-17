@@ -39,6 +39,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
 	private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
     private static let SHOW_TIMELINE_VIEW = "ShowTimeline"
+    private static let SHOW_FAMILY_SETTING_VIEW = "ShowFamilyProfileSettingVC"
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     
 	private var familyUID: String!
@@ -160,6 +161,26 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 
             }
         }
+        else if segue.identifier == FamilyMainPageViewController.SHOW_FAMILY_SETTING_VIEW
+        {
+            if let fpVC = segue.destination as? FamilyProfileViewController
+            {
+                // todo : pass cache here !!!!
+                print(" SHOW_TIMELINE_VIEW prepare : pass success !")
+                
+                // pass user's family info to the current sideMenuVC
+                fpVC.userFamilyInfo = UserFamilyInfo(
+                    familyUID: self.familyUID,
+                    familyName: self.familyName,
+                    familyProfileUID: self.familyProfileUID,
+                    familyProfileExtension: self.familyProfileExtension,
+                    familyMottoText: self.familyMotto.text,
+                    familyInfoDelegate: self
+                )
+                
+            }
+            
+        }
 	}
     
     func getUserInformation() -> UserInfo{
@@ -232,7 +253,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 		self.items = [
             ModelCollectionFlowLayout(title: "Album", image: ImageAsset.image_icon.image),
             ModelCollectionFlowLayout(title: "Timeline", image: ImageAsset.image_icon.image),
-            ModelCollectionFlowLayout(title: "imageIcon", image: ImageAsset.image_icon.image),
+            ModelCollectionFlowLayout(title: "Family Setting", image: ImageAsset.setting_icon.image),
 		]
 	}
 
@@ -265,17 +286,19 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 		if funct.title == "Album"
 		{
 			// shows album covers view controller
-			// todo : we send the album covers data through the sender,
-			// nil for now as we don't have any data
 			performSegue(withIdentifier: FamilyMainPageViewController.SHOW_ALBUM_COVERS_VIEW, sender: nil)
 		}
         
         if funct.title == "Timeline"
         {
             // shows album covers view controller
-            // todo : we send the album covers data through the sender,
-            // nil for now as we don't have any data
             performSegue(withIdentifier: FamilyMainPageViewController.SHOW_TIMELINE_VIEW, sender: nil)
+        }
+        
+        if funct.title == "Family Setting"
+        {
+            // shows album covers view controller
+            performSegue(withIdentifier: FamilyMainPageViewController.SHOW_FAMILY_SETTING_VIEW, sender: nil)
         }
 	}
 
