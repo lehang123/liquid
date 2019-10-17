@@ -252,7 +252,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	{
 		self.items = [
             ModelCollectionFlowLayout(title: "Album", image: ImageAsset.image_icon.image),
-            ModelCollectionFlowLayout(title: "Timeline", image: ImageAsset.image_icon.image),
+            ModelCollectionFlowLayout(title: "Timeline", image: ImageAsset.timeline_icon.image),
             ModelCollectionFlowLayout(title: "Family Setting", image: ImageAsset.setting_icon.image),
 		]
 	}

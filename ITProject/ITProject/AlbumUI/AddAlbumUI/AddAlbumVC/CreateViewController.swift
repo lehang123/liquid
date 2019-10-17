@@ -32,6 +32,7 @@ class CreateViewController: UIViewController {
     private static let ALBUM_NAME_REPEAT_ALERT_MESSAGE = "album name already exist"
     private static let ALBUM_NAME_REPEAT_ALERT_TITLE = "repeat album name"
     private static let DEFAULT_LOCATION_TEXT = "Show current location"
+    private static let EDIT_PLACEHOLDER = "Click To Edit Description..."
     private static let OK_ACTION = "Ok"
     
     // use only creating media
@@ -125,12 +126,17 @@ class CreateViewController: UIViewController {
         // create new album like the old day
             let nameField = albumNameTextField.text!
         
+        
             if nameField.removingWhitespaces() == ""{
                 Util.ShowAlert(title: CreateViewController.ALBUM_NAME_EMPTY_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_EMPTY_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
             }else if delegate.checkForRepeatName(album: nameField) {
                 Util.ShowAlert(title: CreateViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
             }else {// pass name check start creating album
                 dismiss(animated: true, completion: {
+                    
+                    if self.albumDescriptionTextView.text == CreateViewController.EDIT_PLACEHOLDER{
+                        self.albumDescriptionTextView.text = "There is no description..."
+                    }
                     if(self.thumbnailImageView.image == nil){
                     
                         if(self.medias.count >= 1){
@@ -204,6 +210,7 @@ class CreateViewController: UIViewController {
             LocationButton.isHidden = true
             locationLabel.isHidden = true
             infomationScrollView.delegate = self
+            albumNameTextField.isHidden = true
         case .none:
             print("error : creating : wrong state")
         }
@@ -266,7 +273,7 @@ class CreateViewController: UIViewController {
            case .CreateAlbum:
                changeThumbnailButton.setTitle("  Change Thumbnail  ", for: .normal)
            case .CreateMedia:
-               changeThumbnailButton.setTitle("  Add Photo  ", for: .normal)
+               changeThumbnailButton.setTitle("  Add Photo/Video  ", for: .normal)
            case .none:
             changeThumbnailButton.setTitle("  Something Wrong  ", for: .disabled)
         }
@@ -292,7 +299,7 @@ class CreateViewController: UIViewController {
     // AlbumDescriptionTextView set up
     func setupAlbumDescriptionTextView(){
         albumDescriptionTextView.delegate = self
-        albumDescriptionTextView.text = "Click To Edit Description..."
+        albumDescriptionTextView.text = CreateViewController.EDIT_PLACEHOLDER
         albumDescriptionTextView.textColor = UIColor.lightGray
         albumDescriptionTextView.font = UIFont(name: "DINAlternate-Bold", size: 17)
         albumDescriptionTextView.returnKeyType = .done
@@ -576,7 +583,7 @@ extension CreateViewController: UITextViewDelegate{
     /// When user click to edit, placeholder disapper
     /// - Parameter textView: textView
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "Click To Edit Description..." {
+        if textView.text == CreateViewController.EDIT_PLACEHOLDER {
             textView.text = ""
             textView.textColor = UIColor.black
             textView.font = UIFont(name: "DINAlternate-Bold", size: 17)
