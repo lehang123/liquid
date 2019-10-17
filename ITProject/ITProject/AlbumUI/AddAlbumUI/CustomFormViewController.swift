@@ -135,8 +135,8 @@ class CustomFormViewController: UIViewController, AVAudioRecorderDelegate {
                 .GetAudioDirectory()
                 .appendingPathComponent(filename.absoluteString)
              uploadFileName = Util.AUDIO_FOLDER  + "/" + filename.absoluteString
-            print("AUDIO FILENAME IS : " , uploadFileName)
-            print("AUDIO filePath IS : " , self.filePath)
+           // print("AUDIO FILENAME IS : " , uploadFileName)
+          //  print("AUDIO filePath IS : " , self.filePath)
             
             
 

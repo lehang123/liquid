@@ -271,7 +271,7 @@ class TimelineView: UIView {
                                   dateLabel: UILabel) -> UIView{
         let backgroundViewForImage = UIView()
         backgroundViewForImage.translatesAutoresizingMaskIntoConstraints = false
-        backgroundViewForImage.backgroundColor = UIColor.black
+        backgroundViewForImage.backgroundColor = UIColor.clear
         backgroundViewForImage.layer.cornerRadius = 10
         blockView.addSubview(backgroundViewForImage)
         blockView.addConstraints([
