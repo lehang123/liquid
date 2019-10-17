@@ -351,6 +351,8 @@ class ProfileViewController: UIViewController
                     Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
                 })
             }
+        }else {
+            self.navigationController?.popToRootViewController(animated: true)
         }
     }
 
