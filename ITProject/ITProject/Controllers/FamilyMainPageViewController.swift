@@ -39,6 +39,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
 	private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
     private static let SHOW_TIMELINE_VIEW = "ShowTimeline"
+    private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     
 	private var familyUID: String!
 	private var familyName: String?
@@ -133,14 +134,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					// pass user info to the current sideMenuVC
                     
                    
-					sideMenuVC.userInformation = UserInfo(
-                        username: self.name ?? "Not Available",
-                        imageUID: self.profileURL ?? ImageAsset.default_image.rawValue,
-                        imageExtension: self.profileExtension ?? Util.EXTENSION_JPEG,
-                        gender: self.gender ?? "Not Available",
-                        dateOfBirth: self.DOB,
-                        familyRelation: self.familyPosition ?? "Not Available",
-                        userInfoDelegate: self)
+					sideMenuVC.userInformation = getUserInformation()
                     
 
 					// pass user's family info to the current sideMenuVC
@@ -167,7 +161,19 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             }
         }
 	}
-
+    
+    func getUserInformation() -> UserInfo{
+        return  UserInfo(
+                            username: self.name ?? "Not Available",
+                            imageUID: self.profileURL ?? ImageAsset.default_image.rawValue,
+                            imageExtension: self.profileExtension ?? Util.EXTENSION_JPEG,
+                            gender: self.gender ?? "Not Available",
+                            dateOfBirth: self.DOB,
+                            familyRelation: self.familyPosition ?? "Not Available",
+                            userInfoDelegate: self
+                        )
+    }
+    
 	func didUpdateFamilyInfo()
 	{
 		// reload Family Info
@@ -204,7 +210,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					let (albumName, albumDetails) = data
                     let dateTimestamp = albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_CREATED_DATE]
                     
-                    print("audioID IS : ",  albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO] )
+                 //   print("audioID IS : ",  albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_AUDIO] ?? "empty")
            
 					albumDetailTVC.loadAlbumToList(title: albumName,
 					                               description: albumDetails[AlbumDBController.ALBUM_DOCUMENT_FIELD_DESCRIPTION] as! String,
@@ -321,6 +327,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 				print("ELSE I'm here : " + (user?.email)!)
 
 				self.loadUserAndFamilyDataForServer()
+ 
 			}
 			print("Listener get called ")
 		}
@@ -347,13 +354,35 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 self.profileURL = photoPath
                 self.profileExtension = photoExt
                 
+                if self.familyPosition == ""{
+                     let alertController = UIAlertController(title: "Complete Your Profile", message: "Your haven't set your family position", preferredStyle: .alert)
+                       alertController.addAction(UIAlertAction(title: "Skip", style: .default))
+                       alertController.addAction(UIAlertAction(title: "Go Setting", style: .default, handler: { (_: UIAlertAction!) in
+                            self.pushToProfileSetting()
+                       }))
+
+                    self.present(alertController, animated: true, completion: nil)
+                }
                 
                 
-                print(" self.userDOB", dob)
+                
+//                print(" self.userDOB", dob)
 				 
 			}
 		})
 	}
+    
+    private func pushToProfileSetting(){
+
+        if let profileVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController {
+            if let navigator = navigationController {
+                print(" ProfileViewController prepare : pass success !")
+                let userInformation = getUserInformation()
+                profileVC.userInformation = userInformation
+                navigator.pushViewController(profileVC, animated: true)
+            }
+        }
+    }
 
 	/// Get family's information from server
 	private func loadFamilyInfoFromServer()

@@ -8,6 +8,7 @@
 
 import EnhancedCircleImageView
 import Firebase
+import DropDown
 import UIKit
 
 /// Shows users' info from DB.
@@ -39,7 +40,8 @@ class ProfileViewController: UIViewController
 	@IBOutlet var name: UITextField!
 	@IBOutlet var relationship: UITextField!
 	@IBOutlet var DOBField: UITextField!
-	@IBOutlet var gender: UITextField!
+//	@IBOutlet var gender: UITextField!
+    @IBOutlet var genderButton: UIButton!
     
     
     
@@ -89,7 +91,14 @@ class ProfileViewController: UIViewController
         //set default values to UI :
         self.name.text = self.userInformation.username
         self.relationship.text = self.userInformation.familyRelation
-        self.gender.text = self.userInformation.gender
+        
+        if(self.userInformation.gender == ""){
+            self.genderButton.setTitle("  Gender", for: .normal)
+            self.genderButton.setTitleColor(UIColor.lightGray.withAlphaComponent(0.8), for: .normal)
+        } else{
+        self.genderButton.setTitle(self.userInformation.gender, for: .normal)
+            self.genderButton.setTitleColor(UIColor.black, for: .normal)
+        }
        
         
         let dob = dateFormatter.string(from:  self.userInformation.dateOfBirth ?? Date())
@@ -104,6 +113,42 @@ class ProfileViewController: UIViewController
         //self.currentRelationship = self.userInformation.familyRelation
         //self.currentDOB = dateFormatter.date(from: dob)!
         //        self.currentName = self.userInformation.username
+    }
+    
+    let chooseDropDown = DropDown()
+    
+    lazy var dropDowns: [DropDown] = {
+        return [
+            self.chooseDropDown,
+        ]
+    }()
+    @IBAction func genderButton(_ sender: Any) {
+        chooseDropDown.show()
+    }
+    
+    func setupChooseDropDown() {
+        chooseDropDown.anchorView = genderButton
+        
+        // By default, the dropdown will have its origin on the top left corner of its anchor view
+        // So it will come over the anchor view and hide it completely
+        // If you want to have the dropdown underneath your anchor view, you can do this:
+        chooseDropDown.bottomOffset = CGPoint(x: 0, y: genderButton.bounds.height)
+        
+        // You can also use localizationKeysDataSource instead. Check the docs.
+        chooseDropDown.dataSource = [
+            "Female",
+            "Male",
+            "Other",
+            "Prefer not say"
+        ]
+        
+        // Action triggered on selection
+        chooseDropDown.selectionAction = { [weak self] (index, item) in
+            let sex = "  " + item
+            self?.genderButton.setTitle(sex, for: .normal)
+            self?.genderButton.setTitleColor(UIColor.black, for: .normal)
+        }
+        
     }
     
     /// configures a date picker for choosing date of birth later on.
@@ -135,6 +180,10 @@ class ProfileViewController: UIViewController
         
         //fill in default data:
         self.populateData()
+        self.setupChooseDropDown()
+        self.genderButton.layer.cornerRadius = 5
+        self.genderButton.layer.borderWidth = 1
+        self.genderButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
         
         
       
@@ -151,7 +200,7 @@ class ProfileViewController: UIViewController
     func setDelegate(){
         self.name.delegate = self
         self.relationship.delegate = self
-        self.gender.delegate = self
+       // self.gender.delegate = self
         self.DOBField.delegate = self
     }
     
@@ -253,6 +302,10 @@ class ProfileViewController: UIViewController
         {
             //end editing date field first:
             view.endEditing(true)
+            var genderText = ""
+            if !(self.genderButton.title(for: .normal) == "  Gender"){
+                genderText = self.genderButton.title(for: .normal)!
+            }
             
             //update to DB:
             self.didChangeUserInfo = true
@@ -266,7 +319,7 @@ class ProfileViewController: UIViewController
                         RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH : self.datePicker.date,
                         RegisterDBController.USER_DOCUMENT_FIELD_NAME : self.name.text!,
                         RegisterDBController.USER_DOCUMENT_FIELD_POSITION : self.relationship.text!,
-                        RegisterDBController.USER_DOCUMENT_FIELD_GENDER : self.gender.text!,
+                        RegisterDBController.USER_DOCUMENT_FIELD_GENDER : genderText,
                     ])
             
             self.commitUIChange();

@@ -179,18 +179,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     @IBOutlet var cmmentText: UITextField!
     @IBOutlet var sendButton: UIButton!
-
-    @IBOutlet var showRecordKeyboard: UIButton!
-    @IBOutlet var recordButton: UIButton!{
-        didSet{
-        
-        recordButton.layer.borderColor = UIColor(rgb: 0xC2C3C7).cgColor
-        recordButton.layer.borderWidth = 0.5
-        recordButton.layer.cornerRadius = 5.0
-        recordButton.layer.masksToBounds = true
-        recordButton.isHidden = true
-        }
-    }
     
     override func viewDidLoad()
     {
@@ -206,73 +194,13 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.rowHeight = UITableView.automaticDimension
         self.cmmentText.delegate = self
         self.sendButton.isUserInteractionEnabled = false
-        self.showRecordKeyboard.setImage(ImageAsset.voice_input_icon.image, for: .normal)
-
+        
         self.setUpTableViewHeader()
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
-    
-    
-    /// switch between the typeing comment and recording mode when tap the icon
-    /// - Parameter sender: tap the icon
-    @IBAction func showRecording(_ sender: Any) {
-        if(!isShowRecord){
-            // Recording mode
-            self.cmmentText.resignFirstResponder()
-            self.cmmentText.isHidden = true
-            
-            self.recordButton.isHidden = false
-            self.showRecordKeyboard.setImage(ImageAsset.keyboard_view_icon.image, for: .normal)
-            self.isShowRecord = true
-            
-        } else {
-            // TextField mode
-            self.cmmentText.isHidden = false
-            self.recordButton.isHidden = true
-            self.showRecordKeyboard.setImage(ImageAsset.voice_input_icon.image, for: .normal)
-            self.isShowRecord = false
-        }
-    }
-    
-    // todo : come back to this
-//    @IBAction func playAudio(_ sender: Any) {
-//
-//        if mediaDetail.audioUID!.removingWhitespaces().isEmpty{
-//            print("there is no audioUID")
-//            return
-//        }
-//
-//        if(isPlaying)
-//         {
-//             audioPlayer.stop()
-//             isPlaying = false
-//         }
-//         else
-//         {
-//            Util.GetLocalFileURL(by: mediaDetail.audioUID, type: .audio){
-//                url in
-//                self.prepare_play(url: url!)
-//            }
-//
-//         }
-//    }
-//    func prepare_play(url: URL)
-//    {
-//        do
-//        {
-//            audioPlayer = try AVAudioPlayer(contentsOf: url)
-//            audioPlayer.delegate = self
-//            audioPlayer.prepareToPlay()
-//            audioPlayer.play()
-//            isPlaying = true
-//        }
-//        catch{
-//            print("Error")
-//        }
-//    }
 
     func textFieldShouldReturn(_: UITextField) -> Bool
     {
@@ -479,15 +407,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         return  DisplayPhotoViewController.LIKE_WATACHED_CELL_LENGTH +
             DisplayPhotoViewController.DESCRIPTON_CELL + self.commentsSource.count
     }
-
-    
-
-    // To do
-    // Need to create another ui for store bookmark photo
-    @objc func bookmarktapFunction(sender _: UITapGestureRecognizer)
-    {
-        print("book mark tap working")
-    }
     
 
     func faveButton(_: FaveButton, didSelected selected: Bool)
@@ -531,9 +450,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             cell0.likeButton.delegate = self
             self.getCellInfo(cell: cell0)
 
-            let bookmarktap = UITapGestureRecognizer(target: self, action: #selector(self.bookmarktapFunction(sender:)))
-            cell0.Bookmark.isUserInteractionEnabled = true
-            cell0.Bookmark.addGestureRecognizer(bookmarktap)
 
             cell0.selectionStyle = UITableViewCell.SelectionStyle.none
 

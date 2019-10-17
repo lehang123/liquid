@@ -91,7 +91,7 @@ open class Recording : NSObject {
         
         
             player = try AVAudioPlayer(contentsOf: url)
-        print("player here :: ", player)
+      //  print("player here :: ", player)
         
 //        player?.play()
         state = .play

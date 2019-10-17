@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// <#Description#>
 class RBResizer {
     
     static func RBSquareImageTo(image: UIImage, size: CGSize) -> UIImage? {
@@ -33,7 +34,10 @@ class RBResizer {
         let imageRef = image.cgImage!.cropping(to: cropSquare);
         return UIImage(cgImage: imageRef!, scale: UIScreen.main.scale, orientation: image.imageOrientation)
     }
-
+    
+    /// Resizes an image
+    /// - Parameter image: image to be resized
+    /// - Parameter targetSize: the new size for the image
     static func RBResizeImage(image: UIImage?, targetSize: CGSize) -> UIImage? {
         if let image = image {
             let size = image.size
