@@ -323,8 +323,6 @@ class ProfileViewController: UIViewController
                     ])
             
             self.commitUIChange();
-    
-    
         }
       
     
@@ -347,6 +345,7 @@ class ProfileViewController: UIViewController
                         RegisterDBController.getInstance().UploadUserProfilePicture(imagePath: (url?.deletingPathExtension().lastPathComponent)!  , imageExt: Util.EXTENSION_JPEG)
                     }
                     Util.DismissActivityIndicator()
+                    self.navigationController?.popToRootViewController(animated: true)
                 }, errorHandler: { e in
                     print("you get error from Thumbnail choose")
                     Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
