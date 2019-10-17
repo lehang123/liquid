@@ -20,7 +20,7 @@ class TimelineView: UIView {
     }
 
     /// The color of the bullets and the lines connecting them.
-    open var lineColor: UIColor = UIColor.lightGray {
+    open var lineColor: UIColor = UIColor.selfcOrg {
         didSet {
             setupContent()
         }
@@ -28,8 +28,8 @@ class TimelineView: UIView {
 
     /// Configures the date labels in the timeline.
     open var configureDateLabel: ((UILabel) -> Void) = { label in
-        label.font = UIFont(name: "ArialMT", size: 20)
-        label.textColor = UIColor(red: 0 / 255, green: 180 / 255, blue: 160 / 255, alpha: 1)
+        label.font = UIFont(name: "DINAlternate-Bold", size: 23)
+        label.textColor = UIColor.selfcOrg
     } {
         didSet {
             setupContent()
@@ -38,7 +38,7 @@ class TimelineView: UIView {
 
     /// Configures the date labels in the timeline.
     open var configureTextLabel: ((UILabel) -> Void) = { label in
-        label.font = UIFont(name: "ArialMT", size: 16)
+        label.font = UIFont(name: "DINAlternate-Bold", size: 18)
         label.textColor = UIColor(red: 110 / 255, green: 110 / 255, blue: 110 / 255, alpha: 1)
     } {
         didSet {
@@ -191,7 +191,7 @@ class TimelineView: UIView {
         let path = UIBezierPath(ovalOfSize: pointRadius)
         let shapeLayer = CAShapeLayer()
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = lineColor.cgColor
+        shapeLayer.strokeColor = UIColor.lightGray.cgColor
         shapeLayer.path = path.cgPath
 
         return shapeLayer

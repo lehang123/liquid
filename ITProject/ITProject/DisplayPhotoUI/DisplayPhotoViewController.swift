@@ -271,11 +271,13 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private func initialiseCommentSource()
          {
              // pull new comment from the server
-             
+            if commentsSource.count == 0{
+                return 
+            }
              var indexPaths = [IndexPath]()
              
              
-             print("num of row before update: ",self.tableView.numberOfRows(inSection: 0))
+             //print("num of row before update: ",self.tableView.numberOfRows(inSection: 0))
              self.tableView.beginUpdates()
              var ctr :Int = 0
              self.commentsSource.forEach { (item) in
@@ -301,9 +303,11 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         var indexPaths = [IndexPath]()
         print("commentsrc ctr at before updateCommentSource : ", self.commentsSource.count)
         
-        let updateAtRow = self.commentsSource.count+1
+        let updateAtRow = self.commentsSource.count + 1
         print("num of row before update: ",self.tableView.numberOfRows(inSection: 0))
         self.tableView.beginUpdates()
+        
+        
 
         //        print("COUNT IS: " ,commentsSource.count)
         indexPaths.append(IndexPath(row: updateAtRow, section: 0))
@@ -318,6 +322,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private func storeCommentToServer(username: DocumentReference, comment: String, photoUID: String)
     {
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, commentedPhotoUID: photoUID)
+
         
 //        username.getDocument { (docSnapshot, error) in
 //            if let error = error {
@@ -332,12 +337,14 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 //        }
         let group = DispatchGroup()
         group.enter()
+        Util.ShowActivityIndicator()
         self.getPhotoFromDB(currentUserUID: username.documentID, comment: comment, group:group)
-        
+
         group.notify(queue: .main)
         {
             
             self.updateCommentSource()
+            Util.DismissActivityIndicator()
         }
        
     }
