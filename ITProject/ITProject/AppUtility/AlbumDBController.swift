@@ -339,10 +339,10 @@ class AlbumDBController
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_AUDIO : "",
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS:
                             [
-                                [
-                                    AlbumDBController.COMMENTS_USERNAME: templateUser,
-                                    AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
-                                ]
+//                                [
+//                                    AlbumDBController.COMMENTS_USERNAME: templateUser,
+//                                    AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
+//                                ]
                             ],
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_EXTENSION: item.getExtension(),
                         AlbumDBController.MEDIA_DOCUMENT_FIELD_DESCRIPTION: item.getDescription() ?? "",
@@ -472,10 +472,10 @@ class AlbumDBController
 
 					 AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS:
                                                [
-                                                   [
-                                                       AlbumDBController.COMMENTS_USERNAME: templateUser,
-                                                       AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
-                                                   ]
+//                                                   [
+//                                                       AlbumDBController.COMMENTS_USERNAME: templateUser,
+//                                                       AlbumDBController.COMMENTS_MESSAGE: "This is the comment section"
+//                                                   ]
                                                ],
 
 					//AlbumDBController.MEDIA_DOCUMENT_FIELD_COMMENTS: [], //was [[:]]
