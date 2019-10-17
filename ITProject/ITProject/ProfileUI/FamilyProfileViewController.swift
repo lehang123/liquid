@@ -166,13 +166,14 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate
 						DBController.getInstance().updateSpecificField(newValue: Util.EXTENSION_JPEG, fieldName: RegisterDBController.FAMILY_DOCUMENT_FIELD_THUMBNAIL_EXT, documentUID: self.displayFamilyUID.text!, collectionName: RegisterDBController.FAMILY_COLLECTION_NAME)
 					}
 					Util.DismissActivityIndicator()
-
+                    self.navigationController?.popToRootViewController(animated: true)
 				}, errorHandler: { e in
 					print("you get error from Thumbnail choose")
 					Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
 				})
 			}
 		}
+
 	}
 
 	@objc func backgroundTapped(_: UITapGestureRecognizer)
