@@ -114,6 +114,9 @@ class CreateViewController: UIViewController {
                 self.media.audioUID = ""
             }
 
+            if self.albumDescriptionTextView.text == CreateViewController.EDIT_PLACEHOLDER{
+                self.albumDescriptionTextView.text = "There is no description..."
+            }
             self.media.audioExt = Util.EXTENSION_M4A
             self.media.changeTitle(to: self.albumNameTextField.text)
             self.media.changeDescription(to: self.albumDescriptionTextView.text)
