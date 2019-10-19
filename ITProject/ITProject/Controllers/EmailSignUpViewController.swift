@@ -41,7 +41,8 @@ class EmailSignUpViewController: UIViewController
 	@IBOutlet var joinFamilyIDField: UITextField!
 	@IBOutlet var newFamilyField: UITextField!
 
-	override func viewDidLoad()
+    @IBOutlet var createButton: UIButton!
+    override func viewDidLoad()
 	{
 		super.viewDidLoad()
         
@@ -57,7 +58,16 @@ class EmailSignUpViewController: UIViewController
         self.joinFamilyIDField.delegate = self
         self.newFamilyField.delegate = self
         
+        self.setupCreateButton()
+        
 	}
+    
+    private func setupCreateButton(){
+        self.createButton.backgroundColor = .selfcOrg
+        self.createButton.tintColor = .white
+        self.createButton.layer.cornerRadius = 10
+        self.createButton.layer.masksToBounds = true
+    }
 
 
 	/// Show the keyboard when the user is typing
