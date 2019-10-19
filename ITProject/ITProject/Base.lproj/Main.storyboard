@@ -721,14 +721,14 @@
                                                 <rect key="frame" x="138" y="172" width="227" height="50"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="03i-tJ-K2J">
-                                                        <rect key="frame" x="10" y="12.5" width="50" height="25"/>
+                                                        <rect key="frame" x="10" y="12.5" width="25" height="25"/>
                                                         <state key="normal" backgroundImage="playIcon"/>
                                                         <connections>
                                                             <action selector="audioPlayPauseAction:" destination="Zri-AL-l0K" eventType="touchUpInside" id="IML-eq-MRz"/>
                                                         </connections>
                                                     </button>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="d9I-e6-o8L">
-                                                        <rect key="frame" x="68" y="10" width="151" height="31"/>
+                                                        <rect key="frame" x="43" y="10" width="176" height="31"/>
                                                         <connections>
                                                             <action selector="changeAudioTime:" destination="Zri-AL-l0K" eventType="valueChanged" id="Dp6-6A-jKu"/>
                                                         </connections>
@@ -1233,25 +1233,25 @@
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-uK-JX8">
-                                <rect key="frame" x="134" y="315" width="161" height="34"/>
+                                <rect key="frame" x="134" y="317" width="161" height="34"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rh6-Da-3yJ">
-                                <rect key="frame" x="25" y="321.5" width="45.5" height="21"/>
+                                <rect key="frame" x="25" y="323.5" width="45.5" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Relationship" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeI-o1-JSo">
-                                <rect key="frame" x="25" y="373.5" width="94" height="21"/>
+                                <rect key="frame" x="25" y="376" width="94" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xm5-8e-egw">
-                                <rect key="frame" x="134" y="522" width="161" height="33"/>
+                                <rect key="frame" x="134" y="527" width="161" height="33"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <state key="normal" title="Change Password">
                                     <color key="titleColor" red="0.93725490199999995" green="0.94117647059999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1260,8 +1260,8 @@
                                     <segue destination="s6D-b7-KSr" kind="show" id="JlC-27-WbR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYT-38-dLW">
-                                <rect key="frame" x="88" y="244" width="144" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYT-38-dLW">
+                                <rect key="frame" x="88" y="246" width="144" height="30"/>
                                 <state key="normal" title="Update Profile Image">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -1270,25 +1270,25 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndT-vA-NJB">
-                                <rect key="frame" x="25" y="423.5" width="57" height="24"/>
+                                <rect key="frame" x="25" y="427" width="57" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Date Of Birth" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="feK-TA-bjA">
-                                <rect key="frame" x="134" y="470" width="161" height="34"/>
+                                <rect key="frame" x="134" y="473" width="161" height="34"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DOB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOp-IL-JPD">
-                                <rect key="frame" x="25" y="476.5" width="37" height="21"/>
+                                <rect key="frame" x="25" y="479.5" width="37" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" restorationIdentifier="SeparatorView" translatesAutoresizingMaskIntoConstraints="NO" id="C1A-sS-EmA" userLabel="SeparatorView">
-                                <rect key="frame" x="0.0" y="284" width="320" height="1"/>
+                                <rect key="frame" x="0.0" y="286" width="320" height="1"/>
                                 <color key="backgroundColor" red="0.70380580459999997" green="0.70380580459999997" blue="0.70380580459999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.78801157990000004" green="0.78801157990000004" blue="0.78801157990000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -1296,8 +1296,8 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gf-YO-sQP">
-                                <rect key="frame" x="134" y="419" width="161" height="33"/>
-                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
+                                <rect key="frame" x="134" y="422" width="161" height="31"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                 <state key="normal" title="Gender">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -1306,14 +1306,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eM-Pf-FmD">
-                                <rect key="frame" x="25" y="528" width="75" height="21"/>
+                                <rect key="frame" x="25" y="533" width="75" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbD-YQ-9UW">
-                                <rect key="frame" x="134" y="369" width="161" height="30"/>
-                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
+                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbD-YQ-9UW">
+                                <rect key="frame" x="134" y="371" width="161" height="31"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                 <state key="normal" title="Relationship">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -1344,7 +1344,7 @@
                             <constraint firstItem="C1A-sS-EmA" firstAttribute="top" secondItem="lYT-38-dLW" secondAttribute="bottom" constant="10" id="M3z-Ri-q1G"/>
                             <constraint firstItem="lYT-38-dLW" firstAttribute="centerX" secondItem="XtZ-lk-78M" secondAttribute="centerX" id="NAb-IA-CJx"/>
                             <constraint firstItem="KOp-IL-JPD" firstAttribute="centerY" secondItem="feK-TA-bjA" secondAttribute="centerY" id="Nx6-Mp-1Ut"/>
-                            <constraint firstItem="feK-TA-bjA" firstAttribute="top" secondItem="6gf-YO-sQP" secondAttribute="bottom" constant="18" id="OjA-8B-NS6"/>
+                            <constraint firstItem="feK-TA-bjA" firstAttribute="top" secondItem="6gf-YO-sQP" secondAttribute="bottom" constant="20" id="OjA-8B-NS6"/>
                             <constraint firstItem="3eM-Pf-FmD" firstAttribute="leading" secondItem="KOp-IL-JPD" secondAttribute="leading" id="PFa-Se-DsK"/>
                             <constraint firstItem="WYE-xT-Ke1" firstAttribute="width" secondItem="QHi-3O-Omi" secondAttribute="width" multiplier="0.5" id="PjL-cA-DBH"/>
                             <constraint firstItem="LeI-o1-JSo" firstAttribute="height" secondItem="rh6-Da-3yJ" secondAttribute="height" id="RV5-Z1-grD"/>
@@ -1355,14 +1355,12 @@
                             <constraint firstItem="Xm5-8e-egw" firstAttribute="leading" secondItem="YbD-YQ-9UW" secondAttribute="leading" id="V1r-tu-6C4"/>
                             <constraint firstItem="LeI-o1-JSo" firstAttribute="leading" secondItem="XtZ-lk-78M" secondAttribute="leading" constant="25" id="a8Q-Np-1Jb"/>
                             <constraint firstItem="Xm5-8e-egw" firstAttribute="trailing" secondItem="q3p-uK-JX8" secondAttribute="trailing" id="bQ8-lI-h4M"/>
-                            <constraint firstItem="ndT-vA-NJB" firstAttribute="top" secondItem="LeI-o1-JSo" secondAttribute="bottom" constant="29" id="boe-Dj-dkZ"/>
-                            <constraint firstItem="Xm5-8e-egw" firstAttribute="top" secondItem="feK-TA-bjA" secondAttribute="bottom" constant="18" id="bya-8q-akX"/>
+                            <constraint firstItem="Xm5-8e-egw" firstAttribute="top" secondItem="feK-TA-bjA" secondAttribute="bottom" constant="20" id="bya-8q-akX"/>
                             <constraint firstItem="q3p-uK-JX8" firstAttribute="leading" secondItem="YbD-YQ-9UW" secondAttribute="leading" id="gDn-ve-CDk"/>
                             <constraint firstItem="C1A-sS-EmA" firstAttribute="leading" secondItem="XtZ-lk-78M" secondAttribute="leading" id="hJd-PL-whh"/>
                             <constraint firstItem="6gf-YO-sQP" firstAttribute="top" secondItem="YbD-YQ-9UW" secondAttribute="bottom" constant="20" id="hb0-wz-1Av"/>
                             <constraint firstItem="WYE-xT-Ke1" firstAttribute="top" secondItem="XtZ-lk-78M" secondAttribute="top" constant="20" id="j4g-tf-6Y8"/>
-                            <constraint firstAttribute="bottom" secondItem="YbD-YQ-9UW" secondAttribute="bottom" constant="281" id="kqX-I5-4eu"/>
-                            <constraint firstItem="lYT-38-dLW" firstAttribute="top" secondItem="WYE-xT-Ke1" secondAttribute="bottom" constant="8" id="lGu-sV-fSH"/>
+                            <constraint firstItem="lYT-38-dLW" firstAttribute="top" secondItem="WYE-xT-Ke1" secondAttribute="bottom" constant="10" id="lGu-sV-fSH"/>
                             <constraint firstItem="Xm5-8e-egw" firstAttribute="trailing" secondItem="feK-TA-bjA" secondAttribute="trailing" id="nar-6x-0J3"/>
                             <constraint firstItem="KOp-IL-JPD" firstAttribute="leading" secondItem="LeI-o1-JSo" secondAttribute="leading" id="uP0-9B-hcN"/>
                             <constraint firstItem="Xm5-8e-egw" firstAttribute="leading" secondItem="feK-TA-bjA" secondAttribute="leading" id="wrs-UV-LgO"/>
@@ -2082,26 +2080,26 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FamilyMemberCell" id="1QS-js-vUd" userLabel="Family Member Cell" customClass="FamilyTableViewMemberCell" customModule="ITProject" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="115.5" width="375" height="43.5"/>
+                                <rect key="frame" x="0.0" y="115.5" width="375" height="43"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1QS-js-vUd" id="OPD-ye-xh3">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ZR-iy-06U" userLabel="Name Label">
-                                            <rect key="frame" x="26" y="11" width="42" height="21.5"/>
+                                            <rect key="frame" x="26" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTz-Em-m5t" userLabel="Phone Label">
-                                            <rect key="frame" x="307" y="11" width="42" height="21.5"/>
+                                            <rect key="frame" x="307" y="11" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwi-yV-YNb" userLabel="Relationship Label">
-                                            <rect key="frame" x="166.5" y="0.0" width="42" height="43.5"/>
+                                            <rect key="frame" x="166.5" y="0.0" width="42" height="43"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
