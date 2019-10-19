@@ -39,7 +39,7 @@ class LoginViewController: UIViewController
     private func setupLoginButton(){
         self.loginButton.backgroundColor = UIColor.selfcOrg
         self.loginButton.tintColor = .white
-        self.loginButton.layer.cornerRadius = 5
+        self.loginButton.layer.cornerRadius = 10
         self.loginButton.layer.masksToBounds = true
     }
     
@@ -47,7 +47,7 @@ class LoginViewController: UIViewController
     private func setupCreateNewButton(){
         self.createNewButton.backgroundColor = .selfcOrg
         self.createNewButton.tintColor = .white
-        self.createNewButton.layer.cornerRadius = 5
+        self.createNewButton.layer.cornerRadius = 10
         self.createNewButton.layer.masksToBounds = true
     }
 

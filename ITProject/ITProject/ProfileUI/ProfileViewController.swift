@@ -34,15 +34,26 @@ class ProfileViewController: UIViewController
 	var userInformation: UserInfo!
     ///flag variables to notice other UIs that data has been altered:
 	private(set) var didChangeUserInfo: Bool = false, didChangeUserProfile: Bool = false
+    private let chooseGenderDropDown = DropDown()
+    private let chooseRelaDropDown = DropDown()
+    
+    private lazy var dropDowns: [DropDown] = {
+        return [
+            self.chooseGenderDropDown,
+            self.chooseRelaDropDown
+        ]
+    }()
 
     //UI Fields:
 	@IBOutlet var profilePicture: EnhancedCircleImageView!
 	@IBOutlet var name: UITextField!
-	@IBOutlet var relationship: UITextField!
+	//@IBOutlet var relationship: UITextField!
 	@IBOutlet var DOBField: UITextField!
 //	@IBOutlet var gender: UITextField!
     @IBOutlet var genderButton: UIButton!
+    @IBOutlet var relaButton: UIButton!
     
+    @IBOutlet var ChangePasswordButton: UIButton!
     
     
     ///  Set right bar button as Done to store any changes that user made
@@ -90,7 +101,15 @@ class ProfileViewController: UIViewController
     func populateData(){
         //set default values to UI :
         self.name.text = self.userInformation.username
-        self.relationship.text = self.userInformation.familyRelation
+        //self.relationship.text = self.userInformation.familyRelation
+        
+        if(self.userInformation.familyRelation == ""){
+            self.relaButton.setTitle("  Relationship", for: .normal)
+            self.relaButton.setTitleColor(UIColor.lightGray.withAlphaComponent(0.8), for: .normal)
+        } else{
+        self.relaButton.setTitle(self.userInformation.familyRelation, for: .normal)
+            self.relaButton.setTitleColor(UIColor.black, for: .normal)
+        }
         
         if(self.userInformation.gender == ""){
             self.genderButton.setTitle("  Gender", for: .normal)
@@ -115,27 +134,23 @@ class ProfileViewController: UIViewController
         //        self.currentName = self.userInformation.username
     }
     
-    let chooseDropDown = DropDown()
-    
-    lazy var dropDowns: [DropDown] = {
-        return [
-            self.chooseDropDown,
-        ]
-    }()
+    @IBAction func relationshipButton(_ sender: Any) {
+        chooseRelaDropDown.show()
+    }
     @IBAction func genderButton(_ sender: Any) {
-        chooseDropDown.show()
+        chooseGenderDropDown.show()
     }
     
-    func setupChooseDropDown() {
-        chooseDropDown.anchorView = genderButton
+    func setupGenderDropDown() {
+        chooseGenderDropDown.anchorView = genderButton
         
         // By default, the dropdown will have its origin on the top left corner of its anchor view
         // So it will come over the anchor view and hide it completely
         // If you want to have the dropdown underneath your anchor view, you can do this:
-        chooseDropDown.bottomOffset = CGPoint(x: 0, y: genderButton.bounds.height)
+        chooseGenderDropDown.bottomOffset = CGPoint(x: 0, y: genderButton.bounds.height)
         
         // You can also use localizationKeysDataSource instead. Check the docs.
-        chooseDropDown.dataSource = [
+        chooseGenderDropDown.dataSource = [
             "Female",
             "Male",
             "Other",
@@ -143,10 +158,40 @@ class ProfileViewController: UIViewController
         ]
         
         // Action triggered on selection
-        chooseDropDown.selectionAction = { [weak self] (index, item) in
+        chooseGenderDropDown.selectionAction = { [weak self] (index, item) in
             let sex = "  " + item
             self?.genderButton.setTitle(sex, for: .normal)
             self?.genderButton.setTitleColor(UIColor.black, for: .normal)
+        }
+        
+    }
+    
+    func setupRelaDropDown() {
+        chooseRelaDropDown.anchorView = relaButton
+        
+        // By default, the dropdown will have its origin on the top left corner of its anchor view
+        // So it will come over the anchor view and hide it completely
+        // If you want to have the dropdown underneath your anchor view, you can do this:
+        chooseRelaDropDown.bottomOffset = CGPoint(x: 0, y: relaButton.bounds.height)
+        
+        // You can also use localizationKeysDataSource instead. Check the docs.
+        chooseRelaDropDown.dataSource = [
+            "Grandma",
+            "Grandpa",
+            "Mom",
+            "Dad",
+            "Aunty",
+            "Uncle",
+            "Daughter",
+            "Son",
+            "Other"
+        ]
+        
+        // Action triggered on selection
+        chooseRelaDropDown.selectionAction = { [weak self] (index, item) in
+            let sex = "  " + item
+            self?.relaButton.setTitle(sex, for: .normal)
+            self?.relaButton.setTitleColor(UIColor.black, for: .normal)
         }
         
     }
@@ -176,30 +221,48 @@ class ProfileViewController: UIViewController
         self.setDoneButton()
         self.setDateFormatter()
         self.setDatePicker()
+        self.setupChangePasswordButton()
+        self.setupGenderButton()
+        self.setupGenderDropDown()
+        self.setupRelaButton()
+        self.setupRelaDropDown()
+       
         
         
         //fill in default data:
         self.populateData()
-        self.setupChooseDropDown()
-        self.genderButton.layer.cornerRadius = 5
-        self.genderButton.layer.borderWidth = 1
-        self.genderButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
         
-        
-      
-//        print("DOB IS " ,  self.userInformation.dateOfBirth )
-//        print("date ",  self.datePicker.date  )
-       
+
        //handle keyboard observer:
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         self.setDelegate()
+        
 	}
+    
+    private func setupGenderButton(){
+        self.genderButton.layer.cornerRadius = 5
+        self.genderButton.layer.borderWidth = 1
+        self.genderButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+    }
+    
+    private func setupRelaButton(){
+        self.relaButton.layer.cornerRadius = 5
+        self.relaButton.layer.borderWidth = 1
+        self.relaButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+    }
+    
+    private func setupChangePasswordButton(){
+        self.ChangePasswordButton.backgroundColor = .selfcOrg
+        self.ChangePasswordButton.setTitleColor(.white, for: .normal)
+        self.ChangePasswordButton.layer.cornerRadius = 10
+        self.ChangePasswordButton.layer.masksToBounds = true
+    }
     
     func setDelegate(){
         self.name.delegate = self
-        self.relationship.delegate = self
+        //self.relationship.delegate = self
        // self.gender.delegate = self
         self.DOBField.delegate = self
     }
@@ -303,8 +366,12 @@ class ProfileViewController: UIViewController
             //end editing date field first:
             view.endEditing(true)
             var genderText = ""
+            var relaText = ""
             if !(self.genderButton.title(for: .normal) == "  Gender"){
                 genderText = self.genderButton.title(for: .normal)!
+            }
+            if !(self.relaButton.title(for: .normal) == "  Relationship"){
+                relaText = self.relaButton.title(for: .normal)!
             }
             
             //update to DB:
@@ -318,7 +385,7 @@ class ProfileViewController: UIViewController
                     [
                         RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH : self.datePicker.date,
                         RegisterDBController.USER_DOCUMENT_FIELD_NAME : self.name.text!,
-                        RegisterDBController.USER_DOCUMENT_FIELD_POSITION : self.relationship.text!,
+                        RegisterDBController.USER_DOCUMENT_FIELD_POSITION : relaText,
                         RegisterDBController.USER_DOCUMENT_FIELD_GENDER : genderText,
                     ])
             
