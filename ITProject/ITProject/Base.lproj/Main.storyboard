@@ -125,24 +125,24 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Bk8-sW-rYZ">
                                 <rect key="frame" x="20" y="478.5" width="335" height="168.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FamilyUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UuZ-2K-1Xv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UuZ-2K-1Xv">
                                 <rect key="frame" x="28" y="396.5" width="96" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FamilyUID" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RY7-Kh-OXc">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family ID" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RY7-Kh-OXc">
                                 <rect key="frame" x="144" y="396.5" width="211" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Family Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f5I-47-zQL" userLabel="Family's Name Field">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Family Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f5I-47-zQL" userLabel="Family's Name Field">
                                 <rect key="frame" x="144" y="342.5" width="211" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fpw-Za-nRg">
@@ -475,43 +475,49 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="JqH-qL-Jg3" userLabel="Field Stack View">
                                 <rect key="frame" x="169" y="173.5" width="187.5" height="187"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OGY-gN-cgP" userLabel="EmailField" customClass="EmailField">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="OGY-gN-cgP" userLabel="EmailField" customClass="EmailField">
                                         <rect key="frame" x="0.0" y="0.0" width="187.5" height="29"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fe7-lT-mIF">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Fe7-lT-mIF">
                                         <rect key="frame" x="0.0" y="39" width="187.5" height="29.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KYc-NB-P3z">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="KYc-NB-P3z">
                                         <rect key="frame" x="0.0" y="78.5" width="187.5" height="29.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hKH-q1-wKp">
+                                    <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hKH-q1-wKp">
                                         <rect key="frame" x="0.0" y="118" width="187.5" height="29.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="748" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Join FamilyUID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sGS-gH-ZVU">
-                                        <rect key="frame" x="0.0" y="157.5" width="187.5" height="29.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2La-xH-AtA">
+                                        <rect key="frame" x="0.0" y="157.5" width="187.5" height="30.5"/>
+                                        <color key="backgroundColor" red="1" green="0.62500518164999508" blue="0.47362929513164953" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <segments>
+                                            <segment title="Join Family"/>
+                                            <segment title="Create Family"/>
+                                        </segments>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="familyJoinAction:" destination="RVD-0H-nJq" eventType="valueChanged" id="qHG-jv-R4b"/>
+                                        </connections>
+                                    </segmentedControl>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Fe7-lT-mIF" firstAttribute="width" secondItem="JqH-qL-Jg3" secondAttribute="width" id="NFn-ve-aMo"/>
                                     <constraint firstItem="KYc-NB-P3z" firstAttribute="width" secondItem="JqH-qL-Jg3" secondAttribute="width" id="b3D-Fl-4rc"/>
                                     <constraint firstItem="OGY-gN-cgP" firstAttribute="width" secondItem="JqH-qL-Jg3" secondAttribute="width" id="eKh-3o-MiW"/>
                                     <constraint firstItem="hKH-q1-wKp" firstAttribute="width" secondItem="JqH-qL-Jg3" secondAttribute="width" id="iMk-LT-A5j"/>
-                                    <constraint firstItem="sGS-gH-ZVU" firstAttribute="width" secondItem="JqH-qL-Jg3" secondAttribute="width" id="qs9-OW-iaX"/>
                                 </constraints>
                             </stackView>
                             <textField opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Family Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dyu-ae-fRg">
-                                <rect key="frame" x="169" y="402" width="187.5" height="29.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <rect key="frame" x="169" y="380.5" width="187.5" height="34"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4ZW-Ue-Gmr" userLabel="Label Stack View">
@@ -541,13 +547,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join Family" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLw-GU-uvB">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nLw-GU-uvB">
                                         <rect key="frame" x="0.0" y="152" width="112.5" height="59"/>
                                         <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Em-l0-Nwd">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Em-l0-Nwd">
                                         <rect key="frame" x="0.0" y="190" width="112.5" height="59"/>
                                         <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -563,42 +569,44 @@
                                     <constraint firstItem="Td9-rM-hO7" firstAttribute="width" secondItem="4ZW-Ue-Gmr" secondAttribute="width" id="zJx-zQ-teA"/>
                                 </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Family" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z5g-Ca-ZmY">
-                                <rect key="frame" x="37.5" y="406.5" width="106.5" height="21"/>
-                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XsL-QP-QL5" userLabel="SignInButton">
                                 <rect key="frame" x="106" y="480" width="163" height="33"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <state key="normal" title="Create"/>
                                 <connections>
                                     <action selector="CreateButtonOnTouch:" destination="RVD-0H-nJq" eventType="touchUpInside" id="A2N-Ea-c86"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="748" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Join Family ID" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sGS-gH-ZVU">
+                                <rect key="frame" x="169" y="380.5" width="187.5" height="34"/>
+                                <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="sGS-gH-ZVU" firstAttribute="height" secondItem="dyu-ae-fRg" secondAttribute="height" id="01G-RI-dpI"/>
                             <constraint firstItem="dyu-ae-fRg" firstAttribute="width" secondItem="JqH-qL-Jg3" secondAttribute="width" id="0io-q0-SXh"/>
                             <constraint firstItem="FNQ-ap-uEb" firstAttribute="centerY" secondItem="Ks0-bm-pC8" secondAttribute="centerY" multiplier="0.35" id="2Xj-YP-QV4"/>
-                            <constraint firstItem="z5g-Ca-ZmY" firstAttribute="centerY" secondItem="Ks0-bm-pC8" secondAttribute="centerY" multiplier="1.25" id="3MN-ff-tdp"/>
-                            <constraint firstItem="dyu-ae-fRg" firstAttribute="height" secondItem="sGS-gH-ZVU" secondAttribute="height" id="6ns-Mk-by5"/>
                             <constraint firstItem="JqH-qL-Jg3" firstAttribute="height" secondItem="t5I-Kw-K9z" secondAttribute="height" multiplier="0.3" id="6pg-5m-f6F"/>
                             <constraint firstItem="JqH-qL-Jg3" firstAttribute="centerX" secondItem="Ks0-bm-pC8" secondAttribute="centerX" multiplier="1.4" id="FhU-I6-t4k"/>
                             <constraint firstItem="JqH-qL-Jg3" firstAttribute="width" secondItem="t5I-Kw-K9z" secondAttribute="width" multiplier="0.5" id="Lxh-OA-5T2"/>
+                            <constraint firstItem="sGS-gH-ZVU" firstAttribute="bottom" secondItem="dyu-ae-fRg" secondAttribute="bottom" id="O7C-8D-FvT"/>
+                            <constraint firstItem="sGS-gH-ZVU" firstAttribute="centerX" secondItem="dyu-ae-fRg" secondAttribute="centerX" id="PsT-aK-xZX"/>
                             <constraint firstItem="dyu-ae-fRg" firstAttribute="centerX" secondItem="Ks0-bm-pC8" secondAttribute="centerX" multiplier="1.4" id="Re1-8P-rUi"/>
                             <constraint firstItem="t5I-Kw-K9z" firstAttribute="bottom" secondItem="XsL-QP-QL5" secondAttribute="bottom" multiplier="1.3" id="W0t-97-jJq"/>
                             <constraint firstItem="JqH-qL-Jg3" firstAttribute="centerY" secondItem="Ks0-bm-pC8" secondAttribute="centerY" multiplier="0.8" id="Zth-UK-yUt"/>
-                            <constraint firstItem="nLw-GU-uvB" firstAttribute="leading" secondItem="z5g-Ca-ZmY" secondAttribute="leading" id="a2s-zg-vpD"/>
-                            <constraint firstItem="dyu-ae-fRg" firstAttribute="centerY" secondItem="Ks0-bm-pC8" secondAttribute="centerY" multiplier="1.25" id="ajW-ec-EdY"/>
                             <constraint firstItem="FNQ-ap-uEb" firstAttribute="centerX" secondItem="Ks0-bm-pC8" secondAttribute="centerX" id="bTG-Hj-7te"/>
+                            <constraint firstItem="sGS-gH-ZVU" firstAttribute="top" secondItem="dyu-ae-fRg" secondAttribute="top" id="d3A-LX-I0Q"/>
+                            <constraint firstItem="dyu-ae-fRg" firstAttribute="top" secondItem="JqH-qL-Jg3" secondAttribute="bottom" constant="20" id="fXi-w9-YOU"/>
                             <constraint firstItem="4ZW-Ue-Gmr" firstAttribute="centerX" secondItem="Ks0-bm-pC8" secondAttribute="centerX" multiplier="0.5" id="g4S-lX-KXI"/>
                             <constraint firstItem="4ZW-Ue-Gmr" firstAttribute="width" secondItem="t5I-Kw-K9z" secondAttribute="width" multiplier="0.3" id="gFF-vi-xTW"/>
+                            <constraint firstItem="sGS-gH-ZVU" firstAttribute="width" secondItem="dyu-ae-fRg" secondAttribute="width" id="hHj-8t-N4e"/>
                             <constraint firstItem="4ZW-Ue-Gmr" firstAttribute="centerY" secondItem="Ks0-bm-pC8" secondAttribute="centerY" multiplier="0.85" id="iod-cw-AE4"/>
                             <constraint firstItem="XsL-QP-QL5" firstAttribute="centerX" secondItem="Ks0-bm-pC8" secondAttribute="centerX" id="tX6-OZ-CqQ"/>
                             <constraint firstItem="XsL-QP-QL5" firstAttribute="width" secondItem="FNQ-ap-uEb" secondAttribute="width" multiplier="0.7" id="tyC-BX-ibb"/>
                             <constraint firstItem="4ZW-Ue-Gmr" firstAttribute="height" secondItem="t5I-Kw-K9z" secondAttribute="height" multiplier="0.4" id="xGt-aE-LXX"/>
+                            <constraint firstItem="sGS-gH-ZVU" firstAttribute="centerY" secondItem="dyu-ae-fRg" secondAttribute="centerY" id="ytn-qW-QMk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="t5I-Kw-K9z"/>
                     </view>
@@ -607,6 +615,7 @@
                         <outlet property="confirmPW" destination="KYc-NB-P3z" id="fyU-ne-ZGs"/>
                         <outlet property="createButton" destination="XsL-QP-QL5" id="53o-wa-43u"/>
                         <outlet property="emailAddress" destination="OGY-gN-cgP" id="zdl-FQ-x5J"/>
+                        <outlet property="familySegmentedControl" destination="2La-xH-AtA" id="zz2-Ua-OL2"/>
                         <outlet property="joinFamilyIDField" destination="sGS-gH-ZVU" id="yGX-Xt-FIF"/>
                         <outlet property="newFamilyField" destination="dyu-ae-fRg" id="QZG-Fw-b84"/>
                         <outlet property="password" destination="Fe7-lT-mIF" id="CZ8-rA-3VM"/>
