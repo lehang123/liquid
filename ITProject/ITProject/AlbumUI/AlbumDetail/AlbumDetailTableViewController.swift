@@ -427,7 +427,17 @@ extension AlbumDetailTableViewController: UICollectionViewDataSource
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Storyboard.albumDetailPhotoCell, for: indexPath) as! AlbumDetailPhotoCollectionViewCell
 //           cell.image = albumd.getImageList()[indexPath.item]
             let photo = albumContents[indexPath.item]
+            
             cell.mediaUID = photo.UID
+            
+            if  photo.ext.contains(Util.EXTENSION_M4V) ||
+                photo.ext.contains(Util.EXTENSION_MP4) ||
+                photo.ext.contains(Util.EXTENSION_MOV){
+                cell.videoPlayImageView.isHidden = false
+            } else{
+                cell.videoPlayImageView.isHidden = true
+            }
+            
             let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
             
             cell.addGestureRecognizer(longPressRecognizer)

@@ -29,6 +29,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private static let DESCRIPTON_CELL = 1
     //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
 
+
     private struct CommentCellStruct
     {
         var comment = String()
@@ -173,6 +174,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     private var isPlaying = false
     var isShowRecord = false
     
+
+    @IBOutlet var videoPlayButton: UIButton!
     @IBOutlet var tableView: UITableView!
 
     @IBOutlet var displayPhotoImageView: UIImageView!
@@ -199,6 +202,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        //self.setupVideoImageView()
         
     }
 
@@ -348,10 +353,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
        
     }
+    
+   
 
     @objc func imageTapped(_ sender: UITapGestureRecognizer)
     {
-        
+        print("TEST IF I TAP ::")
         // show photo:
         if mediaDetail.ext.contains(Util.EXTENSION_JPEG)  ||
             mediaDetail.ext.contains(Util.EXTENSION_PNG){
@@ -361,27 +368,16 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
                   controller.selectedImage = imageView.image
                   present(controller, animated: true)
             // else, play video:
-        }else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
+        } else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
             mediaDetail.ext.contains(Util.EXTENSION_MP4) ||
             mediaDetail.ext.contains(Util.EXTENSION_MOV){
             
-            let controller = AVPlayerViewController()
-            print("IMAGE TAPPED IM RUNNING")
-            Util.GetLocalFileURL(by: mediaDetail.UID, type: .video){
-                url in
-                print("GET LOCAL URL",   URL(fileURLWithPath: url!.absoluteString) )
-                
-                DispatchQueue.main.async {
-                    
-                    controller.player = AVPlayer(url:  URL(fileURLWithPath: url!.absoluteString))
-                    self.present(controller, animated: true, completion: nil)
-                }
-            }
+            self.videoPlay()
         }
       
     }
 
-    @objc func scrollBackToTop(sender: UITapGestureRecognizer)
+    @objc func scrollBackToTop(sender: UILongPressGestureRecognizer)
     {
         // make sure sender is not nil
         guard sender.view != nil else { return }
@@ -396,6 +392,21 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     func scrollViewDidScroll(_: UIScrollView)
     {
         self.tableView.Setupnewview(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut, headerStopAt: CGFloat(DisplayPhotoViewController.HEADER_MIN_HEIGHT))
+    }
+    
+    private func videoPlay(){
+        let controller = AVPlayerViewController()
+        print("IMAGE TAPPED IM RUNNING")
+        Util.GetLocalFileURL(by: mediaDetail.UID, type: .video){
+            url in
+            print("GET LOCAL URL",   URL(fileURLWithPath: url!.absoluteString) )
+            
+            DispatchQueue.main.async {
+                
+                controller.player = AVPlayer(url:  URL(fileURLWithPath: url!.absoluteString))
+                self.present(controller, animated: true, completion: nil)
+            }
+        }
     }
 
     // MARK: - Table view data source
@@ -551,17 +562,37 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
         self.tableView.UpdateView(headerView: self.headerView, updateHeaderlayout: self.updateHeaderlayout, headerHeight: self.headerHeight, headerCut: self.headerCut)
 
-        let headerViewGesture = UITapGestureRecognizer(target: self, action: #selector(self.scrollBackToTop))
+        let headerViewGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.scrollBackToTop))
+        
         let zoomInGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
-        zoomInGesture.numberOfTapsRequired = 2
+        //zoomInGesture.numberOfTapsRequired = 2
 
         /* note: GestureRecognizer will be disable while tableview is scrolling */
         self.headerView.addGestureRecognizer(headerViewGesture)
         self.displayPhotoImageView.addGestureRecognizer(zoomInGesture)
+         if mediaDetail.ext.contains(Util.EXTENSION_JPEG)  ||
+                          mediaDetail.ext.contains(Util.EXTENSION_PNG){
+                  
+                   videoPlayButton.isHidden = true
+    
+                          // else, play video:
+              } else if mediaDetail.ext.contains(Util.EXTENSION_M4V) ||
+                  mediaDetail.ext.contains(Util.EXTENSION_MP4) ||
+                  mediaDetail.ext.contains(Util.EXTENSION_MOV){
+                
+                    
+                    self.videoPlayButton.isHidden = false
+              
+              
+               }
+        
+    
     }
     
-
-
+    @IBAction func videoTap(_ sender: Any) {
+        self.videoPlay()
+    }
+    
     // Override to support conditional editing of the table view.
     func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool
     {

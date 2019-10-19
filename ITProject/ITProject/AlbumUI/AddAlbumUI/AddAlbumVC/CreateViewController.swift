@@ -538,16 +538,6 @@ class CreateViewController: UIViewController {
     }
 }
 
-//MARK: - UIScrollViewDelegate
-extension CreateViewController: UIScrollViewDelegate{
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > 0 || scrollView.contentOffset.y < 0 {
-           scrollView.contentOffset.y = 0
-        }
-     }
-}
-
 //MARK: - UITextFieldDelegate
 extension CreateViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -1004,12 +994,25 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
             
             let tapped = UITapGestureRecognizer(target: self, action: #selector(self.addPhotoTapped(sender:)))
             cell.addGestureRecognizer(tapped)
+            cell.isPhoto = true
         } else {
-            
-            cell.UID = medias[indexPath.item-1].UID
+            let media = medias[indexPath.item-1]
+            cell.UID = media.UID
             if (indexPath.item)<=medias.count { // make sure not out of bound
                 cell.TheImageView.image = UIImage(data: medias[indexPath.item-1].cache)
             }
+           
+            if  media.ext.contains(Util.EXTENSION_M4V) ||
+                           media.ext.contains(Util.EXTENSION_MP4) ||
+                           media.ext.contains(Util.EXTENSION_MOV){
+                self.setupVideolabel(media: media)
+                cell.bottomMaskView.isHidden = false
+                cell.videoLabel.isHidden = false
+                cell.videoIconImageView.isHidden = false
+            } else{
+                cell.isPhoto = true
+            }
+            
             
             // tap to delete photo
             let tapped = UITapGestureRecognizer(target: self, action: #selector(self.photoTapped))
@@ -1028,6 +1031,12 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
           let itemWidth = (collectionView.bounds.width - 15.0) / 3.0
           return CGSize(width: itemWidth, height: itemWidth)
       }
+    
+    func setupVideolabel(media: MediaDetail){
+        let videoImage = UIImageView()
+       
+        
+    }
 }
 
 
