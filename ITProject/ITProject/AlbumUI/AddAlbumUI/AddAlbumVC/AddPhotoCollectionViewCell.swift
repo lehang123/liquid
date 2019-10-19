@@ -13,4 +13,20 @@ class AddPhotoCollectionViewCell: UICollectionViewCell{
     
     var UID: String!
     @IBOutlet weak var TheImageView: UIImageView!
+    @IBOutlet var videoIconImageView: UIImageView!
+    
+
+    @IBOutlet var bottomMaskView: UIView!
+    
+    @IBOutlet var videoLabel: UILabel!
+    
+    var isPhoto : Bool = true {
+        didSet{
+            videoIconImageView.isHidden = true
+            bottomMaskView.isHidden = true
+            videoLabel.isHidden = true
+        }
+    }
+    
+    
 }

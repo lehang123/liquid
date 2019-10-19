@@ -277,13 +277,8 @@
 		6C57C8F1230FD6D2001D65EF /* AddAlbumUI */ = {
 			isa = PBXGroup;
 			children = (
+				6C9E02D6235AF2A2007DEDB0 /* oldVersionAddAlbum */,
 				84DF66B0233DC8D60080F6E0 /* AddAlbumVC */,
-				6C57C8F2230FD78D001D65EF /* AddAlbumTextFieldSet.swift */,
-				6C2A06EE2325F29A0060D7BA /* CustomFormView.swift */,
-				6C2A06FF2326945E0060D7BA /* CustomTextField.swift */,
-				6C2A06FD2326932C0060D7BA /* CustomTextFieldContent.swift */,
-				6C2A06FA23267A880060D7BA /* CustomFormViewController.swift */,
-				6C1D3372232B7BA500169D3C /* FormElement.swift */,
 			);
 			path = AddAlbumUI;
 			sourceTree = "<group>";
@@ -311,6 +306,19 @@
 				6C26DFD72355C45000D1689D /* CALayer+borderColor.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		6C9E02D6235AF2A2007DEDB0 /* oldVersionAddAlbum */ = {
+			isa = PBXGroup;
+			children = (
+				6C57C8F2230FD78D001D65EF /* AddAlbumTextFieldSet.swift */,
+				6C2A06EE2325F29A0060D7BA /* CustomFormView.swift */,
+				6C2A06FF2326945E0060D7BA /* CustomTextField.swift */,
+				6C2A06FD2326932C0060D7BA /* CustomTextFieldContent.swift */,
+				6C2A06FA23267A880060D7BA /* CustomFormViewController.swift */,
+				6C1D3372232B7BA500169D3C /* FormElement.swift */,
+			);
+			path = oldVersionAddAlbum;
 			sourceTree = "<group>";
 		};
 		6CABC7E12306DADF00D2AFBC /* AlbumCover */ = {
