@@ -109,55 +109,55 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6G4-Ze-wt9" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
-                                <rect key="frame" x="94" y="66" width="187.5" height="187.5"/>
+                                <rect key="frame" x="94" y="76" width="187.5" height="187.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6G4-Ze-wt9" secondAttribute="height" id="OdD-uy-DVc"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4vG-9m-9nL" userLabel="update profile image">
-                                <rect key="frame" x="115.5" y="273.5" width="144" height="30"/>
+                                <rect key="frame" x="115.5" y="283.5" width="144" height="30"/>
                                 <state key="normal" title="Update Profile Image"/>
                                 <connections>
                                     <action selector="updateProfileImage:" destination="eBw-8f-een" eventType="touchUpInside" id="GLz-Em-T0d"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motto (Maximum 150 chars)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0pt-zq-a3h">
-                                <rect key="frame" x="28" y="439.5" width="213.5" height="21"/>
+                                <rect key="frame" x="28" y="449.5" width="213.5" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Bk8-sW-rYZ">
-                                <rect key="frame" x="20" y="480.5" width="335" height="146.5"/>
+                                <rect key="frame" x="20" y="490.5" width="335" height="136.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FamilyUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UuZ-2K-1Xv">
-                                <rect key="frame" x="28" y="398.5" width="96" height="21"/>
+                                <rect key="frame" x="28" y="408.5" width="96" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FamilyUID" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RY7-Kh-OXc">
-                                <rect key="frame" x="144" y="398.5" width="211" height="21"/>
+                                <rect key="frame" x="144" y="408.5" width="211" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Family Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f5I-47-zQL" userLabel="Family's Name Field">
-                                <rect key="frame" x="144" y="344.5" width="211" height="34"/>
+                                <rect key="frame" x="144" y="354.5" width="211" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fpw-Za-nRg">
-                                <rect key="frame" x="28" y="351" width="101" height="21"/>
+                                <rect key="frame" x="28" y="361" width="101" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" restorationIdentifier="SeparatorView" translatesAutoresizingMaskIntoConstraints="NO" id="w4E-md-M7e" userLabel="SeparatorView">
-                                <rect key="frame" x="0.0" y="313.5" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="323.5" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.70380580459999997" green="0.70380580459999997" blue="0.70380580459999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.78801157990000004" green="0.78801157990000004" blue="0.78801157990000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -167,7 +167,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6G4-Ze-wt9" firstAttribute="top" secondItem="KyT-rr-PFv" secondAttribute="top" constant="10" id="33B-YS-WUW"/>
+                            <constraint firstItem="6G4-Ze-wt9" firstAttribute="top" secondItem="KyT-rr-PFv" secondAttribute="top" constant="20" id="33B-YS-WUW"/>
                             <constraint firstItem="f5I-47-zQL" firstAttribute="top" secondItem="w4E-md-M7e" secondAttribute="bottom" constant="30" id="5G9-7o-G93"/>
                             <constraint firstItem="Fpw-Za-nRg" firstAttribute="centerY" secondItem="f5I-47-zQL" secondAttribute="centerY" id="760-f6-woM"/>
                             <constraint firstItem="6G4-Ze-wt9" firstAttribute="width" secondItem="KyT-rr-PFv" secondAttribute="width" multiplier="0.5" id="7Iv-jt-qTC"/>
@@ -1198,37 +1198,37 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WYE-xT-Ke1" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
-                                <rect key="frame" x="80" y="91" width="160" height="160"/>
+                                <rect key="frame" x="80" y="76" width="160" height="160"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="WYE-xT-Ke1" secondAttribute="height" multiplier="1:1" id="oCa-PK-xKp"/>
                                 </constraints>
                             </imageView>
                             <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="q3p-uK-JX8">
-                                <rect key="frame" x="134" y="330" width="161" height="34"/>
+                                <rect key="frame" x="134" y="315" width="161" height="34"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rh6-Da-3yJ">
-                                <rect key="frame" x="25" y="336.5" width="45.5" height="21"/>
+                                <rect key="frame" x="25" y="321.5" width="45.5" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Relationship" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LeI-o1-JSo">
-                                <rect key="frame" x="25" y="388.5" width="94" height="21"/>
+                                <rect key="frame" x="25" y="373.5" width="94" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Relationship" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="yRT-XW-5AG">
-                                <rect key="frame" x="134" y="382" width="161" height="34"/>
+                                <rect key="frame" x="134" y="367" width="161" height="34"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xm5-8e-egw">
-                                <rect key="frame" x="66.5" y="546" width="187" height="41"/>
+                                <rect key="frame" x="66.5" y="531" width="187" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="Change Password">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -1238,7 +1238,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYT-38-dLW">
-                                <rect key="frame" x="88" y="259" width="144" height="30"/>
+                                <rect key="frame" x="88" y="244" width="144" height="30"/>
                                 <state key="normal" title="Update Profile Image">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -1247,25 +1247,25 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ndT-vA-NJB">
-                                <rect key="frame" x="25" y="438.5" width="57" height="21"/>
+                                <rect key="frame" x="25" y="423.5" width="57" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Date Of Birth" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="feK-TA-bjA">
-                                <rect key="frame" x="134" y="482" width="161" height="34"/>
+                                <rect key="frame" x="134" y="467" width="161" height="34"/>
                                 <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DOB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOp-IL-JPD">
-                                <rect key="frame" x="25" y="488.5" width="37" height="21"/>
+                                <rect key="frame" x="25" y="473.5" width="37" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" restorationIdentifier="SeparatorView" translatesAutoresizingMaskIntoConstraints="NO" id="C1A-sS-EmA" userLabel="SeparatorView">
-                                <rect key="frame" x="0.0" y="299" width="320" height="1"/>
+                                <rect key="frame" x="0.0" y="284" width="320" height="1"/>
                                 <color key="backgroundColor" red="0.70380580459999997" green="0.70380580459999997" blue="0.70380580459999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.78801157990000004" green="0.78801157990000004" blue="0.78801157990000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -1273,7 +1273,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gf-YO-sQP">
-                                <rect key="frame" x="134" y="434" width="161" height="30"/>
+                                <rect key="frame" x="134" y="419" width="161" height="30"/>
                                 <state key="normal" title="Gender">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
@@ -1315,7 +1315,7 @@
                             <constraint firstItem="yRT-XW-5AG" firstAttribute="height" secondItem="q3p-uK-JX8" secondAttribute="height" id="cby-Bi-LAv"/>
                             <constraint firstItem="Xm5-8e-egw" firstAttribute="centerX" secondItem="XtZ-lk-78M" secondAttribute="centerX" id="h87-Vk-cHa"/>
                             <constraint firstItem="C1A-sS-EmA" firstAttribute="leading" secondItem="XtZ-lk-78M" secondAttribute="leading" id="hJd-PL-whh"/>
-                            <constraint firstItem="WYE-xT-Ke1" firstAttribute="top" secondItem="XtZ-lk-78M" secondAttribute="top" constant="35" id="j4g-tf-6Y8"/>
+                            <constraint firstItem="WYE-xT-Ke1" firstAttribute="top" secondItem="XtZ-lk-78M" secondAttribute="top" constant="20" id="j4g-tf-6Y8"/>
                             <constraint firstItem="q3p-uK-JX8" firstAttribute="leading" secondItem="yRT-XW-5AG" secondAttribute="leading" id="kX8-MG-8HS"/>
                             <constraint firstItem="yRT-XW-5AG" firstAttribute="top" secondItem="q3p-uK-JX8" secondAttribute="bottom" constant="18" id="kqJ-uD-Zg4"/>
                             <constraint firstItem="lYT-38-dLW" firstAttribute="top" secondItem="WYE-xT-Ke1" secondAttribute="bottom" constant="8" id="lGu-sV-fSH"/>
