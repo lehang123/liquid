@@ -28,8 +28,8 @@ class EmailSignUpViewController: UIViewController
 	private static let CREATE_FAMILY = "Family fields cannot be empty (fill in either one)."
 	private static let FAMILY_FIELD = "Family fields cannot be both filled."
 	private static let ACCOUNT_ALREADY_EXIST = "The email address is already in use by another account."
-	private static let JOIN_FAMILY_NOT_EXIST = "Family doesn't exist."
-	private static let ACCOUNT_ALREADY_TITLE = "The address  already exists."
+	private static let JOIN_FAMILY_NOT_EXIST = "Family ID is invalid. Family doesn't exist."
+	private static let ACCOUNT_ALREADY_TITLE = "The address already exists."
 	private static let BACK_TO_LOGIN = "Back to login."
 	private static let WAITING_AUTHENTICATE = "Creating.."
 
@@ -59,8 +59,20 @@ class EmailSignUpViewController: UIViewController
         self.newFamilyField.delegate = self
         
         self.setupCreateButton()
+        self.setupFamilySegmentC()
         
 	}
+    
+    private func setupFamilySegmentC(){
+        self.newFamilyField.isHidden = true
+        self.familySegmentedControl.backgroundColor = .selfcOrg
+        self.familySegmentedControl.layer.cornerRadius = 10
+        self.familySegmentedControl.layer.borderColor = UIColor.selfcOrg.cgColor;
+        self.familySegmentedControl.layer.borderWidth = 3
+        self.familySegmentedControl.layer.masksToBounds = true;
+        self.familySegmentedControl.tintColor = .white
+        self.familySegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor:UIColor.black], for: .selected)
+    }
     
     private func setupCreateButton(){
         self.createButton.backgroundColor = .selfcOrg
@@ -70,6 +82,25 @@ class EmailSignUpViewController: UIViewController
     }
 
 
+    @IBOutlet var familySegmentedControl: UISegmentedControl!
+    @IBAction func familyJoinAction(_ sender: Any) {
+        let getIndex = familySegmentedControl.selectedSegmentIndex
+        switch(getIndex){
+        case 0:
+            self.joinFamilyIDField.isHidden = false
+            self.newFamilyField.isHidden = true
+            self.newFamilyField.text = ""
+        case 1:
+            self.joinFamilyIDField.isHidden = true
+            self.newFamilyField.isHidden = false
+             self.joinFamilyIDField.text = ""
+        default:
+            self.joinFamilyIDField.isHidden = false
+            self.newFamilyField.isHidden = true
+            self.newFamilyField.text = ""
+        }
+    }
+    
 	/// Show the keyboard when the user is typing
 	/// - Parameter notification: notificate when user is typing
 	@objc func keyboardWillShow(notification: NSNotification)
