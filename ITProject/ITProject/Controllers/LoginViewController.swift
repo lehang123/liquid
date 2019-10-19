@@ -21,7 +21,9 @@ class LoginViewController: UIViewController
 	@IBOutlet var ID: UITextField!
 	@IBOutlet var password: UITextField!
 
-	override func viewDidLoad()
+    @IBOutlet var loginButton: UIButton!
+    @IBOutlet var createNewButton: UIButton!
+    override func viewDidLoad()
 	{
 		super.viewDidLoad()
 		// Do any additional setup after loading the view.
@@ -30,7 +32,24 @@ class LoginViewController: UIViewController
 
 		let tapGestureBackground = UITapGestureRecognizer(target: self, action: #selector(self.backgroundTapped(_:)))
 		view.addGestureRecognizer(tapGestureBackground)
+        self.setupLoginButton()
+        self.setupCreateNewButton()
 	}
+    
+    private func setupLoginButton(){
+        self.loginButton.backgroundColor = UIColor.selfcOrg
+        self.loginButton.tintColor = .white
+        self.loginButton.layer.cornerRadius = 5
+        self.loginButton.layer.masksToBounds = true
+    }
+    
+    
+    private func setupCreateNewButton(){
+        self.createNewButton.backgroundColor = .selfcOrg
+        self.createNewButton.tintColor = .white
+        self.createNewButton.layer.cornerRadius = 5
+        self.createNewButton.layer.masksToBounds = true
+    }
 
 	/// Detect the user tapped on the background
 	/// - Parameter sender: sender
