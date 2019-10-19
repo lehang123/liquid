@@ -36,7 +36,19 @@ class ChangePasswordViewController: UIViewController
         self.originalPW.delegate = self
         self.newPW.delegate = self
         self.confirmedPassword.delegate = self
+        
+        self.setSaveButton()
 	}
+    
+    func setSaveButton(){
+       
+        navigationItem.rightBarButtonItem =  UIBarButtonItem(
+                   title: "Save",
+                   style: .done,
+                   target: self,
+                   action: #selector(self.SaveButtonTapped)
+               )
+    }
     
     /// Show the keyboard
     /// - Parameter notification: notification
@@ -63,55 +75,57 @@ class ChangePasswordViewController: UIViewController
         }
     }
     
-	/// Check if the entered passwords are the same
-	/// If they are satisfied, then update it to databse
-	/// - Parameter sender: Clike the confirm bottom
-	@IBAction func Confirm(_: Any)
-	{
-		// make sure both new and old passwords are at least 8 characters.
-		if self.newPW.text!.count < 8 {
-			Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_LENGTH_NOT_ENOUGH,
-			               message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
-			               action_title: Util.BUTTON_DISMISS,
-			               on: self)
-		}
+    /// Check if the entered passwords are the same
+    /// If they are satisfied, then update it to databse
+    @objc func SaveButtonTapped(){
+        // make sure both new and old passwords are at least 8 characters.
+        if self.newPW.text!.count < 8 {
+            Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_LENGTH_NOT_ENOUGH,
+                           message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
+        }
 
-		if self.originalPW.text!.count < 8 {
-			Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_INVALID,
-			               message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
-			               action_title: Util.BUTTON_DISMISS,
-			               on: self)
-		}
+        if self.originalPW.text!.count < 8 {
+            Util.ShowAlert(title: ChangePasswordViewController.PASSWORD_INVALID,
+                           message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
+        }
 
-		// Check if the typed passwords are the same
-		if self.newPW.text == self.confirmedPassword.text
-		{
-			let user = Auth.auth().currentUser
-			let credential: AuthCredential = EmailAuthProvider.credential(withEmail: (user?.email)!, password: self.originalPW.text!)
-
-			// Prompt the user to re-provide their sign-in credentials
-			user?.reauthenticate(with: credential, completion: { _, error in
-				if error != nil
-				{
-					// An error happened.
-					Util.ShowAlert(title: error!.localizedDescription, message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
-				}
-				else
-				{
-					// User re-authenticated.
-					self.updatePassword(newPW: self.newPW.text!)
-				}
-			})
-		}
-		else
-		{
-			Util.ShowAlert(title: ChangePasswordViewController.CONFIRMED_INCORRECT_WRONG,
-			               message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
-			               action_title: Util.BUTTON_DISMISS,
-			               on: self)
-		}
-	}
-
+        // Check if the typed passwords are the same
+        if self.newPW.text == self.confirmedPassword.text
+        {
+            let user = Auth.auth().currentUser
+            let credential: AuthCredential = EmailAuthProvider.credential(withEmail: (user?.email)!, password: self.originalPW.text!)
+            Util.ShowActivityIndicator(withStatus: "Save New Password")
+            // Prompt the user to re-provide their sign-in credentials
+            user?.reauthenticate(with: credential, completion: { _, error in
+                if error != nil
+                {
+                    // An error happened.
+                    Util.DismissActivityIndicator()
+                    Util.ShowAlert(title: error!.localizedDescription, message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title: Util.BUTTON_DISMISS, on: self)
+                }
+                else
+                {
+                    // User re-authenticated.
+                    self.updatePassword(newPW: self.newPW.text!)
+                }
+            })
+        }
+        else
+        {
+            
+            Util.ShowAlert(title: ChangePasswordViewController.CONFIRMED_INCORRECT_WRONG,
+                           message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE,
+                           action_title: Util.BUTTON_DISMISS,
+                           on: self)
+        }
+    }
+    
+	
+	
 	/// Update the password to the databse
 	/// - Parameter newPW: the new password that user want to use
 	func updatePassword(newPW: String)
@@ -120,13 +134,16 @@ class ChangePasswordViewController: UIViewController
 		{ error in
 			if error == nil
 			{
+                Util.DismissActivityIndicator()
 				Util.ShowAlert(title: ChangePasswordViewController.CREATE_CORRECT, message: ChangePasswordViewController.PASSWORD_CHANGE_SUCCESS, action_title: ChangePasswordViewController.CREATE_CORRECT, on: self)
 				{
+                   
 					self.navigationController?.popToRootViewController(animated: true)
 				}
 			}
 			else
 			{
+                Util.DismissActivityIndicator()
 				Util.ShowAlert(title: error!.localizedDescription,
 				               message: ChangePasswordViewController.ACCOUNT_INCORRECT_MESSAGE, action_title: Util.BUTTON_DISMISS,
 				               on: self)
