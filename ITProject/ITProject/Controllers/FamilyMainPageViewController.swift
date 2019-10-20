@@ -43,7 +43,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     
 	private var familyUID: String!
-	private var familyName: String?
+//	private var familyName: String?
     private var name: String?
 	private var familyProfileUID: String?
 	private var familyProfileExtension: String?
@@ -54,7 +54,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	private var profileURL: String?
 	private var profileExtension: String?
     
-
+    @IBOutlet weak var familyName: UILabel!
+    
 	@IBOutlet var familyMotto: UILabel!
 	@IBOutlet var familyProfileImg: EnhancedCircleImageView!
 	@IBOutlet var profileImgContainer: UIView!
@@ -141,7 +142,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 					// pass user's family info to the current sideMenuVC
 					sideMenuVC.userFamilyInformation = UserFamilyInfo(
 						familyUID: self.familyUID,
-						familyName: self.familyName,
+                        familyName: self.familyName.text,
 						familyProfileUID: self.familyProfileUID,
 						familyProfileExtension: self.familyProfileExtension,
 						familyMottoText: self.familyMotto.text,
@@ -171,7 +172,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
                 // pass user's family info to the current sideMenuVC
                 fpVC.userFamilyInfo = UserFamilyInfo(
                     familyUID: self.familyUID,
-                    familyName: self.familyName,
+                    familyName: self.familyName.text,
                     familyProfileUID: self.familyProfileUID,
                     familyProfileExtension: self.familyProfileExtension,
                     familyMottoText: self.familyMotto.text,
@@ -424,7 +425,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 
 				self.familyUID = uid
 				self.familyMotto.text = motto
-				self.familyName = name
+                self.familyName.text = name
 
 				if self.familyProfileUID != profileUId
 				{
