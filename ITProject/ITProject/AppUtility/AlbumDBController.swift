@@ -460,7 +460,7 @@ class AlbumDBController
 				documentUID: albumUID
 			)
 
-        let templateUser = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: "NRlhcwr4nR9t17mg27mq")
+//        let templateUser = DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: "NRlhcwr4nR9t17mg27mq")
 		DBController
 			.getInstance()
 			.addDocumentToCollectionWithUID(
