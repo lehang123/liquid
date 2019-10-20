@@ -163,7 +163,7 @@
 		8438135E23544492004CA4C4 /* RBResizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RBResizer.swift; sourceTree = "<group>"; };
 		8446C074230E4DEA000ABCD7 /* DisplayPhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPhotoViewController.swift; sourceTree = "<group>"; };
 		8446C076230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeWatchedBookmarkCell.swift; sourceTree = "<group>"; };
-		8446C07E230F82DF000ABCD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8446C07E230F82DF000ABCD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ITProject/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		8446C080230F8AD9000ABCD7 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		8446C0882321EA0A000ABCD7 /* MediaDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetail.swift; sourceTree = "<group>"; };
 		84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+StickyHeader.swift"; sourceTree = "<group>"; };
@@ -942,6 +942,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 369369FF4CBC1A188C396FB1 /* Pods-ITProject.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
@@ -964,6 +965,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 994289955C8D29A2785B6C81 /* Pods-ITProject.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
