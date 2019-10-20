@@ -100,59 +100,59 @@
             <objects>
                 <viewController storyboardIdentifier="MainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="eBw-8f-een" customClass="FamilyProfileViewController" customModule="ITProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fBB-wj-z6g">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6G4-Ze-wt9" customClass="EnhancedCircleImageView" customModule="EnhancedCircleImageView">
-                                <rect key="frame" x="94" y="64" width="187.5" height="187.5"/>
+                                <rect key="frame" x="94" y="76" width="187.5" height="187.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6G4-Ze-wt9" secondAttribute="height" id="OdD-uy-DVc"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4vG-9m-9nL" userLabel="update profile image">
-                                <rect key="frame" x="115.5" y="271.5" width="144" height="30"/>
+                                <rect key="frame" x="115.5" y="283.5" width="144" height="30"/>
                                 <state key="normal" title="Update Profile Image"/>
                                 <connections>
                                     <action selector="updateProfileImage:" destination="eBw-8f-een" eventType="touchUpInside" id="GLz-Em-T0d"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Motto (Maximum 150 chars)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0pt-zq-a3h">
-                                <rect key="frame" x="28" y="437.5" width="213.5" height="21"/>
+                                <rect key="frame" x="28" y="449.5" width="213.5" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Bk8-sW-rYZ">
-                                <rect key="frame" x="20" y="478.5" width="335" height="168.5"/>
+                                <rect key="frame" x="20" y="490.5" width="335" height="136.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UuZ-2K-1Xv">
-                                <rect key="frame" x="28" y="396.5" width="96" height="21"/>
+                                <rect key="frame" x="28" y="408.5" width="96" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family ID" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RY7-Kh-OXc">
-                                <rect key="frame" x="144" y="396.5" width="211" height="21"/>
+                                <rect key="frame" x="144" y="408.5" width="211" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Family Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f5I-47-zQL" userLabel="Family's Name Field">
-                                <rect key="frame" x="144" y="342.5" width="211" height="34"/>
+                                <rect key="frame" x="144" y="354.5" width="211" height="34"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="15"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fpw-Za-nRg">
-                                <rect key="frame" x="28" y="349" width="101" height="21"/>
+                                <rect key="frame" x="28" y="361" width="101" height="21"/>
                                 <fontDescription key="fontDescription" name="GeezaPro" family="Geeza Pro" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" restorationIdentifier="SeparatorView" translatesAutoresizingMaskIntoConstraints="NO" id="w4E-md-M7e" userLabel="SeparatorView">
-                                <rect key="frame" x="0.0" y="311.5" width="375" height="1"/>
+                                <rect key="frame" x="0.0" y="323.5" width="375" height="1"/>
                                 <color key="backgroundColor" red="0.70380580459999997" green="0.70380580459999997" blue="0.70380580459999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" red="0.78801157990000004" green="0.78801157990000004" blue="0.78801157990000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
@@ -956,6 +956,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection id="Veg-B3-nxZ">
                                 <cells>
@@ -980,6 +981,7 @@
                                                 <constraint firstAttribute="bottom" secondItem="gdq-4D-uOG" secondAttribute="bottom" id="hGj-Cy-XKr"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="60" id="TlW-5H-txo" customClass="UITableViewVibrantCell" customModule="SideMenu">
                                         <rect key="frame" x="0.0" y="118" width="375" height="60"/>
@@ -1024,6 +1026,7 @@
                                                 <constraint firstItem="RVl-f7-NcH" firstAttribute="centerY" secondItem="xbM-oP-0gZ" secondAttribute="centerY" id="yjS-iK-ZNV"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="60" id="fCS-WU-YDa" customClass="UITableViewVibrantCell" customModule="SideMenu">
                                         <rect key="frame" x="0.0" y="178" width="375" height="60"/>
@@ -1068,6 +1071,7 @@
                                                 <constraint firstItem="gQ5-ow-cFM" firstAttribute="leading" secondItem="6zd-Gt-LjJ" secondAttribute="leading" constant="16" id="uLo-X3-TVl"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="60" id="mIP-j3-TYY" customClass="UITableViewVibrantCell" customModule="SideMenu">
                                         <rect key="frame" x="0.0" y="238" width="375" height="60"/>
@@ -1112,6 +1116,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="VTO-Zo-Zl4" secondAttribute="trailing" id="smU-uM-QmO"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="ddQ-CT-GWu" customClass="UITableViewVibrantCell" customModule="SideMenu">
                                         <rect key="frame" x="0.0" y="298" width="375" height="60"/>
@@ -1156,6 +1161,7 @@
                                                 <constraint firstItem="E0a-vr-95d" firstAttribute="leading" secondItem="c7q-Ek-1hw" secondAttribute="leading" constant="16" id="z1L-fW-KWk"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1923,7 +1929,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ral-km-w5x">
-                                        <rect key="frame" x="332.5" y="17" width="22.5" height="22"/>
+                                        <rect key="frame" x="310" y="6" width="45" height="44"/>
                                         <state key="normal" image="disableSendIcon"/>
                                         <connections>
                                             <action selector="EnterComment:" destination="zQN-g9-n7S" eventType="touchUpInside" id="Bq0-D9-eTv"/>
@@ -2255,6 +2261,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="cdT-L3-sIn"/>
         <segue reference="JlC-27-WbR"/>
-        <segue reference="uKD-o9-ghn"/>
+        <segue reference="fg6-8Q-TrY"/>
     </inferredMetricsTieBreakers>
 </document>
