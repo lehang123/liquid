@@ -200,7 +200,7 @@ class ProfileViewController: UIViewController
     func setDatePicker(){
         // init dob's date field:
         //todo: pick Locale! AU or ID?
-        datePicker.locale = Locale(identifier: "id")
+        datePicker.locale = Locale(identifier: "au")
         datePicker.datePickerMode  = .date
         
         DOBField.inputView = datePicker
