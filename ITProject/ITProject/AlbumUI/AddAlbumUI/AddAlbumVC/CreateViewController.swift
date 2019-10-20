@@ -1005,7 +1005,7 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
             if  media.ext.contains(Util.EXTENSION_M4V) ||
                            media.ext.contains(Util.EXTENSION_MP4) ||
                            media.ext.contains(Util.EXTENSION_MOV){
-                self.setupVideolabel(media: media)
+//                self.setupVideolabel(media: media)
                 cell.bottomMaskView.isHidden = false
                 cell.videoLabel.isHidden = false
                 cell.videoIconImageView.isHidden = false
@@ -1032,11 +1032,11 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
           return CGSize(width: itemWidth, height: itemWidth)
       }
     
-    func setupVideolabel(media: MediaDetail){
-        let videoImage = UIImageView()
-       
-        
-    }
+//    func setupVideolabel(media: MediaDetail){
+//        let videoImage = UIImageView()
+//
+//
+//    }
 }
 
 
