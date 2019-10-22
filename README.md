@@ -15,7 +15,10 @@ The app is specifically designed for family photo sharing.
 </table>
 
 ## Key features
-- 
+- User can join a family during registration to be in the family space, being able to watch and create media that shares their memories.
+- Timeline to show the family memebers' activities to check out what is going on instant !!!
+- Sharing your informations within the family, connecting memebers with each other.
+- Comments, likes features on the medias, to share your thought and communicate with each other !!
 
 ## Usage
 ### Requirements
