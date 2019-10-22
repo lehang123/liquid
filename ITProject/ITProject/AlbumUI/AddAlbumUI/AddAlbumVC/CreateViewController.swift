@@ -774,9 +774,9 @@ extension CreateViewController: CLLocationManagerDelegate {
                     print("prase location with locality : \(firstLocation?.locality ?? "unknown city")" )
                     print("prase location with name : \(firstLocation?.name ?? "unknown name")" )
                     
-                    self.cLocation = (firstLocation?.country)! + "." +
-                        (firstLocation?.locality)!
-                    self.cLocation = self.cLocation + "." + (firstLocation?.name)!
+                    self.cLocation = ((firstLocation?.country) ??  "unknown country") + "." +
+                        ((firstLocation?.locality) ??  "unknown city")
+                    self.cLocation = self.cLocation + "." + ((firstLocation?.name) ??  "unknown name")
                     
                     self.LocationButton.setTitle(self.cLocation, for: .normal)
                 }
