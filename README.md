@@ -30,10 +30,14 @@ The app is specifically designed for family photo sharing.
 </table>
 
 ## Key features
-- User can join a family during registration to be in the family space, being able to watch and create media that shares their memories.
-- Timeline to show the family memebers' activities to check out what is going on instant !!!
-- Sharing your informations within the family, connecting memebers with each other.
-- Comments, likes features on the medias, to share your thought and communicate with each other !!
+- ##### Join family
+User can join a family during registration to be in the family space, being able to watch and create media that shares their memories.
+- ##### Timeline 
+To show the family memebers' activities to check out what is going on instant !!!
+- ##### Sharing 
+Sharing your informations within the family, connecting memebers with each other.
+- ##### Comments
+Likes features on the medias, to share your thought and communicate with each other !!
 
 ## Usage
 ### Requirements
@@ -48,11 +52,12 @@ To install [CocoaPods](http://www.cocoapods.org), run `sudo gem install cocoapod
 3. Choose an Simulator (best for iPhone 6 as this is the client phone), can't put into the real device as we don't have lience to publish to app store.
 4. Project should be up and running. 
 you can create your own account or use the one that we used in the presentation.
-Account: stella@qq.com, password: 123456789
+Account: test@qq.com, password: 123456789
     
 ### Unit Testing : 
 1. simply just go to the testing folder, and click on the green diamond of the file to test the unit you want.
 
  - DOCS ARE IN \DOCUMENTATION\ FOLDER 
     - including architecture diagram, and user requirements
+
  
