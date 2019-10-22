@@ -9,7 +9,7 @@ The app is specifically designed for family photo sharing.
  <tr>
     <td><img src="Screenshots/familyMain.png"!></td>
     <td><img src="Screenshots/familySet.png"!></td>
-    <td><img src=".Screenshots/individualSet.png"!></td>
+    <td><img src="Screenshots/individualSet.png"!></td>
  </tr>
 
 </table>
