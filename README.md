@@ -52,6 +52,7 @@ Account: stella@qq.com, password: 123456789
     
 ### Unit Testing : 
 1. simply just go to the testing folder, and click on the green diamond of the file to test the unit you want.
-DONT FORGET TO ADD:  
+
  - DOCS ARE IN \DOCUMENTATION\ FOLDER 
+    - including architecture diagram, and user requirements
  
