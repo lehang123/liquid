@@ -6,11 +6,26 @@ The app is specifically designed for family photo sharing.
 ***
 
 <table border="0">
+ <p align="center">
+  <img src = "Screenshots/launch.gif"/>
+ </p>
  <tr>
     <td><img src="Screenshots/familyMain.png"!></td>
     <td><img src="Screenshots/familySet.png"!></td>
     <td><img src="Screenshots/individualSet.png"!></td>
+    <td><img src="Screenshots/viewFamily.png"!></td>
  </tr>
+ <tr>
+    <td><img src="Screenshots/createAlbum.gif"!></td>
+    <td><img src="Screenshots/viewMedia.gif"!></td>
+    <td><img src="Screenshots/viewPhoto.gif"!></td>
+    <td><img src="Screenshots/delete.gif"!></td>
+
+ </tr>
+  <tr>
+    <td><img src="Screenshots/timeline.gif"!></td>
+ </tr>
+
 
 </table>
 
