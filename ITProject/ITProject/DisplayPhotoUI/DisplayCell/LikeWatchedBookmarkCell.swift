@@ -17,14 +17,4 @@ class LikeWatchedBookmarkCell: UITableViewCell {
     @IBOutlet weak var watchedLabel: UIImageView!
     @IBOutlet weak var watchedNumbers: UILabel!
     
-    //    @IBOutlet weak var displayPhotoImageView: UIImageView!
-//
-//    var displayImage: UIImage! {
-//        didSet {
-//            self.displayPhotoImageView.image = displayImage
-//            self.setNeedsLayout()
-//        }
-//
-//    }
-
 }

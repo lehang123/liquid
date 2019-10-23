@@ -83,50 +83,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         }
         
     }
-    //todo: fix bug : why photo is always default image? 
-//    private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
-//        print("GET PHOTO FROM DB")
-//        DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: currentUserUID) { (documentSnapshot, error) in
-//        if let error = error {
-//            print("error at fillCommentSource:::", error)
-//             group.leave()
-//         //if we actually have photo, put it in to comment src now:
-//        }else if let imageUID = documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE),
-//            let UIDExtension =  documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION) {
-//            print("ELSE IF RUNS")
-//            Util.GetImageData(
-//                imageUID: imageUID as? String,
-//                UIDExtension: UIDExtension as? String,
-//                completion: {
-//                    data in
-//
-//                    self.commentsSource
-//                        .append(
-//                            DisplayPhotoViewController
-//                                .CommentCellStruct(
-//                              comment: comment ?? "",
-//                              username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
-//                              image : UIImage(data:data!)!
-//                          ))
-//                    group.leave()
-//                      })
-//        //if we dont have photo, we need to set a default image:
-//        } else{
-//            print(" ELSE RUNS")
-//            self.commentsSource
-//              .append(
-//                  DisplayPhotoViewController
-//                      .CommentCellStruct(
-//                    comment: comment ?? "",
-//                    username: documentSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_NAME) as! String,
-//                    image : #imageLiteral(resourceName: "tempProfileImage")
-//                ))
-//            group.leave()
-//            }
-//
-//        }
-//    }
-      private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
+    
+    private func getPhotoFromDB(currentUserUID:String, comment : String?, group:DispatchGroup ){
             print("GET PHOTO FROM DB")
             DBController.getInstance().getDocumentFromCollection(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: currentUserUID) { (documentSnapshot, error) in
             if let error = error {
@@ -328,18 +286,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     {
         AlbumDBController.getInstance().UpdateComments(username: username, comment: comment, commentedPhotoUID: photoUID)
 
-        
-//        username.getDocument { (docSnapshot, error) in
-//            if let error = error {
-//                print("error at storeCommentToServer::",  error)
-//            }else if {
-//                Util.GetImageData(imageUID: docSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE) as! String , UIDExtension: docSnapshot!.get(RegisterDBController.USER_DOCUMENT_FIELD_PROFILE_PICTURE_EXTENSION) as! String , completion: { data in
-//                    self.commentsSource.append(DisplayPhotoViewController.CommentCellStruct(comment: comment, username: username))
-//
-//                })
-//
-//            }
-//        }
         let group = DispatchGroup()
         group.enter()
         Util.ShowActivityIndicator()
@@ -488,10 +434,6 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             descriptionCell.setDescriptionLabel(description: mediaDetail.getDescription())
             print("you don't call this, do you? : " + mediaDetail.audioUID)
             descriptionCell.setAudioUID(audioUID: mediaDetail.audioUID)
-//            descriptionCell.descriptionDetail.numberOfLines = 0
-//            descriptionCell.descriptionDetail.lineBreakMode = .byWordWrapping
-//            descriptionCell.descriptionDetail.frame.size.width = descriptionCell.frame.width
-//            descriptionCell.descriptionDetail.sizeToFit()
             
             if self.mediaDetail.audioUID.removingWhitespaces().isEmpty{
                 descriptionCell.playAudioButton.isHidden = true
@@ -600,38 +542,4 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         return true
     }
 
-    // Override to support editing the table view.
-    //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    //        if editingStyle == .delete {
-    //            // Delete the row from the data source
-    //            tableView.deleteRows(at: [indexPath], with: .fade)
-    //        } else if editingStyle == .insert {
-    //            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    //        }
-    //    }
-
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-     }
-     */
-
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }

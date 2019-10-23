@@ -213,10 +213,7 @@ class ProfileViewController: UIViewController
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-        //set layout:
         self.hideKeyboardWhenTapped()
-        
-		
         self.setProfilePicture()
         self.setDoneButton()
         self.setDateFormatter()
@@ -226,9 +223,7 @@ class ProfileViewController: UIViewController
         self.setupGenderDropDown()
         self.setupRelaButton()
         self.setupRelaDropDown()
-       
-        
-        
+
         //fill in default data:
         self.populateData()
         
@@ -321,46 +316,8 @@ class ProfileViewController: UIViewController
 		}
 	}
 
-	/// When the button tapped, save all the changes that made by the user
-    ///1st version: update when change, but total: 3x updates. MAYBE CAN USE BATCH.
-//	@objc func DoneButtonTapped()
-//	{
-//        //end editing first:
-//        view.endEditing(true)
-//
-//		let user = Auth.auth().currentUser
-//
-//		// update DB according to what has changed:
-//
-//        if self.currentName != self.name.text
-//        {
-//            self.didChangeUserInfo = true
-//
-//            DBController.getInstance().updateSpecificField(newValue: self.name.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_NAME, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-//            self.currentName = self.name.text
-//        }
-//
-//		if self.currentRelationship != self.relationship.text
-//		{
-//			self.didChangeUserInfo = true
-//			DBController.getInstance().updateSpecificField(newValue: self.relationship.text!, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_POSITION, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-//			self.currentRelationship = self.relationship.text
-//		}
-//
-//        if self.currentDOB != self.datePicker.date
-//		{
-////            print("BEFORE currentDOB", self.currentDOB, "DATEPICKER",self.datePicker.date )
-//			self.didChangeUserInfo = true
-//            DBController.getInstance().updateSpecificField(newValue: self.datePicker.date, fieldName: RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH, documentUID: user!.uid, collectionName: RegisterDBController.USER_COLLECTION_NAME)
-//            self.currentDOB = self.datePicker.date
-//
-//		}
-//        self.commitUIChange();
-//
-//
-//	}
+
     /// When the button tapped, save all the changes that made by the user
-    ///2nd version: always update, but only 1x
         @objc func DoneButtonTapped()
         {
             //end editing date field first:

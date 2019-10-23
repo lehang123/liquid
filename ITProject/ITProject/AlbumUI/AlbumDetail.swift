@@ -19,16 +19,7 @@ class AlbumDetail: Equatable
 
 	// MARK: - Public API
 
-	/* coverImage of ablum */
-	//    private var coverImage: UIImage!
-	//
-	//    public func getCoverImage() -> UIImage{
-	//        return self.coverImage
-	//    }
-	//
-	//    public func setCoverImage(image: UIImage){
-	//        self.coverImage = image
-	//    }
+
 
 	/// title of ablum
 	var title = ""
@@ -54,18 +45,7 @@ class AlbumDetail: Equatable
     /// album audio descrption
     private(set) var audioUID: String!
     
-    
 
-	/* photos that contained in the album */
-	//    private(set) var photos = [PhotoDetail]()
-//
-	//    public func addPhoto(photo : PhotoDetail){
-	//        photos.append(photo)
-	//    }
-//
-	//    public func removePhoto(photo : PhotoDetail){
-	//        photos = photos.filter{$0 != photo}
-	//    }
 
 
 	/// init Album's info. for the UI to display.
