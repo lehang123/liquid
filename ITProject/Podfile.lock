@@ -223,7 +223,7 @@ DEPENDENCIES:
   - Zip (~> 1.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - BoringSSL-GRPC
     - Dollar
     - DropDown
@@ -309,4 +309,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0e1ed4a8911fbca2b10d3a8e500f17c76f0727bf
 
-COCOAPODS: 1.8.1
+COCOAPODS: 1.7.5
