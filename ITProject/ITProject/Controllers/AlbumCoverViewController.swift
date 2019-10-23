@@ -135,69 +135,6 @@ class AlbumCoverViewController: UIViewController {
         
     }
 
-    /// Setting up all infomation signed by user to create the album
-    /// - Parameter customFormVC: custom Form View Controller
-    /// - Returns: formElement: formElement with all information
-//    private func setupFormELement(customFormVC: CustomFormViewController) -> FormElement {
-//        // initial all text fields needed by creating album form
-//        let textFields = AddAlbumUI.fields(by: [.albumName, .albumDescription], style: .light)
-//
-//        return .init(formType: .withImageView,
-//                     titleText: "Add new album",
-//                     textFields: textFields,
-//                     uploadTitle: "Upload Thumbnail",
-//                     cancelButtonText: "Cancel",
-//                     okButtonText: "Create",
-//                     cancelAction: {},
-//                     okAction: {
-//                        // get text filled in album name and description text fields
-//                         let albumName = textFields.first!.textContent
-//                         let albumDesc = textFields.last!.textContent
-//                        // prepare atrributes for pop up alter
-//                         let popattributes = PopUpAlter.setupPopupPresets()
-//                         if albumName == "" {
-//                            // alter if the album name is empty
-//                             self.showPopupMessage(attributes: popattributes, description: self.NON_EMPTY_MESSAGE)
-//                         } else if self.albumDataList.contains(albumName) {
-//                            // alter if the album name repeated
-//                             self.showPopupMessage(attributes: popattributes, description: self.NO_REPEAT_MESSAGE)
-//                         } else {
-//                             // create a album here
-//                             customFormVC.dismissWithAnimation {
-//                                imageData,_  in
-//                                 if let imaged = imageData,
-//                                     let imageUid = Util.GenerateUDID() {
-//                                     Util.ShowActivityIndicator(withStatus: "Creating album ...")
-//                                     Util.UploadFileToServer(data: imaged, metadata: nil, fileName: imageUid, fextension: Util.EXTENSION_JPEG, completion: { url in
-//                                         Util.DismissActivityIndicator()
-//                                         if url != nil {
-//                                             // todo : add the location argument
-//                                             AlbumDBController
-//                                                .getInstance()
-//                                                .addNewAlbum(
-//                                                    albumName: albumName,
-//                                                    description: albumDesc,
-//                                                    thumbnail: imageUid,
-//                                                    thumbnailExt: Util.EXTENSION_JPEG,
-//                                                    mediaWithin: [],
-//                                                    location: "" ,
-//                                                    completion: {
-//                                                 docRef,_ in
-//
-//                                                        self.loadAlbumToList(title: albumName, description: albumDesc, UID: docRef!.documentID, coverImageUID: imageUid, coverImageExtension: Util.EXTENSION_JPEG, location: "")
-//                                             })
-//                                         }
-//
-//                                     }, errorHandler: { e in
-//                                         print("you get error from Thumbnail choose")
-//                                         Util.ShowAlert(title: "Error", message: e!.localizedDescription, action_title: Util.BUTTON_DISMISS, on: self)
-//                                     })
-//                                 }
-//                             }
-//                         }
-//        })
-//    }
-
     /// Pop up error message
     /// - Parameters:
     ///   - attributes: attributes description
@@ -307,19 +244,6 @@ class AlbumCoverViewController: UIViewController {
                 let selectedAlbum = albumsList.getAlbum(index: (sender as! IndexPath).row)
                 albumDetailTVC.albumDetail = selectedAlbum
 
-                // todo : make album's photo according to the photo UID
-                // let albumUID = albumDetailTVC.albumDetail.UID, to constant update
-                // note : change to reload at nextVC viewAppear
-//                AlbumDBController.getInstance().getAllPhotosInfo(currAlbum: albumUID) { detail, error in
-//                    if let error = error {
-//                        print("error at prepare AlbumCoverViewController", error)
-//                    } else {
-//                        print("AlbumCoverViewC.prepare:::",detail.count)
-//                        print("AlbumCoverViewC CALL ")
-//                        albumDetailTVC.reloadPhoto(newPhotos: detail)
-//
-//                    }
-//                }
             }
         }else if segue.identifier == Storyboard.presentCreateAlbumVC{
             // Get the presented navigationController and the editViewController it contains
@@ -393,20 +317,7 @@ extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDa
         //detects deletion from swiping gesture:
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { deleteAction, indexPath in
-            // commits delete action to DB:
 
-//            let alertController = UIAlertController(title: "Alert title", message: "Message to display", preferredStyle: .alert)
-//
-//            // Create OK button
-//            let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-//                print("Ok button tapped");
-//            }
-//            alertController.addAction(OKAction)
-//            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action:UIAlertAction!) in
-//                print("Cancel button tapped");
-//            }
-//            alertController.addAction(cancelAction)
-//            self.present(alertController, animated: true, completion:nil)
             let currAlbum: AlbumDetail = self.albumsList.getAlbum(index: indexPath.row)
             AlbumDBController.getInstance().deleteAlbum(albumUID: currAlbum.UID)
 

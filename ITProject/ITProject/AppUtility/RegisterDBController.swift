@@ -187,11 +187,10 @@ class RegisterDBController
                             //PARSE DATA:
                             familyMembersRef.forEach({ (queryDocumentSnapshot) in
                                 let data : QueryDocumentSnapshot = queryDocumentSnapshot;
-    //                            let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as? Timestamp) ?? Timestamp(date: Date()) ;
+    
                                 let dateFormatter : DateFormatter = DateFormatter();
                                 dateFormatter.dateFormat = "dd-MM-yyyy";
-    //                            let dobDate : Date = dateFormatter.date(from: dobTimestamp.description) ??  Date()
-    //                            print("dobDate:::",dobDate)
+    
                                 let dobTimestamp : Timestamp =  (data.get(RegisterDBController.USER_DOCUMENT_FIELD_DATE_OF_BIRTH) as! Timestamp) ;
                         
                                 let str =  dobTimestamp.dateValue().description 

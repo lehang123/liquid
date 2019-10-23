@@ -51,26 +51,20 @@ class FamilyCustomCell: UITableViewCell
 
 		addSubview(self.nameView)
 		addSubview(self.positionView)
-		// name - pos - role
-		//        nameView.leftAnchor.constraint(greaterThanOrEqualTo: self.leftAnchor , constant: CGFloat(0.5)).isActive = true
-		//        nameView.leftAnchor.constraint(greaterThanOrEqualTo: self.leftAnchor , constant: CGFloat(0.5)).isActive = true
+	
 		self.nameView.leftAnchor.constraint(equalTo: leftAnchor, constant: CGFloat(25.0)).isActive = true
-		//        nameView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+
 		self.nameView.topAnchor.constraint(equalTo: topAnchor).isActive = true
 		self.nameView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 		self.nameView.widthAnchor.constraint(equalTo: heightAnchor).isActive = true
 		self.nameView.rightAnchor.constraint(equalTo: self.nameView.leftAnchor, constant: CGFloat(100.0)).isActive = true
 
 		self.positionView.leftAnchor.constraint(lessThanOrEqualTo: self.nameView.rightAnchor, constant: CGFloat(50.0)).isActive = true
-		//        positionView.leftAnchor.constraint(equalTo: NSLayoutXAxisAnchor()).isActive = true
+
 		self.positionView.rightAnchor.constraint(equalTo: self.positionView.leftAnchor, constant: CGFloat(100.0)).isActive = true
 		self.positionView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
 		self.positionView.topAnchor.constraint(equalTo: topAnchor).isActive = true
 
-		//        roleView.leftAnchor.constraint(equalTo: self.nameView.rightAnchor, constant: CGFloat(200)).isActive = true
-		//        roleView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-		//        roleView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-		//        roleView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
 	}
 
 	override func layoutSubviews()

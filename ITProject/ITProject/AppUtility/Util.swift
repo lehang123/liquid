@@ -871,23 +871,6 @@ class Util {
         })
     }
 
-    /// Change users' photo url DEPRECATED
-    /// - Parameters:
-    ///   - imagePath: the image path u want to change
-    ///   - ext: ext
-    public static func ChangeUserPhotoURL(imagePath: String, ext: String) {
-//        let request = Auth.auth().currentUser?.createProfileChangeRequest()
-//        request?.photoURL = URL(string: imagePath + "." + ext)
-//        request?.commitChanges(completion: { error in
-//            if let error = error {
-//                print("error in ChangePhotoURL ::: ", error)
-//            }
-//        })
-        //upload to DB:
- 
-        
-    }
-
     /// There are differernt level of priority
     /// Check if the photo can be acessed by this user
     public static func CheckPhotoAcessPermission() {
