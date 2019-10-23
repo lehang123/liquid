@@ -61,12 +61,12 @@ Account: test@qq.com, password: 123456789
     - including architecture diagram, and user requirements
     
 ### Contributors:
-    1. Lehan: Leader, Storage, Coding App Structures.
-    2. Erya: UI design, Coding App Structures, App logic.
-    3. Chenghong: App logic, Coding App Structures, Graph drawing,
-    4. Gillbert: Database, documentation
+1. Lehan: Leader, Storage, Coding App Structures.
+2. Erya: UI design, Coding App Structures, App logic.
+3. Chenghong: App logic, Coding App Structures, Graph drawing,
+4. Gillbert: Database, documentation
     
 ### Supervisor:
-    1. Geoffrey: Helping us and give directions on the project.
+1. Geoffrey: Helping us and give directions on the project.
 
  
