@@ -14,36 +14,20 @@ protocol RecorderViewDelegate : class {
 }
 
 class RecorderViewController: UIViewController , RecorderDelegate {
+    //MARK : - Properties
     open weak var delegate: RecorderViewDelegate?
+    
+    var destinationUrl: String!
     var recording: Recording!
     var recordDuration = 0
-    var destinationUrl: String!
 
     @IBOutlet var backgroundView: UIView!
     @IBOutlet weak var tapToFinishBtn: UIButton!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet var singalImageView: UIImageView!
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupBackgroundView()
-        createRecorder()
-    }
-    
-    func setupBackgroundView(){
-        backgroundView.layer.cornerRadius = 15
-        backgroundView.layer.masksToBounds = true
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
-        durationLabel.text = ""
-
-    }
-    
+    // MARK: - Public Methods
+    /// Initialize a recorder
     open func createRecorder() {
         recording = Recording(to: destinationUrl)
         recording.delegate = self
@@ -60,7 +44,8 @@ class RecorderViewController: UIViewController , RecorderDelegate {
             }
         }
     }
-
+    
+    /// Start recording action
     open func startRecording() {
         recordDuration = 0
         do {
@@ -69,7 +54,27 @@ class RecorderViewController: UIViewController , RecorderDelegate {
             print(error)
         }
     }
+    
+    // MARK: - Private Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupBackgroundView()
+        createRecorder()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        durationLabel.text = ""
 
+    }
+    
+    /// Set up recorder background view
+    func setupBackgroundView(){
+        backgroundView.layer.cornerRadius = 15
+        backgroundView.layer.masksToBounds = true
+    }
+    
+    // Stop recording action
     @IBAction func stopRecord() {
         
         delegate?.didFinishRecording(self)
@@ -80,6 +85,8 @@ class RecorderViewController: UIViewController , RecorderDelegate {
         
     }
     
+    /// update recorder volume UI with volume changing
+    /// - Parameter value: volume value
     func audioRecordUpdateMetra(_ value: Float) {
         //print("db level: %f", value)
         

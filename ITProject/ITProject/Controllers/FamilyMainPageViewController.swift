@@ -15,14 +15,14 @@ import SideMenu
 import UPCarouselFlowLayout
 import CoreLocation
 
-/// Structure
+// MARK: - Structor
 struct ModelCollectionFlowLayout
 {
 	var title: String = ""
 	var image: UIImage!
 }
 
-/// Delegation goes here
+// MARK: - Delegation
 protocol FamilyProfileViewDelegate
 {
 	func didUpdateFamilyInfo()
@@ -33,9 +33,10 @@ protocol UserProfileViewDelegate
 	func didUpdateUserInfo()
 }
 
+
 class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, FamilyProfileViewDelegate, UserProfileViewDelegate
 {
-	// Constants and properties go here
+	// MARK: - Constants and Properties
 	private static let SHOW_ALBUM_COVERS_VIEW = "ShowAlbumCovers"
 	private static let SHOW_SIDE_MENU_VIEW = "ShowSideMenuBar"
     private static let SHOW_TIMELINE_VIEW = "ShowTimeline"
@@ -43,7 +44,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     
 	private var familyUID: String!
-//	private var familyName: String?
     private var name: String?
 	private var familyProfileUID: String?
 	private var familyProfileExtension: String?
@@ -60,14 +60,6 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	@IBOutlet var familyProfileImg: EnhancedCircleImageView!
 	@IBOutlet var profileImgContainer: UIView!
 	@IBOutlet var carouselCollectionView: UICollectionView!
-
-	/// shows side menu bar
-	///
-	/// - Parameter sender: touch the side menu bar
-	@IBAction func SideMenuButtonTouched(_: Any)
-	{
-		performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
-	}
 
 	var items = [ModelCollectionFlowLayout]()
 
@@ -92,19 +84,7 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 		self.familyProfileImg.clipsToBounds = false
 
 		// carousel effect
-		self.collectData()
-		self.carouselCollectionView.showsHorizontalScrollIndicator = false
-		self.carouselCollectionView.register(UINib(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
-
-		let flowLayout = UPCarouselFlowLayout()
-        // TODO:- FIX THE WIDTH AND HEIGHT BUG
-        flowLayout.itemSize = CGSize(width: 320 / 2.5, height: 187.5)
-        print("height ::: ", self.carouselCollectionView.frame.size.height)
-		flowLayout.scrollDirection = .horizontal
-		flowLayout.sideItemScale = 0.8
-		flowLayout.sideItemAlpha = 1.0
-		flowLayout.spacingMode = .fixed(spacing: 5.0)
-		self.carouselCollectionView.collectionViewLayout = flowLayout
+		self.setupCarouselEffect()
 	}
 
 	/// In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -184,6 +164,23 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
         }
 	}
     
+    /// Set up carousel effect
+    private func setupCarouselEffect(){
+        self.collectData()
+        self.carouselCollectionView.showsHorizontalScrollIndicator = false
+        self.carouselCollectionView.register(UINib(nibName: "CarouselEffectCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "Cell")
+
+        let flowLayout = UPCarouselFlowLayout()
+
+        flowLayout.itemSize = CGSize(width: 320 / 2.5, height: 187.5)
+        print("height ::: ", self.carouselCollectionView.frame.size.height)
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.sideItemScale = 0.8
+        flowLayout.sideItemAlpha = 1.0
+        flowLayout.spacingMode = .fixed(spacing: 5.0)
+        self.carouselCollectionView.collectionViewLayout = flowLayout
+    }
+    
     func getUserInformation() -> UserInfo{
         return  UserInfo(
                             username: self.name ?? "Not Available",
@@ -257,6 +254,14 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
             ModelCollectionFlowLayout(title: "Family Setting", image: ImageAsset.setting_icon.image),
 		]
 	}
+    
+    /// shows side menu bar
+    ///
+    /// - Parameter sender: touch the side menu bar
+    @IBAction func SideMenuButtonTouched(_: Any)
+    {
+        performSegue(withIdentifier: FamilyMainPageViewController.SHOW_SIDE_MENU_VIEW, sender: self)
+    }
 
 	/// - Parameter collectionView: The collection view requesting this information.
 	/// - Returns: The number of sections in collectionView.

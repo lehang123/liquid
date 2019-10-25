@@ -10,7 +10,12 @@ import Foundation
 import UIKit
 
 extension CALayer {
-
+    
+    /// Add border color for a CALayer (UILabel layer)
+    /// - Parameter edge: border edge type
+    /// - Parameter adjust: adjust distance of the border from the label
+    /// - Parameter color: border color
+    /// - Parameter thickness: border thickness
     func addBorder(edge: UIRectEdge, adjust: CGFloat, color: UIColor, thickness: CGFloat) {
 
         let border = CALayer()

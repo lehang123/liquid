@@ -14,7 +14,7 @@ import UIKit
 /// This view is mainly for user to log in
 class LoginViewController: UIViewController
 {
-	// Constants and properties go here
+	// MARK: - Constants and Properties
 	private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
 	private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
 
@@ -23,6 +23,8 @@ class LoginViewController: UIViewController
 
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var createNewButton: UIButton!
+    
+    // MARK: - Methods
     override func viewDidLoad()
 	{
 		super.viewDidLoad()
@@ -35,7 +37,8 @@ class LoginViewController: UIViewController
         self.setupLoginButton()
         self.setupCreateNewButton()
 	}
-    
+
+    /// Set up setupLoginButton UI
     private func setupLoginButton(){
         self.loginButton.backgroundColor = UIColor.selfcOrg
         self.loginButton.tintColor = .white
@@ -44,6 +47,7 @@ class LoginViewController: UIViewController
     }
     
     
+    /// Set up CreateNewBUtton UI
     private func setupCreateNewButton(){
         self.createNewButton.backgroundColor = .selfcOrg
         self.createNewButton.tintColor = .white

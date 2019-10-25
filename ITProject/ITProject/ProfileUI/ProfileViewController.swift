@@ -14,7 +14,9 @@ import UIKit
 /// Shows users' info from DB.
 class ProfileViewController: UIViewController
 {
-	// Constants and properties:
+	// MARK: - Constants and Properties
+    var userInformation: UserInfo!
+    
 	private static let CHANGED_INFO = "Succesfully"
     
 	private static let CHANGED_MESSAGE = "The information has changed"
@@ -31,7 +33,6 @@ class ProfileViewController: UIViewController
     
     private let dateFormatter : DateFormatter = DateFormatter();
     
-	var userInformation: UserInfo!
     ///flag variables to notice other UIs that data has been altered:
 	private(set) var didChangeUserInfo: Bool = false, didChangeUserProfile: Bool = false
     private let chooseGenderDropDown = DropDown()
@@ -47,14 +48,62 @@ class ProfileViewController: UIViewController
     //UI Fields:
 	@IBOutlet var profilePicture: EnhancedCircleImageView!
 	@IBOutlet var name: UITextField!
-	//@IBOutlet var relationship: UITextField!
 	@IBOutlet var DOBField: UITextField!
-//	@IBOutlet var gender: UITextField!
     @IBOutlet var genderButton: UIButton!
     @IBOutlet var relaButton: UIButton!
     
     @IBOutlet var ChangePasswordButton: UIButton!
     
+    // MARK: - Methods
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        self.setupGenderButton()
+        self.setupGenderDropDown()
+        self.setupRelaButton()
+        self.setupRelaDropDown()
+        
+        self.setupChangePasswordButton()
+        
+        self.hideKeyboardWhenTapped()
+        self.setProfilePicture()
+        self.setDoneButton()
+        self.setDateFormatter()
+        self.setDatePicker()
+
+        //fill in default data:
+        self.populateData()
+        
+
+       //handle keyboard observer:
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.setDelegate()
+        
+    }
+    
+    /// set up gender button UI
+    private func setupGenderButton(){
+        self.genderButton.layer.cornerRadius = 5
+        self.genderButton.layer.borderWidth = 1
+        self.genderButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+    }
+    
+    /// set up relationship button UI
+    private func setupRelaButton(){
+        self.relaButton.layer.cornerRadius = 5
+        self.relaButton.layer.borderWidth = 1
+        self.relaButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+    }
+    
+    /// set up chagne password button UI
+    private func setupChangePasswordButton(){
+        self.ChangePasswordButton.backgroundColor = .selfcOrg
+        self.ChangePasswordButton.setTitleColor(.white, for: .normal)
+        self.ChangePasswordButton.layer.cornerRadius = 10
+        self.ChangePasswordButton.layer.masksToBounds = true
+    }
     
     ///  Set right bar button as Done to store any changes that user made
     func setDoneButton(){
@@ -134,13 +183,19 @@ class ProfileViewController: UIViewController
         //        self.currentName = self.userInformation.username
     }
     
+    /// Show relationship drop down menu
+    /// - Parameter sender: the sender
     @IBAction func relationshipButton(_ sender: Any) {
         chooseRelaDropDown.show()
     }
+    
+    /// Show gender drop down menu
+    /// - Parameter sender: the sender
     @IBAction func genderButton(_ sender: Any) {
         chooseGenderDropDown.show()
     }
     
+    /// Set gender drop down menu data and UI
     func setupGenderDropDown() {
         chooseGenderDropDown.anchorView = genderButton
         
@@ -166,6 +221,7 @@ class ProfileViewController: UIViewController
         
     }
     
+    /// Set relationship drop down menu data and UI
     func setupRelaDropDown() {
         chooseRelaDropDown.anchorView = relaButton
         
@@ -209,50 +265,6 @@ class ProfileViewController: UIViewController
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileViewController.viewTapped(gestureRecognizer:)))
         self.datePicker.maximumDate = Date()
         view.addGestureRecognizer(tapGesture)
-    }
-	override func viewDidLoad()
-	{
-		super.viewDidLoad()
-        self.hideKeyboardWhenTapped()
-        self.setProfilePicture()
-        self.setDoneButton()
-        self.setDateFormatter()
-        self.setDatePicker()
-        self.setupChangePasswordButton()
-        self.setupGenderButton()
-        self.setupGenderDropDown()
-        self.setupRelaButton()
-        self.setupRelaDropDown()
-
-        //fill in default data:
-        self.populateData()
-        
-
-       //handle keyboard observer:
-		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        self.setDelegate()
-        
-	}
-    
-    private func setupGenderButton(){
-        self.genderButton.layer.cornerRadius = 5
-        self.genderButton.layer.borderWidth = 1
-        self.genderButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
-    }
-    
-    private func setupRelaButton(){
-        self.relaButton.layer.cornerRadius = 5
-        self.relaButton.layer.borderWidth = 1
-        self.relaButton.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
-    }
-    
-    private func setupChangePasswordButton(){
-        self.ChangePasswordButton.backgroundColor = .selfcOrg
-        self.ChangePasswordButton.setTitleColor(.white, for: .normal)
-        self.ChangePasswordButton.layer.cornerRadius = 10
-        self.ChangePasswordButton.layer.masksToBounds = true
     }
     
     func setDelegate(){
@@ -386,6 +398,7 @@ class ProfileViewController: UIViewController
 	}
 }
 
+// MARK: - UITextFieldDelegate Extension
 extension ProfileViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("textFieldShouldReturn : get called")
@@ -400,6 +413,7 @@ extension ProfileViewController: UITextFieldDelegate{
     }
 }
 
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate Extension
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
 	/// Pick the specific image

@@ -9,11 +9,12 @@
 import Foundation
 import UIKit
 
-typealias MainFont = Font.HelveticaNeue
+typealias MainFont = Font.DINAlternate
 
+// Font Assest
 enum Font
 {
-	enum HelveticaNeue: String
+	enum DINAlternate: String
 	{
 		case ultraLightItalic = "UltraLightItalic"
 		case medium = "Medium"
@@ -31,7 +32,7 @@ enum Font
 
 		func with(size: CGFloat) -> UIFont
 		{
-			return UIFont(name: "HelveticaNeue-\(rawValue)", size: size)!
+			return UIFont(name: "DINAlternate-\(rawValue)", size: size)!
 		}
 	}
 }

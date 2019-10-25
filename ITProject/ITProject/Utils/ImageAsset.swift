@@ -6,11 +6,12 @@
 //  Copyright © 2019 liquid. All rights reserved.
 //
 
-typealias ImageAsset = UIImage.Asset
-
 import Foundation
 import UIKit
 
+typealias ImageAsset = UIImage.Asset
+
+// Image Assest Collection
 extension UIImage {
     enum Asset : String {
         case able_send_icon = "ableSendIcon"

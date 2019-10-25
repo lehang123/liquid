@@ -27,25 +27,17 @@
 		6C19AB8823347D630044EF30 /* TimelineField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19AB8723347D630044EF30 /* TimelineField.swift */; };
 		6C19AB8B233494610044EF30 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19AB8A233494610044EF30 /* TimelineView.swift */; };
 		6C19AB8D23349E1A0044EF30 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C19AB8C23349E1A0044EF30 /* TimelineViewController.swift */; };
-		6C1D3373232B7BA500169D3C /* FormElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1D3372232B7BA500169D3C /* FormElement.swift */; };
 		6C234F932305055B001561CA /* AlbumCoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C234F922305055B001561CA /* AlbumCoverViewController.swift */; };
 		6C234F9A23051CC7001561CA /* AlbumDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C234F9923051CC7001561CA /* AlbumDetail.swift */; };
 		6C26DFD82355C45000D1689D /* CALayer+borderColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C26DFD72355C45000D1689D /* CALayer+borderColor.swift */; };
-		6C2A06EF2325F29A0060D7BA /* CustomFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A06EE2325F29A0060D7BA /* CustomFormView.swift */; };
-		6C2A06F523260F030060D7BA /* UILabel+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A06F423260F030060D7BA /* UILabel+extension.swift */; };
-		6C2A06FB23267A880060D7BA /* CustomFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A06FA23267A880060D7BA /* CustomFormViewController.swift */; };
-		6C2A06FE2326932C0060D7BA /* CustomTextFieldContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A06FD2326932C0060D7BA /* CustomTextFieldContent.swift */; };
-		6C2A07002326945E0060D7BA /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A06FF2326945E0060D7BA /* CustomTextField.swift */; };
 		6C3ECB9E22FC61FF003C89DB /* FamilyMainPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3ECB9D22FC61FF003C89DB /* FamilyMainPageViewController.swift */; };
 		6C5221472306A1E9000FC9E4 /* AlbumsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5221462306A1E9000FC9E4 /* AlbumsList.swift */; };
 		6C5624902348AE4E00CF4778 /* RecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C56248F2348AE4E00CF4778 /* RecorderViewController.swift */; };
-		6C57C8F3230FD78D001D65EF /* AddAlbumTextFieldSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8F2230FD78D001D65EF /* AddAlbumTextFieldSet.swift */; };
-		6C57C8F8230FDF52001D65EF /* UIColor+EKColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8F7230FDF52001D65EF /* UIColor+EKColor.swift */; };
-		6C57C8FB230FE0C4001D65EF /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8FA230FE0C4001D65EF /* Font.swift */; };
-		6C57C8FE2314AC19001D65EF /* PopUpAlter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8FD2314AC19001D65EF /* PopUpAlter.swift */; };
-		6C5B8E462339C4450017B99C /* UIScreen+CGRect+minEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */; };
+		6C57C8FB230FE0C4001D65EF /* FontAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57C8FA230FE0C4001D65EF /* FontAsset.swift */; };
 		6C8957FF234AD2040083DEA2 /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8957FE234AD2040083DEA2 /* ImageAsset.swift */; };
 		6C895807234AED800083DEA2 /* Recording.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C895806234AED800083DEA2 /* Recording.swift */; };
+		6C8B4FEA2361C23200E38470 /* UIColor+Hex+RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8B4FE92361C23200E38470 /* UIColor+Hex+RGB.swift */; };
+		6C8B4FEC2361CA9E00E38470 /* Date+dateToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8B4FEB2361CA9E00E38470 /* Date+dateToString.swift */; };
 		6CABC7DE2306C99800D2AFBC /* AlbumDBController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7DD2306C99800D2AFBC /* AlbumDBController.swift */; };
 		6CABC7E02306DACD00D2AFBC /* AlbumDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7DF2306DACD00D2AFBC /* AlbumDetailTableViewController.swift */; };
 		6CABC7E32306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CABC7E22306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift */; };
@@ -128,25 +120,17 @@
 		6C19AB8723347D630044EF30 /* TimelineField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineField.swift; sourceTree = "<group>"; };
 		6C19AB8A233494610044EF30 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		6C19AB8C23349E1A0044EF30 /* TimelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
-		6C1D3372232B7BA500169D3C /* FormElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormElement.swift; sourceTree = "<group>"; };
 		6C234F922305055B001561CA /* AlbumCoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCoverViewController.swift; sourceTree = "<group>"; };
 		6C234F9923051CC7001561CA /* AlbumDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetail.swift; sourceTree = "<group>"; };
 		6C26DFD72355C45000D1689D /* CALayer+borderColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+borderColor.swift"; sourceTree = "<group>"; };
-		6C2A06EE2325F29A0060D7BA /* CustomFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormView.swift; sourceTree = "<group>"; };
-		6C2A06F423260F030060D7BA /* UILabel+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+extension.swift"; sourceTree = "<group>"; };
-		6C2A06FA23267A880060D7BA /* CustomFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFormViewController.swift; sourceTree = "<group>"; };
-		6C2A06FD2326932C0060D7BA /* CustomTextFieldContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextFieldContent.swift; sourceTree = "<group>"; };
-		6C2A06FF2326945E0060D7BA /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		6C3ECB9D22FC61FF003C89DB /* FamilyMainPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMainPageViewController.swift; sourceTree = "<group>"; };
 		6C5221462306A1E9000FC9E4 /* AlbumsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsList.swift; sourceTree = "<group>"; };
 		6C56248F2348AE4E00CF4778 /* RecorderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderViewController.swift; sourceTree = "<group>"; };
-		6C57C8F2230FD78D001D65EF /* AddAlbumTextFieldSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAlbumTextFieldSet.swift; sourceTree = "<group>"; };
-		6C57C8F7230FDF52001D65EF /* UIColor+EKColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+EKColor.swift"; sourceTree = "<group>"; };
-		6C57C8FA230FE0C4001D65EF /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
-		6C57C8FD2314AC19001D65EF /* PopUpAlter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpAlter.swift; sourceTree = "<group>"; };
-		6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+CGRect+minEdge.swift"; sourceTree = "<group>"; };
+		6C57C8FA230FE0C4001D65EF /* FontAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontAsset.swift; sourceTree = "<group>"; };
 		6C8957FE234AD2040083DEA2 /* ImageAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		6C895806234AED800083DEA2 /* Recording.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recording.swift; sourceTree = "<group>"; };
+		6C8B4FE92361C23200E38470 /* UIColor+Hex+RGB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex+RGB.swift"; sourceTree = "<group>"; };
+		6C8B4FEB2361CA9E00E38470 /* Date+dateToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+dateToString.swift"; sourceTree = "<group>"; };
 		6CABC7DD2306C99800D2AFBC /* AlbumDBController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumDBController.swift; sourceTree = "<group>"; };
 		6CABC7DF2306DACD00D2AFBC /* AlbumDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailTableViewController.swift; sourceTree = "<group>"; };
 		6CABC7E22306DEAC00D2AFBC /* AlbumDetailDescrpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailDescrpTableViewCell.swift; sourceTree = "<group>"; };
@@ -277,48 +261,25 @@
 		6C57C8F1230FD6D2001D65EF /* AddAlbumUI */ = {
 			isa = PBXGroup;
 			children = (
-				6C9E02D6235AF2A2007DEDB0 /* oldVersionAddAlbum */,
 				84DF66B0233DC8D60080F6E0 /* AddAlbumVC */,
 			);
 			path = AddAlbumUI;
-			sourceTree = "<group>";
-		};
-		6C57C8F4230FDA73001D65EF /* PopUpUI */ = {
-			isa = PBXGroup;
-			children = (
-				6C57C8FD2314AC19001D65EF /* PopUpAlter.swift */,
-			);
-			path = PopUpUI;
 			sourceTree = "<group>";
 		};
 		6C57C8F9230FDF6A001D65EF /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				84DF66AC233DC40B0080F6E0 /* DynamicHeightCollectionView.swift */,
-				6C57C8F7230FDF52001D65EF /* UIColor+EKColor.swift */,
-				6C57C8FA230FE0C4001D65EF /* Font.swift */,
-				6C2A06F423260F030060D7BA /* UILabel+extension.swift */,
+				6C57C8FA230FE0C4001D65EF /* FontAsset.swift */,
 				6CD0F871232A95FD006B40E3 /* UIButton+DashedBorder.swift */,
-				6C5B8E452339C4450017B99C /* UIScreen+CGRect+minEdge.swift */,
 				84ACE91A232CA41300E08756 /* UITableView+StickyHeader.swift */,
 				6CD476F623461F8E00930C42 /* UIImage+withBackgroundColor.swift */,
 				6C8957FE234AD2040083DEA2 /* ImageAsset.swift */,
 				6C26DFD72355C45000D1689D /* CALayer+borderColor.swift */,
+				6C8B4FE92361C23200E38470 /* UIColor+Hex+RGB.swift */,
+				6C8B4FEB2361CA9E00E38470 /* Date+dateToString.swift */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		6C9E02D6235AF2A2007DEDB0 /* oldVersionAddAlbum */ = {
-			isa = PBXGroup;
-			children = (
-				6C57C8F2230FD78D001D65EF /* AddAlbumTextFieldSet.swift */,
-				6C2A06EE2325F29A0060D7BA /* CustomFormView.swift */,
-				6C2A06FF2326945E0060D7BA /* CustomTextField.swift */,
-				6C2A06FD2326932C0060D7BA /* CustomTextFieldContent.swift */,
-				6C2A06FA23267A880060D7BA /* CustomFormViewController.swift */,
-				6C1D3372232B7BA500169D3C /* FormElement.swift */,
-			);
-			path = oldVersionAddAlbum;
 			sourceTree = "<group>";
 		};
 		6CABC7E12306DADF00D2AFBC /* AlbumCover */ = {
@@ -427,7 +388,6 @@
 				84080C2B2334ABAC00F05BAD /* FamilyTableUI */,
 				6C19AB8323347CF90044EF30 /* TimelineUI */,
 				6C57C8F9230FDF6A001D65EF /* Utils */,
-				6C57C8F4230FDA73001D65EF /* PopUpUI */,
 				8446C078230E5C13000ABCD7 /* DisplayPhotoUI */,
 				6C234F9623051B85001561CA /* AlbumUI */,
 				6C0151EA2300E3F000FEF794 /* ProfileUI */,
@@ -694,24 +654,22 @@
 				520667F322FAEEAE002C61B6 /* EmailSignUpViewController.swift in Sources */,
 				8446C081230F8AD9000ABCD7 /* CommentCell.swift in Sources */,
 				6C895807234AED800083DEA2 /* Recording.swift in Sources */,
+				6C8B4FEA2361C23200E38470 /* UIColor+Hex+RGB.swift in Sources */,
 				6C0151D12300473700FEF794 /* SideMenuTableViewController.swift in Sources */,
 				6C234F932305055B001561CA /* AlbumCoverViewController.swift in Sources */,
 				6CABC7E7230789C700D2AFBC /* AlbumDetailPhotoTableViewCell.swift in Sources */,
 				8423A6F622FD03370049B656 /* Util.swift in Sources */,
-				6C57C8F3230FD78D001D65EF /* AddAlbumTextFieldSet.swift in Sources */,
-				6C2A07002326945E0060D7BA /* CustomTextField.swift in Sources */,
-				6C57C8FB230FE0C4001D65EF /* Font.swift in Sources */,
+				6C57C8FB230FE0C4001D65EF /* FontAsset.swift in Sources */,
 				6C8957FF234AD2040083DEA2 /* ImageAsset.swift in Sources */,
 				8423A6E922F9CA390049B656 /* FamilyProfileViewController.swift in Sources */,
 				8423A6EB22F9CC610049B656 /* MainNavigationController.swift in Sources */,
 				0D71EF0523222BCA00E4F7F7 /* FamilyCustomCell.swift in Sources */,
-				6C57C8F8230FDF52001D65EF /* UIColor+EKColor.swift in Sources */,
 				52AC3B262327790E0046CD97 /* ShowDetailPhotoViewController.swift in Sources */,
 				6CABC7EF23079D7900D2AFBC /* AlbumDetailPhotoCollectionViewCell.swift in Sources */,
 				8423A6FB22FE94720049B656 /* LoginNavigationController.swift in Sources */,
 				0D71EF032322247800E4F7F7 /* FamilyTableViewController.swift in Sources */,
-				6C2A06F523260F030060D7BA /* UILabel+extension.swift in Sources */,
 				84DF66B2233DC90B0080F6E0 /* AddPhotoCollectionViewCell.swift in Sources */,
+				6C8B4FEC2361CA9E00E38470 /* Date+dateToString.swift in Sources */,
 				84E9BA4822F941F4003EA693 /* LoginViewController.swift in Sources */,
 				6C3ECB9E22FC61FF003C89DB /* FamilyMainPageViewController.swift in Sources */,
 				8438135F23544492004CA4C4 /* RBResizer.swift in Sources */,
@@ -719,8 +677,6 @@
 				8446C0892321EA0A000ABCD7 /* MediaDetail.swift in Sources */,
 				6C0151E223006DC700FEF794 /* CarouselEffectCollectionViewCell.swift in Sources */,
 				6C0151D3230053B300FEF794 /* ProfileViewController.swift in Sources */,
-				6C5B8E462339C4450017B99C /* UIScreen+CGRect+minEdge.swift in Sources */,
-				6C57C8FE2314AC19001D65EF /* PopUpAlter.swift in Sources */,
 				84ACE91B232CA41300E08756 /* UITableView+StickyHeader.swift in Sources */,
 				6C19AB8823347D630044EF30 /* TimelineField.swift in Sources */,
 				84DF66AD233DC40B0080F6E0 /* DynamicHeightCollectionView.swift in Sources */,
@@ -728,10 +684,7 @@
 				6C0DC6C82333474E005953DD /* AlbumCollectionViewCell.swift in Sources */,
 				52BBFA572306D5CB00495E66 /* ChangePWViewController.swift in Sources */,
 				6C234F9A23051CC7001561CA /* AlbumDetail.swift in Sources */,
-				6C2A06EF2325F29A0060D7BA /* CustomFormView.swift in Sources */,
 				6C5221472306A1E9000FC9E4 /* AlbumsList.swift in Sources */,
-				6C1D3373232B7BA500169D3C /* FormElement.swift in Sources */,
-				6C2A06FE2326932C0060D7BA /* CustomTextFieldContent.swift in Sources */,
 				6C19AB8D23349E1A0044EF30 /* TimelineViewController.swift in Sources */,
 				84DF66AF233DC66C0080F6E0 /* CreateViewController.swift in Sources */,
 				8446C077230E552F000ABCD7 /* LikeWatchedBookmarkCell.swift in Sources */,
@@ -743,7 +696,6 @@
 				6CABC7E02306DACD00D2AFBC /* AlbumDetailTableViewController.swift in Sources */,
 				0D067F522304EFB100F232E8 /* RegisterDBController.swift in Sources */,
 				84080C2D2334ABED00F05BAD /* FamilyTableViewMemberCell.swift in Sources */,
-				6C2A06FB23267A880060D7BA /* CustomFormViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

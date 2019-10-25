@@ -15,7 +15,9 @@ import UIKit
 /// Also shows the comments or description to the family
 class FamilyProfileViewController: UIViewController, UITextViewDelegate
 {
-	// Constants and properties:
+	// MARK: - Constants and Properties
+    var userFamilyInfo: UserFamilyInfo!
+    
 	private static let TEXT_VIEW_WORD_LIMIT = 150
 	private var imagePicker = UIImagePickerController()
 	private var didChangeFamilyInfo: Bool = false
@@ -24,7 +26,6 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate
 	private var currentMotto: String?
 	private var currentPhotoString: String?
 	private var currentPhotoStringExt: String?
-	var userFamilyInfo: UserFamilyInfo!
 
 	@IBOutlet var familyProfileImageView: EnhancedCircleImageView!
 	@IBOutlet var mottoTextView: UITextView!
@@ -34,7 +35,7 @@ class FamilyProfileViewController: UIViewController, UITextViewDelegate
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+	
 		self.setUpView()
 
 		self.familyNameField.text = self.userFamilyInfo.familyName

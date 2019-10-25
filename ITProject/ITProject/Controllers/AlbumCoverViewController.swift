@@ -117,40 +117,35 @@ extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
 }
 
 class AlbumCoverViewController: UIViewController {
-    // Constants and properties go here
+    // MARK: - Constants and Properties
+    struct Storyboard {
+        static let showAlbumDetail = "ShowAlbumDetail"
+        static let presentCreateAlbumVC = "PresentCreateAlbumVC"
+    }
+    
     private static let NIB_NAME = "AlbumCollectionViewCell"
     private static let CELL_IDENTIFIER = "AlbumCell"
     private let NO_REPEAT_MESSAGE = "Album name already exist. Try give a unique name"
     private let NON_EMPTY_MESSAGE = "Album name is empty"
+    private let cellScaling: CGFloat = 0.6
+    private let albumsList = AlbumsList()
+    private var albumDataList = [String]()
 
 
     @IBOutlet var albumCollectionView: UICollectionView!
 
-    /// User need to add the album
-    /// - Parameter sender: the button for creating album
-    @IBAction func AddAlbumPressed(_: Any) {
-        print("AddAlbumPressed : ")
 
-        self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
-        
+    // var activeCell = albumCollectionView
+    // activeCell = AlbumCoverViewController.controlView
+
+    // MARK: - Methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadAlbumCollectionView()
+        //        loadNameData()
+        albumCollectionView.reloadData()
     }
 
-    /// Pop up error message
-    /// - Parameters:
-    ///   - attributes: attributes description
-    ///   - description: decription about what is wrong
-    private func showPopupMessage(attributes: EKAttributes, description: String) {
-        let image = ImageAsset.menu_icon.image.withRenderingMode(.alwaysTemplate)
-        let title = "Error!"
-        PopUpAlter.showPopupMessage(attributes: attributes,
-                                    title: title,
-                                    titleColor: .white,
-                                    description: description,
-                                    descriptionColor: .white,
-                                    buttonTitleColor: Color.Gray.mid,
-                                    buttonBackgroundColor: .white,
-                                    image: image)
-    }
 
     /// loads all the albums into UI
     /// - Parameters:
@@ -200,24 +195,6 @@ class AlbumCoverViewController: UIViewController {
         }
     }
 
-    // var activeCell = albumCollectionView
-    // activeCell = AlbumCoverViewController.controlView
-    private let cellScaling: CGFloat = 0.6
-    private let albumsList = AlbumsList()
-    private var albumDataList = [String]()
-
-    struct Storyboard {
-        static let showAlbumDetail = "ShowAlbumDetail"
-        static let presentCreateAlbumVC = "PresentCreateAlbumVC"
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        loadAlbumCollectionView()
-        //        loadNameData()
-        albumCollectionView.reloadData()
-    }
-
     /// Loads the album collection view for the vc
     private func loadAlbumCollectionView() {
         albumCollectionView.showsVerticalScrollIndicator = false
@@ -254,6 +231,16 @@ class AlbumCoverViewController: UIViewController {
                   createAlbumViewController.creating = .CreateAlbum
         }
     }
+    
+    
+    /// User need to add the album
+    /// - Parameter sender: the button for creating album
+    @IBAction func AddAlbumPressed(_: Any) {
+        print("AddAlbumPressed : ")
+
+        self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
+        
+    }
 
     /** todo : deprecated */
     private func createAlbumPhotos() -> [String] {
@@ -266,6 +253,7 @@ class AlbumCoverViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate, UICollectionViewDataSource Extension
 extension AlbumCoverViewController: UICollectionViewDelegate, UICollectionViewDataSource, SwipeCollectionViewCellDelegate {
     ///
     /// - Parameter collectionView: The collection view requesting this information.

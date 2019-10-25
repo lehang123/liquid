@@ -13,7 +13,7 @@ import UIKit
 /// Users can zoom in and zoom out for detail of the picture
 class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate
 {
-	// Mark: Properties
+	// Mark: - Properties
 	var selectedImage: UIImage!
 	var cumulativeScale: CGFloat = 1.0
 	var maxScale: CGFloat = 3.5

@@ -11,10 +11,8 @@ import UIKit
 
 extension UIImage {
 
-    /**
-        Returns an UIImage with a specified background color.
-        - parameter color: The color of the background
-     */
+    /// Returns an UIImage with a specified background color.
+    /// - Parameter color: The color of the background
     convenience init(withBackground color: UIColor) {
 
         let rect: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1)

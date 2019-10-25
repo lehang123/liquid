@@ -10,7 +10,7 @@ import UIKit
 
 class TimelineView: UIView {
     
-    // MARK:- Public Properties
+    // MARK:- Properties
 
     /// The events shown in the Timeline
     open var timelineField: [TimelineField] {
@@ -74,7 +74,26 @@ class TimelineView: UIView {
     }
 
     // MARK:- Private Methods
+    
+    /// Set up the Timeline View
+    /// - Parameter viewFromAbove: above view
+    private func setupTimeline(viewFromAbove: UIView) {
+        var viewFromAbove = viewFromAbove
+        for (index, element) in timelineField.enumerated() {
+            let v = blockForTimeFrame(element, isFirst: index == 0, isLast: index == timelineField.count - 1)
+            addSubview(v)
+            addConstraints([
+                NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: viewFromAbove, attribute: .bottom, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: viewFromAbove, attribute: .width, multiplier: 1.0, constant: 0),
+                NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: viewFromAbove, attribute: .leading, multiplier: 1.0, constant: 0),
+            ])
+            viewFromAbove = v
+        }
 
+        addConstraint(NSLayoutConstraint(item: viewFromAbove, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0))
+    }
+    
+    /// Set up the content view
     private func setupContent() {
         for v in subviews {
             v.removeFromSuperview()
@@ -84,7 +103,9 @@ class TimelineView: UIView {
 
         setupTimeline(viewFromAbove: viewFromAbove)
     }
-
+    
+    /// Set up bullet point on the right guiding line
+    /// - Parameter width: imelinPoint radius
     private func setupTimelinePoint(_ width: CGFloat) -> UIView {
         // draw timeline point
 
@@ -100,10 +121,15 @@ class TimelineView: UIView {
         timePointView.layer.addSublayer(shapeLayer)
         return timePointView
     }
-
+    
+    /// Set up the view for each TimeFrame Block
+    /// - Parameter element: TimeFrame information
+    /// - Parameter isFirst: is it the TimeFrame
+    /// - Parameter isLast: is it the last TimeFrame
     fileprivate func blockForTimeFrame(_ element: TimelineField,
                                        isFirst: Bool = false,
                                        isLast: Bool = false) -> UIView {
+        
         let blockView = UIView()
         blockView.translatesAutoresizingMaskIntoConstraints = false
         blockView.addConstraint(NSLayoutConstraint(item: blockView, attribute: .height, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: timelinePointRadius))
@@ -129,6 +155,7 @@ class TimelineView: UIView {
         
         // imageContent
         if let image = element.image {
+            // with image
             let backgroundViewForImage = setupBackgroundImageView(blockView: blockView, lastView: lastView, dateLabel: dateLabel)
 
             setupImageContentView(blockView: blockView, backgroundViewForImage: backgroundViewForImage, image: image)
@@ -136,6 +163,7 @@ class TimelineView: UIView {
             setupButton(blockView: blockView, element: element, image: image)
             
         } else {
+            // without image
             blockView.addConstraint(NSLayoutConstraint(item: lastView, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: blockView, attribute: .bottom, multiplier: 1.0, constant: -20))
         }
 
@@ -143,9 +171,11 @@ class TimelineView: UIView {
         let line = setupTimelineBottom(blockView: blockView, timelinePoint: timelinePoint)
         
         if isLast {
+            // set up the last block
             let extraSpace: CGFloat = 2000
             blockView.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: blockView, attribute: .height, multiplier: 1.0, constant: extraSpace))
         } else {
+            // set up block that not last or first one
             blockView.addConstraint(NSLayoutConstraint(item: line, attribute: .height, relatedBy: .equal, toItem: blockView, attribute: .height, multiplier: 1.0, constant: -timelinePointRadius))
         }
 
@@ -154,7 +184,7 @@ class TimelineView: UIView {
         return blockView
     }
     
-    // MARK:- Set Up Detail
+    /// Set up the guide line on the left
     private func setupGuideView() -> UIView {
         let guideView = UIView()
         guideView.translatesAutoresizingMaskIntoConstraints = false
@@ -167,36 +197,9 @@ class TimelineView: UIView {
         ])
         return guideView
     }
-
-    private func setupTimeline(viewFromAbove: UIView) {
-        var viewFromAbove = viewFromAbove
-        for (index, element) in timelineField.enumerated() {
-            let v = blockForTimeFrame(element, isFirst: index == 0, isLast: index == timelineField.count - 1)
-            addSubview(v)
-            addConstraints([
-                NSLayoutConstraint(item: v, attribute: .top, relatedBy: .equal, toItem: viewFromAbove, attribute: .bottom, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: v, attribute: .width, relatedBy: .equal, toItem: viewFromAbove, attribute: .width, multiplier: 1.0, constant: 0),
-                NSLayoutConstraint(item: v, attribute: .leading, relatedBy: .equal, toItem: viewFromAbove, attribute: .leading, multiplier: 1.0, constant: 0),
-            ])
-            viewFromAbove = v
-        }
-
-        addConstraint(NSLayoutConstraint(item: viewFromAbove, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0))
-    }
-
-    // draw timeline point
-    ///
-    /// - Parameter pointWidth: timeline point width
-    private func drawCirclePoint(pointRadius: CGFloat) -> CAShapeLayer {
-        let path = UIBezierPath(ovalOfSize: pointRadius)
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor.lightGray.cgColor
-        shapeLayer.path = path.cgPath
-
-        return shapeLayer
-    }
-
+    
+    /// Set up bullet point for each TimeFrame
+    /// - Parameter blockView: TimeFrame Block View
     func setupTimePointInBlockView(blockView : UIView) -> UIView {
         let timelinePoint: UIView = setupTimelinePoint(timelinePointRadius)
         
@@ -207,7 +210,10 @@ class TimelineView: UIView {
         ])
         return timelinePoint
     }
-
+    
+    /// Set up the first TimeFrame block view and guide line view
+    /// - Parameter blockView: the first TimeFrame block View
+    /// - Parameter timelinePoint: imelinPoint View
     func setupTopLineView(blockView : UIView, timelinePoint: UIView) {
         let topLine = UIView()
         topLine.translatesAutoresizingMaskIntoConstraints = false
@@ -221,7 +227,11 @@ class TimelineView: UIView {
             NSLayoutConstraint(item: topLine, attribute: .centerX, relatedBy: .equal, toItem: timelinePoint, attribute: .centerX, multiplier: 1.0, constant: 0),
         ])
     }
-
+    
+    /// Set up label for date information
+    /// - Parameter blockView: TimeFrame Block View
+    /// - Parameter timelinePoint: bullet point
+    /// - Parameter element: TimeFrame information
     func setupDateLabel(blockView: UIView,
                         timelinePoint: UIView,
                         element: TimelineField) -> UILabel{
@@ -244,7 +254,11 @@ class TimelineView: UIView {
         
         return dateLabel
     }
-
+    
+    /// Set up description content
+    /// - Parameter blockView: TimeFrame Block View
+    /// - Parameter dateLabel: dateLabel view
+    /// - Parameter content: content information
     func setupTextContentView(blockView : UIView,
                               dateLabel : UILabel,
                               content : String) -> UILabel{
@@ -265,7 +279,11 @@ class TimelineView: UIView {
         
         return textLabel
     }
-
+    
+    /// Set up background color for each image
+    /// - Parameter blockView: TimeFrame Block View
+    /// - Parameter lastView: the last TimeFrame Block View
+    /// - Parameter dateLabel: dateLabel view
     func setupBackgroundImageView(blockView: UIView,
                                   lastView: UIView,
                                   dateLabel: UILabel) -> UIView{
@@ -284,7 +302,11 @@ class TimelineView: UIView {
         
         return backgroundViewForImage
     }
-
+    
+    /// Set up image conetent
+    /// - Parameter blockView: TimeFrame Block View
+    /// - Parameter backgroundViewForImage: background for image
+    /// - Parameter image: image
     func setupImageContentView(blockView: UIView,
                                backgroundViewForImage: UIView,
                                image: UIImage){
@@ -302,6 +324,10 @@ class TimelineView: UIView {
 
     }
     
+    /// Set up button for tapped image action
+    /// - Parameter blockView: TimeFrame Block View
+    /// - Parameter element: TimeFrame information
+    /// - Parameter image: image
     private func setupButton(blockView: UIView,
                              element: TimelineField,
                              image: UIImage){
@@ -320,6 +346,9 @@ class TimelineView: UIView {
         ])
     }
     
+    /// Set up the last TimeFrame Block
+    /// - Parameter blockView: last TimeFrame Block
+    /// - Parameter timelinePoint: timelinPoint View
     private func setupTimelineBottom(blockView: UIView,
                                      timelinePoint: UIView) -> UIView{
         let line = UIView()
@@ -333,17 +362,34 @@ class TimelineView: UIView {
         ])
         return line
     }
+    
+    // draw timeline point
+    ///
+    /// - Parameter pointWidth: timeline point radius
+    private func drawCirclePoint(pointRadius: CGFloat) -> CAShapeLayer {
+        let path = UIBezierPath(ovalOfSize: pointRadius)
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.lightGray.cgColor
+        shapeLayer.path = path.cgPath
+
+        return shapeLayer
+    }
 
 }
 
+// MARK: - UIBezierPath Extension
 extension UIBezierPath
 {
+    /// draw circle
+    /// - Parameter width: circle radius
 	convenience init(ovalOfSize width: CGFloat)
 	{
 		self.init(ovalIn: CGRect(origin: CGPoint.zero, size: CGSize(width: width, height: width)))
 	}
 }
 
+// MARK: - UIButton Extension
 private typealias UIButtonTargetClosure = () -> Void
 
 private class ClosureWrapper: NSObject
@@ -375,13 +421,16 @@ private extension UIButton
 			objc_setAssociatedObject(self, &AssociatedKeys.targetClosure, ClosureWrapper(newValue), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 		}
 	}
-
+    
+    /// add action for a button
+    /// - Parameter closure: button target closure
 	func addTargetClosure(closure: @escaping UIButtonTargetClosure)
 	{
 		self.targetClosure = closure
 		addTarget(self, action: #selector(UIButton.closureAction), for: .touchUpInside)
 	}
-
+    
+    /// target closure
 	@objc func closureAction()
 	{
 		guard let targetClosure = targetClosure else { return }

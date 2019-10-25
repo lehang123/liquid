@@ -19,6 +19,8 @@ class MainNavigationController: UINavigationController
 	}
 }
 
+// MARK: - UIViewController Extension
+
 // Put this piece of code anywhere you like
 //https://stackoverflow.com/questions/24126678/close-ios-keyboard-by-touching-anywhere-using-swift
 extension UIViewController {
@@ -33,6 +35,7 @@ extension UIViewController {
     }
 }
 
+// MARK: - UIApplication Extension
 extension UIApplication
 {
 	/// Back to the root controller

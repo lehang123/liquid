@@ -19,6 +19,7 @@ import QuartzCore
 
 open class Recording : NSObject {
     
+    // MARK: - Properties
     @objc public enum State: Int {
         case none, record, play
     }
@@ -31,28 +32,31 @@ open class Recording : NSObject {
     open fileprivate(set) var url: URL
     open fileprivate(set) var state: State = .none
     
+    open private(set) var player: AVAudioPlayer?
+    
     open var bitRate = 192000
     open var sampleRate = 44100.0
     open var channels = 1
     
-    fileprivate let session = AVAudioSession.sharedInstance()
     var recorder: AVAudioRecorder?
-    open private(set) var player: AVAudioPlayer?
+    
+    fileprivate let session = AVAudioSession.sharedInstance()
     fileprivate var link: CADisplayLink?
     
-    var metering: Bool {
+    private var metering: Bool {
         return delegate?.responds(to: #selector(RecorderDelegate.audioRecordUpdateMetra(_:))) == true
     }
     
-    // MARK: - Initializers
+    // MARK: - Record Methods
     
+    /// Initialize a recorder
+    /// - Parameter to: path
     public init(to: String) {
         url = URL(fileURLWithPath: Recording.directory).appendingPathComponent(to)
         super.init()
     }
     
-    // MARK: - Record
-    
+    /// prepare recorder
     open func prepare() throws {
         let settings: [String: AnyObject] = [
             AVFormatIDKey : NSNumber(value: Int32(kAudioFormatAppleLossless) as Int32),
@@ -68,6 +72,7 @@ open class Recording : NSObject {
         recorder?.isMeteringEnabled = metering
     }
     
+    /// record action
     open func record() throws {
         if recorder == nil {
             try prepare()
@@ -84,25 +89,28 @@ open class Recording : NSObject {
         }
     }
     
-    // MARK: - Playback
+    // MARK: - Playback Methods
     
+    /// Initialize an audio player
     open func initPlayer() throws {
         try session.setCategory(AVAudioSession.Category.playback)
         
         
             player = try AVAudioPlayer(contentsOf: url)
-      //  print("player here :: ", player)
-        
-//        player?.play()
         state = .play
     }
+    
+    /// delete an audio player
     open func delete(){
         player = nil
     }
+    
+    /// play the audio
     open func play(){
         player?.play()
     }
     
+    /// stop playing audio or stop recording
     open func stop() {
         switch state {
         case .play:
@@ -123,6 +131,7 @@ open class Recording : NSObject {
     
     // MARK: - Metering
     
+    /// update volume meter
     @objc func updateMeter() {
         guard let recorder = recorder else { return }
         
@@ -134,11 +143,13 @@ open class Recording : NSObject {
         
     }
     
+    /// start meter
     fileprivate func startMetering() {
         link = CADisplayLink(target: self, selector: #selector(Recording.updateMeter))
         link?.add(to: RunLoop.current, forMode: RunLoop.Mode.common)
     }
     
+    /// stop metering
     fileprivate func stopMetering() {
         link?.invalidate()
         link = nil

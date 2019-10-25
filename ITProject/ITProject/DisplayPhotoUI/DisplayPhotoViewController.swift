@@ -12,7 +12,7 @@ import UIKit
 import AVFoundation
 import AVKit
 import Foundation
-// todo : make the scorll back to the top while click on the header
+
 class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate, AVAudioPlayerDelegate
 {
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
