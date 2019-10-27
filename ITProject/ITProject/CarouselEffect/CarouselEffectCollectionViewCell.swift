@@ -10,12 +10,13 @@ import UIKit
 
 class CarouselEffectCollectionViewCell: UICollectionViewCell
 {
-	// @IBOutlet weak var mainView: UIView!
+    // MARK: - Constants and Properties
 	@IBOutlet var iconImage: UIImageView!
 	@IBOutlet var labelInf: UILabel!
 
     static let identifier = "CarouselCollectionViewCell"
     
+    // MARK: - Initialize
     /// initial the collection view cell with carousel effect
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

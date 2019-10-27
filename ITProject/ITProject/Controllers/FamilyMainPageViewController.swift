@@ -62,7 +62,8 @@ class FamilyMainPageViewController: UIViewController, UICollectionViewDelegate, 
 	@IBOutlet var carouselCollectionView: UICollectionView!
 
 	var items = [ModelCollectionFlowLayout]()
-
+    
+    // MARK: - Methods
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()

@@ -12,11 +12,10 @@ import FirebaseFirestore
 import Foundation
 import UIKit
 
-/// <#Description#>
 /// This class is mainly for user log in the app
 class EmailSignUpViewController: UIViewController
 {
-	// Constants  and properties goes here
+	// MARK: - Constants and Properties
 	private static let ACCOUNT_INCORRECT_TITLE = "Email/Password Incorrect"
 	private static let ACCOUNT_INCORRECT_MESSAGE = "Try Again"
 	private static let CONFIRMED_INCORRECT_WRONG = "Wrong Password"
@@ -42,6 +41,9 @@ class EmailSignUpViewController: UIViewController
 	@IBOutlet var newFamilyField: UITextField!
 
     @IBOutlet var createButton: UIButton!
+    @IBOutlet var familySegmentedControl: UISegmentedControl!
+    
+    // MARK: - Methods
     override func viewDidLoad()
 	{
 		super.viewDidLoad()
@@ -63,6 +65,7 @@ class EmailSignUpViewController: UIViewController
         
 	}
     
+    /// Set up Join/Create Family Segment Control UI
     private func setupFamilySegmentC(){
         self.newFamilyField.isHidden = true
         self.familySegmentedControl.backgroundColor = .selfcOrg
@@ -71,18 +74,19 @@ class EmailSignUpViewController: UIViewController
         self.familySegmentedControl.layer.borderWidth = 3
         self.familySegmentedControl.layer.masksToBounds = true;
         self.familySegmentedControl.tintColor = .white
-        self.familySegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor:UIColor.black], for: .selected)
+    self.familySegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor:UIColor.black], for: .selected)
     }
     
+    /// Set up CreateNew Button UI
     private func setupCreateButton(){
         self.createButton.backgroundColor = .selfcOrg
         self.createButton.tintColor = .white
         self.createButton.layer.cornerRadius = 10
         self.createButton.layer.masksToBounds = true
     }
-
-
-    @IBOutlet var familySegmentedControl: UISegmentedControl!
+    
+    /// Segement Control for Join Family or Create New Family
+    /// - Parameter sender: action Sender
     @IBAction func familyJoinAction(_ sender: Any) {
         let getIndex = familySegmentedControl.selectedSegmentIndex
         switch(getIndex){
@@ -129,7 +133,7 @@ class EmailSignUpViewController: UIViewController
 		}
 	}
 
-	/// When user touch the create button
+	/// When user touch the CreateNew button
 	/// - Parameter sender: tap the button
 	@IBAction func CreateButtonOnTouch(_: Any)
 	{
@@ -279,6 +283,7 @@ class EmailSignUpViewController: UIViewController
 	}
 }
 
+// MARK: - UITextFieldDelegate Extension
 extension EmailSignUpViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("textFieldShouldReturn : get called")

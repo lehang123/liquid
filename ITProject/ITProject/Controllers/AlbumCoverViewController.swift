@@ -12,17 +12,14 @@ import SwipeCellKit
 import UIKit
 import UPCarouselFlowLayout
 
-
+// MARK: - Protocol
 protocol CreateAlbumViewControllerDelegate {
     func checkForRepeatName(album name: String)->Bool
     func createAlbum(thumbnail :UIImage, photoWithin: [MediaDetail], albumName: String, albumDescription: String, currentLocation: String?, audioUrl : String?, createDate: Date)
 }
 
+// MARK: - CreateAlbumViewControllerDelegate Extension
 extension AlbumCoverViewController: CreateAlbumViewControllerDelegate {
-    
-    
-    
-
     func createAlbum(thumbnail :UIImage,
                      photoWithin: [MediaDetail],
                      albumName: String,
@@ -241,8 +238,7 @@ class AlbumCoverViewController: UIViewController {
         self.performSegue(withIdentifier: Storyboard.presentCreateAlbumVC, sender: self)
         
     }
-
-    /** todo : deprecated */
+    
     private func createAlbumPhotos() -> [String] {
         var photos = [String]()
         photos.append("test-small-size-image")

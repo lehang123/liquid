@@ -43,7 +43,7 @@ struct UserFamilyInfo
 
 ///  Side Menu UI's View Controller.
 class SideMenuTableViewController: UITableViewController {
-    // Constants and properties go here
+    // MARK: - Constants and Properties
     private static let SHOW_PROFILE_VIEW_SEGUE = "ShowProfileViewController"
     private static let SHOW_FAMILY_PROFILE_VIEW_SEGUE = "ShowFamilyProfileViewController"
     private static let SHOW_FAMILY_TABLE_VIEW_SEGUE = "ShowFamilyTableViewController"
@@ -52,12 +52,11 @@ class SideMenuTableViewController: UITableViewController {
     private static let PERSONAL_SETTING_CELL = 2
     private static let FAMILY_SETTING_CELL = 1
     private static let FAMILY_TREE_CELL = 3
-    
-
 
     var userInformation: UserInfo!
     var userFamilyInformation: UserFamilyInfo!
 
+    // MARK: - Methods
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear: do you get called")
