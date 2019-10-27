@@ -13,7 +13,7 @@ import UIKit
 /// Users can zoom in and zoom out for detail of the picture
 class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate
 {
-	// Mark: - Properties
+	// MARK: - Properties
 	var selectedImage: UIImage!
 	var cumulativeScale: CGFloat = 1.0
 	var maxScale: CGFloat = 3.5
@@ -23,6 +23,7 @@ class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate
 	@IBOutlet var enterText: UITextField!
 	@IBOutlet var scrollViewForImage: UIScrollView!
 
+    // MARK: - Methods
 	override func viewDidLoad()
 	{
 		super.viewDidLoad()
@@ -56,7 +57,7 @@ class ShowDetailPhotoViewController: UIViewController, UIScrollViewDelegate
 	func scrollViewDidEndZooming(_: UIScrollView, with _: UIView?, atScale _: CGFloat) {}
 
 	/// Tap the image again to go back the last view controller
-	/// - Parameter sender: the iamge that user selected
+	/// - Parameter sender: the image that user selected
 	@IBAction func tapBack(_: Any)
 	{
 		if self.imageView.transform != CGAffineTransform.identity

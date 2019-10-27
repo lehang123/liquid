@@ -19,8 +19,6 @@ class AlbumDetail: Equatable
 
 	// MARK: - Public API
 
-
-
 	/// title of ablum
 	var title = ""
 
@@ -47,7 +45,7 @@ class AlbumDetail: Equatable
     
 
 
-
+    // MARK: - Initializer
 	/// init Album's info. for the UI to display.
 	/// - Parameter title: title of the album.
 	/// - Parameter description: description of the album/

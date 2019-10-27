@@ -13,13 +13,7 @@ import CoreLocation
 import AVFoundation
 
 
-// extension for string to remove whiteSpace
-extension String {
-    func removingWhitespaces() -> String {
-        return components(separatedBy: .whitespaces).joined()
-    }
-}
-
+// MARK: - Type
 enum CreateViewControllerState {
     case CreateAlbum
     case CreateMedia
@@ -27,6 +21,7 @@ enum CreateViewControllerState {
 
 class CreateViewController: UIViewController {
     
+    // MARK: - Constants and Properties
     private static let ALBUM_NAME_EMPTY_ALERT_MESSAGE = "album name cannot be empty"
     private static let ALBUM_NAME_EMPTY_ALERT_TITLE = "empty album name"
     private static let ALBUM_NAME_REPEAT_ALERT_MESSAGE = "album name already exist"
@@ -101,94 +96,7 @@ class CreateViewController: UIViewController {
         }
     }
     
-    func createMedia(){
-        dismiss(animated: true, completion:{
-            if self.hasRecordFile && Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
-                // todo : media exist even I don't record
-                let aUrl = URL(string: self.audioDestinationURL)?.deletingPathExtension().lastPathComponent
-                print("createMedia : audio exist with UID : " + aUrl!)
-
-                self.media.audioUID = aUrl
-            
-            } else {
-                self.media.audioUID = ""
-            }
-
-            if self.albumDescriptionTextView.text == CreateViewController.EDIT_PLACEHOLDER{
-                self.albumDescriptionTextView.text = "There is no description..."
-            }
-            self.media.audioExt = Util.EXTENSION_M4A
-            self.media.changeTitle(to: self.albumNameTextField.text)
-            self.media.changeDescription(to: self.albumDescriptionTextView.text)
-            self.mediaDelegate.createMedia(mediaDetail: self.media)
-        })
-        
-    }
-    
-    func createAlbum(){
-        // create new album like the old day
-            let nameField = albumNameTextField.text!
-        
-        
-            if nameField.removingWhitespaces() == ""{
-                Util.ShowAlert(title: CreateViewController.ALBUM_NAME_EMPTY_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_EMPTY_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
-            }else if delegate.checkForRepeatName(album: nameField) {
-                Util.ShowAlert(title: CreateViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
-            }else {// pass name check start creating album
-                dismiss(animated: true, completion: {
-                    
-                    if self.albumDescriptionTextView.text == CreateViewController.EDIT_PLACEHOLDER{
-                        self.albumDescriptionTextView.text = "There is no description..."
-                    }
-                    if(self.thumbnailImageView.image == nil){
-                    
-                        if(self.medias.count >= 1){
-                            self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
-                        } else {
-                            self.thumbnailImageView.image = #imageLiteral(resourceName: "defaultImage")
-                        }
-                    }
-                    if !self.doesLocationShow{
-                        if self.hasRecordFile{
-                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL, createDate: self.currentDate)
-                        }else {
-                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: "", createDate: self.currentDate)
-                        }
-                        
-                    }else{
-                        
-                        if self.hasRecordFile{
-                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL, createDate: self.currentDate)
-                        }else {
-                            self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: "", createDate: self.currentDate)
-                        }
-                    }
-                })
-            }
-    }
-    
-    @IBAction func cancelTapped(_ sender: Any) {
-        
-        dismiss(animated: true, completion: nil)
-        
-    }
-    
-    @IBAction func showLocationTapped(_ sender: Any) {
-        print(" show location touched ")
-        if cLocation.isEmpty{
-            retriveCurrentLocation()
-            doesLocationShow = true
-        }else {
-            
-            if doesLocationShow {
-                doesLocationShow = false;
-            LocationButton.setTitle(CreateViewController.DEFAULT_LOCATION_TEXT, for: .normal)
-            }else {
-                doesLocationShow = true
-                LocationButton.setTitle(cLocation, for: .normal)
-            }
-        }
-    }
+    // MARK: - Methods
     
     override func viewDidLoad()
     {
@@ -235,9 +143,109 @@ class CreateViewController: UIViewController {
 
     }
     
+    /// Create a new Media
+    func createMedia(){
+        dismiss(animated: true, completion:{
+            if self.hasRecordFile && Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
+                // todo : media exist even I don't record
+                let aUrl = URL(string: self.audioDestinationURL)?.deletingPathExtension().lastPathComponent
+                print("createMedia : audio exist with UID : " + aUrl!)
+
+                self.media.audioUID = aUrl
+            
+            } else {
+                self.media.audioUID = ""
+            }
+
+            if self.albumDescriptionTextView.text == CreateViewController.EDIT_PLACEHOLDER{
+                self.albumDescriptionTextView.text = "There is no description..."
+            }
+            self.media.audioExt = Util.EXTENSION_M4A
+            self.media.changeTitle(to: self.albumNameTextField.text)
+            self.media.changeDescription(to: self.albumDescriptionTextView.text)
+            self.mediaDelegate.createMedia(mediaDetail: self.media)
+        })
+        
+    }
+    
+    /// Create a new album
+    func createAlbum(){
+        let nameField = albumNameTextField.text!
+        
+            
+        // validation
+        if nameField.removingWhitespaces() == ""{
+            // empty name is not allowed
+            Util.ShowAlert(title: CreateViewController.ALBUM_NAME_EMPTY_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_EMPTY_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
+        }else if delegate.checkForRepeatName(album: nameField) {
+            // repate name is not allowed
+            Util.ShowAlert(title: CreateViewController.ALBUM_NAME_REPEAT_ALERT_TITLE, message: CreateViewController.ALBUM_NAME_REPEAT_ALERT_MESSAGE, action_title: CreateViewController.OK_ACTION, on: self)
+        }else {
+            // pass name check start creating album
+            dismiss(animated: true, completion: {
+                
+                if self.albumDescriptionTextView.text == CreateViewController.EDIT_PLACEHOLDER{
+                    self.albumDescriptionTextView.text = "There is no description..."
+                }
+                if(self.thumbnailImageView.image == nil){
+                
+                    if(self.medias.count >= 1){
+                        self.thumbnailImageView.image = UIImage(data: self.medias[0].cache)
+                    } else {
+                        self.thumbnailImageView.image = #imageLiteral(resourceName: "defaultImage")
+                    }
+                }
+                if !self.doesLocationShow{
+                    if self.hasRecordFile{
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: self.audioDestinationURL, createDate: self.currentDate)
+                    }else {
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: "", audioUrl: "", createDate: self.currentDate)
+                    }
+                    
+                }else{
+                    
+                    if self.hasRecordFile{
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: self.audioDestinationURL, createDate: self.currentDate)
+                    }else {
+                        self.delegate.createAlbum(thumbnail: self.thumbnailImageView.image!, photoWithin: self.medias, albumName: nameField, albumDescription: self.albumDescriptionTextView.text, currentLocation: self.cLocation, audioUrl: "", createDate: self.currentDate)
+                    }
+                }
+            })
+        }
+    }
+    
+    /// cancel create new album/media
+    /// - Parameter sender: cancel button
+    @IBAction func cancelTapped(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    /// show location
+    /// - Parameter sender: show location button
+    @IBAction func showLocationTapped(_ sender: Any) {
+        print(" show location touched ")
+        if cLocation.isEmpty{
+            retriveCurrentLocation()
+            doesLocationShow = true
+        }else {
+            
+            if doesLocationShow {
+                doesLocationShow = false;
+            LocationButton.setTitle(CreateViewController.DEFAULT_LOCATION_TEXT, for: .normal)
+            }else {
+                doesLocationShow = true
+                LocationButton.setTitle(cLocation, for: .normal)
+            }
+        }
+    }
+    
+    
+    
     // MARK: - Set up
     
-    /// AlbumTextField set up
+    /// Set AlbumTextField UI
     func setupAlbumNameTextField(){
         
         var textFieldTitle:String!
@@ -268,7 +276,7 @@ class CreateViewController: UIViewController {
     
     
     
-    /// ChangeThumbnailButton set up
+    /// Set ChangeThumbnailButton UI
     func setupChangeThumbnailButton(){
         changeThumbnailButton.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         
@@ -289,7 +297,7 @@ class CreateViewController: UIViewController {
         changeThumbnailButton.addTarget(self, action: #selector(changeThumbnailAction), for: .touchUpInside)
     }
     
-    /// DateLabel set up
+    /// Set DateLabel UI
     func setupDateLabel(){
         
         let format = DateFormatter()
@@ -299,7 +307,7 @@ class CreateViewController: UIViewController {
         dateLabel.font = UIFont(name: "DINAlternate-Bold", size: 25)
     }
     
-    // AlbumDescriptionTextView set up
+    /// Set AlbumDescriptionTextView  UI
     func setupAlbumDescriptionTextView(){
         albumDescriptionTextView.delegate = self
         albumDescriptionTextView.text = CreateViewController.EDIT_PLACEHOLDER
@@ -309,6 +317,7 @@ class CreateViewController: UIViewController {
 
     }
     
+    /// Set record start button UI
     func setupRecordStartButton(){
         recordStartButton.backgroundColor = UIColor.selfcOrg.withAlphaComponent(0.4)
          recordStartButton.setTitle("  Start Recording  ", for: .normal)
@@ -321,6 +330,7 @@ class CreateViewController: UIViewController {
         recordStartButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
     }
     
+    /// Set record view UI
     func setupRecorderView(){
         
         recorderView = (storyboard!.instantiateViewController(withIdentifier: "RecorderViewController") as! RecorderViewController)
@@ -332,10 +342,12 @@ class CreateViewController: UIViewController {
     
     }
     
+    /// Set audioPlayView UI
     func setupAudioPlayView(){
         audioPlayView.isHidden = true
     }
     
+    /// Set audio delete button UI
     func setupAudioDeleteButton(){
         audioDeleteButton.isHidden = true
         audioDeleteButton.backgroundColor = UIColor.redish.withAlphaComponent(0.4)
@@ -385,6 +397,7 @@ class CreateViewController: UIViewController {
         recorderView.startRecording()
     }
     
+    /// delete record action
     @objc private func deleteRecord(){
         let alertController = UIAlertController(title: "Delete Recording", message: "Are you sure to delete recording?", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "NO", style: .default))
@@ -395,6 +408,7 @@ class CreateViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    /// delete the audio file
     func deleteAudioFile(){
         if Util.DoesFileExist(fullPath: Util.GetDocumentsDirectory().appendingPathComponent(self.audioDestinationURL).absoluteString){
              
@@ -420,9 +434,12 @@ class CreateViewController: UIViewController {
          }
     }
 
-
+    
+    /// audio play and pause action
+    /// - Parameter sender: the play/pause button
     @IBAction func audioPlayPauseAction(_ sender: Any) {
         if(isFirstPlay){
+            // initial player
             do {
                    try recorderView.recording.initPlayer()
                } catch {
@@ -455,35 +472,34 @@ class CreateViewController: UIViewController {
             }
         
     }
+    
+    /// If user move the slider, update the time and related UI
+    /// - Parameter sender: slider
     @IBAction func changeAudioTime(_ sender: Any) {
         recorderView.recording.player?.stop()
         recorderView.recording.player?.currentTime = TimeInterval(audioPlaySlider.value)
         recorderView.recording.player?.prepareToPlay()
         self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
         self.isPlaying = false
-        
-        
     }
     
-        @objc func updateSlider(){
-            audioPlaySlider.value = Float(recorderView.recording.player?.currentTime ?? 0)
-            let duration = Float(recorderView.recording.player?.duration ?? 0)
-//            print("duraction :: ",duration)
-//            print("slider value :: ", audioPlaySlider.value)
-            
-            // TODO: - reset and stop update slider
-            if(audioPlaySlider.value >= duration - 0.1){
-                self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
-                self.isPlaying = false
-                myTimer.invalidate()
-                self.isResetTimer = true
-            }
+    /// update slider
+    @objc func updateSlider(){
+        audioPlaySlider.value = Float(recorderView.recording.player?.currentTime ?? 0)
+        let duration = Float(recorderView.recording.player?.duration ?? 0)
+        if(audioPlaySlider.value >= duration - 0.1){
+            self.audioPlayPauseButton.setBackgroundImage(ImageAsset.play_icon.image, for: .normal)
+            self.isPlaying = false
+            myTimer.invalidate()
+            self.isResetTimer = true
         }
-        
-        func startTimer(){
-            myTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
-        }
+    }
     
+    /// Timer for audio play
+    func startTimer(){
+        myTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+    }
+
     
     func retriveCurrentLocation(){
         let status = CLLocationManager.authorizationStatus()
@@ -511,6 +527,7 @@ class CreateViewController: UIViewController {
         locationManager.startUpdatingLocation()
     }
     
+    /// check user microphone permission
     func check_record_permission() {
         switch AVAudioSession.sharedInstance().recordPermission {
         case AVAudioSessionRecordPermission.granted:
@@ -538,7 +555,7 @@ class CreateViewController: UIViewController {
     }
 }
 
-//MARK: - UITextFieldDelegate
+//MARK: - UITextFieldDelegate Extension
 extension CreateViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("textFieldShouldReturn : get called")
@@ -553,7 +570,7 @@ extension CreateViewController: UITextFieldDelegate{
     }
 }
 
-// MARK: - RecorderViewDelegate
+// MARK: - RecorderViewDelegate Extension
 extension CreateViewController: RecorderViewDelegate{
     
     internal func didFinishRecording(_ recorderViewController: RecorderViewController) {
@@ -568,8 +585,9 @@ extension CreateViewController: RecorderViewDelegate{
     }
 }
 
-// MARK: - UITextViewDelegate
-// UITextView placeholder setting
+// MARK: - UITextViewDelegate Extension
+
+/// UITextView placeholder setting
 extension CreateViewController: UITextViewDelegate{
     
     
@@ -620,8 +638,9 @@ extension CreateViewController: UITextViewDelegate{
 
 }
 
-// we use imagePicker to choose ablum thumb nail since there is only one image allowed
-extension CreateViewController:UIImagePickerControllerDelegate
+// MARK: - UIImagePickerControllerDelegate,UINavigationControllerDelegate Extension
+/// we use imagePicker to choose ablum thumb nail since there is only one image allowed
+extension CreateViewController: UIImagePickerControllerDelegate
         ,UINavigationControllerDelegate{
 
         /// image picker from photo gallery
@@ -730,6 +749,7 @@ extension CreateViewController:UIImagePickerControllerDelegate
     }
 }
 
+// MARK: - CLLocationManagerDelegate Extension
 extension CreateViewController: CLLocationManagerDelegate {
     // handle delegate methods of location manager here
     
@@ -789,6 +809,7 @@ extension CreateViewController: CLLocationManagerDelegate {
     }
 }
 
+// MARK: - GalleryControllerDelegate Extension
 extension CreateViewController: GalleryControllerDelegate{
     
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
@@ -903,7 +924,7 @@ extension CreateViewController: GalleryControllerDelegate{
     }
 }
 
-// MARK: -  UICollectionViewDelegate, UICollectionViewDataSource
+// MARK: -  UICollectionViewDelegate, UICollectionViewDataSource Extension
 extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     ///
     /// - Parameter collectionView: The collection view requesting this information.
@@ -986,7 +1007,7 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
     /// - Returns: A configured cell object.
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        print("collectionView how much time did you get called ")
+
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddPhotoCollectionVewCell", for: indexPath) as! AddPhotoCollectionViewCell
         
         if indexPath.item == 0 {
@@ -1005,7 +1026,7 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
             if  media.ext.contains(Util.EXTENSION_M4V) ||
                            media.ext.contains(Util.EXTENSION_MP4) ||
                            media.ext.contains(Util.EXTENSION_MOV){
-//                self.setupVideolabel(media: media)
+
                 cell.bottomMaskView.isHidden = false
                 cell.videoLabel.isHidden = false
                 cell.videoIconImageView.isHidden = false
@@ -1032,11 +1053,6 @@ extension CreateViewController: UICollectionViewDelegate, UICollectionViewDataSo
           return CGSize(width: itemWidth, height: itemWidth)
       }
     
-//    func setupVideolabel(media: MediaDetail){
-//        let videoImage = UIImageView()
-//
-//
-//    }
 }
 
 

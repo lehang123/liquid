@@ -26,7 +26,7 @@ class MediaDetail: Equatable
 		}
 	}
 
-	/* filename :  UID.zip or UID.jpg */
+	// filename :  UID.zip or UID.jpg
 	public let UID: String!
 	public let ext: String!
 	private var watch: [DocumentReference]?

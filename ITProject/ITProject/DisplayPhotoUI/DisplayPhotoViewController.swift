@@ -15,6 +15,7 @@ import Foundation
 
 class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, FaveButtonDelegate, AVAudioPlayerDelegate
 {
+    // MARK: - Properties
     private static let likeWatchedBookmarkTableViewCell = "LikeWatchedBookmarkCell"
     private static let commentTableViewCell = "CommentCell"
     private static let descriptionTableViewCell = "DescriptionCell"
@@ -27,9 +28,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     private static let LIKE_WATACHED_CELL_LENGTH = 1
     private static let DESCRIPTON_CELL = 1
-    //    private static let EXPAND_COLLPASE_CELL_LENGTH = 1
 
-
+    
     private struct CommentCellStruct
     {
         var comment = String()
@@ -41,13 +41,55 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     /// source is the total number of comments
     private var commentsSource = [CommentCellStruct]()
 
-    /* list is the total number of comments to display */
-    //    private var commentCellsList = [CommentCellStruct]()
-    //    private var hasHiddenCells = false
-
     private var mediaUID: String!
     private var mediaDetail: MediaDetail!
+    
+    private var headerView: UIView!
+    private var updateHeaderlayout: CAShapeLayer!
 
+    private let headerHeight: CGFloat = UIScreen.main.bounds.height * 0.6
+    private let headerCut: CGFloat = 0
+    private var cell0Info: LikeWatchedBookmarkCell!
+    
+    private var audioPlayer : AVAudioPlayer!
+    private var isPlaying = false
+    var isShowRecord = false
+    
+
+    @IBOutlet var videoPlayButton: UIButton!
+    @IBOutlet var tableView: UITableView!
+
+    @IBOutlet var displayPhotoImageView: UIImageView!
+
+    @IBOutlet var cmmentText: UITextField!
+    @IBOutlet var sendButton: UIButton!
+    
+    // MARK: - Methods
+    
+    override func viewDidLoad()
+    {
+        print("DisplayPhotoViewController : view did loaded ")
+        super.viewDidLoad()
+
+        self.hideKeyboardWhenTapped()
+
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+
+        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        self.tableView.rowHeight = UITableView.automaticDimension
+        self.cmmentText.delegate = self
+        self.sendButton.isUserInteractionEnabled = false
+        
+        self.setUpTableViewHeader()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        //self.setupVideoImageView()
+        
+    }
+    
     public func setMediaDetailData(mediaDetail: MediaDetail)
     {
         self.mediaDetail = mediaDetail
@@ -66,16 +108,10 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         currSrc?.forEach{ item in
             group.enter()
 
-            //download current user profile picture, then put it to UI:
-//            if (item.username != nil ){
                 
             self.getPhotoFromDB(currentUserUID :item.username!.documentID , comment :item.message, group:group)
-//            }
-            
-            
-            
-                
-            }
+
+        }
         group.notify(queue: .main) {
             
             self.initialiseCommentSource()
@@ -121,49 +157,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     
             }
         }
-    private var headerView: UIView!
-    private var updateHeaderlayout: CAShapeLayer!
-
-    private let headerHeight: CGFloat = UIScreen.main.bounds.height * 0.6
-    private let headerCut: CGFloat = 0
-    private var cell0Info: LikeWatchedBookmarkCell!
     
-    private var audioPlayer : AVAudioPlayer!
-    private var isPlaying = false
-    var isShowRecord = false
-    
-
-    @IBOutlet var videoPlayButton: UIButton!
-    @IBOutlet var tableView: UITableView!
-
-    @IBOutlet var displayPhotoImageView: UIImageView!
-
-    @IBOutlet var cmmentText: UITextField!
-    @IBOutlet var sendButton: UIButton!
-    
-    override func viewDidLoad()
-    {
-        print("DisplayPhotoViewController : view did loaded ")
-        super.viewDidLoad()
-
-        self.hideKeyboardWhenTapped()   
-
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-
-        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.cmmentText.delegate = self
-        self.sendButton.isUserInteractionEnabled = false
-        
-        self.setUpTableViewHeader()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        //self.setupVideoImageView()
-        
-    }
 
     func textFieldShouldReturn(_: UITextField) -> Bool
     {
@@ -212,7 +206,8 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
          return true
     }
 
-    // Enter comment here
+    /// Send comment Action
+    /// - Parameter sender: the send button
     @IBAction func EnterComment(_: Any)
     {
         self.cmmentText.endEditing(true)
@@ -222,15 +217,12 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
             self.storeCommentToServer(username: DBController.getInstance().getDocumentReference(collectionName: RegisterDBController.USER_COLLECTION_NAME, documentUID: username), comment: self.cmmentText.text!, photoUID: self.mediaDetail.getUID())
             self.cmmentText.text = ""
         }
-        // todo : pull latest comment from the server, and update comment source
-
-        
-        
         // disable the button after sending the comment
         sendButton.setImage(ImageAsset.disable_send_icon.image, for: .normal)
         sendButton.isUserInteractionEnabled = false
     
     }
+    
     private func initialiseCommentSource()
          {
              // pull new comment from the server
@@ -270,9 +262,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         print("num of row before update: ",self.tableView.numberOfRows(inSection: 0))
         self.tableView.beginUpdates()
         
-        
 
-        //        print("COUNT IS: " ,commentsSource.count)
         indexPaths.append(IndexPath(row: updateAtRow, section: 0))
 
         self.tableView.insertRows(at: indexPaths, with: .top)
@@ -357,7 +347,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
 
     // MARK: - Table view data source
 
-    // todo: only one for now, afterward, there is a way to expand a comment
+    //
     func numberOfSections(in _: UITableView) -> Int
     {
         // return the number of sections
@@ -392,7 +382,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.cell0Info = cell
     }
 
-    /* the row only get call when it's visible on the screeen in order to save memory */
+    /// the row only get call when it's visible on the screeen in order to save memory
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         // manage like &  watched cell
@@ -494,7 +484,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
     /// the header that shows to image
     private func setUpTableViewHeader()
     {
-        /* test on read file for local file */
+        // test on read file for local file
         Util.GetImageData(imageUID: self.mediaDetail.getUID(), UIDExtension: Util.EXTENSION_JPEG, completion: {
             data in
             self.displayPhotoImageView.image = UIImage(data: data!)
@@ -509,7 +499,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         let zoomInGesture = UITapGestureRecognizer(target: self, action: #selector(self.imageTapped))
         //zoomInGesture.numberOfTapsRequired = 2
 
-        /* note: GestureRecognizer will be disable while tableview is scrolling */
+        // note: GestureRecognizer will be disable while tableview is scrolling
         self.headerView.addGestureRecognizer(headerViewGesture)
         self.displayPhotoImageView.addGestureRecognizer(zoomInGesture)
          if mediaDetail.ext.contains(Util.EXTENSION_JPEG)  ||
@@ -535,7 +525,7 @@ class DisplayPhotoViewController: UIViewController, UITableViewDataSource, UITab
         self.videoPlay()
     }
     
-    // Override to support conditional editing of the table view.
+    /// Override to support conditional editing of the table view.
     func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool
     {
         // Return false if you do not want the specified item to be editable.

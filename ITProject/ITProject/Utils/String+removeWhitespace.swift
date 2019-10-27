@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+extension String {
+    
+    /// remove whitespaces of the string
+    func removingWhitespaces() -> String {
+        return components(separatedBy: .whitespaces).joined()
+    }
+}
