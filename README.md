@@ -57,7 +57,8 @@ Account: test@qq.com, password: 123456789
 ### Unit Testing : 
 1. simply just go to the testing folder, and click on the green diamond of the file to test the unit you want.
 
- - DOCS ARE IN \DOCUMENTATION\ FOLDER 
+### Documentation : 
+documents are in \documentation\ folder 
     - including architecture diagram, and user requirements
     
 ### Contributors:
@@ -68,5 +69,8 @@ Account: test@qq.com, password: 123456789
     
 ### Supervisor:
 1. Geoffrey: Helping us and give directions on the project.
+
+
+
 
  

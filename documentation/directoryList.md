@@ -1,6 +1,6 @@
-|-- ITProject
-    |-- AppDelegate.swift
-    |-- File.swift
+|-- ITProject <br/>
+    |-- AppDelegate.swift <br/>
+    |-- File.swift<br/>
     |-- AlbumUI
     |   |-- AlbumDetail.swift
     |   |-- AlbumsList.swift
