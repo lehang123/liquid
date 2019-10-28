@@ -1,37 +1,37 @@
-|-- ITProject <br/>
-    |-- AppDelegate.swift <br/>
-    |-- File.swift<br/>
-    |-- AlbumUI
+|-- ITProject 
+    |-- AppDelegate.swift 
+    |-- File.swift
+    |-- AlbumUI #album UI management
     |   |-- AlbumDetail.swift
     |   |-- AlbumsList.swift
     |   |-- PhotoDetail.swift
-    |   |-- AddAlbumUI
+    |   |-- AddAlbumUI #adding album management
     |   |   |-- AddAlbumTextFieldSet.swift
     |   |   |-- CustomFormView.swift
     |   |   |-- CustomFormViewController.swift
     |   |   |-- CustomTextField.swift
     |   |   |-- CustomTextFieldContent.swift
     |   |   |-- FormElement.swift
-    |   |-- AlbumCover
+    |   |-- AlbumCover #cover view management
     |   |   |-- AlbumCollectionViewCell.swift
     |   |   |-- AlbumCollectionViewCell.xib
-    |   |-- AlbumDetail
+    |   |-- AlbumDetail #storing album details management 
     |       |-- AlbumDetailDescrpTableViewCell.swift
     |       |-- AlbumDetailPhotoCollectionViewCell.swift
     |       |-- AlbumDetailPhotoTableViewCell.swift
     |       |-- AlbumDetailTableViewController.swift
-    |-- AppUtility
-    |   |-- AlbumDBController.swift
-    |   |-- CacheHandler.swift
-    |   |-- DBController.swift
-    |   |-- RegisterDBController.swift
-    |   |-- Util.swift
+    |-- AppUtility #adapters to our firebase backend
+    |   |-- AlbumDBController.swift #adapter to store images and albums into firestore
+    |   |-- CacheHandler.swift #for saving images into device's local cache
+    |   |-- DBController.swift #basic firebase firestore backend adapter
+    |   |-- RegisterDBController.swift #adapter for registering/logging users & families
+    |   |-- Util.swift #adapter for firebase storage managament + some other stuff
     |-- Base.lproj
     |   |-- LaunchScreen.storyboard
-    |   |-- Main.storyboard
-    |-- CarouselEffect
+    |   |-- Main.storyboard #the core of our project <3
+    |-- CarouselEffect #carousel UI on mainpage
     |   |-- CarouselEffectCollectionViewCell.swift
-    |-- Controllers
+    |-- Controllers #other controllers 
     |   |-- AlbumCoverViewController.swift
     |   |-- ChangePWViewController.swift
     |   |-- EmailSignUpViewController.swift
@@ -42,29 +42,29 @@
     |   |-- LoginViewController.swift
     |   |-- MainNavigationController.swift
     |   |-- Swipe.swift
-    |-- DisplayPhotoUI
+    |-- DisplayPhotoUI #UI for displaying all photos in 1 album
     |   |-- DisplayPhotoViewController.swift
     |   |-- ShowDetailPhotoViewController.swift
     |   |-- DisplayCell
     |       |-- CommentCell.swift
     |       |-- DescriptionCell.swift
     |       |-- LikeWatchedBookmarkCell.swift
-    |-- FamilyTableUI
+    |-- FamilyTableUI #UI for viewing all family members 
     |   |-- FamilyTableViewController.swift
     |   |-- FamilyTableViewMemberCell.swift
-    |-- PopUpUI
+    |-- PopUpUI #pop up forms UI
     |   |-- PopUpAlter.swift
     |   |-- PopUpFormCenter.swift
-    |-- ProfileUI
+    |-- ProfileUI #family settings and personal settings UI 
     |   |-- FamilyProfileViewController.swift
     |   |-- ProfileViewController.swift
-    |-- SideMenuUI
+    |-- SideMenuUI #side menu's UI management
     |   |-- SideMenuTableViewController.swift
-    |-- TimelineUI
+    |-- TimelineUI #timeline's UI management
     |   |-- TimelineField.swift
     |   |-- TimelineView.swift
     |   |-- TimelineViewController.swift
-    |-- Utils
+    |-- Utils #our UI's utilities
         |-- Font.swift
         |-- UIButton+DashedBorder.swift
         |-- UIColor+EKColor.swift
